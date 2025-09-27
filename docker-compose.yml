@@ -32,15 +32,26 @@ services:
       mysql:
         condition: service_healthy
     volumes:
+      - ./:/var/www/html
       - ./assets/images:/var/www/html/assets/images
       - ./logs:/var/www/html/logs
+      - ./tmp:/var/www/html/tmp
     environment:
       - DB_HOST=mysql
       - DB_NAME=shoe
       - DB_USER=shoes_user
       - DB_PASS=shoes_pass
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_UPLOAD_MAX_FILESIZE=10M
+      - PHP_POST_MAX_SIZE=10M
     networks:
       - shoes_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # phpMyAdmin (Optional - for database management)
   phpmyadmin:

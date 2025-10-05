@@ -27,27 +27,43 @@ class AdminAboutController {
 
             // Handle image upload
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = 'assets/images/about/';
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0755, true);
-                }
-
-                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                $fileName = 'about_' . time() . '.' . $fileExtension;
-                $uploadPath = $uploadDir . $fileName;
-
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-                    // Delete old image if exists
-                    if ($aboutContent['Image'] && file_exists($aboutContent['Image'])) {
-                        unlink($aboutContent['Image']);
+                $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                $maxFileSize = 2 * 1024 * 1024; // 2MB
+                
+                $fileType = $_FILES['image']['type'];
+                $fileSize = $_FILES['image']['size'];
+                
+                if (!in_array($fileType, $allowedTypes)) {
+                    $error = 'Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.';
+                } elseif ($fileSize > $maxFileSize) {
+                    $error = 'File size exceeds 2MB limit.';
+                } else {
+                    $uploadDir = 'assets/images/about/';
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0755, true);
                     }
-                    $image = $uploadPath;
+
+                    $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                    $fileName = 'about_' . time() . '.' . strtolower($fileExtension);
+                    $uploadPath = $uploadDir . $fileName;
+
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                        // Delete old image if exists
+                        if ($aboutContent['Image'] && file_exists($aboutContent['Image'])) {
+                            unlink($aboutContent['Image']);
+                        }
+                        $image = $uploadPath;
+                    } else {
+                        $error = 'Failed to upload image. Please try again.';
+                    }
                 }
             }
 
             if (empty($title) || empty($content)) {
                 $error = 'Title and content are required.';
-            } else {
+            } elseif (strlen($title) > 200) {
+                $error = 'Title cannot exceed 200 characters.';
+            } elseif (empty($error)) {
                 if ($this->aboutModel->updateAboutContent($title, $content, $image, $adminId)) {
                     $success = 'About page content updated successfully!';
                     $aboutContent = $this->aboutModel->getAboutContent();

@@ -46,6 +46,10 @@ class AdminQnaController {
 
             if (empty($question) || empty($answer)) {
                 $error = 'Question and answer are required.';
+            } elseif (strlen($question) > 500) {
+                $error = 'Question cannot exceed 500 characters.';
+            } elseif ($displayOrder < 0) {
+                $error = 'Display order cannot be negative.';
             } else {
                 if ($this->qnaModel->addQna($question, $answer, $displayOrder, $isActive, $adminId)) {
                     $success = 'Q&A added successfully!';
@@ -90,6 +94,10 @@ class AdminQnaController {
 
             if (empty($question) || empty($answer)) {
                 $error = 'Question and answer are required.';
+            } elseif (strlen($question) > 500) {
+                $error = 'Question cannot exceed 500 characters.';
+            } elseif ($displayOrder < 0) {
+                $error = 'Display order cannot be negative.';
             } else {
                 if ($this->qnaModel->updateQna($qnaId, $question, $answer, $displayOrder, $isActive)) {
                     $success = 'Q&A updated successfully!';

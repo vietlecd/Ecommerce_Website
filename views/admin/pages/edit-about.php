@@ -1,122 +1,115 @@
-<style>
-    .about-form .form-group {
-        margin-bottom: 20px;
-    }
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>Edit About Page Content</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/index.php?controller=adminDashboard&action=dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">About Page</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
 
-    .about-form .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #333;
-    }
+    <?php if (!empty($error)): ?>
+        <div class="alert alert-danger alert-dismissible show fade">
+            <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($error); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 
-    .about-form .form-group input[type="text"],
-    .about-form .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 14px;
-    }
+    <?php if (!empty($success)): ?>
+        <div class="alert alert-success alert-dismissible show fade">
+            <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($success); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 
-    .about-form .form-group textarea {
-        resize: vertical;
-        min-height: 300px;
-        font-family: inherit;
-    }
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="card-title">About Page Content</h4>
+                    <a href="/index.php?controller=about&action=index" class="btn btn-sm btn-outline-primary" target="_blank">
+                        <i class="fas fa-eye"></i> View Page
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="form-group mb-3">
+                        <label for="title" class="form-label">Page Title <span class="text-danger">*</span></label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="title" 
+                               name="title" 
+                               value="<?php echo htmlspecialchars($aboutContent['Title']); ?>" 
+                               required
+                               maxlength="200">
+                        <div class="invalid-feedback">
+                            Please enter a page title.
+                        </div>
+                    </div>
 
-    .about-form .form-group img {
-        max-width: 400px;
-        border-radius: 5px;
-        margin-top: 10px;
-    }
+                    <div class="form-group mb-3">
+                        <label for="content" class="form-label">Content <span class="text-danger">*</span></label>
+                        <textarea class="form-control" 
+                                  id="content" 
+                                  name="content" 
+                                  rows="15" 
+                                  required><?php echo htmlspecialchars($aboutContent['Content']); ?></textarea>
+                        <div class="invalid-feedback">
+                            Please enter content for the About page.
+                        </div>
+                    </div>
 
-    .about-form button {
-        padding: 12px 30px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+                    <div class="form-group mb-3">
+                        <label for="image" class="form-label">Image (optional)</label>
+                        <?php if ($aboutContent['Image']): ?>
+                            <div class="mb-3">
+                                <img src="/<?php echo htmlspecialchars($aboutContent['Image']); ?>" 
+                                     alt="Current Image" 
+                                     class="img-thumbnail" 
+                                     style="max-width: 400px;">
+                                <p class="text-muted small mt-2">Current image - Upload a new image to replace it</p>
+                            </div>
+                        <?php endif; ?>
+                        <input type="file" 
+                               class="form-control" 
+                               id="image" 
+                               name="image" 
+                               accept="image/jpeg,image/png,image/jpg,image/gif">
+                        <div class="form-text">Accepted formats: JPG, JPEG, PNG, GIF. Max size: 2MB</div>
+                    </div>
 
-    .about-form button:hover {
-        background-color: #0056b3;
-    }
-
-    .admin-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .btn-secondary {
-        padding: 10px 20px;
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-    }
-
-    .btn-secondary:hover {
-        background-color: #5a6268;
-    }
-
-    .alert {
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 4px;
-    }
-
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-</style>
-
-<div class="admin-header">
-    <h1>Edit About Page Content</h1>
-    <a href="/index.php?controller=about&action=index" class="btn-secondary" target="_blank">View Page</a>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Update Content
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 </div>
 
-<?php if (!empty($error)): ?>
-    <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-<?php endif; ?>
-
-<?php if (!empty($success)): ?>
-    <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
-<?php endif; ?>
-
-<form method="post" class="about-form" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="title">Page Title</label>
-        <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($aboutContent['Title']); ?>" required>
-    </div>
-
-    <div class="form-group">
-        <label for="content">Content</label>
-        <textarea id="content" name="content" required><?php echo htmlspecialchars($aboutContent['Content']); ?></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="image">Image (optional)</label>
-        <?php if ($aboutContent['Image']): ?>
-            <div>
-                <img src="/<?php echo htmlspecialchars($aboutContent['Image']); ?>" alt="Current Image">
-                <p><small>Current image - Upload a new image to replace it</small></p>
-            </div>
-        <?php endif; ?>
-        <input type="file" id="image" name="image" accept="image/*">
-    </div>
-
-    <button type="submit">Update Content</button>
-</form>
+<script>
+// Bootstrap 5 form validation
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>

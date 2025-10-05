@@ -58,6 +58,18 @@
                         <i class="fas fa-newspaper"></i> News
                     </a>
                 </li>
+                <li>
+                    <a href="/index.php?controller=adminAbout&action=edit" 
+                       class="<?php echo $currentController === 'adminAbout' ? 'active' : ''; ?>">
+                        <i class="fas fa-info-circle"></i> About Page
+                    </a>
+                </li>
+                <li>
+                    <a href="/index.php?controller=adminQna&action=manage" 
+                       class="<?php echo $currentController === 'adminQna' ? 'active' : ''; ?>">
+                        <i class="fas fa-question-circle"></i> Q&A
+                    </a>
+                </li>
                 </li>
                 <li>
                     <a href="/index.php?controller=home&action=index">

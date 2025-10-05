@@ -22,6 +22,8 @@
                     <li><a href="/index.php">Home</a></li>
                     <li><a href="/index.php?controller=products&action=index">Products</a></li>
                     <li><a href="/index.php?controller=news&action=index">News</a></li>
+                    <li><a href="/index.php?controller=about&action=index">About</a></li>
+                    <li><a href="/index.php?controller=qna&action=index">Q&A</a></li>
                     <li><a href="/index.php?controller=cart&action=index"><i class="fas fa-shopping-cart"></i> Cart
                             <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
                                 <span class="cart-count"><?php echo count($_SESSION['cart']); ?></span>

@@ -21,7 +21,8 @@
                     <ul>
                         <li><a href="index.php">Home</a></li>
                         <li><a href="index.php?page=products">Products</a></li>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="index.php?controller=about&action=index">About Us</a></li>
+                        <li><a href="index.php?controller=qna&action=index">Q&A</a></li>
                         <li><a href="#">Contact</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
                     </ul>

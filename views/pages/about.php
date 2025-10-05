@@ -1,66 +1,32 @@
-<style>
-    .about-page {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 20px;
-    }
-
-    .about-page h1 {
-        color: #333;
-        font-size: 2.5em;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .about-content {
-        background: #fff;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .about-image {
-        width: 100%;
-        max-width: 600px;
-        height: auto;
-        margin: 20px auto;
-        display: block;
-        border-radius: 8px;
-    }
-
-    .about-content p {
-        line-height: 1.8;
-        color: #555;
-        margin-bottom: 15px;
-        white-space: pre-line;
-    }
-
-    .about-updated {
-        text-align: right;
-        color: #999;
-        font-size: 0.9em;
-        margin-top: 20px;
-        font-style: italic;
-    }
-</style>
-
-<div class="about-page">
-    <h1><?php echo htmlspecialchars($aboutContent['Title']); ?></h1>
-    
-    <div class="about-content">
-        <?php if ($aboutContent['Image']): ?>
-            <img src="/<?php echo htmlspecialchars($aboutContent['Image']); ?>" alt="About Us" class="about-image">
-        <?php endif; ?>
-        
-        <p><?php echo nl2br(htmlspecialchars($aboutContent['Content'])); ?></p>
-        
-        <?php if ($aboutContent['LastUpdated']): ?>
-            <div class="about-updated">
-                Last updated: <?php echo date('F j, Y', strtotime($aboutContent['LastUpdated'])); ?>
-                <?php if ($aboutContent['UpdatedByName']): ?>
-                    by <?php echo htmlspecialchars($aboutContent['UpdatedByName']); ?>
-                <?php endif; ?>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            <h1 class="display-4 text-center text-dark mb-4"><?php echo htmlspecialchars($aboutContent['Title']); ?></h1>
+            
+            <div class="card shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    <?php if ($aboutContent['Image']): ?>
+                        <div class="text-center mb-4">
+                            <img src="/<?php echo htmlspecialchars($aboutContent['Image']); ?>" 
+                                 alt="About Us" 
+                                 class="img-fluid rounded w-75 mw-100">
+                        </div>
+                    <?php endif; ?>
+                    
+                    <div class="lh-lg text-secondary mb-3">
+                        <?php echo nl2br(htmlspecialchars($aboutContent['Content'])); ?>
+                    </div>
+                    
+                    <?php if ($aboutContent['LastUpdated']): ?>
+                        <div class="text-end text-muted small fst-italic mt-4">
+                            Last updated: <?php echo date('F j, Y', strtotime($aboutContent['LastUpdated'])); ?>
+                            <?php if ($aboutContent['UpdatedByName']): ?>
+                                by <?php echo htmlspecialchars($aboutContent['UpdatedByName']); ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
 </div>

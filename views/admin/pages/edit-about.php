@@ -73,8 +73,7 @@
                             <div class="mb-3">
                                 <img src="/<?php echo htmlspecialchars($aboutContent['Image']); ?>" 
                                      alt="Current Image" 
-                                     class="img-thumbnail" 
-                                     style="max-width: 400px;">
+                                     class="img-thumbnail w-50 mw-100">
                                 <p class="text-muted small mt-2">Current image - Upload a new image to replace it</p>
                             </div>
                         <?php endif; ?>

@@ -15,11 +15,6 @@ services:
       - mysql_data:/var/lib/mysql
       - ./assets/config/mysql/shoe.sql:/docker-entrypoint-initdb.d/shoe.sql
     command: --innodb-buffer-pool-size=256M --innodb-log-file-size=64M --max-connections=1000
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456789"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
     networks:
       - shoes_network
 
@@ -31,10 +26,11 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     volumes:
-      - .:/var/www/html:cached
+      - ./:/var/www/html:cached
+      - ./assets:/var/www/html/assets:cached
+      - ./logs:/var/www/html/logs:cached
       - /var/www/html/vendor
       - /var/www/html/var
     environment:
@@ -45,14 +41,9 @@ services:
       - PHP_MEMORY_LIMIT=256M
       - PHP_UPLOAD_MAX_FILESIZE=10M
       - PHP_POST_MAX_SIZE=10M
+      - PHP_MAX_EXECUTION_TIME=300
     networks:
       - shoes_network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
   # phpMyAdmin (Optional - for database management)
   phpmyadmin:
@@ -62,9 +53,11 @@ services:
     ports:
       - "8081:80"
     environment:
-      PMA_HOST: mysql
-      PMA_USER: root
-      PMA_PASSWORD: 123456789
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=123456789
+      - UPLOAD_LIMIT=64M
+      - MAX_EXECUTION_TIME=300
     depends_on:
       - mysql
     networks:

@@ -15,8 +15,17 @@ RUN apt-get update && apt-get install -y \
 # PHP configuration
 RUN echo "upload_max_filesize = 10M" > /usr/local/etc/php/conf.d/uploads.ini
 
-# Set working directory
+# Set working directory and copy application files
 WORKDIR /var/www/html
+COPY . /var/www/html
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+
+# Apache config for .htaccess
+RUN echo '<Directory /var/www/html>\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' > /etc/apache2/conf-available/allowoverride.conf && \
+    a2enconf allowoverride
 
 # Expose port 80
 EXPOSE 80

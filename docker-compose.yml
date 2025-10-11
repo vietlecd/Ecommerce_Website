@@ -35,8 +35,6 @@ services:
         condition: service_healthy
     volumes:
       - .:/var/www/html
-      - /var/www/html/vendor
-      - /var/www/html/var
     environment:
       - DB_HOST=mysql
       - DB_NAME=shoe
@@ -45,6 +43,25 @@ services:
       - PHP_MEMORY_LIMIT=256M
       - PHP_UPLOAD_MAX_FILESIZE=10M
       - PHP_POST_MAX_SIZE=10M
+    networks:
+      - shoes_network
+
+    # phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: shoes_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_USER=root
+      - PMA_PASSWORD=123456789
+      - UPLOAD_LIMIT=64M
+    depends_on:
+      mysql:
+        condition: service_healthy
     networks:
       - shoes_network
 

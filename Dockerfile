@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libzip-dev \
+    default-mysql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql zip \
     && a2enmod rewrite \
@@ -19,6 +20,10 @@ RUN echo "upload_max_filesize = 10M" > /usr/local/etc/php/conf.d/uploads.ini
 WORKDIR /var/www/html
 COPY . /var/www/html
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+
+# Create bin command shortcut
+COPY docker-bin /usr/local/bin/bin
+RUN chmod +x /usr/local/bin/bin
 
 # Apache config for .htaccess
 RUN echo '<Directory /var/www/html>\n\

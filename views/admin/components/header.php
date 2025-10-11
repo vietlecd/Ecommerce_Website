@@ -53,7 +53,6 @@
                     </div>
                 </div>
                 <div class="sidebar-menu">
-                <div class="sidebar-menu">
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
                         

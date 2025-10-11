@@ -115,6 +115,71 @@ The database will be automatically initialized with:
 2. Rebuild: `docker-compose up --build`
 
 ### Database Changes
+
+#### Using the Migration System
+This project includes a database migration system for managing schema changes:
+
+1. Place SQL migration files in `assets/config/mysql/migrations/` with numbered prefixes (e.g., `001_create_tables.sql`)
+2. Run migrations using one of these methods:
+
+```bash
+# Using the shell script (recommended from host machine)
+./migrate.sh all                   # Run all migrations
+./migrate.sh 001_create_qna_tables.sql  # Run a specific migration
+./migrate.sh --list                # List available migrations
+./migrate.sh --status              # Show migration status
+./migrate.sh rollback              # Roll back the last migration
+./migrate.sh rollback 3            # Roll back the last 3 migrations
+./migrate.sh reset                 # Roll back all migrations
+./migrate.sh --help                # Show help
+
+# Using the PHP script (inside Docker container)
+docker compose exec web php /var/www/html/bin/migrate.php all            # Run all migrations
+docker compose exec web php /var/www/html/bin/migrate.php 001_create_qna_tables.sql  # Run a specific migration
+docker compose exec web php /var/www/html/bin/migrate.php --list         # List available migrations
+docker compose exec web php /var/www/html/bin/migrate.php --status       # Show migration status
+docker compose exec web php /var/www/html/bin/migrate.php rollback       # Roll back the last migration
+docker compose exec web php /var/www/html/bin/migrate.php rollback 3     # Roll back the last 3 migrations
+docker compose exec web php /var/www/html/bin/migrate.php reset          # Roll back all migrations
+docker compose exec web php /var/www/html/bin/migrate.php --help         # Show help
+```
+
+#### Creating New Migrations
+
+For each migration, create two files:
+1. `xxx_migration_name.sql` - Contains the SQL to apply the migration
+2. `xxx_migration_name.down.sql` - Contains the SQL to roll back the migration
+
+#### How Rollbacks Work
+
+When you create a migration, you should also create a corresponding `.down.sql` file that undoes the changes:
+
+```sql
+-- 001_create_example_table.sql
+CREATE TABLE example (id INT PRIMARY KEY, name VARCHAR(100));
+
+-- 001_create_example_table.down.sql
+DROP TABLE IF EXISTS example;
+```
+
+Then you can run:
+```bash
+# Apply migration
+./migrate.sh 001_create_example_table.sql
+
+# Check status
+./migrate.sh --status
+
+# Roll back migration
+./migrate.sh rollback
+```
+
+Important notes:
+- The PHP script must be run inside the Docker container as it requires the PDO MySQL driver
+- Each migration is executed independently, so errors in one won't affect others
+- Migrations are idempotent - they include IF NOT EXISTS and similar checks to avoid errors when run multiple times
+
+#### Manual Changes (not recommended)
 1. Modify SQL files in `assets/config/mysql/`
 2. Recreate containers: `docker-compose down && docker-compose up --build`
 

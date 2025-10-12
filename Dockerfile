@@ -19,7 +19,7 @@ RUN echo "upload_max_filesize = 10M" > /usr/local/etc/php/conf.d/uploads.ini
 # Set working directory and copy application files
 WORKDIR /var/www/html
 COPY . /var/www/html
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html && chmod -R 775 /var/www/html
 
 # Create bin command shortcut
 COPY docker-bin /usr/local/bin/bin

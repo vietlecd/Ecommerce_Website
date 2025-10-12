@@ -14,7 +14,11 @@ class AboutModel {
                                    LEFT JOIN admin ad ON a.UpdatedBy = ad.AdminID 
                                    WHERE AboutID = 1");
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result && isset($result['Image']) && strpos($result['Image'], '/var/www/html/') === 0) {
+            $result['Image'] = substr($result['Image'], strlen('/var/www/html/'));
+        }
+        return $result;
     }
 
     public function updateAboutContent($title, $content, $image, $adminId) {

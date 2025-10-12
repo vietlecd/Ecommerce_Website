@@ -38,7 +38,7 @@ class AdminAboutController {
                 } elseif ($fileSize > $maxFileSize) {
                     $error = 'File size exceeds 2MB limit.';
                 } else {
-                    $uploadDir = 'assets/images/about/';
+                    $uploadDir = dirname(__DIR__) . '/assets/images/about/';
                     if (!is_dir($uploadDir)) {
                         mkdir($uploadDir, 0755, true);
                     }
@@ -52,7 +52,7 @@ class AdminAboutController {
                         if ($aboutContent['Image'] && file_exists($aboutContent['Image'])) {
                             unlink($aboutContent['Image']);
                         }
-                        $image = $uploadPath;
+                        $image = 'assets/images/about/' . $fileName;
                     } else {
                         $error = 'Failed to upload image. Please try again.';
                     }

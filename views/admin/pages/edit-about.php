@@ -82,7 +82,7 @@
                                id="image" 
                                name="image" 
                                accept="image/jpeg,image/png,image/jpg,image/gif">
-                        <div class="form-text">Accepted formats: JPG, JPEG, PNG, GIF. Max size: 2MB</div>
+                        <div class="form-text">Accepted formats: JPG, JPEG, PNG, GIF. Max size: 2MB. Recommended size: 400x300 pixels</div>
                     </div>
 
                     <div class="form-group">

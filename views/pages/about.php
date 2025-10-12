@@ -9,7 +9,8 @@
                         <div class="text-center mb-4">
                             <img src="/<?php echo htmlspecialchars($aboutContent['Image']); ?>" 
                                  alt="About Us" 
-                                 class="img-fluid rounded w-75 mw-100">
+                                 class="rounded img-fluid mx-auto d-block" 
+                                 style="width: 100%; max-width: 400px; height: auto;">
                         </div>
                     <?php endif; ?>
                     
@@ -17,10 +18,10 @@
                         <?php echo nl2br(htmlspecialchars($aboutContent['Content'])); ?>
                     </div>
                     
-                    <?php if ($aboutContent['LastUpdated']): ?>
+                    <?php if (!empty($aboutContent['UpdatedAt'])): ?>
                         <div class="text-end text-muted small fst-italic mt-4">
-                            Last updated: <?php echo date('F j, Y', strtotime($aboutContent['LastUpdated'])); ?>
-                            <?php if ($aboutContent['UpdatedByName']): ?>
+                            Last updated: <?php echo date('F j, Y', strtotime($aboutContent['UpdatedAt'])); ?>
+                            <?php if (!empty($aboutContent['UpdatedByName'])): ?>
                                 by <?php echo htmlspecialchars($aboutContent['UpdatedByName']); ?>
                             <?php endif; ?>
                         </div>

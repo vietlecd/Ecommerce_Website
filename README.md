@@ -15,7 +15,7 @@ Based on the project structure, the application supports core e-commerce functio
 
 * **Backend:** PHP (Custom MVC framework)
 * **Frontend:** PHP-generated views, CSS
-* **Database:** (Please specify your database, e.g., MySQL, PostgreSQL)
+* **Database:** MySQL
 * **DevOps:** Docker, Docker Compose
 
 ## How to Run
@@ -62,3 +62,18 @@ This project is configured to run easily using Docker.
 ## Project Structure
 
 The project follows a standard MVC pattern:
+
+├── config/         # Configuration files (e.g., database)
+
+├── controllers/    # Handles business logic and user requests
+
+├── models/         # Database models and data logic
+
+├── views/          # PHP files for generating HTML
+
+├── public/         # Public assets (CSS, JS, images)
+
+├── Dockerfile      # Docker build file for the PHP application
+
+└── docker-compose.yml # Defines all services (app, db, etc.)
+

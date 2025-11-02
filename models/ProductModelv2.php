@@ -57,9 +57,14 @@ class ProductModel
             $params[] = '%' . $keyword . '%';
         }
 
-        if (!empty($category)) {
-            $sql .= " AND c.Name = ?";
-            $params[] = $category;
+        if ($category !== '') {
+            if (ctype_digit((string)$category)) {
+                $sql .= " AND c.CategoryID = ?";
+                $params[] = (int)$category;
+            } else {
+                $sql .= " AND c.Name = ?";
+                $params[] = $category;
+            }
         }
 
         $sql .= " LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
@@ -88,9 +93,14 @@ class ProductModel
             $params[] = '%' . $keyword . '%';
         }
 
-        if (!empty($category)) {
-            $sql .= " AND c.Name = ?";
-            $params[] = $category;
+        if ($category !== '') {
+            if (ctype_digit((string)$category)) {
+                $sql .= " AND c.CategoryID = ?";
+                $params[] = (int)$category;
+            } else {
+                $sql .= " AND c.Name = ?";
+                $params[] = $category;
+            }
         }
 
         $stmt = $this->pdo->prepare($sql);

@@ -12,18 +12,16 @@ class ProductsController {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
         $category = isset($_GET['category']) ? trim($_GET['category']) : '';
 
-        $perPage = 8; // Số sản phẩm trên mỗi trang
+        $perPage = 8; // number of products per page
         $currentPage = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
         $offset = ($currentPage - 1) * $perPage;
 
-        // Fetch products with pagination
         $products = $this->productModel->getProducts($keyword, $category, $perPage, $offset);
-
-        // Get total number of products
         $totalProducts = $this->productModel->getTotalProducts($keyword, $category);
-        $totalPages = ceil($totalProducts / $perPage);
+        $totalPages = (int)ceil($totalProducts / $perPage);
+        $categories = $this->productModel->getCategories();
+        $selectedCategory = $category;
 
-        // Pass data to view
         require_once 'views/components/header.php';
         require_once 'views/pages/products.php';
     }
@@ -34,7 +32,7 @@ class ProductsController {
             exit;
         }
 
-        $id = intval($_GET['id']);
+        $id = (int)$_GET['id'];
         $product = $this->productModel->getProductById($id);
 
         if (!$product) {
@@ -42,32 +40,41 @@ class ProductsController {
             exit;
         }
 
-        // Handle add to cart
+        $errorMessage = '';
+        $selectedQuantity = isset($_POST['quantity']) && (int)$_POST['quantity'] > 0 ? (int)$_POST['quantity'] : 1;
+
         if (isset($_POST['add_to_cart'])) {
-            $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
-            
-            if ($quantity < 1) {
-                $quantity = 1;
-            }
-            
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
-            
-            if (isset($_SESSION['cart'][$id])) {
-                $_SESSION['cart'][$id]['quantity'] += $quantity;
+            $availableStock = isset($product['Stock']) ? (int)$product['Stock'] : 0;
+
+            if ($availableStock <= 0) {
+                $errorMessage = 'This product is currently out of stock.';
             } else {
-                $_SESSION['cart'][$id] = [
-                    'id' => $product['id'],
-                    'name' => $product['name'],
-                    'price' => $product['final_price'], // Sử dụng final_price thay vì price
-                    'image' => $product['image'],
-                    'quantity' => $quantity
-                ];
+                if (!isset($_SESSION['cart'])) {
+                    $_SESSION['cart'] = [];
+                }
+
+                $selectedQuantity = min($selectedQuantity, $availableStock);
+                $existingQuantity = isset($_SESSION['cart'][$id]) ? (int)$_SESSION['cart'][$id]['quantity'] : 0;
+                $newQuantity = $existingQuantity + $selectedQuantity;
+
+                if ($newQuantity > $availableStock) {
+                    $maxAdditional = max(0, $availableStock - $existingQuantity);
+                    $errorMessage = $maxAdditional > 0
+                        ? 'Not enough stock. You can only add ' . $maxAdditional . ' more.'
+                        : 'Cannot add more items because the cart already holds the maximum stock.';
+                } else {
+                    $_SESSION['cart'][$id] = [
+                        'id' => $product['id'],
+                        'name' => $product['name'],
+                        'price' => $product['final_price'],
+                        'image' => $product['image'],
+                        'quantity' => $newQuantity,
+                    ];
+
+                    header('Location: index.php?controller=cart&action=index');
+                    exit;
+                }
             }
-            
-            header('Location: index.php?controller=cart&action=index');
-            exit;
         }
 
         require_once 'views/components/header.php';

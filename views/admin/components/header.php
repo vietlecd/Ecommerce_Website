@@ -8,6 +8,112 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/iconly.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Scoped admin overrides to prevent CSS conflicts with Mazer */
+    #main .page-content .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    #main .page-content .admin-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0;
+      color: #2c3e50;
+    }
+    #main .page-content .admin-header .date {
+      color: #6c757d;
+      font-weight: 500;
+    }
+
+    #main .page-content .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    #main .page-content .stat-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      text-align: left;
+    }
+    #main .page-content .stat-card h3 {
+      margin: 0 0 6px;
+      color: #0d6efd;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+    #main .page-content .stat-card p {
+      margin: 0;
+      color: #6c757d;
+      font-weight: 500;
+    }
+
+    #main .page-content .recent-orders h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 14px;
+    }
+    #main .page-content .recent-orders .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    #main .page-content .recent-orders .admin-table th,
+    #main .page-content .recent-orders .admin-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #e9ecef;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+    #main .page-content .recent-orders .admin-table th {
+      background: #f8f9fa;
+      color: #495057;
+      font-weight: 700;
+    }
+    #main .page-content .recent-orders .admin-table tbody tr:nth-child(even) { background: #fbfbfc; }
+    #main .page-content .recent-orders .admin-table tbody tr:hover { background: #f3f5f7; }
+
+    /* Status chips */
+    #main .page-content .recent-orders .status-processing,
+    #main .page-content .recent-orders .status-delivered,
+    #main .page-content .recent-orders .status-shipped,
+    #main .page-content .recent-orders .status-cancelled {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    #main .page-content .recent-orders .status-processing { background:#e7f1ff; color:#0d6efd; border-color:#cfe2ff; }
+    #main .page-content .recent-orders .status-delivered { background:#eaf7ea; color:#198754; border-color:#cfead9; }
+    #main .page-content .recent-orders .status-shipped { background:#fff4e5; color:#fd7e14; border-color:#ffe1c1; }
+    #main .page-content .recent-orders .status-cancelled { background:#fdecec; color:#dc3545; border-color:#f8d7da; }
+
+    /* View button */
+    #main .page-content .recent-orders .btn-view {
+      display: inline-block;
+      padding: 8px 14px;
+      background: #ff6b6b;
+      color: #fff !important;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid #ff6b6b;
+      transition: background-color .2s ease, box-shadow .2s ease, transform .02s ease;
+    }
+    #main .page-content .recent-orders .btn-view:hover { background:#ff5252; box-shadow: 0 2px 6px rgba(255,107,107,.25); }
+    #main .page-content .recent-orders .btn-view:active { transform: translateY(1px); }
+  </style>
 </head>
 
 <body>

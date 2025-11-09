@@ -1,0 +1,8 @@
+2025-11-09 12:52:36 - Webhook Request
+URL: https://agqiom.ezn8n.com/webhook/8b29fa41-a30e-4fd0-9710-f4e589eb2e97?chatInput=test
+HTTP Code: 200
+CURL Error: None
+Response Length: 341 bytes
+Response: {"output":"{\n  \"p\": \"Xin chào! Tôi là chatbot gợi ý sản phẩm giày. Hãy cho tôi biết bạn đang tìm kiếm loại giày gì (ví dụ: giày thể thao, dép sandal, giày boot...) hoặc ngân sách của bạn là bao nhiêu để tôi có thể gợi ý những sản phẩm phù hợp nhất.\",\n  \"items\": []\n}"}
+---
+

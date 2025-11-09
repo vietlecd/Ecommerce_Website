@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+
+# Cursor Rules
+
+## Coding Rules
+
+- Khi viết code, KHÔNG thêm comment vào code
+- Code phải tự giải thích thông qua tên biến và hàm rõ ràng
+- Chỉ thêm comment khi thực sự cần thiết và được yêu cầu cụ thể
+- Ưu tiên code sạch và dễ đọc thay vì comment
+
+## General Rules
+
+- Không xóa file, chỉ được sửa file
+- Khi sai, ưu tiên tham khảo các file code xung quanh để sửa
+- Sau khi hoàn thành tính năng, tự động mở trình duyệt để test manual
+- Nếu phát hiện lỗi khi test, tự động fix và test lại cho đến khi không còn lỗi
+- Luôn đảm bảo API và các tính năng hoạt động đúng trước khi kết thúc
+
+

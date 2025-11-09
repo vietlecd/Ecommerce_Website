@@ -41,4 +41,14 @@ class HomeController {
             die("Footer file not found: $footerPath");
         }
     }
+    
+    public function chat() {
+        $viewPath = dirname(__DIR__) . '/views/pages/chat-render.php';
+        if (file_exists($viewPath)) {
+            require $viewPath;
+        } else {
+            die("Chat view file not found: $viewPath");
+        }
+        exit;
+    }
 }

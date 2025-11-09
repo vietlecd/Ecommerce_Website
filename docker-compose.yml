@@ -66,6 +66,24 @@ services:
     networks:
       - shoes_network
 
+  # ngrok
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: shoes_ngrok
+    restart: unless-stopped
+    ports:
+      - "4040:4040"
+    environment:
+      - NGROK_AUTHTOKEN=35EwNeajg2LR3WrXmjcVS1Dmpol_7i9UrC3SQn65CX1rGtCEn
+    command:
+      - http
+      - web:80
+      - --log=stdout
+    depends_on:
+      - web
+    networks:
+      - shoes_network
+
 volumes:
   mysql_data:
 

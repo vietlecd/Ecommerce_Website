@@ -42,10 +42,10 @@ class ProductModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProducts($keyword = '', $category = '', $limit = 8, $offset = 0)
+    public function getProducts($keyword = '', $category = '', $limit = 8, $offset = 0, $minPrice = null, $maxPrice = null)
     {
         $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Description AS description, 
-                       c.Name AS category, s.shoes_size, s.Stock
+                       c.Name AS category, s.shoes_size, s.Stock, s.CategoryID AS category_id
                 FROM shoes s
                 JOIN category c ON s.CategoryID = c.CategoryID
                 WHERE 1=1";
@@ -62,40 +62,40 @@ class ProductModel
             $params[] = $category;
         }
 
-        $sql .= " LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+        if ($limit > 0) {
+            $sql .= " LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+        }
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
         foreach ($products as &$product) {
             $product['promotion'] = $this->getPromotionForProduct($product['id']);
             $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion']);
         }
+        
+        if ($minPrice !== null || $maxPrice !== null) {
+            $products = array_filter($products, function($product) use ($minPrice, $maxPrice) {
+                $finalPrice = $product['final_price'];
+                if ($minPrice !== null && $finalPrice < $minPrice) {
+                    return false;
+                }
+                if ($maxPrice !== null && $finalPrice > $maxPrice) {
+                    return false;
+                }
+                return true;
+            });
+            $products = array_values($products);
+        }
+        
         return $products;
     }
 
-    public function getTotalProducts($keyword = '', $category = '')
+    public function getTotalProducts($keyword = '', $category = '', $minPrice = null, $maxPrice = null)
     {
-        $sql = "SELECT COUNT(*) as total
-                FROM shoes s
-                JOIN category c ON s.CategoryID = c.CategoryID
-                WHERE 1=1";
-        $params = [];
-
-        if (!empty($keyword)) {
-            $sql .= " AND (s.Name LIKE ? OR s.Description LIKE ?)";
-            $params[] = '%' . $keyword . '%';
-            $params[] = '%' . $keyword . '%';
-        }
-
-        if (!empty($category)) {
-            $sql .= " AND c.Name = ?";
-            $params[] = $category;
-        }
-
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+        $products = $this->getProducts($keyword, $category, 0, 0, $minPrice, $maxPrice);
+        return count($products);
     }
 
     public function getProductById($id)

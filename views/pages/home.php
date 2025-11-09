@@ -439,8 +439,14 @@ document.addEventListener('DOMContentLoaded', function() {
         url.searchParams.set('chatInput', message);
         
         console.log('Fetching URL:', url.toString());
-        fetch(url.toString())
+        
+        // Set timeout for fetch request (200 seconds)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 200000); // 200 seconds
+        
+        fetch(url.toString(), { signal: controller.signal })
             .then(response => {
+                clearTimeout(timeoutId);
                 if (!response.ok) {
                     return response.text().then(text => {
                         throw new Error('HTTP error: ' + response.status);
@@ -506,12 +512,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
+                clearTimeout(timeoutId);
                 removeLoadingMessage();
                 chatSend.disabled = false;
                 console.error('Error:', error);
                 
                 let errorMsg = 'Xin lỗi, có lỗi xảy ra.';
-                if (error.message) {
+                if (error.name === 'AbortError') {
+                    errorMsg = 'Yêu cầu đã quá thời gian chờ (timeout 200s). Vui lòng thử lại.';
+                } else if (error.message) {
                     if (error.message.includes('404')) {
                         errorMsg = 'Webhook chưa được kích hoạt. Vui lòng kiểm tra lại cấu hình n8n.';
                     } else if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {

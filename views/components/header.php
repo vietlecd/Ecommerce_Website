@@ -18,6 +18,9 @@
                 </a>
             </div>
             <nav>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
                 <ul>
                     <li><a href="/index.php">Home</a></li>
                     <li><a href="/index.php?controller=products&action=index">Products</a></li>

@@ -47,13 +47,18 @@ class ProductModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getProducts($keyword = '', $category = '', $limit = 8, $offset = 0, $minPrice = null, $maxPrice = null)
+    public function getProducts($keyword = '', $category = '', $limit = 8, $offset = 0, $minPrice = null, $maxPrice = null, $minSize = null, $maxSize = null, $saleOnly = false)
     {
         $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Description AS description, 
                        c.Name AS category, s.shoes_size, s.Stock, s.CategoryID AS category_id
                 FROM shoes s
-                JOIN category c ON s.CategoryID = c.CategoryID
-                WHERE 1=1";
+                JOIN category c ON s.CategoryID = c.CategoryID";
+        
+        if ($saleOnly) {
+            $sql .= " LEFT JOIN sales sl ON sl.ShoesID = s.ShoesID AND (sl.ExpiresAt IS NULL OR sl.ExpiresAt >= NOW())";
+        }
+        
+        $sql .= " WHERE 1=1";
         $params = [];
 
         if (!empty($keyword)) {
@@ -70,6 +75,20 @@ class ProductModel
                 $sql .= " AND c.Name = ?";
                 $params[] = $category;
             }
+        }
+
+        if ($minSize !== null && is_numeric($minSize)) {
+            $sql .= " AND CAST(s.shoes_size AS DECIMAL(10,2)) >= ?";
+            $params[] = (float)$minSize;
+        }
+
+        if ($maxSize !== null && is_numeric($maxSize)) {
+            $sql .= " AND CAST(s.shoes_size AS DECIMAL(10,2)) <= ?";
+            $params[] = (float)$maxSize;
+        }
+
+        if ($saleOnly) {
+            $sql .= " AND sl.ShoesID IS NOT NULL";
         }
 
         if ($limit > 0) {
@@ -139,10 +158,18 @@ class ProductModel
         return $this->enrichProducts($products);
     }
 
-    public function getTotalProducts($keyword = '', $category = '', $minPrice = null, $maxPrice = null)
+    public function getTotalProducts($keyword = '', $category = '', $minPrice = null, $maxPrice = null, $minSize = null, $maxSize = null, $saleOnly = false)
     {
-        $products = $this->getProducts($keyword, $category, 0, 0, $minPrice, $maxPrice);
+        $products = $this->getProducts($keyword, $category, 0, 0, $minPrice, $maxPrice, $minSize, $maxSize, $saleOnly);
         return count($products);
+    }
+
+    public function getAvailableSizes()
+    {
+        $stmt = $this->pdo->prepare("SELECT DISTINCT CAST(shoes_size AS DECIMAL(10,2)) AS size FROM shoes WHERE shoes_size IS NOT NULL AND shoes_size != '' ORDER BY size ASC");
+        $stmt->execute();
+        $sizes = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return array_map('floatval', $sizes);
     }
 
     public function getProductById($id)

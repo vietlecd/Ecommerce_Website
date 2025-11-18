@@ -20,20 +20,23 @@ class ProductsController {
     public function index() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
         $category = isset($_GET['category']) ? trim($_GET['category']) : '';
+        $minPrice = isset($_GET['min_price']) && is_numeric($_GET['min_price']) ? (float)$_GET['min_price'] : null;
+        $maxPrice = isset($_GET['max_price']) && is_numeric($_GET['max_price']) ? (float)$_GET['max_price'] : null;
+        $minSize = isset($_GET['min_size']) && is_numeric($_GET['min_size']) ? (float)$_GET['min_size'] : null;
+        $maxSize = isset($_GET['max_size']) && is_numeric($_GET['max_size']) ? (float)$_GET['max_size'] : null;
+        $saleOnly = isset($_GET['sale_only']) && $_GET['sale_only'] === '1';
 
-        $perPage = 8; // Số sản phẩm trên mỗi trang
+        $perPage = 8;
         $currentPage = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
         $offset = ($currentPage - 1) * $perPage;
 
-        // Fetch products with pagination
-        $products = $this->productModel->getProducts($keyword, $category, $perPage, $offset);
+        $products = $this->productModel->getProducts($keyword, $category, $perPage, $offset, $minPrice, $maxPrice, $minSize, $maxSize, $saleOnly);
 
-        // Get total number of products
-        $totalProducts = $this->productModel->getTotalProducts($keyword, $category);
+        $totalProducts = $this->productModel->getTotalProducts($keyword, $category, $minPrice, $maxPrice, $minSize, $maxSize, $saleOnly);
         $totalPages = ceil($totalProducts / $perPage);
 
-        // Get all categories for filter
         $categories = $this->categoryModel->getAllCategories();
+        $availableSizes = $this->productModel->getAvailableSizes();
         $topSellers = $this->productModel->getTopSellers(4);
         $topPriced = $this->productModel->getTopPricedProducts(4);
 

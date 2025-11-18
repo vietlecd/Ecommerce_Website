@@ -45,55 +45,146 @@ $truncateText = function($text, $limit = 120) {
     <?php endif; ?>
 </div>
 
-<!-- Filter & Search Section -->
 <div class="products-filter-section">
-    <div class="filter-wrapper">
-        <!-- Category Filter -->
-        <div class="category-filter">
-            <label for="category-select" class="filter-label">
-                <i class="fas fa-filter"></i> Category:
-            </label>
-            <div class="category-dropdown">
-                <select id="category-select" name="category" class="category-select" onchange="filterByCategory(this.value)">
-                    <option value="">All Categories</option>
-                    <?php if (!empty($categories)): ?>
-                        <?php foreach ($categories as $cat): ?>
-                            <option value="<?php echo htmlspecialchars($cat['CategoryID']); ?>" 
-                                <?php echo (isset($_GET['category']) && $_GET['category'] == $cat['CategoryID']) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($cat['CategoryName']); ?>
-                            </option>
-                        <?php endforeach; ?>
+    <form action="/index.php?controller=products&action=index" method="get" class="products-search-form" id="products-search-form">
+        <input type="hidden" name="controller" value="products">
+        <input type="hidden" name="action" value="index">
+        
+        <div class="search-wrapper">
+            <div class="search-input-wrapper">
+                <input type="text" 
+                       name="keyword" 
+                       placeholder="Search products..." 
+                       value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>" 
+                       class="search-input-field">
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="filter-icon-wrapper">
+                <button type="button" class="filter-icon-btn" id="filter-icon-btn" aria-label="Filter">
+                    <i class="fas fa-filter"></i>
+                    <?php 
+                    $hasFilters = !empty($_GET['category']) || 
+                                 (isset($_GET['min_price']) && $_GET['min_price'] !== '') ||
+                                 (isset($_GET['max_price']) && $_GET['max_price'] !== '') ||
+                                 (isset($_GET['min_size']) && $_GET['min_size'] !== '') ||
+                                 (isset($_GET['max_size']) && $_GET['max_size'] !== '') ||
+                                 (isset($_GET['sale_only']) && $_GET['sale_only'] === '1');
+                    if ($hasFilters): ?>
+                        <span class="filter-badge"></span>
                     <?php endif; ?>
-                </select>
+                </button>
+                
+                <div class="filter-popup" id="filter-popup">
+                    <form action="/index.php?controller=products&action=index" method="get" class="filter-popup-form" id="filter-popup-form">
+                        <input type="hidden" name="controller" value="products">
+                        <input type="hidden" name="action" value="index">
+                        <?php if (!empty($_GET['keyword'])): ?>
+                            <input type="hidden" name="keyword" value="<?php echo htmlspecialchars($_GET['keyword']); ?>">
+                        <?php endif; ?>
+                        
+                        <div class="filter-popup-header">
+                            <h4>Filters</h4>
+                            <?php if ($hasFilters): ?>
+                                <a href="/index.php?controller=products&action=index<?php echo !empty($_GET['keyword']) ? '&keyword=' . urlencode($_GET['keyword']) : ''; ?>" class="filter-clear-link">Clear</a>
+                            <?php endif; ?>
+                        </div>
+                        
+                        <div class="filter-popup-content">
+                            <div class="filter-popup-group">
+                                <label class="filter-popup-label">
+                                    <i class="fas fa-layer-group"></i>
+                                    <span>Category</span>
+                                </label>
+                                <select name="category" class="filter-popup-select">
+                                    <option value="">All Categories</option>
+                                    <?php if (!empty($categories)): ?>
+                                        <?php foreach ($categories as $cat): ?>
+                                            <option value="<?php echo htmlspecialchars($cat['CategoryID']); ?>" 
+                                                <?php echo (isset($_GET['category']) && $_GET['category'] == $cat['CategoryID']) ? 'selected' : ''; ?>>
+                                                <?php echo htmlspecialchars($cat['CategoryName']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+
+                            <div class="filter-popup-group">
+                                <label class="filter-popup-label">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>Price Range</span>
+                                </label>
+                                <div class="filter-popup-range">
+                                    <input type="number" 
+                                           name="min_price" 
+                                           placeholder="Min" 
+                                           min="0" 
+                                           step="0.01"
+                                           value="<?php echo isset($_GET['min_price']) && $_GET['min_price'] !== '' ? htmlspecialchars($_GET['min_price']) : ''; ?>" 
+                                           class="filter-popup-input">
+                                    <span class="filter-popup-separator">to</span>
+                                    <input type="number" 
+                                           name="max_price" 
+                                           placeholder="Max" 
+                                           min="0" 
+                                           step="0.01"
+                                           value="<?php echo isset($_GET['max_price']) && $_GET['max_price'] !== '' ? htmlspecialchars($_GET['max_price']) : ''; ?>" 
+                                           class="filter-popup-input">
+                                </div>
+                            </div>
+
+                            <div class="filter-popup-group">
+                                <label class="filter-popup-label">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>Size Range</span>
+                                </label>
+                                <div class="filter-popup-range">
+                                    <input type="number" 
+                                           name="min_size" 
+                                           placeholder="Min" 
+                                           min="0" 
+                                           step="0.5"
+                                           value="<?php echo isset($_GET['min_size']) && $_GET['min_size'] !== '' ? htmlspecialchars($_GET['min_size']) : ''; ?>" 
+                                           class="filter-popup-input">
+                                    <span class="filter-popup-separator">to</span>
+                                    <input type="number" 
+                                           name="max_size" 
+                                           placeholder="Max" 
+                                           min="0" 
+                                           step="0.5"
+                                           value="<?php echo isset($_GET['max_size']) && $_GET['max_size'] !== '' ? htmlspecialchars($_GET['max_size']) : ''; ?>" 
+                                           class="filter-popup-input">
+                                </div>
+                            </div>
+
+                            <div class="filter-popup-group">
+                                <label class="filter-popup-checkbox-label">
+                                    <input type="checkbox" 
+                                           name="sale_only" 
+                                           value="1"
+                                           <?php echo (isset($_GET['sale_only']) && $_GET['sale_only'] === '1') ? 'checked' : ''; ?>
+                                           class="filter-popup-checkbox">
+                                    <span class="filter-popup-checkbox-custom"></span>
+                                    <span class="filter-popup-checkbox-text">
+                                        <i class="fas fa-tag"></i>
+                                        On Sale Only
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-popup-footer">
+                            <button type="submit" class="filter-popup-apply-btn">
+                                Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
-        <!-- Search Form -->
-        <div class="search-form">
-            <form action="/index.php?controller=products&action=index" method="get" class="search-filter-form">
-                <input type="hidden" name="controller" value="products">
-                <input type="hidden" name="action" value="index">
-                <?php if (!empty($_GET['category'])): ?>
-                    <input type="hidden" name="category" value="<?php echo htmlspecialchars($_GET['category']); ?>">
-                <?php endif; ?>
-                <div class="search-input-wrapper">
-                    <input type="text" name="keyword" placeholder="Search products..." 
-                           value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>" 
-                           class="search-input-field">
-                    <button type="submit" class="search-btn-submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Clear Filters -->
-        <?php if (!empty($_GET['category']) || !empty($_GET['keyword'])): ?>
-            <a href="/index.php?controller=products&action=index" class="clear-filters-btn">
-                <i class="fas fa-times"></i> Clear Filters
-            </a>
-        <?php endif; ?>
-    </div>
+    </form>
 </div>
 
 <?php if (!empty($topSellers) || !empty($topPriced)): ?>
@@ -393,15 +484,23 @@ $truncateText = function($text, $limit = 120) {
     <?php if (!empty($products) && $totalPages > 1): ?>
         <div class="pagination modern">
             <?php
-            $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-            $category = isset($_GET['category']) ? $_GET['category'] : '';
             $baseUrl = '/index.php?controller=products&action=index';
-            if (!empty($keyword)) $baseUrl .= '&keyword=' . urlencode($keyword);
-            if (!empty($category)) $baseUrl .= '&category=' . urlencode($category);
+            $queryParams = [];
+            
+            if (!empty($_GET['keyword'])) $queryParams['keyword'] = $_GET['keyword'];
+            if (!empty($_GET['category'])) $queryParams['category'] = $_GET['category'];
+            if (isset($_GET['min_price']) && $_GET['min_price'] !== '') $queryParams['min_price'] = $_GET['min_price'];
+            if (isset($_GET['max_price']) && $_GET['max_price'] !== '') $queryParams['max_price'] = $_GET['max_price'];
+            if (isset($_GET['min_size']) && $_GET['min_size'] !== '') $queryParams['min_size'] = $_GET['min_size'];
+            if (isset($_GET['max_size']) && $_GET['max_size'] !== '') $queryParams['max_size'] = $_GET['max_size'];
+            if (isset($_GET['sale_only']) && $_GET['sale_only'] === '1') $queryParams['sale_only'] = '1';
+            
+            $queryString = !empty($queryParams) ? '&' . http_build_query($queryParams) : '';
+            
             $prevPage = $currentPage > 1 ? $currentPage - 1 : 1;
             $nextPage = $currentPage < $totalPages ? $currentPage + 1 : $totalPages;
             ?>
-            <a href="<?php echo $baseUrl . '&page=' . $prevPage; ?>" 
+            <a href="<?php echo $baseUrl . $queryString . '&page=' . $prevPage; ?>" 
                class="pagination-btn prev <?php echo ($currentPage === 1) ? 'disabled' : ''; ?>">
                 <i class="fas fa-chevron-left"></i>
                 <span>Previous</span>
@@ -410,7 +509,7 @@ $truncateText = function($text, $limit = 120) {
             <div class="pagination-numbers">
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                     <?php if ($i == 1 || $i == $totalPages || ($i >= $currentPage - 1 && $i <= $currentPage + 1)): ?>
-                        <a href="<?php echo $baseUrl . '&page=' . $i; ?>" 
+                        <a href="<?php echo $baseUrl . $queryString . '&page=' . $i; ?>" 
                            class="pagination-number <?php echo ($currentPage === $i) ? 'active' : ''; ?>">
                             <?php echo $i; ?>
                         </a>
@@ -420,7 +519,7 @@ $truncateText = function($text, $limit = 120) {
                 <?php endfor; ?>
             </div>
 
-            <a href="<?php echo $baseUrl . '&page=' . $nextPage; ?>" 
+            <a href="<?php echo $baseUrl . $queryString . '&page=' . $nextPage; ?>" 
                class="pagination-btn next <?php echo ($currentPage === $totalPages) ? 'disabled' : ''; ?>">
                 <span>Next</span>
                 <i class="fas fa-chevron-right"></i>
@@ -430,16 +529,56 @@ $truncateText = function($text, $limit = 120) {
 </section>
 
 <script>
-function filterByCategory(categoryId) {
-    const url = new URL(window.location.href);
-    if (categoryId) {
-        url.searchParams.set('category', categoryId);
-    } else {
-        url.searchParams.delete('category');
+document.addEventListener('DOMContentLoaded', function() {
+    const filterIconBtn = document.getElementById('filter-icon-btn');
+    const filterPopup = document.getElementById('filter-popup');
+    const filterPopupForm = document.getElementById('filter-popup-form');
+    const searchForm = document.getElementById('products-search-form');
+    
+    if (filterIconBtn && filterPopup) {
+        let hoverTimeout;
+        
+        filterIconBtn.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            filterPopup.classList.add('is-visible');
+        });
+        
+        filterIconBtn.addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(function() {
+                filterPopup.classList.remove('is-visible');
+            }, 200);
+        });
+        
+        filterPopup.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            filterPopup.classList.add('is-visible');
+        });
+        
+        filterPopup.addEventListener('mouseleave', function() {
+            filterPopup.classList.remove('is-visible');
+        });
     }
-    url.searchParams.delete('page'); // Reset to page 1 when filtering
-    window.location.href = url.toString();
-}
+    
+    if (filterPopupForm) {
+        filterPopupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(filterPopupForm);
+            const params = new URLSearchParams();
+            
+            for (const [key, value] of formData.entries()) {
+                if (key === 'controller' || key === 'action') {
+                    params.append(key, value);
+                } else if (value && value.toString().trim() !== '') {
+                    params.append(key, value);
+                }
+            }
+            
+            const baseUrl = '/index.php';
+            const queryString = params.toString();
+            window.location.href = baseUrl + (queryString ? '?' + queryString : '');
+        });
+    }
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const slider = document.querySelector('[data-slider]');

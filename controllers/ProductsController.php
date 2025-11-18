@@ -35,8 +35,8 @@ class ProductsController {
         $totalProducts = $this->productModel->getTotalProducts($keyword, $category, $minPrice, $maxPrice, $minSize, $maxSize, $saleOnly);
         $totalPages = ceil($totalProducts / $perPage);
 
-        // Get all categories for filter
         $categories = $this->categoryModel->getAllCategories();
+        $availableSizes = $this->productModel->getAvailableSizes();
         $topSellers = $this->productModel->getTopSellers(4);
         $topPriced = $this->productModel->getTopPricedProducts(4);
 

@@ -83,11 +83,11 @@ $heroImages = [
     <div class="container">
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="stat-number" data-count="10000">0</div>
+                <div class="stat-number" data-count="10000" data-animate="true" data-speed="slow" data-loop="true">0</div>
                 <div class="stat-label">Satisfied Customers</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number" data-count="5000">0</div>
+                <div class="stat-number" data-count="5000" data-animate="true" data-speed="fast" data-loop="true">0</div>
                 <div class="stat-label">Products Sold</div>
             </div>
             <div class="stat-item">
@@ -552,38 +552,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Stats counter animation
     function animateCounter(element) {
-        const target = parseInt(element.getAttribute('data-count'));
-        const duration = 2000; // 2 seconds
-        const increment = target / (duration / 16); // 60fps
-        let current = 0;
+        const target = parseInt(element.getAttribute('data-count'), 10);
+        if (Number.isNaN(target)) return;
+        const speed = element.getAttribute('data-speed') || 'fast';
+        const interval = speed === 'slow' ? 3000 : 15;
+        const loop = element.hasAttribute('data-loop');
+        const initialValue = target * 0.8;
+        let current = parseInt(element.textContent.replace(/\D/g, ''), 10) || 0;
 
-        const updateCounter = () => {
-            current += increment;
-            if (current < target) {
-                element.textContent = Math.floor(current).toLocaleString('vi-VN');
-                requestAnimationFrame(updateCounter);
+        const preload = () => {
+            const bump = Math.round(initialValue / 8);
+            current = Math.min(target, current + bump);
+            element.textContent = current.toLocaleString('vi-VN');
+            if (current < initialValue) {
+                requestAnimationFrame(preload);
             } else {
-                element.textContent = target.toLocaleString('vi-VN');
+                setTimeout(step, interval);
             }
         };
 
-        updateCounter();
+        const step = () => {
+            if (!loop && current >= target) {
+                element.textContent = target.toLocaleString('vi-VN');
+                return;
+            }
+            current = loop && current >= target ? current + 1 : current + 1;
+            element.textContent = current.toLocaleString('vi-VN');
+            setTimeout(step, interval);
+        };
+
+        preload();
     }
 
+    (function hydrateStaticStats() {
+        document.querySelectorAll('.stat-number').forEach((stat) => {
+            const target = parseInt(stat.getAttribute('data-count'), 10);
+            if (Number.isNaN(target)) return;
+            if (stat.hasAttribute('data-animate')) {
+                stat.textContent = '0';
+            } else {
+                stat.textContent = target.toLocaleString('vi-VN');
+            }
+        });
+    })();
+
     // Intersection Observer for stats animation
-    const statsObserver = new IntersectionObserver((entries) => {
+    const statsObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const statNumbers = entry.target.querySelectorAll('.stat-number');
-                statNumbers.forEach(stat => {
-                    if (stat.textContent === '0') {
+                entry.target.querySelectorAll('.stat-number[data-animate]').forEach((stat) => {
+                    if (!stat.dataset.animated) {
+                        stat.dataset.animated = 'true';
                         animateCounter(stat);
                     }
                 });
-                statsObserver.unobserve(entry.target);
+                observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.4 });
 
     const statsSection = document.querySelector('.stats-section');
     if (statsSection) {

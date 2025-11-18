@@ -87,7 +87,7 @@ $heroImages = [
                 <div class="stat-label">Satisfied Customers</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number" data-count="5000" data-animate="true" data-speed="fast" data-loop="true">0</div>
+                <div class="stat-number" data-count="5000" data-animate="true" data-speed="fast" data-loop="true" data-step="2" data-interval="1000">0</div>
                 <div class="stat-label">Products Sold</div>
             </div>
             <div class="stat-item">
@@ -555,7 +555,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const target = parseInt(element.getAttribute('data-count'), 10);
         if (Number.isNaN(target)) return;
         const speed = element.getAttribute('data-speed') || 'fast';
-        const interval = speed === 'slow' ? 3000 : 15;
+        const customInterval = parseInt(element.getAttribute('data-interval'), 10);
+        const interval = !Number.isNaN(customInterval) ? customInterval : (speed === 'slow' ? 3000 : 15);
+        const stepSize = parseInt(element.getAttribute('data-step'), 10) || 1;
         const loop = element.hasAttribute('data-loop');
         const initialValue = target * 0.8;
         let current = parseInt(element.textContent.replace(/\D/g, ''), 10) || 0;
@@ -576,7 +578,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 element.textContent = target.toLocaleString('vi-VN');
                 return;
             }
-            current = loop && current >= target ? current + 1 : current + 1;
+            if (loop && current >= target) {
+                current += stepSize;
+            } else {
+                current = Math.min(target, current + stepSize);
+            }
             element.textContent = current.toLocaleString('vi-VN');
             setTimeout(step, interval);
         };

@@ -40,7 +40,10 @@ $selectedCouponId = $selectedCouponId ?? null;
             </div>
             <h3>Cart is feeling light</h3>
             <p>Add a pair or two to see your tailored summary light up.</p>
-            <a href="/index.php?controller=products&action=index" class="btn">Browse collections</a>
+            <a href="/index.php?controller=products&action=index" class="cart-browse-btn">
+                <span>Browse Collections</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
     <?php else: ?>
         <form method="post" action="/index.php?controller=cart&action=update" class="cart-form">

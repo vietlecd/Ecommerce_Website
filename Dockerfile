@@ -49,10 +49,6 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 RUN chown -R www-data:www-data /var/www/html && chmod -R 775 /var/www/html
 
-# Create bin command shortcut
-COPY docker-bin /usr/local/bin/bin
-RUN chmod +x /usr/local/bin/bin
-
 # Apache config for .htaccess
 RUN echo '<Directory /var/www/html>\n\
     AllowOverride All\n\

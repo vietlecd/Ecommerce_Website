@@ -44,16 +44,16 @@ This project is configured to run easily using Docker.
 3.  **Run Database Migrations:**
     This script sets up the necessary database tables.
     ```bash
-    ./migrate.sh
+    ./bin/migrate.sh
     ```
-    *(Or: `docker-compose exec <your_php_service_name> ./migrate.sh`)*
+    *(Or: `docker-compose exec <your_php_service_name> ./bin/migrate.sh`)*
 
 4.  **Seed the Database (Optional):**
     This script populates the database with initial sample data.
     ```bash
-    ./seed.sh
+    ./bin/seed.sh
     ```
-    *(Or: `docker-compose exec <your_php_service_name> ./seed.sh`)*
+    *(Or: `docker-compose exec <your_php_service_name> ./bin/seed.sh`)*
 
 5.  **Access the Application:**
     Once all containers are running, you can access the website in your browser at:

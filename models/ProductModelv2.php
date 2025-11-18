@@ -23,10 +23,15 @@ class ProductModel
     public function getRandomProducts($limit)
     {
         try {
-            $stmt = $this->pdo->prepare("SELECT ShoesID AS ProductID, Name AS ProductName, Price, Image FROM shoes ORDER BY RAND() LIMIT :limit");
+            $stmt = $this->pdo->prepare("SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Stock, s.Description AS description, s.shoes_size, c.Name AS category, s.CategoryID AS category_id
+                                         FROM shoes s
+                                         JOIN category c ON s.CategoryID = c.CategoryID
+                                         ORDER BY RAND()
+                                         LIMIT :limit");
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $this->enrichProducts($products);
         } catch (PDOException $e) {
             return [];
         }
@@ -58,8 +63,13 @@ class ProductModel
         }
 
         if (!empty($category)) {
-            $sql .= " AND c.Name = ?";
-            $params[] = $category;
+            if (is_numeric($category)) {
+                $sql .= " AND s.CategoryID = ?";
+                $params[] = (int)$category;
+            } else {
+                $sql .= " AND c.Name = ?";
+                $params[] = $category;
+            }
         }
 
         if ($limit > 0) {
@@ -69,12 +79,8 @@ class ProductModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        foreach ($products as &$product) {
-            $product['promotion'] = $this->getPromotionForProduct($product['id']);
-            $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion']);
-        }
-        
+        $products = $this->enrichProducts($products);
+
         if ($minPrice !== null || $maxPrice !== null) {
             $products = array_filter($products, function($product) use ($minPrice, $maxPrice) {
                 $finalPrice = $product['final_price'];
@@ -92,6 +98,47 @@ class ProductModel
         return $products;
     }
 
+    public function getHighDiscountSales($minDiscount = 50, $limit = 10)
+    {
+        $sql = "SELECT sh.ShoesID AS id, sh.Name AS name, sh.Price AS price, sh.Image AS image,
+                       sh.Description AS description, sh.shoes_size, sh.Stock, sh.CategoryID AS category_id,
+                       c.Name AS category
+                FROM sales s
+                JOIN shoes sh ON s.ShoesID = sh.ShoesID
+                JOIN category c ON sh.CategoryID = c.CategoryID
+                WHERE s.DiscountPercent >= :minDiscount
+                  AND (s.ExpiresAt IS NULL OR s.ExpiresAt >= NOW())
+                ORDER BY s.DiscountPercent DESC, s.ExpiresAt ASC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':minDiscount', (float)$minDiscount, PDO::PARAM_STR);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    public function getSalesEndingSoon($daysAhead = 7, $limit = 10)
+    {
+        $endDate = (new DateTime())->modify('+' . (int)$daysAhead . ' days')->format('Y-m-d H:i:s');
+        $sql = "SELECT sh.ShoesID AS id, sh.Name AS name, sh.Price AS price, sh.Image AS image,
+                       sh.Description AS description, sh.shoes_size, sh.Stock, sh.CategoryID AS category_id,
+                       c.Name AS category
+                FROM sales s
+                JOIN shoes sh ON s.ShoesID = sh.ShoesID
+                JOIN category c ON sh.CategoryID = c.CategoryID
+                WHERE s.ExpiresAt IS NOT NULL
+                  AND s.ExpiresAt BETWEEN NOW() AND :endDate
+                ORDER BY s.ExpiresAt ASC, s.DiscountPercent DESC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':endDate', $endDate);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
     public function getTotalProducts($keyword = '', $category = '', $minPrice = null, $maxPrice = null)
     {
         $products = $this->getProducts($keyword, $category, 0, 0, $minPrice, $maxPrice);
@@ -101,7 +148,8 @@ class ProductModel
     public function getProductById($id)
     {
         $stmt = $this->pdo->prepare("SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Description AS description, 
-                                           c.Name AS category, s.CategoryID AS category_id, s.shoes_size, s.Stock
+                                           c.Name AS category, s.CategoryID AS category_id, s.shoes_size, s.Stock, 
+                                           s.DateCreate, s.DateUpdate
                                      FROM shoes s
                                      JOIN category c ON s.CategoryID = c.CategoryID
                                      WHERE s.ShoesID = ?");
@@ -109,7 +157,8 @@ class ProductModel
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($product) {
             $product['promotion'] = $this->getPromotionForProduct($id);
-            $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion']);
+            $product['sale'] = $this->getSaleForProduct($id);
+            $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion'], $product['sale']);
         }
         return $product;
     }
@@ -132,16 +181,55 @@ class ProductModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    private function calculateDiscountedPrice($product, $promotion)
+    private function getSaleForProduct($shoe_id)
     {
+        $currentDate = date('Y-m-d H:i:s');
+        $query = "SELECT *
+                  FROM sales
+                  WHERE ShoesID = :shoe_id
+                  AND (ExpiresAt IS NULL OR ExpiresAt >= :current_date)
+                  ORDER BY DiscountPercent DESC
+                  LIMIT 1";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(':shoe_id', (int)$shoe_id, PDO::PARAM_INT);
+        $stmt->bindValue(':current_date', $currentDate, PDO::PARAM_STR);
+        $stmt->execute();
+        $sale = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$sale) {
+            $fallbackQuery = "SELECT *
+                              FROM sales
+                              WHERE ShoesID = :shoe_id
+                              ORDER BY ExpiresAt DESC, DiscountPercent DESC
+                              LIMIT 1";
+            $fallbackStmt = $this->pdo->prepare($fallbackQuery);
+            $fallbackStmt->bindValue(':shoe_id', (int)$shoe_id, PDO::PARAM_INT);
+            $fallbackStmt->execute();
+            $sale = $fallbackStmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return $sale ?: null;
+    }
+
+    private function calculateDiscountedPrice($product, $promotion, $sale = null)
+    {
+        $basePrice = (float)$product['price'];
+        $finalPrice = $basePrice;
+
         if (!empty($promotion)) {
             if ($promotion['discount_percentage']) {
-                return $product['price'] * (1 - $promotion['discount_percentage'] / 100);
+                $finalPrice = min($finalPrice, $basePrice * (1 - $promotion['discount_percentage'] / 100));
             } elseif ($promotion['fixed_price']) {
-                return $promotion['fixed_price'];
+                $finalPrice = min($finalPrice, (float)$promotion['fixed_price']);
             }
         }
-        return $product['price'];
+
+        if (!empty($sale) && isset($sale['DiscountPercent'])) {
+            $salePrice = $basePrice * (1 - ((float)$sale['DiscountPercent'] / 100));
+            $finalPrice = min($finalPrice, $salePrice);
+        }
+
+        return $finalPrice;
     }
 
     // Thêm sản phẩm mới
@@ -175,4 +263,118 @@ class ProductModel
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // Lấy sản phẩm cùng category (loại trừ sản phẩm hiện tại)
+    public function getRelatedProducts($categoryId, $excludeProductId, $limit = 4)
+    {
+        try {
+            $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Description AS description, 
+                           c.Name AS category, s.shoes_size, s.Stock, s.CategoryID AS category_id
+                    FROM shoes s
+                    JOIN category c ON s.CategoryID = c.CategoryID
+                    WHERE s.CategoryID = ? AND s.ShoesID != ?
+                    ORDER BY RAND()
+                    LIMIT ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(1, (int)$categoryId, PDO::PARAM_INT);
+            $stmt->bindValue(2, (int)$excludeProductId, PDO::PARAM_INT);
+            $stmt->bindValue(3, (int)$limit, PDO::PARAM_INT);
+            $stmt->execute();
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $this->enrichProducts($products);
+        } catch (PDOException $e) {
+            error_log("Error getting related products: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getTopSellers($limit = 4)
+    {
+        $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
+                       s.Description AS description, s.Stock
+                FROM shoes s
+                ORDER BY s.ShoesID ASC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    public function getTopPricedProducts($limit = 4)
+    {
+        $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
+                       s.Description AS description, s.Stock
+                FROM shoes s
+                ORDER BY s.Price DESC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    public function getLatestProducts($limit = 10)
+    {
+        $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
+                       s.Description AS description, c.Name AS category, s.CategoryID AS category_id,
+                       s.Stock, s.shoes_size, s.DateCreate
+                FROM shoes s
+                JOIN category c ON s.CategoryID = c.CategoryID
+                ORDER BY s.DateCreate DESC, s.ShoesID DESC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    public function getRecentlyReviewedProducts($limit = 10)
+    {
+        $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
+                       s.Description AS description, c.Name AS category, s.CategoryID AS category_id,
+                       s.Stock, s.shoes_size, MAX(cm.Date) AS latest_comment_date
+                FROM shoes s
+                JOIN comment cm ON cm.ShoesID = s.ShoesID
+                JOIN category c ON s.CategoryID = c.CategoryID
+                GROUP BY s.ShoesID, s.Name, s.Price, s.Image, s.Description, c.Name, s.CategoryID, s.Stock, s.shoes_size
+                ORDER BY latest_comment_date DESC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    public function getLowestPriceProducts($limit = 10)
+    {
+        $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
+                       s.Description AS description, c.Name AS category, s.CategoryID AS category_id,
+                       s.Stock, s.shoes_size
+                FROM shoes s
+                JOIN category c ON s.CategoryID = c.CategoryID
+                ORDER BY s.Price ASC, s.ShoesID ASC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    private function enrichProducts(array $products)
+    {
+        foreach ($products as &$product) {
+            $product['promotion'] = $this->getPromotionForProduct($product['id']);
+            $product['sale'] = $this->getSaleForProduct($product['id']);
+            $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion'], $product['sale']);
+        }
+        unset($product);
+        return $products;
+    }
 }
+

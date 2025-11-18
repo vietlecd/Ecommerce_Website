@@ -38,13 +38,34 @@ class NewsModel {
     }
 
     public function getNewsById($id) {
-        $stmt = $this->db->prepare("SELECT news.*, admin.Fname, admin.Lname, CONCAT(admin.Fname, ' ', admin.Lname) AS AdminName, p.end_date, p.start_date 
+        $stmt = $this->db->prepare("SELECT news.*, admin.Fname, admin.Lname, CONCAT(admin.Fname, ' ', admin.Lname) AS AdminName, p.end_date, p.start_date, p.promotion_name 
                                    FROM news 
                                    JOIN admin ON news.AdminID = admin.AdminID 
                                    LEFT JOIN promotions p ON news.promotion_id = p.promotion_id 
                                    WHERE NewsID = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getRecentNews($limit = 4) {
+        $stmt = $this->db->prepare("SELECT NewsID, Title, Description, thumbnail, DateCreated 
+                                    FROM news 
+                                    ORDER BY DateCreated DESC 
+                                    LIMIT :limit");
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPopularNews($limit = 4) {
+        $stmt = $this->db->prepare("SELECT n.NewsID, n.Title, n.Description, n.thumbnail, n.DateCreated, COALESCE(nc.click_count, 0) AS clicks
+                                    FROM news n
+                                    LEFT JOIN news_clicks nc ON n.NewsID = nc.news_id
+                                    ORDER BY clicks DESC, n.DateCreated DESC
+                                    LIMIT :limit");
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function incrementClickCount($newsId) {

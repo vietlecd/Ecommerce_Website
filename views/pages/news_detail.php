@@ -1,36 +1,166 @@
-<style>
-    .news-detail img {
-        display: block;
-        max-width: 300px;
-        margin: 0 auto 20px;
-        border-radius: 5px;
+<?php
+$contentHtml = $news['Content'] ?? '';
+$tocItems = [];
+
+if (!empty(trim($contentHtml))) {
+    libxml_use_internal_errors(true);
+    $dom = new DOMDocument();
+    $dom->loadHTML('<?xml encoding="utf-8" ?>' . $contentHtml);
+    libxml_clear_errors();
+
+    $xpath = new DOMXPath($dom);
+    $headings = $xpath->query('//h2 | //h3');
+
+    $generatedIds = [];
+
+    foreach ($headings as $heading) {
+        $text = trim($heading->textContent);
+        if ($text === '') {
+            continue;
+        }
+
+        $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '-', $text));
+        $slug = trim($slug, '-');
+        if ($slug === '') {
+            $slug = 'section';
+        }
+
+        $baseSlug = $slug;
+        $counter = 1;
+        while (in_array($slug, $generatedIds, true)) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+        $generatedIds[] = $slug;
+
+        $heading->setAttribute('id', $slug);
+        $tocItems[] = [
+            'id' => $slug,
+            'text' => $text,
+            'level' => $heading->nodeName
+        ];
     }
 
-    .news-detail h1 {
-        font-size: 1.75rem;
-        margin-bottom: 15px;
-        color: #333;
+    $body = $dom->getElementsByTagName('body')->item(0);
+    $contentHtml = '';
+    if ($body) {
+        foreach ($body->childNodes as $child) {
+            $contentHtml .= $dom->saveHTML($child);
+        }
     }
-
-    .news-detail p {
-        margin-bottom: 10px;
-        color: #666;
+    if (trim($contentHtml) === '') {
+        $contentHtml = nl2br(htmlspecialchars($news['Content']));
     }
+} else {
+    $contentHtml = nl2br(htmlspecialchars($news['Content'] ?? ''));
+}
 
-    .news-detail div {
-        margin-top: 20px;
-        line-height: 1.6;
-        color: #333;
+$thumbnailPath = null;
+if (!empty($news['thumbnail'])) {
+    if (filter_var($news['thumbnail'], FILTER_VALIDATE_URL)) {
+        $thumbnailPath = $news['thumbnail'];
+    } elseif (file_exists($news['thumbnail'])) {
+        $thumbnailPath = '/' . ltrim($news['thumbnail'], '/');
     }
-</style>
+}
+?>
 
-<div class="news-detail">
-    <h1><?php echo htmlspecialchars($news['Title']); ?></h1>
-    <?php if ($news['thumbnail'] && file_exists($news['thumbnail'])): ?>
-        <img src="/<?php echo htmlspecialchars($news['thumbnail']); ?>" alt="Thumbnail">
-    <?php endif; ?>
-    <p><strong>Người đăng:</strong> <?php echo htmlspecialchars($news['AdminName'] ?? 'Unknown'); ?></p>
-    <p><strong>Ngày đăng:</strong> <?php echo date('d/m/Y H:i', strtotime($news['DateCreated'])); ?></p>
-    <p><strong>Mô tả:</strong> <?php echo htmlspecialchars($news['Description']); ?></p>
-    <div><strong>Nội dung:</strong> <?php echo nl2br(htmlspecialchars($news['Content'])); ?></div>
+<div class="news-detail-page">
+    <section class="news-detail-hero">
+        <p class="news-detail-meta">
+            By <?php echo htmlspecialchars($news['AdminName'] ?? 'Editorial Team'); ?>
+            · <?php echo date('F d, Y', strtotime($news['DateCreated'])); ?>
+        </p>
+        <h1><?php echo htmlspecialchars($news['Title']); ?></h1>
+        <p class="news-detail-description"><?php echo htmlspecialchars($news['Description']); ?></p>
+    </section>
+
+    <div class="news-detail-layout">
+        <article class="news-article" id="news-article">
+            <?php if ($thumbnailPath): ?>
+                <img src="<?php echo htmlspecialchars($thumbnailPath); ?>" alt="<?php echo htmlspecialchars($news['Title']); ?>">
+            <?php endif; ?>
+
+            <?php if (!empty($news['promotion_name']) || !empty($news['start_date']) || !empty($news['end_date'])): ?>
+                <div class="news-promo-card">
+                    <strong><?php echo htmlspecialchars($news['promotion_name'] ?? 'Promotion'); ?></strong>
+                    <p>
+                        <?php if (!empty($news['start_date'])): ?>
+                            Starts: <?php echo date('M d, Y', strtotime($news['start_date'])); ?>
+                        <?php endif; ?>
+                        <?php if (!empty($news['end_date'])): ?>
+                            · Ends: <?php echo date('M d, Y', strtotime($news['end_date'])); ?>
+                        <?php endif; ?>
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <div class="news-rich-content">
+                <?php echo !empty($contentHtml) ? $contentHtml : '<p>Content will be updated soon.</p>'; ?>
+            </div>
+        </article>
+
+        <aside class="news-toc">
+            <div class="news-toc-card">
+                <h4>On this page</h4>
+                <?php if (!empty($tocItems)): ?>
+                    <ol class="news-toc-list">
+                        <?php foreach ($tocItems as $entry): ?>
+                            <li data-level="<?php echo htmlspecialchars($entry['level']); ?>">
+                                <a href="#<?php echo htmlspecialchars($entry['id']); ?>">
+                                    <?php echo htmlspecialchars($entry['text']); ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ol>
+                <?php else: ?>
+                    <p>No section headings detected.</p>
+                <?php endif; ?>
+            </div>
+        </aside>
+    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tocLinks = document.querySelectorAll('.news-toc-list a');
+
+    tocLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+                window.scrollTo({
+                    top: target.getBoundingClientRect().top + window.pageYOffset - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    const observerTargets = Array.from(tocLinks).map(function(link) {
+        const target = document.getElementById(link.getAttribute('href').substring(1));
+        return target;
+    }).filter(Boolean);
+
+    if (observerTargets.length) {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                const id = entry.target.getAttribute('id');
+                const activeLink = document.querySelector('.news-toc-list a[href="#' + id + '"]');
+                if (activeLink) {
+                    activeLink.classList.toggle('active', entry.isIntersecting);
+                }
+            });
+        }, {
+            rootMargin: '-60% 0px -35% 0px',
+            threshold: 0
+        });
+
+        observerTargets.forEach(function(target) {
+            observer.observe(target);
+        });
+    }
+});
+</script>

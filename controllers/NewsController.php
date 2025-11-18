@@ -21,6 +21,8 @@ class NewsController {
         $news = $this->newsModel->getAllNews($search, $limit, $offset);
         $totalNews = $this->newsModel->getPublicNewsCount($search);
         $totalPages = ceil($totalNews / $limit);
+        $recentNews = $this->newsModel->getRecentNews(4);
+        $popularNews = $this->newsModel->getPopularNews(4);
 
         require_once 'views/components/header.php';
         require_once 'views/pages/news.php';

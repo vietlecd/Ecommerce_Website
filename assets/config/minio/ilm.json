@@ -1,0 +1,22 @@
+{
+  "Rules": [
+    {
+      "ID": "OldPictures",
+      "Status": "Enabled",
+      "Filter": { "Prefix": "old/" },
+      "Expiration": { "Date": "2020-01-01T00:00:00.000Z" }
+    },
+    {
+      "ID": "TempUploads",
+      "Status": "Enabled",
+      "Filter": { "Prefix": "temp/" },
+      "Expiration": { "Days": 7 }
+    },
+    {
+      "ID": "Tmp1d",
+      "Status": "Enabled",
+      "Filter": { "Prefix": "media/tmp/" },
+      "Expiration": { "Days": 1 }
+    }
+  ]
+}

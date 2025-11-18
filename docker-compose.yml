@@ -33,6 +33,10 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+      # minio:
+      #   condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
     volumes:
       - .:/var/www/html
     user: "www-data"
@@ -44,6 +48,15 @@ services:
       - PHP_MEMORY_LIMIT=256M
       - PHP_UPLOAD_MAX_FILESIZE=10M
       - PHP_POST_MAX_SIZE=10M
+
+      - S3_ENDPOINT=http://minio:9000
+      - S3_PUBLIC_BASE=http://localhost:9000
+      - S3_BUCKET=my-bucket         
+      - S3_REGION=us-east-1
+      - S3_KEY=minio         
+      - S3_SECRET=minio123  
+      - S3_TMP_PREFIX=media/tmp/
+      - S3_FINAL_PREFIX=media/
     networks:
       - shoes_network
 
@@ -66,9 +79,75 @@ services:
     networks:
       - shoes_network
 
+  minio:
+    image: minio/minio:latest
+    container_name: shoes_minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000"   
+      - "9001:9001" 
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "wget", "-q", "--spider", "http://localhost:9000/minio/health/ready"]
+    #   interval: 5s
+    #   timeout: 3s
+    #   retries: 30
+    networks:
+      - shoes_network
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: shoes_minio_init
+    depends_on:
+      - minio
+    environment:
+      MC_HOST_local: http://minio:minio123@minio:9000
+    networks:
+      - shoes_network
+    restart: "no"
+    volumes:
+      - ./assets/config/minio/policy.json:/init/policy.json:ro
+      - ./assets/config/minio/ilm.json:/init/ilm.json:ro    # tuỳ chọn
+    entrypoint:
+      - /bin/sh
+      - -euc
+      - |
+        # Đợi MinIO sẵn sàng
+        until mc ready local; do echo "waiting for minio..."; sleep 2; done
+
+        # Tạo bucket nếu chưa có
+        mc mb -p local/my-bucket || true
+
+        # (Khuyến nghị) Xoá mọi anonymous policy “toàn bucket” cũ nếu từng bật
+        # mc anonymous set none local/my-bucket || true
+
+        # Áp policy từ file
+        mc anonymous set-json /init/policy.json local/my-bucket
+
+        # (Tuỳ chọn) Import ILM rules từ file
+        if [ -f /init/ilm.json ]; then
+          mc ilm import local/my-bucket < /init/ilm.json || true
+        fi
+
+        # In kiểm tra
+        mc anonymous get-json local/my-bucket || true
+        mc ilm ls local/my-bucket || true
+
+        echo 'MinIO policy + ILM applied from files'
+
+
+
+
 volumes:
   mysql_data:
+  minio_data:
 
 networks:
   shoes_network:
+    name: shoes_network
     driver: bridge

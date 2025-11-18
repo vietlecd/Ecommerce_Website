@@ -1,0 +1,25 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowPublicFinals",
+      "Effect": "Allow",
+      "Principal": { "AWS": ["*"] },
+      "Action": ["s3:GetObject"],
+      "Resource": [
+        "arn:aws:s3:::my-bucket/media/article/*",
+        "arn:aws:s3:::my-bucket/news/thumb/*"
+      ]
+    },
+    {
+      "Sid": "DenyTmpPrefixes",
+      "Effect": "Deny",
+      "Principal": { "AWS": ["*"] },
+      "Action": ["s3:GetObject"],
+      "Resource": [
+        "arn:aws:s3:::my-bucket/media/tmp/*",
+        "arn:aws:s3:::my-bucket/media/temp/*"
+      ]
+    }
+  ]
+}

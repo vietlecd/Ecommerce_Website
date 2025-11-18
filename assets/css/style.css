@@ -1835,75 +1835,176 @@ main {
 }
 
 /* Footer Styles */
-footer {
-  background-color: #333;
-  color: white;
-  padding: 50px 0 20px;
+.site-footer {
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent),
+    #141720;
+  color: #e2e8f0;
+  padding: 60px 0 30px;
+  margin-top: 80px;
 }
 
-.footer-content {
+.footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 32px;
 }
 
-.footer-section h2 {
-  margin-bottom: 20px;
-  font-size: 20px;
+.footer-panel {
+  background: rgba(15, 23, 42, 0.55);
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.footer-section p {
-  margin-bottom: 15px;
+.footer-brand h2 {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  color: #fff1f3;
 }
 
-.contact span {
-  display: block;
-  margin-bottom: 10px;
+.footer-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #cbd5f5;
+}
+
+.footer-contact i {
+  color: #fb7185;
+  margin-right: 8px;
 }
 
 .socials a {
-  display: inline-block;
-  margin-right: 15px;
-  color: white;
-  font-size: 20px;
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.footer-section.links ul li {
-  margin-bottom: 10px;
+.socials a:hover {
+  transform: translateY(-2px);
+  background: rgba(251, 113, 133, 0.25);
 }
 
-.footer-section.links ul li a {
-  color: #ddd;
-  transition: all 0.3s ease;
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
 }
 
-.footer-section.links ul li a:hover {
-  color: #ff6b6b;
-  padding-left: 5px;
+.footer-links h3,
+.footer-panel h3 {
+  font-size: 1rem;
+  color: #fdf2f8;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
 }
 
-.footer-section.newsletter input {
-  width: 100%;
-  padding: 10px;
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  color: #cbd5f5;
+  font-weight: 500;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #fb7185;
+  padding-left: 4px;
+}
+
+.footer-newsletter {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-newsletter input {
+  flex: 1;
+  min-width: 200px;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.3);
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.6);
+  color: #f8fafc;
+}
+
+.footer-newsletter button {
   border: none;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
-.btn-subscribe {
-  background-color: #ff6b6b;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fb7185, #f97316);
   color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
+  padding: 12px 18px;
+  font-weight: 600;
   cursor: pointer;
+  transition: opacity 0.2s ease;
 }
 
-.footer-bottom {
-  text-align: center;
-  padding-top: 20px;
-  border-top: 1px solid #555;
+.footer-newsletter button:hover {
+  opacity: 0.9;
+}
+
+.footer-avail {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-avail .label {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  letter-spacing: 0.2em;
+  margin-bottom: 2px;
+}
+
+.footer-meta {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.footer-meta .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #94a3b8;
+}
+
+.footer-meta strong {
+  color: #f8fafc;
+  font-weight: 600;
+  display: block;
+  margin-top: 6px;
 }
 
 /* Form Styles */
@@ -5247,6 +5348,13 @@ table td a {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.chat-fab-hidden {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: none;
+}
+
 .chat-fab:hover {
   transform: translateY(-2px);
   box-shadow: 0 25px 40px rgba(17, 24, 39, 0.45);
@@ -5279,12 +5387,12 @@ table td a {
 }
 
 .chat-window {
-  position: fixed;
-  right: 24px;
-  bottom: 110px;
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 16px);
   width: min(380px, calc(100vw - 32px));
   min-height: 420px;
-  max-height: min(560px, calc(100vh - 140px));
+  max-height: min(560px, calc(100vh - 160px));
   background: rgba(255, 255, 255, 0.94);
   border-radius: 24px;
   box-shadow: 0 35px 80px rgba(15, 23, 42, 0.35);
@@ -5300,9 +5408,22 @@ table td a {
 }
 
 .chat-window.is-open {
+  animation: chat-reveal 0.25s ease both;
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+@keyframes chat-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .chat-header {
@@ -5365,17 +5486,21 @@ table td a {
 .chat-body {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1 1 auto;
   background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 0;
 }
 
 .chat-messages {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -5441,6 +5566,7 @@ table td a {
   padding: 16px 20px 20px;
   background: #fff;
   border-top: 1px solid rgba(15, 23, 42, 0.05);
+  margin-top: auto;
 }
 
 .chat-input {
@@ -5569,12 +5695,12 @@ table td a {
   }
 
   .chat-window {
-    width: auto;
-    left: 12px;
-    right: 12px;
-    bottom: 100px;
-    min-height: 420px;
-    max-height: calc(100vh - 120px);
+    width: min(360px, calc(100vw - 24px));
+    left: auto;
+    right: 0;
+    bottom: calc(100% + 12px);
+    min-height: 360px;
+    max-height: calc(100vh - 140px);
     border-radius: 20px;
   }
 }

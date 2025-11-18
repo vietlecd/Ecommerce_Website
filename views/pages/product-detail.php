@@ -67,27 +67,6 @@ $productFacts = [
 ?>
 
 <div class="product-detail-wrapper">
-    <header class="product-header">
-        <div class="product-breadcrumb">
-            <a href="/index.php">Home</a>
-            <i class="fas fa-chevron-right"></i>
-            <a href="/index.php?controller=products&action=index">Products</a>
-            <?php if (!empty($product['category'])): ?>
-                <i class="fas fa-chevron-right"></i>
-                <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($product['category_id']); ?>">
-                    <?php echo htmlspecialchars($product['category']); ?>
-                </a>
-            <?php endif; ?>
-        </div>
-        <?php if (!empty($product['category'])): ?>
-            <div class="product-category">
-                <i class="fas fa-tag"></i>
-                <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($product['category_id']); ?>">
-                    <?php echo htmlspecialchars($product['category']); ?>
-                </a>
-            </div>
-        <?php endif; ?>
-    </header>
 
     <div class="product-detail">
         <div class="product-media-stack">

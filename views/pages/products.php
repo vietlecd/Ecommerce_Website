@@ -40,7 +40,7 @@ $truncateText = function($text, $limit = 120) {
             <p class="section-subtitle"><?php echo htmlspecialchars($activeCategory['Description']); ?></p>
         <?php endif; ?>
     <?php else: ?>
-        <h2>All Products</h2>
+        <h2>Our Products</h2>
         <p class="section-subtitle">Browse every drop, curated for every style.</p>
     <?php endif; ?>
 </div>

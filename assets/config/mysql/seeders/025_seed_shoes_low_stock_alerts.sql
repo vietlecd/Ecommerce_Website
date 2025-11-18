@@ -22,37 +22,4 @@ VALUES
 ('Slate Rail Skate', 1520.00, 0, 'Slate-toned skate shoe pausing for the next batch.', '2025-10-18', '2025-11-18', 'https://images.unsplash.com/photo-1528701800485-2c49ddbf86c2?auto=format&fit=crop&w=900&q=80', 12, 40.00),
 ('Streetlight Canvas', 1270.00, 2, 'Everyday canvas sneaker with reflective piping.', '2025-11-11', '2025-11-18', 'https://images.unsplash.com/photo-1518544889280-37f4ca38e4b4?auto=format&fit=crop&w=900&q=80', 13, 41.00);
 
--- Create shoe size rows for the freshly inserted low-stock entries
-INSERT INTO `shoe_sizes` (`ShoeID`, `Size`, `Quantity`)
-SELECT seed.ShoesID,
-       ROUND(seed.base_size + offsets.offset, 2) AS Size,
-       CASE offsets.offset
-           WHEN -1 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END END
-           WHEN 0 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END END
-           ELSE CASE WHEN seed.total_stock <= 0 THEN 0 ELSE GREATEST(0, seed.total_stock - (seed.base_qty * 2 + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END)) END
-       END AS Quantity
-FROM (
-    SELECT s.ShoesID,
-           ROUND(COALESCE(s.shoes_size, 40.00), 2) AS base_size,
-           GREATEST(COALESCE(s.Stock, 0), 0) AS total_stock,
-           FLOOR(GREATEST(COALESCE(s.Stock, 0), 0) / 3) AS base_qty,
-           MOD(GREATEST(COALESCE(s.Stock, 0), 0), 3) AS remainder
-    FROM shoes s
-    WHERE NOT EXISTS (
-        SELECT 1 FROM shoe_sizes ss WHERE ss.ShoeID = s.ShoesID
-    )
-) AS seed
-JOIN (
-    SELECT -1 AS offset
-    UNION ALL SELECT 0
-    UNION ALL SELECT 1
-) AS offsets;
-
-UPDATE `shoes` s
-SET s.Stock = (
-    SELECT COALESCE(SUM(ss.Quantity), 0)
-    FROM shoe_sizes ss
-    WHERE ss.ShoeID = s.ShoesID
-);
-
 

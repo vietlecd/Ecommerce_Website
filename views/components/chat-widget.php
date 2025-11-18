@@ -66,12 +66,14 @@
             chatWindow.classList.add('is-open');
             chatWindow.setAttribute('aria-hidden', 'false');
             chatButton.setAttribute('aria-expanded', 'true');
+            chatButton.classList.add('chat-fab-hidden');
         };
 
         const closeChat = () => {
             chatWindow.classList.remove('is-open');
             chatWindow.setAttribute('aria-hidden', 'true');
             chatButton.setAttribute('aria-expanded', 'false');
+            chatButton.classList.remove('chat-fab-hidden');
         };
 
         const scrollToBottom = () => {

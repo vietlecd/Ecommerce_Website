@@ -145,14 +145,26 @@ $heroImages = [
 <?php if (!empty($categories)): ?>
 <section class="categories-section">
     <div class="container">
+        <?php $categoryStats = $categoryStats ?? []; ?>
         <div class="section-title">
             <h2>Product Categories</h2>
             <p>Quick shortcuts into every curated universe we host.</p>
         </div>
         <div class="categories-widget-grid">
             <?php foreach ($categories as $category): ?>
-                <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($category['CategoryID']); ?>" class="category-widget-card">
+                <?php
+                $categoryId = $category['CategoryID'];
+                $totalProducts = $categoryStats[$categoryId]['total_products'] ?? 0;
+                $saleProducts = $categoryStats[$categoryId]['sale_products'] ?? 0;
+                ?>
+                <article class="category-widget-card">
                     <div class="category-widget-header">
+                        <span class="category-widget-eyebrow"><?php echo htmlspecialchars($category['CategoryName']); ?></span>
+                        <a class="category-widget-link" href="/index.php?controller=products&action=index&category=<?php echo urlencode($category['CategoryID']); ?>">
+                            Explore <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="category-widget-body">
                         <div class="category-widget-icon">
                             <?php if (!empty($category['ImageUrl'])): ?>
                                 <img src="<?php echo htmlspecialchars($category['ImageUrl']); ?>" alt="<?php echo htmlspecialchars($category['CategoryName']); ?> icon" loading="lazy">
@@ -160,13 +172,38 @@ $heroImages = [
                                 <i class="fas fa-shoe-prints"></i>
                             <?php endif; ?>
                         </div>
-                        <span class="category-widget-link">Shop now <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                    <div class="category-widget-body">
-                        <h3><?php echo htmlspecialchars($category['CategoryName']); ?></h3>
                         <p><?php echo !empty($category['Description']) ? htmlspecialchars($category['Description']) : 'Discover the newest arrivals in this category.'; ?></p>
                     </div>
-                </a>
+                    <div class="category-widget-footer">
+                        <ul class="category-widget-stats-list">
+                            <li>
+                                <span>Products</span>
+                                <strong><?php echo number_format($totalProducts); ?></strong>
+                            </li>
+                            <li>
+                                <span>On sale</span>
+                                <strong><?php echo number_format($saleProducts); ?></strong>
+                            </li>
+                            <li>
+                                <span>Low stock</span>
+                                <strong><?php echo number_format($categoryStats[$categoryId]['low_stock_products'] ?? 0); ?></strong>
+                            </li>
+                            <li>
+                                <span>Out of stock</span>
+                                <strong><?php echo number_format($categoryStats[$categoryId]['out_of_stock_products'] ?? 0); ?></strong>
+                            </li>
+                            <li>
+                                <span>New this week</span>
+                                <strong><?php echo number_format($categoryStats[$categoryId]['new_products_week'] ?? 0); ?></strong>
+                            </li>
+                            <li>
+                                <span>Purchased today</span>
+                                <strong><?php echo number_format($categoryStats[$categoryId]['purchased_today'] ?? 0); ?></strong>
+                            </li>
+                        </ul>
+                        <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($category['CategoryID']); ?>" class="category-widget-btn">Shop the drop</a>
+                    </div>
+                </article>
             <?php endforeach; ?>
         </div>
     </div>

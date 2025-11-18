@@ -17,6 +17,8 @@ class HomeController {
     public function index() {
         $featuredProducts = $this->productModel->getRandomProducts(4);
         $categories = $this->categoryModel->getAllCategories();
+        $categoryIds = array_column($categories, 'CategoryID');
+        $categoryStats = $this->productModel->getCategoryStats($categoryIds);
         $highDiscountSales = $this->productModel->getHighDiscountSales(50, 12);
         $weeklySales = $this->productModel->getSalesEndingSoon(7, 8);
         // Get latest 3 news for widget
@@ -33,10 +35,10 @@ class HomeController {
         }
 
         if (file_exists($viewPath)) {
-            $renderView = function ($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales) use ($viewPath) {
+            $renderView = function ($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales, $categoryStats) use ($viewPath) {
                 require $viewPath;
             };
-            $renderView($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales);
+            $renderView($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales, $categoryStats);
         } else {
             die("View file not found: $viewPath");
         }

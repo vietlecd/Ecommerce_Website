@@ -142,7 +142,7 @@ INSERT INTO `category` (`CategoryID`, `Name`, `Description`, `ImageUrl`) VALUES
 (2, 'Boots', 'Versatile boot silhouettes', 'https://cdn-icons-png.flaticon.com/512/2977/2977951.png'),
 (3, 'Sandals', 'Comfort-first sandals', 'https://cdn-icons-png.flaticon.com/512/554/554857.png'),
 (4, 'Running', 'Mileage-ready running shoes', 'https://cdn-icons-png.flaticon.com/512/1043/1043493.png'),
-(5, 'Sneakers', 'Lifestyle sneaker edits', 'https://cdn-icons-png.flaticon.com/512/1043/1043478.png'),
+(5, 'Sneakers', 'Lifestyle sneaker edits', 'https://cdn-icons-png.flaticon.com/128/5026/5026374.png'),
 (6, 'Boots', 'Boots for men and women', 'https://cdn-icons-png.flaticon.com/512/2377/2377810.png'),
 (7, 'Sandals', 'Statement sandal picks', 'https://cdn-icons-png.flaticon.com/512/204/204274.png'),
 (8, 'Formal', 'Office-ready formal shoes', 'https://cdn-icons-png.flaticon.com/512/836/836923.png'),

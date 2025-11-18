@@ -141,7 +141,7 @@
                 <ul>
                     <li><i class="fas fa-comments"></i> Live chat: 24/7</li>
                     <li><i class="fas fa-phone-volume"></i> Hotline: +81 92 555 8080</li>
-                    <li><i class="fas fa-envelope"></i> concierge@V.AShoes.jp</li>
+                    <li><i class="fas fa-envelope"></i> concierge@shoestore.jp</li>
                     <li><i class="fas fa-video"></i> Virtual fittings by appointment</li>
                 </ul>
                 <button class="btn qna-help-btn" type="button">Start a conversation</button>

@@ -23,36 +23,3 @@ VALUES
 ('UGG Tasman Lined', 1350.00, 110, 'Suede Tasman slipper with plush interior.', '2025-10-10', '2025-11-18', 'https://images.unsplash.com/photo-1514986888952-8cd320577b68?auto=format&fit=crop&w=900&q=80', 9, 39.00),
 ('Veja V-10 CWL', 2050.00, 75, 'Bio-based Veja sneaker with autumn color pops.', '2025-10-01', '2025-11-18', 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80', 13, 41.00);
 
--- Auto-generate shoe size rows for shoes lacking detailed sizes
-INSERT INTO `shoe_sizes` (`ShoeID`, `Size`, `Quantity`)
-SELECT seed.ShoesID,
-       ROUND(seed.base_size + offsets.offset, 2) AS Size,
-       CASE offsets.offset
-           WHEN -1 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END END
-           WHEN 0 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END END
-           ELSE CASE WHEN seed.total_stock <= 0 THEN 0 ELSE GREATEST(0, seed.total_stock - (seed.base_qty * 2 + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END)) END
-       END AS Quantity
-FROM (
-    SELECT s.ShoesID,
-           ROUND(COALESCE(s.shoes_size, 40.00), 2) AS base_size,
-           GREATEST(COALESCE(s.Stock, 0), 0) AS total_stock,
-           FLOOR(GREATEST(COALESCE(s.Stock, 0), 0) / 3) AS base_qty,
-           MOD(GREATEST(COALESCE(s.Stock, 0), 0), 3) AS remainder
-    FROM shoes s
-    WHERE NOT EXISTS (
-        SELECT 1 FROM shoe_sizes ss WHERE ss.ShoeID = s.ShoesID
-    )
-) AS seed
-JOIN (
-    SELECT -1 AS offset
-    UNION ALL SELECT 0
-    UNION ALL SELECT 1
-) AS offsets;
-
-UPDATE `shoes` s
-SET s.Stock = (
-    SELECT COALESCE(SUM(ss.Quantity), 0)
-    FROM shoe_sizes ss
-    WHERE ss.ShoeID = s.ShoesID
-);
-

@@ -442,5 +442,60 @@ class ProductModel
         unset($product);
         return $products;
     }
+
+    public function getCategoryStats(array $categoryIds)
+    {
+        if (empty($categoryIds)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($categoryIds), '?'));
+        $sql = "
+            SELECT s.CategoryID AS category_id,
+                   COUNT(*) AS total_products,
+                   SUM(CASE WHEN sl.ShoesID IS NOT NULL THEN 1 ELSE 0 END) AS sale_products,
+                   SUM(CASE WHEN s.Stock BETWEEN 1 AND 9 THEN 1 ELSE 0 END) AS low_stock_products,
+                   SUM(CASE WHEN s.Stock <= 0 THEN 1 ELSE 0 END) AS out_of_stock_products,
+                   SUM(CASE WHEN s.DateCreate >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) AS new_products_week,
+                   SUM(CASE WHEN od.ShoesID IS NOT NULL THEN 1 ELSE 0 END) AS purchased_today
+            FROM shoes s
+            LEFT JOIN (
+                SELECT ShoesID
+                FROM sales
+                WHERE (ExpiresAt IS NULL OR ExpiresAt >= NOW())
+                GROUP BY ShoesID
+            ) sl ON sl.ShoesID = s.ShoesID
+            LEFT JOIN (
+                SELECT os.ShoesID
+                FROM order_shoes os
+                JOIN `order` o ON o.OrderID = os.OrderID
+                WHERE DATE(o.Date) = CURDATE()
+                GROUP BY os.ShoesID
+            ) od ON od.ShoesID = s.ShoesID
+            WHERE s.CategoryID IN ($placeholders)
+            GROUP BY s.CategoryID
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($categoryIds as $index => $categoryId) {
+            $stmt->bindValue($index + 1, (int)$categoryId, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stats = [];
+        foreach ($rows as $row) {
+            $stats[$row['category_id']] = [
+                'total_products' => (int)$row['total_products'],
+                'sale_products' => (int)$row['sale_products'],
+                'low_stock_products' => (int)$row['low_stock_products'],
+                'out_of_stock_products' => (int)$row['out_of_stock_products'],
+                'new_products_week' => (int)$row['new_products_week'],
+                'purchased_today' => (int)$row['purchased_today'],
+            ];
+        }
+
+        return $stats;
+    }
 }
 

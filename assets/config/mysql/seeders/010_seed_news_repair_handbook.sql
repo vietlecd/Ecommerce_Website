@@ -2,23 +2,49 @@
 INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
 VALUES (
     'Repair Handbook Vol.02: Stitching, Gluing, and Finishing for Lifelong Wear',
-    'Step-by-step manual covering every repair scenario from split seams to midsole separation.',
-    '<h2>Toolkit Checklist</h2>
-     <p>Before diving in, assemble curved needles, linen thread, heat gun, clamps, resoling boards, and ventilation masks.</p>
-     <h2>Chapter 1 &mdash; Seam Surgery</h2>
-     <p>Use saddle stitches for high-flex areas. Pre-punch holes, wax every strand, and lock knots inside the lining.</p>
-     <h2>Chapter 2 &mdash; Midsole Bonding</h2>
-     <ol>
-        <li>Roughen surfaces with 120-grit sandpaper</li>
-        <li>Apply solvent-based cement to both sides</li>
-        <li>Heat activate for 50 seconds before pressing</li>
-     </ol>
-     <h2>Chapter 3 &mdash; Color Revival</h2>
-     <p>Mix acrylic dyes with flexible finishers. Build thin layers, buff between coats, then seal using matte protectant.</p>
-     <h2>Chapter 4 &mdash; Hardware Replacement</h2>
-     <p>Install eyelets using a hand press; for hooks, reinforce backing with scrap leather patches.</p>
-     <h2>Appendix</h2>
-     <p>Scan the QR code inside to access 4K repair videos, printable stitch patterns, and recommended suppliers.</p>',
+    'An exhaustive manual covering every repair scenario from split seams to midsole separation, with rituals, diagnostics, and finishing lore for restorers at every level.',
+    '<h2>Toolkit Overview &mdash; Preparing the Bench</h2>
+     <h3>Essential Tools and Safety Gear</h3>
+     <p>Before diving in, assemble curved needles, linen thread, heat gun, clamps, resoling boards, ventilation masks, and that most underrated tool: patience. Lay everything on a gridded mat so you can photograph the setup; future-you will reference the image when the bench looks like a hurricane of leather scraps. Each tool gets labeled with paint markers—red for cutting, blue for bonding, green for finishing—so muscle memory builds faster. <strong>Safety first</strong>: keep nitrile gloves stacked beside skin-safe solvent wipes, set a mini fan to pull fumes away, and stash burn gel within arm’s reach. Your toolkit should feel like a sacred altar where every object has purpose. Invest in adjustable lamps with daylight bulbs; shadows cause crooked stitches. Remember, the difference between amateur fixes and legacy-level repairs often boils down to disciplined preparation.</p>
+     <h3>Material Inventory and Compatibility Map</h3>
+     <p>Create a binder (digital or analog) listing every adhesive, dye, and filler you stock. For each, note cure times, compatible substrates, and ventilation requirements. <em>Underline incompatibilities</em> in bold crimson so you never forget that certain solvents melt EVA or that vegetable-tanned leather hates alcohol-based cleaners. This map becomes a living document updated after every experiment, failure, or discovery shared by fellow cobblers. Consider adding scent notes too—if a glue smells like toasted almonds, you know cyanide-level ventilation is required. Obsessive? Maybe. Effective? Absolutely.</p>
+     <h3>Workspace Rituals and Maintenance</h3>
+     <p>Repair benches accumulate stories, but they also collect dust that ruins finishes. Begin each session by vacuuming, misting surfaces with diluted white vinegar, and sharpening blades. Queue an instrumental playlist around 70 BPM—it matches the pace of calm stitching. Light a soy candle if ventilation allows; scents anchor memory, making it easier to recall which repair you performed when. <u>Document rituals</u> because consistency reduces errors. When the session ends, oil metal tools, recharge cordless devices, and photograph the bench again. Comparing before-and-after shots tells you whether discipline slipped or improved. Treat the space with reverence; it repays you with precision.</p>
+     <h2>Seam Surgery &mdash; Rebuilding Structural Integrity</h2>
+     <h3>Diagnostic Mapping and Tear Analysis</h3>
+     <p>Use saddle stitches for high-flex areas, but first diagnose why the seam failed. Under bright light, mark stress points with chalk, noting direction of pull and fiber fraying. Photograph the damage with macro lenses; zoomed-in shots reveal whether thread snapped due to dryness, abrasion, or manufacturing shortcuts. <strong>Run your fingertip</strong> along the lining interior; if it feels slick or powdery, oils have broken down the canvas, so reinforcement patches must precede stitching. Swipe cotton swabs dipped in isopropyl to clean edges, then let them dry fully—rushing leads to mildew. Mapping takes longer than stitching, yet it saves hours later. Think of yourself as a forensic cobbler piecing together a crime scene.</p>
+     <h3>Stitch Preparation and Execution</h3>
+     <p>Pre-punch holes with harness awls spaced precisely 4mm apart; uneven spacing telegraphs amateur hours. Wax every strand of linen thread to reduce friction and repel moisture. Anchor one end inside the lining so knots stay hidden; nothing ruins a minimalist upper like visible lumps. When stitching, pull threads with even tension—too hard and you pucker leather, too soft and gaps invite debris. <em>Alternate needle direction</em> every three holes to distribute stress. Midway through, pause to massage seams with bone folders; this seats stitches flush. Once finished, tap the seam gently with a cobbler hammer to set threads, then brush on a micro layer of beeswax for weather resistance. Document floss colors and stitch counts; collectors obsess over such details.</p>
+     <h3>Reinforcement Strategies and Finishing Touches</h3>
+     <p>High-flex zones love backup plans. Glue thin suede strips beneath the seam using flexible cement, press with Teflon rollers, and let cure under weighted boards. For sneakers, consider adding nylon mesh interfacing to distribute stress. Trim stray fibers with precision snips, then burnish edges lightly for a professional sheen. <u>Apply conditioner</u> sparingly; oversaturation weakens stitches you just restored. Finally, log the repair in your database, including before/after photos, stitch type, thread brand, and hours invested. This archive becomes gold when clients ask about your process—or when you want to price future jobs confidently.</p>
+     <h2>Midsole Bonding &mdash; Adhesion Mastery</h2>
+     <h3>Surface Preparation and Profiling</h3>
+     <p>Successful bonding begins with surfaces so clean they squeak. Roughen areas with 120-grit sandpaper using circular motions, then wipe debris with compressed air. Use deglazers matched to material types; suede, foam, and rubber each demand different solvents. <strong>Score bonding lines</strong> lightly with craft knives to increase surface area. Mask surrounding panels with painter’s tape to avoid glue creep. If old adhesive lingers, heat it gently with heat guns, scrape with plastic spatulas, and repeat until tack disappears. Precision here prevents delamination nightmares later.</p>
+     <h3>Adhesive Application and Activation</h3>
+     <p>Apply solvent-based cement to both sides using goat-hair brushes trimmed for accuracy. Let the first coat absorb, then add a second for even coverage. Monitor humidity—ideal range sits between 45% and 55%—because excess moisture destabilizes solvents. <em>Time activation</em>: heat surfaces for exactly 50 seconds with heat guns set to 70°C, then join pieces immediately, aligning reference marks you drew earlier. Press with rolling pins or hydraulic presses, ensuring pressure distributes evenly. Listen for subtle cracking sounds; they indicate air pockets needing release. Wipe squeeze-out quickly but carefully.</p>
+     <h3>Curing, Testing, and Longevity Hacks</h3>
+     <p>Clamp bonded sections for at least two hours, longer if working with thick midsoles. After release, flex shoes gently to test adhesion, watching for bubbling or shifting. For added durability, stitch along perimeters using hidden channels—a belt-and-suspenders approach beloved by restoration purists. <u>Finish with talc</u> dusted lightly to prevent squeaks. Record glue batch numbers and expiration dates in your log; adhesives age like produce, not wine. Share your findings with repair forums; communal knowledge strengthens the craft.</p>
+     <h2>Color Revival &amp; Surface Restoration</h2>
+     <h3>Color Matching and Pigment Mixing</h3>
+     <p>Mix acrylic dyes with flexible finishers, but begin by swatching on scrap material under natural and artificial light. Photograph swatches beside Pantone chips and upload to your archive. <strong>Layer pigments</strong> like watercolorists: translucent washes first, saturation later. Keep meticulous ratios—\"4 drops oxblood, 2 drops burnt sienna, 1 drop matte reducer\"—so you can recreate magic. When working on faded panels, feather edges with cosmetic sponges to avoid harsh boundaries. Color revival is choreography; every stroke should feel intentional.</p>
+     <h3>Application Techniques and Blending</h3>
+     <p>Use dual-action airbrushes for gradients, angled brushes for panel edges, and cotton swabs for micro details. Build thin layers, buff between coats with microfiber pads, then seal using matte protectant if you want factory-fresh vibes or satin glaze for lived-in glow. <em>Respect textures</em>: suede demands dry brushing, while patent leather needs high-gloss polymers. Mask logos with liquid frisket to preserve crisp lines. After finishing, cure under UV-safe lamps for even drying. Document drying times relative to humidity; consistency breeds predictability.</p>
+     <h3>Protective Coatings and Maintenance Plans</h3>
+     <p>Once pigments settle, apply hydrophobic sprays or wax balms depending on material. Teach clients how to maintain finishes: gentle wipes after every wear, conditioners quarterly, deep cleans annually. Provide care cards with bulletproof instructions and QR codes linking to demonstration videos. <u>Offer touch-up kits</u> with mini jars of the exact mix you used. Color revival should extend beyond your bench, empowering wearers to steward their pairs.</p>
+     <h2>Hardware Replacement &amp; Structural Enhancements</h2>
+     <h3>Removal Techniques and Surface Prep</h3>
+     <p>Install eyelets using a hand press, but first remove damaged hardware without tearing uppers. Slip thin shims beneath metal to protect leather, then pry gently with jeweler’s pliers. Clean residue with cotton swabs dipped in acetone (test first!). For hooks, reinforce backing with scrap leather patches bonded using flexible cement. <strong>Mark hole placements</strong> with awls and confirm alignment twice; misaligned hardware screams amateur hour.</p>
+     <h3>Installation and Reinforcement</h3>
+     <p>Select hardware that matches original finishes unless clients request upgrades. Press eyelets evenly, ensuring flanges spread without cracking. For hooks, stitch backing patches using box stitches that distribute tension. Consider adding rivets for boots tackling heavy duty terrain. <em>Polish hardware</em> after installation to remove fingerprints and micro scratches. Apply anti-corrosion wax, especially for coastal clients.</p>
+     <h3>Customization Opportunities</h3>
+     <p>Hardware swaps double as personalization moments. Offer enamel eyelets, laser-etched hooks, or mixed-metal combos. Provide mood boards showcasing how hardware choices shift personality. <u>Track torque</u> applied during installation; publish specs for transparency. Clients love knowing their boots can withstand 40kg pull force. Finish each job by photographing macros of hardware gleaming against newly revitalized leather—proof that structural fixes can be aesthetic upgrades too.</p>
+     <h2>Appendix &mdash; Resources, Logs, and QR Archive</h2>
+     <h3>Digital Resource Library</h3>
+     <p>Scan the QR code inside to access 4K repair videos, printable stitch patterns, and recommended suppliers. We update monthly with interviews featuring master cobblers, solvent chemists, and sneaker historians. Bookmark sections, annotate timestamps, and share clips with apprentices as homework. Knowledge thrives when it circulates.</p>
+     <h3>Repair Logs and Pricing Templates</h3>
+     <p>Maintain spreadsheets logging materials used, hours invested, client notes, and photo links. Use this data to price future jobs fairly and to prove craftsmanship value when clients question quotes. <strong>Transparency builds trust</strong>. Integrate the log with invoicing software so documentation flows seamlessly.</p>
+     <h3>Community and Continuing Education</h3>
+     <p>Join repair forums, attend webinars, and host local meetups. Share breakthroughs, admit missteps, and celebrate others. Craft survives when communities stay curious. The appendix includes a calendar of upcoming workshops, grant opportunities, and recommended reading lists. Keep learning; shoes evolve, and so must we.</p>',
     8,
     'manual',
     NULL,

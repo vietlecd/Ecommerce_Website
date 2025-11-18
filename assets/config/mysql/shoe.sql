@@ -192,6 +192,28 @@ INSERT INTO `sales` (`SaleID`, `ShoesID`, `DiscountPercent`, `ExpiresAt`) VALUES
 (24, 24, 30.00, '2026-04-20 23:59:59');
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `discount_codes`
+--
+CREATE TABLE `discount_codes` (
+  `CodeID` int(11) NOT NULL,
+  `CodeTitle` varchar(120) NOT NULL,
+  `CodePercent` decimal(5,2) NOT NULL,
+  `CodeDescription` varchar(255) DEFAULT NULL,
+  `IsActive` tinyint(1) DEFAULT 1,
+  `ValidUntil` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `discount_codes`
+--
+INSERT INTO `discount_codes` (`CodeID`, `CodeTitle`, `CodePercent`, `CodeDescription`, `IsActive`, `ValidUntil`) VALUES
+(1, 'SHOE-LOUNGE-10', 10.00, 'Concierge welcome treat for the ShoeStore lounge', 1, '2026-01-01 23:59:59'),
+(2, 'SNEAKER-STAPLE-15', 15.00, 'Daily sneaker staples curated by ShoeStore stylists', 1, '2025-12-31 23:59:59'),
+(3, 'BOOT-BOUTIQUE-20', 20.00, 'Boot boutique spotlight for seasonal icons', 1, '2025-12-15 23:59:59'),
+(4, 'RUNWAY-RUSH-25', 25.00, 'Runway rush drop for limited-edition pairs', 1, '2025-11-30 23:59:59');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `comment`

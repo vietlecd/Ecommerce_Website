@@ -62,99 +62,28 @@
 
         window.__chatWidgetBootstrapped = true;
 
-        const CHAT_STORAGE_KEY = 'chatHistory';
-
-        const saveChatHistory = () => {
-            const messages = [];
-            const bubbles = chatMessages.querySelectorAll('.chat-bubble');
-            bubbles.forEach((bubble) => {
-                const isUser = bubble.classList.contains('user');
-                const richResponse = bubble.querySelector('.chat-rich-response');
-                if (richResponse) {
-                    const data = {
-                        type: 'rich',
-                        isUser: false,
-                        data: {
-                            p: richResponse.querySelector('p:not(.chat-rich-heading)')?.textContent || null,
-                            h2: richResponse.querySelector('.chat-rich-heading')?.textContent || null,
-                            note: richResponse.querySelector('.chat-note')?.textContent || null,
-                            items: Array.from(richResponse.querySelectorAll('.chat-product-card')).map((card) => {
-                                const img = card.querySelector('img');
-                                const title = card.querySelector('.chat-product-title');
-                                const desc = card.querySelector('.chat-product-desc');
-                                const meta = card.querySelector('.chat-product-meta');
-                                const link = card.querySelector('.chat-product-link');
-                                return {
-                                    img: img?.src || null,
-                                    h3: title?.textContent || null,
-                                    desc: desc?.textContent || null,
-                                    price: meta?.textContent?.split(' • ')[0] || null,
-                                    size: meta?.textContent?.includes('Size:') ? meta.textContent.match(/Size: ([^•]+)/)?.[1]?.trim() : null,
-                                    stock: meta?.textContent?.includes('In stock:') ? meta.textContent.match(/In stock: ([^•]+)/)?.[1]?.trim() : null,
-                                    link: link?.href || null,
-                                };
-                            }),
-                        },
-                    };
-                    messages.push(data);
-                } else {
-                    messages.push({
-                        type: 'text',
-                        isUser: isUser,
-                        text: bubble.textContent,
-                    });
-                }
-            });
-            sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
-        };
-
-        const loadChatHistory = () => {
-            const saved = sessionStorage.getItem(CHAT_STORAGE_KEY);
-            if (!saved) {
-                return;
-            }
-            try {
-                const messages = JSON.parse(saved);
-                messages.forEach((msg) => {
-                    if (msg.type === 'rich') {
-                        renderProductResponse(msg.data, false);
-                    } else {
-                        addMessage(msg.text, msg.isUser, false);
-                    }
-                });
-                scrollToBottom();
-            } catch (error) {
-                console.error('Error loading chat history:', error);
-            }
-        };
-
         const openChat = () => {
             chatWindow.classList.add('is-open');
             chatWindow.setAttribute('aria-hidden', 'false');
             chatButton.setAttribute('aria-expanded', 'true');
-            chatButton.classList.add('chat-fab-hidden');
         };
 
         const closeChat = () => {
             chatWindow.classList.remove('is-open');
             chatWindow.setAttribute('aria-hidden', 'true');
             chatButton.setAttribute('aria-expanded', 'false');
-            chatButton.classList.remove('chat-fab-hidden');
         };
 
         const scrollToBottom = () => {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         };
 
-        const addMessage = (text, isUser = false, save = true) => {
+        const addMessage = (text, isUser = false) => {
             const bubble = document.createElement('div');
             bubble.className = `chat-bubble ${isUser ? 'user' : 'bot'}`;
             bubble.textContent = text;
             chatMessages.appendChild(bubble);
             scrollToBottom();
-            if (save) {
-                saveChatHistory();
-            }
         };
 
         const addLoadingMessage = () => {
@@ -227,7 +156,7 @@
             return card;
         };
 
-        const renderProductResponse = (data, save = true) => {
+        const renderProductResponse = (data) => {
             const bubble = document.createElement('div');
             bubble.className = 'chat-bubble bot';
             const container = document.createElement('div');
@@ -265,9 +194,6 @@
             bubble.appendChild(container);
             chatMessages.appendChild(bubble);
             scrollToBottom();
-            if (save) {
-                saveChatHistory();
-            }
         };
 
         const sendMessage = () => {
@@ -304,20 +230,20 @@
                     if (result.success && result.data) {
                         const data = result.data;
                         if (data.p && Array.isArray(data.items)) {
-                            renderProductResponse(data, true);
+                            renderProductResponse(data);
                         } else if (Array.isArray(data.items) && data.items.length) {
-                            renderProductResponse(data, true);
+                            renderProductResponse(data);
                         } else if (data.p) {
-                            addMessage(data.p, false, true);
+                            addMessage(data.p, false);
                         } else if (data.message) {
-                            addMessage(data.message, false, true);
+                            addMessage(data.message, false);
                         } else {
-                            addMessage('Sorry, I cannot find the information.', false, true);
+                            addMessage('Sorry, I cannot find the information.', false);
                         }
                     } else if (result.error || result.message) {
-                        addMessage(result.message || 'Sorry, an error occurred.', false, true);
+                        addMessage(result.message || 'Sorry, an error occurred.', false);
                     } else {
-                        addMessage('Sorry, I cannot find the information.', false, true);
+                        addMessage('Sorry, I cannot find the information.', false);
                     }
                 })
                 .catch((error) => {
@@ -332,11 +258,9 @@
                     } else if (error.message.includes('HTTP error')) {
                         errorMsg = 'Server responded with an error. Please try later.';
                     }
-                    addMessage(errorMsg, false, true);
+                    addMessage(errorMsg, false);
                 });
         };
-
-        loadChatHistory();
 
         chatButton.addEventListener('click', (event) => {
             event.stopPropagation();

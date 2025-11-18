@@ -17,12 +17,9 @@ class HomeController {
     public function index() {
         $featuredProducts = $this->productModel->getRandomProducts(4);
         $categories = $this->categoryModel->getAllCategories();
-        $categoryIds = array_column($categories, 'CategoryID');
-        $categoryStats = $this->productModel->getCategoryStats($categoryIds);
         $highDiscountSales = $this->productModel->getHighDiscountSales(50, 12);
         $weeklySales = $this->productModel->getSalesEndingSoon(7, 8);
-        $topSaleProduct = $this->productModel->getHighDiscountSales(30, 1);
-        $topSaleProduct = !empty($topSaleProduct) ? $topSaleProduct[0] : null;
+        // Get latest 3 news for widget
         $latestNews = $this->newsModel->getAllNews('', 3, 0);
 
         $headerPath = dirname(__DIR__) . '/views/components/header.php';
@@ -36,10 +33,10 @@ class HomeController {
         }
 
         if (file_exists($viewPath)) {
-            $renderView = function ($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales, $categoryStats, $topSaleProduct) use ($viewPath) {
+            $renderView = function ($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales) use ($viewPath) {
                 require $viewPath;
             };
-            $renderView($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales, $categoryStats, $topSaleProduct);
+            $renderView($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales);
         } else {
             die("View file not found: $viewPath");
         }

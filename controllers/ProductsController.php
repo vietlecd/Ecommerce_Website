@@ -35,8 +35,8 @@ class ProductsController {
         $totalProducts = $this->productModel->getTotalProducts($keyword, $category, $minPrice, $maxPrice, $minSize, $maxSize, $saleOnly);
         $totalPages = ceil($totalProducts / $perPage);
 
+        // Get all categories for filter
         $categories = $this->categoryModel->getAllCategories();
-        $availableSizes = $this->productModel->getAvailableSizes();
         $topSellers = $this->productModel->getTopSellers(4);
         $topPriced = $this->productModel->getTopPricedProducts(4);
 
@@ -102,9 +102,6 @@ class ProductsController {
             header('Location: index.php?controller=products&action=index');
             exit;
         }
-
-        $productAddError = $_SESSION['product_error'] ?? null;
-        unset($_SESSION['product_error']);
 
         // Get related products (same category)
         $relatedProducts = $this->productModel->getRelatedProducts($product['category_id'], $id, 4);
@@ -190,18 +187,22 @@ class ProductsController {
             if ($quantity < 1) {
                 $quantity = 1;
             }
+            
+            $maxQuantity = isset($product['Stock']) ? (int)$product['Stock'] : 999;
             if ($quantity > $maxQuantity) {
                 $quantity = $maxQuantity;
             }
-
+            
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = [];
             }
-
-            $cartKey = $product['id'] . ':' . $selectedKey;
-            if (isset($_SESSION['cart'][$cartKey])) {
-                $newQuantity = min($maxQuantity, $_SESSION['cart'][$cartKey]['quantity'] + $quantity);
-                $_SESSION['cart'][$cartKey]['quantity'] = $newQuantity;
+            
+            if (isset($_SESSION['cart'][$id])) {
+                $newQuantity = $_SESSION['cart'][$id]['quantity'] + $quantity;
+                if ($newQuantity > $maxQuantity) {
+                    $newQuantity = $maxQuantity;
+                }
+                $_SESSION['cart'][$id]['quantity'] = $newQuantity;
             } else {
                 $_SESSION['cart'][$cartKey] = [
                     'id' => $product['id'],
@@ -221,7 +222,7 @@ class ProductsController {
 
         require_once 'views/components/header.php';
         
-        $renderView = function($product, $relatedProducts, $comments, $ratingStats, $member) use ($productAddError) {
+        $renderView = function($product, $relatedProducts, $comments, $ratingStats, $member) {
             require 'views/pages/product-detail.php';
         };
         $renderView($product, $relatedProducts, $comments, $ratingStats, $member);

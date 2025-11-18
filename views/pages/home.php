@@ -39,68 +39,15 @@ $heroImages = [
     </div>
 </section>
 
-<?php if ($topSaleProduct && isset($topSaleProduct['sale'])): ?>
-<div class="sale-popup-overlay" id="salePopupOverlay">
-    <div class="sale-popup-container">
-        <button class="sale-popup-close" id="salePopupClose" aria-label="Close popup">
-            <i class="fas fa-times"></i>
-        </button>
-        <div class="sale-popup-content">
-            <div class="sale-popup-badge">
-                <span class="sale-badge-text">Limited Time</span>
-                <span class="sale-badge-percent">-<?php echo number_format($topSaleProduct['sale']['DiscountPercent'], 0); ?>%</span>
-            </div>
-            <div class="sale-popup-grid">
-                <div class="sale-popup-image-wrapper">
-                    <img src="<?php echo htmlspecialchars($topSaleProduct['image']); ?>" alt="<?php echo htmlspecialchars($topSaleProduct['name']); ?>" class="sale-popup-image">
-                    <div class="sale-popup-sparkle sale-sparkle-1"></div>
-                    <div class="sale-popup-sparkle sale-sparkle-2"></div>
-                    <div class="sale-popup-sparkle sale-sparkle-3"></div>
-                </div>
-                <div class="sale-popup-info">
-                    <div class="sale-popup-eyebrow">Flash Sale</div>
-                    <h2 class="sale-popup-title"><?php echo htmlspecialchars($topSaleProduct['name']); ?></h2>
-                    <p class="sale-popup-category"><?php echo htmlspecialchars($topSaleProduct['category']); ?></p>
-                    <div class="sale-popup-price-group">
-                        <span class="sale-popup-price-old">$<?php echo number_format($topSaleProduct['price'], 2); ?></span>
-                        <span class="sale-popup-price-new">$<?php echo number_format($topSaleProduct['final_price'], 2); ?></span>
-                    </div>
-                    <p class="sale-popup-description"><?php echo htmlspecialchars(mb_substr($topSaleProduct['description'], 0, 120)) . '...'; ?></p>
-                    <div class="sale-popup-features">
-                        <div class="sale-feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Free Shipping</span>
-                        </div>
-                        <div class="sale-feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>30-Day Returns</span>
-                        </div>
-                        <div class="sale-feature-item">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Authentic Guarantee</span>
-                        </div>
-                    </div>
-                    <a href="/index.php?controller=products&action=detail&id=<?php echo $topSaleProduct['id']; ?>" class="sale-popup-cta">
-                        <span>Shop Now</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <button class="sale-popup-dismiss" id="salePopupDismiss">Maybe Later</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<?php endif; ?>
-
 <!-- About/Introduction Section -->
 <section class="intro-section">
     <div class="container">
         <div class="intro-content">
             <div class="intro-text">
-                <h2>Welcome to V.AShoes</h2>
+                <h2>Welcome to ShoeStore</h2>
                 <p class="intro-subtitle">Where You Find the Perfect Pair of Shoes</p>
                 <p class="intro-description">
-                    V.AShoes is proud to be the leading provider of high-quality sports shoes, casual shoes, and formal footwear. 
+                    ShoeStore is proud to be the leading provider of high-quality sports shoes, casual shoes, and formal footwear. 
                     With over 10 years of experience in the industry, we are committed to bringing customers authentic products, 
                     diverse styles and the most competitive prices on the market.
                 </p>
@@ -125,7 +72,7 @@ $heroImages = [
                 <a href="/index.php?controller=about&action=index" class="btn btn-outline">Learn More</a>
             </div>
             <div class="intro-image">
-                <img src="/assets/images/shoes_store.jpg" alt="V.AShoes Introduction">
+                <img src="/assets/images/shoes_store.jpg" alt="ShoeStore Introduction">
             </div>
         </div>
     </div>
@@ -136,11 +83,11 @@ $heroImages = [
     <div class="container">
         <div class="stats-grid">
             <div class="stat-item">
-                <div class="stat-number" data-count="10000" data-animate="true" data-speed="slow" data-loop="true">0</div>
+                <div class="stat-number" data-count="10000">0</div>
                 <div class="stat-label">Satisfied Customers</div>
             </div>
             <div class="stat-item">
-                <div class="stat-number" data-count="5000" data-animate="true" data-speed="fast" data-loop="true" data-step="2" data-interval="1000">0</div>
+                <div class="stat-number" data-count="5000">0</div>
                 <div class="stat-label">Products Sold</div>
             </div>
             <div class="stat-item">
@@ -159,7 +106,7 @@ $heroImages = [
 <section class="features-section">
     <div class="container">
         <div class="section-title">
-            <h2>Why Choose V.AShoes?</h2>
+            <h2>Why Choose ShoeStore?</h2>
         </div>
         <div class="features-grid">
             <div class="feature-card">
@@ -198,26 +145,14 @@ $heroImages = [
 <?php if (!empty($categories)): ?>
 <section class="categories-section">
     <div class="container">
-        <?php $categoryStats = $categoryStats ?? []; ?>
         <div class="section-title">
             <h2>Product Categories</h2>
             <p>Quick shortcuts into every curated universe we host.</p>
         </div>
         <div class="categories-widget-grid">
             <?php foreach ($categories as $category): ?>
-                <?php
-                $categoryId = $category['CategoryID'];
-                $totalProducts = $categoryStats[$categoryId]['total_products'] ?? 0;
-                $saleProducts = $categoryStats[$categoryId]['sale_products'] ?? 0;
-                ?>
-                <article class="category-widget-card">
+                <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($category['CategoryID']); ?>" class="category-widget-card">
                     <div class="category-widget-header">
-                        <span class="category-widget-eyebrow"><?php echo htmlspecialchars($category['CategoryName']); ?></span>
-                        <a class="category-widget-link" href="/index.php?controller=products&action=index&category=<?php echo urlencode($category['CategoryID']); ?>">
-                            Explore <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                    <div class="category-widget-body">
                         <div class="category-widget-icon">
                             <?php if (!empty($category['ImageUrl'])): ?>
                                 <img src="<?php echo htmlspecialchars($category['ImageUrl']); ?>" alt="<?php echo htmlspecialchars($category['CategoryName']); ?> icon" loading="lazy">
@@ -225,38 +160,13 @@ $heroImages = [
                                 <i class="fas fa-shoe-prints"></i>
                             <?php endif; ?>
                         </div>
+                        <span class="category-widget-link">Shop now <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                    <div class="category-widget-body">
+                        <h3><?php echo htmlspecialchars($category['CategoryName']); ?></h3>
                         <p><?php echo !empty($category['Description']) ? htmlspecialchars($category['Description']) : 'Discover the newest arrivals in this category.'; ?></p>
                     </div>
-                    <div class="category-widget-footer">
-                        <ul class="category-widget-stats-list">
-                            <li>
-                                <span>Products</span>
-                                <strong><?php echo number_format($totalProducts); ?></strong>
-                            </li>
-                            <li>
-                                <span>On sale</span>
-                                <strong><?php echo number_format($saleProducts); ?></strong>
-                            </li>
-                            <li>
-                                <span>Low stock</span>
-                                <strong><?php echo number_format($categoryStats[$categoryId]['low_stock_products'] ?? 0); ?></strong>
-                            </li>
-                            <li>
-                                <span>Out of stock</span>
-                                <strong><?php echo number_format($categoryStats[$categoryId]['out_of_stock_products'] ?? 0); ?></strong>
-                            </li>
-                            <li>
-                                <span>New this week</span>
-                                <strong><?php echo number_format($categoryStats[$categoryId]['new_products_week'] ?? 0); ?></strong>
-                            </li>
-                            <li>
-                                <span>Purchased today</span>
-                                <strong><?php echo number_format($categoryStats[$categoryId]['purchased_today'] ?? 0); ?></strong>
-                            </li>
-                        </ul>
-                        <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($category['CategoryID']); ?>" class="category-widget-btn">Shop the drop</a>
-                    </div>
-                </article>
+                </a>
             <?php endforeach; ?>
         </div>
     </div>
@@ -381,10 +291,10 @@ $heroImages = [
                                 <?php if (!empty($descriptionSnippet)): ?>
                                     <p class="product-snippet"><?php echo htmlspecialchars($descriptionSnippet); ?></p>
                                 <?php endif; ?>
-                                <?php if ((!empty($product['sizes'])) || isset($product['Stock'])): ?>
+                                <?php if (!empty($product['shoes_size']) || isset($product['Stock'])): ?>
                                     <div class="product-meta">
-                                        <?php if (!empty($product['sizes'])): ?>
-                                            <span><i class="fas fa-ruler"></i> Size: <?php echo htmlspecialchars($product['size_summary']); ?></span>
+                                        <?php if (!empty($product['shoes_size'])): ?>
+                                            <span><i class="fas fa-ruler"></i> Size: <?php echo htmlspecialchars($product['shoes_size']); ?></span>
                                         <?php endif; ?>
                                         <?php if (isset($product['Stock'])): ?>
                                             <span><i class="fas fa-box"></i> Stock: <?php echo $product['Stock'] > 0 ? $product['Stock'] : 'Out'; ?></span>
@@ -534,6 +444,250 @@ $heroImages = [
     </div>
 </section> -->
 
+<div id="chat-widget">
+    <div id="chat-button" class="chat-button">
+        <i class="fas fa-comments"></i>
+        <span>Consultation</span>
+    </div>
+    <div id="chat-window" class="chat-window">
+        <div class="chat-header">
+            <h3>Product Consultation</h3>
+            <button id="chat-close" class="chat-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-body">
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Enter your question..." />
+                <button id="chat-send" class="chat-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+#chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.chat-button {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.chat-button:hover {
+    background-color: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.chat-button i {
+    font-size: 20px;
+}
+
+.chat-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 380px;
+    height: 600px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.chat-window.active {
+    display: flex;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-header {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+.chat-close:hover {
+    transform: rotate(90deg);
+}
+
+.chat-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    word-wrap: break-word;
+}
+
+.message.user {
+    align-self: flex-end;
+    background: #ff6b6b;
+    color: white;
+}
+
+.message.bot {
+    align-self: flex-start;
+    background: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 10px;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    gap: 8px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+}
+
+.chat-input:focus {
+    border-color: #ff6b6b;
+}
+
+.chat-send {
+    padding: 10px 20px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.chat-send:hover {
+    background: #ff5252;
+}
+
+.chat-send:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.loading {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #ccc;
+    border-top-color: #ff6b6b;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .chat-window {
+        width: calc(100vw - 40px);
+        height: calc(100vh - 120px);
+        bottom: 80px;
+        right: 20px;
+        left: 20px;
+    }
+    
+    #chat-widget {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .chat-button {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const heroSlider = document.querySelector('[data-hero-slider]');
@@ -640,101 +794,232 @@ document.addEventListener('DOMContentLoaded', function() {
     initSaleCountdowns();
     initSaleSliders();
 
-    // Stats counter animation
-    function animateCounter(element) {
-        const target = parseInt(element.getAttribute('data-count'), 10);
-        if (Number.isNaN(target)) return;
-        const speed = element.getAttribute('data-speed') || 'fast';
-        const customInterval = parseInt(element.getAttribute('data-interval'), 10);
-        const interval = !Number.isNaN(customInterval) ? customInterval : (speed === 'slow' ? 3000 : 15);
-        const stepSize = parseInt(element.getAttribute('data-step'), 10) || 1;
-        const loop = element.hasAttribute('data-loop');
-        const initialValue = target * 0.8;
-        let current = parseInt(element.textContent.replace(/\D/g, ''), 10) || 0;
-
-        const preload = () => {
-            const bump = Math.round(initialValue / 8);
-            current = Math.min(target, current + bump);
-            element.textContent = current.toLocaleString('vi-VN');
-            if (current < initialValue) {
-                requestAnimationFrame(preload);
-            } else {
-                setTimeout(step, interval);
+    const chatButton = document.getElementById('chat-button');
+    const chatWindow = document.getElementById('chat-window');
+    const chatClose = document.getElementById('chat-close');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+    const chatMessages = document.getElementById('chat-messages');
+    const webhookBaseUrl = 'index.php';
+    
+    if (!chatButton || !chatWindow || !chatClose || !chatInput || !chatSend || !chatMessages) return;
+    
+    chatButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        chatWindow.classList.toggle('active');
+    });
+    
+    chatClose.addEventListener('click', function(e) {
+        e.stopPropagation();
+        chatWindow.classList.remove('active');
+    });
+    
+    chatWindow.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    document.addEventListener('click', function(event) {
+        if (chatWindow.classList.contains('active')) {
+            if (!event.target.closest('#chat-widget')) {
+                chatWindow.classList.remove('active');
             }
-        };
-
-        const step = () => {
-            if (!loop && current >= target) {
-                element.textContent = target.toLocaleString('vi-VN');
-                return;
-            }
-            if (loop && current >= target) {
-                current += stepSize;
-            } else {
-                current = Math.min(target, current + stepSize);
-            }
-            element.textContent = current.toLocaleString('vi-VN');
-            setTimeout(step, interval);
-        };
-
-        preload();
-    }
-
-    (function hydrateStaticStats() {
-        document.querySelectorAll('.stat-number').forEach((stat) => {
-            const target = parseInt(stat.getAttribute('data-count'), 10);
-            if (Number.isNaN(target)) return;
-            if (stat.hasAttribute('data-animate')) {
-                stat.textContent = '0';
-            } else {
-                stat.textContent = target.toLocaleString('vi-VN');
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => scrollTrack('next'));
             }
         });
-    })();
-
-    // Intersection Observer for stats animation
-    const statsObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.querySelectorAll('.stat-number[data-animate]').forEach((stat) => {
-                    if (!stat.dataset.animated) {
-                        stat.dataset.animated = 'true';
-                        animateCounter(stat);
-                    }
-                });
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.4 });
-
-    const statsSection = document.querySelector('.stats-section');
-    if (statsSection) {
-        statsObserver.observe(statsSection);
+    }
+    
+    function addLoadingMessage() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot';
+        messageDiv.id = 'loading-message';
+        messageDiv.innerHTML = '<span class="loading"></span> Searching...';
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    const featuredSlider = document.querySelector('.featured-products-slider');
-    const featuredPrevBtn = document.querySelector('.featured-slider-prev');
-    const featuredNextBtn = document.querySelector('.featured-slider-next');
+    function removeLoadingMessage() {
+        const loadingMsg = document.getElementById('loading-message');
+        if (loadingMsg) {
+            loadingMsg.remove();
+        }
+    }
 
-    if (featuredSlider && featuredPrevBtn && featuredNextBtn) {
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        const cardWidth = featuredSlider.querySelector('.product-card')?.offsetWidth || 280;
-        const gap = 24;
-
-        featuredPrevBtn.addEventListener('click', function() {
-            featuredSlider.scrollBy({
-                left: -(cardWidth + gap),
-                behavior: 'smooth'
+    function renderProductResponse(data) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot';
+        
+        let html = '<div style="font-size: 13px; line-height: 1.4; color: #333;">';
+        
+        if (data.p) {
+            html += '<div style="margin-bottom: 8px; color: #555;">' + escapeHtml(data.p) + '</div>';
+        }
+        
+        if (data.h2) {
+            html += '<h2 style="margin: 8px 0; font-size: 16px; font-weight: 600; color: #ff6b6b;">' + escapeHtml(data.h2) + '</h2>';
+        }
+        
+        if (data.items && Array.isArray(data.items)) {
+            html += '<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">';
+            
+            data.items.forEach(function(item) {
+                html += '<div style="border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px; background: #f9f9f9; display: flex; gap: 8px;">';
+                
+                if (item.img) {
+                    html += '<div style="flex-shrink: 0; width: 60px; height: 60px; overflow: hidden; border-radius: 4px;">';
+                    html += '<img src="' + escapeHtml(item.img) + '" alt="' + escapeHtml(item.h3 || '') + '" style="width: 100%; height: 100%; object-fit: cover;">';
+                    html += '</div>';
+                }
+                
+                html += '<div style="flex: 1; min-width: 0;">';
+                
+                if (item.h3) {
+                    html += '<div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: #333;">' + escapeHtml(item.h3) + '</div>';
+                }
+                
+                if (item.desc) {
+                    html += '<div style="font-size: 12px; color: #666; margin-bottom: 4px;">' + escapeHtml(item.desc) + '</div>';
+                }
+                
+                html += '<div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 11px; color: #888; margin-bottom: 4px;">';
+                if (item.price) {
+                    html += '<span><strong style="color: #ff6b6b;">' + escapeHtml(item.price) + '</strong></span>';
+                }
+                if (item.size) {
+                    html += '<span>Size: ' + escapeHtml(item.size) + '</span>';
+                }
+                if (item.stock) {
+                    html += '<span>In Stock: ' + escapeHtml(item.stock) + '</span>';
+                }
+                html += '</div>';
+                
+                if (item.link) {
+                    html += '<a href="' + escapeHtml(item.link) + '" target="_blank" style="display: inline-block; padding: 4px 8px; background: #ff6b6b; color: white; text-decoration: none; border-radius: 4px; font-size: 11px; margin-top: 4px;">View Details</a>';
+                }
+                
+                html += '</div></div>';
             });
-        });
-
-        featuredNextBtn.addEventListener('click', function() {
-            featuredSlider.scrollBy({
-                left: cardWidth + gap,
-                behavior: 'smooth'
+            
+            html += '</div>';
+        }
+        
+        if (data.note) {
+            html += '<div style="margin-top: 10px; padding: 8px; background: #e8f4f8; border-radius: 4px; font-size: 12px; color: #555;">' + escapeHtml(data.note) + '</div>';
+        }
+        
+        html += '</div>';
+        
+        messageDiv.innerHTML = html;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+        
+        addMessage(message, true);
+        chatInput.value = '';
+        chatSend.disabled = true;
+        addLoadingMessage();
+        
+        const url = new URL(webhookBaseUrl, window.location.origin);
+        url.searchParams.set('controller', 'chat');
+        url.searchParams.set('action', 'api');
+        url.searchParams.set('chatInput', message);
+        
+        console.log('Fetching URL:', url.toString());
+        
+        // Set timeout for fetch request (200 seconds)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 200000); // 200 seconds
+        
+        fetch(url.toString(), { signal: controller.signal })
+            .then(response => {
+                clearTimeout(timeoutId);
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error('HTTP error: ' + response.status);
+                    });
+                }
+                return response.json();
+            })
+            .then(result => {
+                removeLoadingMessage();
+                chatSend.disabled = false;
+                
+                if (result.success && result.data) {
+                    const data = result.data;
+                    console.log('Full result:', result);
+                    console.log('Data:', data);
+                    console.log('Has p:', !!data.p);
+                    console.log('Has items:', !!data.items);
+                    console.log('Items is array:', Array.isArray(data.items));
+                    
+                    if (data.p && Array.isArray(data.items)) {
+                        console.log('Rendering product response...');
+                        renderProductResponse(data);
+                    } else if (data.message) {
+                        if (data.message === 'Workflow was started') {
+                            addMessage('Processing your request, please wait...', false);
+                        } else {
+                            addMessage(data.message, false);
+                        }
+                    } else if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+                        console.log('Rendering product response (items only)...');
+                        renderProductResponse(data);
+                    } else if (data.p) {
+                        addMessage(data.p, false);
+                    } else {
+                        console.log('No valid data to render');
+                        addMessage('Sorry, I cannot find the information.', false);
+                    }
+                } else if (result.error) {
+                    let errorMsg = 'Sorry, an error occurred.';
+                    
+                    if (result.message) {
+                        errorMsg = result.message;
+                        if (result.message.includes('not registered') || result.message.includes('webhook')) {
+                            errorMsg = 'Webhook is not activated in n8n. Please check the configuration.';
+                        }
+                    } else if (result.error === 'API error' && result.response) {
+                        try {
+                            const apiError = JSON.parse(result.response);
+                            if (apiError.message) {
+                                errorMsg = apiError.message;
+                                if (apiError.hint) {
+                                    errorMsg += ' (' + apiError.hint + ')';
+                                }
+                            }
+                        } catch (e) {
+                            errorMsg = 'Error connecting to n8n API';
+                        }
+                    }
+                    
+                    addMessage(errorMsg, false);
+                } else {
+                    addMessage('Sorry, I cannot find the information.', false);
+                }
+            })
+            .catch(error => {
+                clearTimeout(timeoutId);
+                removeLoadingMessage();
+                chatSend.disabled = false;
+                console.error('Error:', error);
+                
+                let errorMsg = 'Sorry, an error occurred.';
+                if (error.name === 'AbortError') {
+                    errorMsg = 'Request has timed out (200s timeout). Please try again.';
+                } else if (error.message) {
+                    if (error.message.includes('404')) {
+                        errorMsg = 'Webhook is not activated. Please check n8n configuration.';
+                    } else if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+                        errorMsg = 'Cannot connect to server. Please check your network connection.';
+                    } else {
+                        errorMsg = 'Error: ' + error.message;
+                    }
+                }
+                addMessage(errorMsg, false);
             });
         });
 
@@ -833,6 +1118,129 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         showSalePopup();
+    }
+
+    // Stats counter animation
+    function animateCounter(element) {
+        const target = parseInt(element.getAttribute('data-count'));
+        const duration = 2000; // 2 seconds
+        const increment = target / (duration / 16); // 60fps
+        let current = 0;
+
+        const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+                element.textContent = Math.floor(current).toLocaleString('vi-VN');
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target.toLocaleString('vi-VN');
+            }
+        };
+
+        updateCounter();
+    }
+
+    // Intersection Observer for stats animation
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statNumbers = entry.target.querySelectorAll('.stat-number');
+                statNumbers.forEach(stat => {
+                    if (stat.textContent === '0') {
+                        animateCounter(stat);
+                    }
+                });
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        statsObserver.observe(statsSection);
+    }
+
+    const featuredSlider = document.querySelector('.featured-products-slider');
+    const featuredPrevBtn = document.querySelector('.featured-slider-prev');
+    const featuredNextBtn = document.querySelector('.featured-slider-next');
+
+    if (featuredSlider && featuredPrevBtn && featuredNextBtn) {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        const cardWidth = featuredSlider.querySelector('.product-card')?.offsetWidth || 280;
+        const gap = 24;
+
+        featuredPrevBtn.addEventListener('click', function() {
+            featuredSlider.scrollBy({
+                left: -(cardWidth + gap),
+                behavior: 'smooth'
+            });
+        });
+
+        featuredNextBtn.addEventListener('click', function() {
+            featuredSlider.scrollBy({
+                left: cardWidth + gap,
+                behavior: 'smooth'
+            });
+        });
+
+        featuredSlider.addEventListener('mousedown', function(e) {
+            isDown = true;
+            featuredSlider.style.cursor = 'grabbing';
+            startX = e.pageX - featuredSlider.offsetLeft;
+            scrollLeft = featuredSlider.scrollLeft;
+        });
+
+        featuredSlider.addEventListener('mouseleave', function() {
+            isDown = false;
+            featuredSlider.style.cursor = 'grab';
+        });
+
+        featuredSlider.addEventListener('mouseup', function() {
+            isDown = false;
+            featuredSlider.style.cursor = 'grab';
+        });
+
+        featuredSlider.addEventListener('mousemove', function(e) {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - featuredSlider.offsetLeft;
+            const walk = (x - startX) * 2;
+            featuredSlider.scrollLeft = scrollLeft - walk;
+        });
+
+        featuredSlider.addEventListener('touchstart', function(e) {
+            isDown = true;
+            startX = e.touches[0].pageX - featuredSlider.offsetLeft;
+            scrollLeft = featuredSlider.scrollLeft;
+        });
+
+        featuredSlider.addEventListener('touchend', function() {
+            isDown = false;
+        });
+
+        featuredSlider.addEventListener('touchmove', function(e) {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.touches[0].pageX - featuredSlider.offsetLeft;
+            const walk = (x - startX) * 2;
+            featuredSlider.scrollLeft = scrollLeft - walk;
+        });
+
+        function updateNavButtons() {
+            const maxScroll = featuredSlider.scrollWidth - featuredSlider.clientWidth;
+            featuredPrevBtn.style.opacity = featuredSlider.scrollLeft <= 0 ? '0.3' : '1';
+            featuredPrevBtn.style.pointerEvents = featuredSlider.scrollLeft <= 0 ? 'none' : 'auto';
+            featuredNextBtn.style.opacity = featuredSlider.scrollLeft >= maxScroll ? '0.3' : '1';
+            featuredNextBtn.style.pointerEvents = featuredSlider.scrollLeft >= maxScroll ? 'none' : 'auto';
+        }
+
+        featuredSlider.addEventListener('scroll', updateNavButtons);
+        updateNavButtons();
+
+        window.addEventListener('resize', updateNavButtons);
     }
 });
 </script>

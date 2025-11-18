@@ -2,42 +2,26 @@
 INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
 VALUES (
     'Market Outlook Q3: Velocity, Inventory, and Community Signals',
-    'A 20-page digest forecasting demand drivers, category pivots, community trends, and marketing levers for Q3 with actionable dashboards.',
-    '<h2>Macro Snapshot &amp; Scenario Planning</h2>
-     <h3>Global Economic Context</h3>
-     <p>Currency fluctuations and freight normalization created a unique window to pull forward supply, so our data science team modeled three demand scenarios blending IMF reports, port throughput data, and internal sell-through. Baseline GDP growth sits at 2.1%, but footwear behaves defensively when consumers trade down from apparel splurges. <strong>Elasticity curves</strong> show premium sneakers can still command loyalty if messaging highlights longevity and repairability. Logistics bottlenecks eased as Shanghai and LA ports cleared backlog, yet we maintain a 12-day buffer because typhoon season threatens Pacific lanes. Hedging strategies now mix forward contracts and onshore stocking for SKUs with predictable velocity. Macro takeaway: cautious optimism with liquidity reserved for acquisition flashpoints (collabs, limited capsules) rather than blanket inventory bets.</p>
-     <h3>Scenario Modeling Playbook</h3>
-     <p>Our scenario engine ingests POS feeds hourly, adjusting three pathways: Momentum (demand +12%), Equilibrium (+4%), and Drag (-7%). Each scenario maps to procurement triggers, marketing spend ceilings, and staffing rosters. <u>Momentum Mode</u> unlocks overtime budgets for final-mile hubs, increases influencer slots, and greenlights fast-track remanufacturing. Equilibrium keeps cadence but leans on community-generated content to stretch CPM efficiency. Drag scenario triggers markdown airbags and pauses non-essential capex. We publish the playbook internally so category managers know when to pivot without HQ bottlenecks. Transparency reduces panic; everyone sees the same dashboards.</p>
-     <h3>Regulatory and ESG Watchlist</h3>
-     <p>Carbon tariffs under discussion in the EU could add €1.20 per pair if suppliers lag on emissions reporting. We preemptively audited tier-2 vendors and added <strong>italic compliance notes</strong> beside every PO. US states pushing right-to-repair bills mean we double down on spare-part availability, aligning margins with purpose. Currency hedges now include Southeast Asian baskets because Vietnam and Indonesia joint ventures bill in mixed currencies. ESG scoring agencies scrutinize labor disclosures, so we underlined remediation plans in quarterly filings. Macro snapshots are no longer just economics; they are culture, policy, and values converging.</p>
-     <h2>Velocity Dashboard Deep Dive</h2>
-     <h3>Category Movement Metrics</h3>
-     <p>Performance runners +22% WoW thanks to spring marathon registrations, platform mules -8% but stabilizing as festival season nears, kids light-up sneakers +35% due to back-to-school orders dropping early. Velocity dashboards now overlay Google Trends, Strava heatmaps, and checkout completion heat to catch inflection points before POS data confirms. <strong>Heat legends</strong> use color scales friendly for color-blind viewers, respecting inclusive design. Each tile links to playbooks: if runners spike, CRM triggers training-plan emails, if kids shoes surge, ops reallocates glow-battery inventory.</p>
-     <h3>Regional Nuances and Micro-Splits</h3>
-     <p>EMEA favors trail silhouettes (terrain tourism boom), APAC obsesses over court nostalgia, and LATAM leans into breathable slides. We break splits by humidity bands, not just climate zones, because foot comfort correlates with dew point. Local ambassadors feed anecdotal signals—Tokyo stylists flagged translucent midsoles weeks before sales followed. <u>City cells</u> within dashboards let planners drill from continental to neighborhood level, so a Lisbon boutique can justify bold buys without waiting for national greenlights. Velocity maps are living documents updated thrice daily.</p>
-     <h3>Behavioral Cohorts and Repeat Rates</h3>
-     <p>Segmenting by behavior reveals that \"Repair-First\" customers (those redeeming refurbishment credits) buy fewer pairs but higher ASP, while \"Drop Hunters\" chase weekly launches with 3.4x cart additions. LTV modeling shows cross-pollinating cohorts boosts retention by 11%. <em>Behavior tiles</em> in the dashboard include recommended narratives: Repair-First responds to archival storytelling; Drop Hunters crave countdown drama. Velocity is not just units per hour—it is psychology mapped to inventory.</p>
-     <h2>Inventory Strategy &amp; Supply Resilience</h2>
-     <h3>Limited-Depth, High-Frequency Cadence</h3>
-     <p>Lean into <strong>limited-depth, high-frequency</strong> drops. Shorter production batches reduce markdown risk and keep storytelling fresh. We sliced master buys into micro-pulses anchored to cultural moments: Pride capsules, monsoon-proof packs, lunar festivals. The ERP now auto-tags inventory with \"narrative anchors\" so marketing can pull assets instantly. When sell-through hits 70%, the system suggests either replenishment or remix (color flips, lace swaps) based on sentiment scores.</p>
-     <h3>Buffer Planning and Raw Material Forecasts</h3>
-     <p>We track key inputs like algae pellets, recycled rubber crumb, and bio-based dyes. Supplier dashboards show lead times, labor availability, and climate risks (flood alerts near tannery towns). <u>Dynamic buffers</u> adjust weekly: high-risk SKUs hold 1.4x safety stock, low-risk ones drop to 0.8x. Material engineers join S&amp;OP meetings now, because their insight on curing times or dye absorption prevents downstream surprises. Transparency extends to partners via shared portals; they see our demand curves, we see their capacity constraints, and trust compounds.</p>
-     <h3>Automation and Human Oversight</h3>
-     <p>Robotic forecasting works 90% of the time, but we embed planners in Discord groups, subreddit threads, and WhatsApp reseller chats to catch vibes algorithms miss. When a niche artist teases a custom that sparks DM floods, humans escalated it before data twitched. Inventory strategy lives between spreadsheets and street corners. <strong>Weekly war rooms</strong> put planners, marketers, and supply leads around one table to debate anomalies openly.</p>
-     <h2>Community Signals &amp; Listening Ops</h2>
-     <h3>Digital Ethnography Findings</h3>
-     <p>Discord listening sessions surfaced requests for interchangeable straps and reflective trims; beta samples ship next month. Community analysts transcribe chats, tagging sentiments, materials, and wishlist features. We benchmark engagement quality (depth of comments, idea follow-ups) instead of raw likes. <em>Community credits</em> reward contributors with early access, and we cite their handles in launch notes—co-creation feels real, not extractive.</p>
-     <h3>Field Immersions and Retail Diaries</h3>
-     <p>We dispatched retail anthropologists to running clubs, skate parks, and night markets. They log footnotes about how consumers hack our products: heel-lock lacing, reflective tape additions, outsole sanding for grip. These diaries transform into design briefs faster than formal focus groups. <u>Retail associates</u> submit weekly voice notes describing customer stories; AI transcribes but humans interpret. Community signal loops close when those insights show up in product tweaks, and we publicly credit sources.</p>
-     <h3>Cause-Driven Partnerships</h3>
-     <p>Community insisted that sustainability stories feel tangible, so we linked take-back programs to local playground flooring projects. Photos of kids playing on recycled surfaces outperform polished ads. We also partner with two local running clubs per metro, sharing anonymized gait data so they tailor training plans while we refine cushioning zones. <strong>Trust capital</strong> becomes measurable when community-led initiatives reduce churn by double digits.</p>
-     <h2>Action Plan &amp; Execution Roadmap</h2>
-     <h3>Loyalty and Launch Rhythm</h3>
-     <p>Launch loyalty-exclusive colorways every other Friday, rotating between heritage revivals and tech prototypes. CRM journeys now include choose-your-own-adventure emails where members vote on packaging art or lace options. <em>Countdown widgets</em> embed inventory thresholds so transparency curbs bot resentment. After each drop, we publish debriefs sharing stock numbers, queue stats, and lessons learned—sunlight sustains trust.</p>
-     <h3>Partnership Flywheel</h3>
-     <p>Partner with two local running clubs per metro, offer gait labs, and co-host repair nights. Collaborations must include knowledge exchange: we teach them material care, they teach us route planning preferences. Document impacts using both quantitative KPIs (attendance, conversions) and qualitative stories (testimonials, community art). <u>Playground recycling</u> continues: post-event shoes dismantled and reborn as flooring, storytelling gold that loops sustainability into family narratives.</p>
-     <h3>Measurement and Continuous Feedback</h3>
-     <p>OKRs tie to dashboard tiles so teams see direct links between actions and outcomes. We embed feedback prompts inside dashboards—if planners spot data mismatches, they flag within the tile and analysts respond within 24 hours. Download the interactive Tableau dashboard for category deep dives, but also bookmark the living README that explains methodology, biases, and planned upgrades. Outlooks should empower, not overwhelm. Share widely, iterate often, stay humble.</p>',
+    '20-page digest forecasting demand drivers, category pivots, and marketing levers for Q3.',
+    '<h2>Macro Snapshot</h2>
+     <p>Currency fluctuations and freight normalization created a unique window to pull forward supply. Our data science team modeled three demand scenarios.</p>
+     <h2>Velocity Dashboard</h2>
+     <ul>
+        <li>Performance runners +22% WoW</li>
+        <li>Platform mules &minus;8% but stabilizing</li>
+        <li>Kids light-up sneakers +35% due to back-to-school</li>
+     </ul>
+     <h2>Inventory Strategy</h2>
+     <p>Lean into <strong>limited-depth, high-frequency</strong> drops. Shorter production batches reduce markdown risk.</p>
+     <h2>Community Signals</h2>
+     <p>Discord listening sessions surfaced requests for interchangeable straps and reflective trims. Beta samples ship next month.</p>
+     <h2>Action Plan</h2>
+     <ol>
+        <li>Launch loyalty-exclusive colorways every other Friday</li>
+        <li>Partner with two local running clubs per metro</li>
+        <li>Recycle post-event shoes into playground flooring &mdash; storytelling gold</li>
+     </ol>
+     <p>Download the interactive Tableau dashboard for category deep dives.</p>',
     9,
     'outlook',
     NULL,

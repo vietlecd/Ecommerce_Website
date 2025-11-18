@@ -2,7 +2,7 @@
     <div class="about-hero-overlay"></div>
     <div class="about-hero-content">
         <p class="eyebrow">Sculpting Footwear Since 2012</p>
-        <h1>We are V.AShoes</h1>
+        <h1>We are ShoeStore</h1>
         <p>Obsessed with the craft, devoted to the community, fueled by the belief that a pair of shoes can change posture, perspective, and possibility.</p>
     </div>
 </section>
@@ -11,9 +11,9 @@
     <div class="intro-grid">
         <article class="intro-card">
             <h2>Our Manifesto</h2>
-            <p><strong>V.AShoes</strong> was born under the flickering light of a small workshop where the smell of veg-tan leather mingled with laughter, late-night espresso, and punk playlists. We pledged to build a company that celebrates <em>materials</em>, <em>movement</em>, and <em>meaningful rituals</em>. We reject fast fades. We embrace deliberate design, small-batch production, and transparent storytelling.</p>
+            <p><strong>ShoeStore</strong> was born under the flickering light of a small workshop where the smell of veg-tan leather mingled with laughter, late-night espresso, and punk playlists. We pledged to build a company that celebrates <em>materials</em>, <em>movement</em>, and <em>meaningful rituals</em>. We reject fast fades. We embrace deliberate design, small-batch production, and transparent storytelling.</p>
             <p>Every silhouette we release begins with a conversation. We interview athletes, choreographers, commuters, museum docents, and anyone whose day is measured in steps. Their anecdotes shape our sketches. Their frustrations steer our iterations. By the time a pair leaves our studio, it carries the fingerprints of dozens of collaborators who will probably never meet, yet somehow move together.</p>
-            <p>We extend an open invitation to anyone who values craft. Whether you geek out over stitch density, crave limited runs, or simply want a shoe that can sprint through a rainstorm and still look poetic, V.AShoes is for you.</p>
+            <p>We extend an open invitation to anyone who values craft. Whether you geek out over stitch density, crave limited runs, or simply want a shoe that can sprint through a rainstorm and still look poetic, ShoeStore is for you.</p>
         </article>
         <aside class="intro-card highlight">
             <h3>What we obsess over</h3>
@@ -30,10 +30,8 @@
 
 <section class="about-chronicle">
     <div class="container">
-        <div class="section-header">
-            <h2>Chronicle of Milestones</h2>
-            <p>The path from garage experiment to global label was anything but linear. Explore the decisions, detours, and daring collaborations that shaped us.</p>
-        </div>
+        <h2>Chronicle of Milestones</h2>
+        <p>The path from garage experiment to global label was anything but linear. Explore the decisions, detours, and daring collaborations that shaped us.</p>
         <div class="timeline-table-wrapper">
             <table class="timeline-table">
                 <thead>
@@ -45,34 +43,34 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Year">2012</td>
-                        <td data-label="Milestone">Launch of the atelier in District 3 with three artisans, two sewing machines, and a relentless playlist of lo-fi beats.</td>
-                        <td data-label="Impact">Set the tone: hand-numbered drops, zero unsold inventory, total transparency.</td>
+                        <td>2012</td>
+                        <td>Launch of the atelier in District 3 with three artisans, two sewing machines, and a relentless playlist of lo-fi beats.</td>
+                        <td>Set the tone: hand-numbered drops, zero unsold inventory, total transparency.</td>
                     </tr>
                     <tr>
-                        <td data-label="Year">2014</td>
-                        <td data-label="Milestone">Partnership with urban dancers to create the FlowForm sole.</td>
-                        <td data-label="Impact">Introduced a cushioning system tuned for lateral expression, quickly adopted by street performers worldwide.</td>
+                        <td>2014</td>
+                        <td>Partnership with urban dancers to create the FlowForm sole.</td>
+                        <td>Introduced a cushioning system tuned for lateral expression, quickly adopted by street performers worldwide.</td>
                     </tr>
                     <tr>
-                        <td data-label="Year">2016</td>
-                        <td data-label="Milestone">First archive residency in Kyoto.</td>
-                        <td data-label="Impact">Access to century-old textile swatches sparked our signature indigo-dipped lining.</td>
+                        <td>2016</td>
+                        <td>First archive residency in Kyoto.</td>
+                        <td>Access to century-old textile swatches sparked our signature indigo-dipped lining.</td>
                     </tr>
                     <tr>
-                        <td data-label="Year">2019</td>
-                        <td data-label="Milestone">Launch of Loopback Program.</td>
-                        <td data-label="Impact">Customers return worn pairs for refurbishment or recycling; 72% of materials stay in circulation.</td>
+                        <td>2019</td>
+                        <td>Launch of Loopback Program.</td>
+                        <td>Customers return worn pairs for refurbishment or recycling; 72% of materials stay in circulation.</td>
                     </tr>
                     <tr>
-                        <td data-label="Year">2021</td>
-                        <td data-label="Milestone">Immersive flagship in Fukuoka with foot-scan theater.</td>
-                        <td data-label="Impact">Blends biometric fitting, projection mapping, and personal playlists to choreograph the try-on ritual.</td>
+                        <td>2021</td>
+                        <td>Immersive flagship in Fukuoka with foot-scan theater.</td>
+                        <td>Blends biometric fitting, projection mapping, and personal playlists to choreograph the try-on ritual.</td>
                     </tr>
                     <tr>
-                        <td data-label="Year">2024</td>
-                        <td data-label="Milestone">Global community studio network spanning Hanoi, São Paulo, Lagos, and Reykjavík.</td>
-                        <td data-label="Impact">Local curators tell hyper-specific stories; each studio leads limited runs exclusive to their city.</td>
+                        <td>2024</td>
+                        <td>Global community studio network spanning Hanoi, São Paulo, Lagos, and Reykjavík.</td>
+                        <td>Local curators tell hyper-specific stories; each studio leads limited runs exclusive to their city.</td>
                     </tr>
                 </tbody>
             </table>
@@ -205,7 +203,7 @@
                 <li><strong>Address:</strong> 43-13 Shiohara, Minami-ku, Fukuoka, Japan</li>
                 <li><strong>Hours:</strong> Tuesday – Sunday, 10:00–20:00 JST</li>
                 <li><strong>Phone:</strong> +81 92 555 8080</li>
-                <li><strong>Email:</strong> atelier@V.AShoes.jp</li>
+                <li><strong>Email:</strong> atelier@shoestore.jp</li>
             </ul>
         </div>
         <div>

@@ -142,7 +142,7 @@ INSERT INTO `category` (`CategoryID`, `Name`, `Description`, `ImageUrl`) VALUES
 (2, 'Boots', 'Versatile boot silhouettes', 'https://cdn-icons-png.flaticon.com/512/2977/2977951.png'),
 (3, 'Sandals', 'Comfort-first sandals', 'https://cdn-icons-png.flaticon.com/512/554/554857.png'),
 (4, 'Running', 'Mileage-ready running shoes', 'https://cdn-icons-png.flaticon.com/512/1043/1043493.png'),
-(5, 'Sneakers', 'Lifestyle sneaker edits', 'https://cdn-icons-png.flaticon.com/128/5026/5026374.png'),
+(5, 'Sneakers', 'Lifestyle sneaker edits', 'https://cdn-icons-png.flaticon.com/512/1043/1043478.png'),
 (6, 'Boots', 'Boots for men and women', 'https://cdn-icons-png.flaticon.com/512/2377/2377810.png'),
 (7, 'Sandals', 'Statement sandal picks', 'https://cdn-icons-png.flaticon.com/512/204/204274.png'),
 (8, 'Formal', 'Office-ready formal shoes', 'https://cdn-icons-png.flaticon.com/512/836/836923.png'),
@@ -190,28 +190,6 @@ INSERT INTO `sales` (`SaleID`, `ShoesID`, `DiscountPercent`, `ExpiresAt`) VALUES
 (22, 22, 64.00, '2026-03-18 23:59:59'),
 (23, 23, 55.00, '2026-04-05 23:59:59'),
 (24, 24, 30.00, '2026-04-20 23:59:59');
-
--- --------------------------------------------------------
---
--- Table structure for table `discount_codes`
---
-CREATE TABLE `discount_codes` (
-  `CodeID` int(11) NOT NULL,
-  `CodeTitle` varchar(120) NOT NULL,
-  `CodePercent` decimal(5,2) NOT NULL,
-  `CodeDescription` varchar(255) DEFAULT NULL,
-  `IsActive` tinyint(1) DEFAULT 1,
-  `ValidUntil` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `discount_codes`
---
-INSERT INTO `discount_codes` (`CodeID`, `CodeTitle`, `CodePercent`, `CodeDescription`, `IsActive`, `ValidUntil`) VALUES
-(1, 'SHOE-LOUNGE-10', 10.00, 'Concierge welcome treat for the ShoeStore lounge', 1, '2026-01-01 23:59:59'),
-(2, 'SNEAKER-STAPLE-15', 15.00, 'Daily sneaker staples curated by ShoeStore stylists', 1, '2025-12-31 23:59:59'),
-(3, 'BOOT-BOUTIQUE-20', 20.00, 'Boot boutique spotlight for seasonal icons', 1, '2025-12-15 23:59:59'),
-(4, 'RUNWAY-RUSH-25', 25.00, 'Runway rush drop for limited-edition pairs', 1, '2025-11-30 23:59:59');
 
 -- --------------------------------------------------------
 
@@ -531,55 +509,6 @@ INSERT INTO `shoes` (`ShoesID`, `Name`, `Price`, `Stock`, `Description`, `DateCr
 (22, 'Velvet Harbor', 165.00, 19, 'Loafer crafted from marine velvet with cork footbed.', '2025-03-04', '2025-05-01', 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80', 5, 42.00),
 (23, 'Solar Pulse', 190.00, 27, 'High-top with photovoltaic lace guards charging NFC tag.', '2025-02-23', '2025-05-07', 'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=900&q=80', 1, 40.50),
 (24, 'Nimbus Slide', 78.00, 55, 'Indoor slide sculpted from memory foam clouds.', '2025-03-30', '2025-05-06', 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80', 6, 41.00);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `shoe_sizes`
---
-
-CREATE TABLE `shoe_sizes` (
-  `SizeID` int(11) NOT NULL AUTO_INCREMENT,
-  `ShoeID` int(11) NOT NULL,
-  `Size` decimal(5,2) NOT NULL,
-  `Quantity` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`SizeID`),
-  UNIQUE KEY `uniq_shoe_size` (`ShoeID`,`Size`),
-  KEY `ShoeID` (`ShoeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `shoe_sizes`
---
-
-INSERT INTO `shoe_sizes` (`ShoeID`, `Size`, `Quantity`)
-SELECT seed.ShoesID,
-       ROUND(seed.base_size + offsets.offset, 2) AS Size,
-       CASE offsets.offset
-           WHEN -1 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END END
-           WHEN 0 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END END
-           ELSE CASE WHEN seed.total_stock <= 0 THEN 0 ELSE GREATEST(0, seed.total_stock - (seed.base_qty * 2 + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END)) END
-       END AS Quantity
-FROM (
-    SELECT s.ShoesID,
-           ROUND(COALESCE(s.shoes_size, 40.00), 2) AS base_size,
-           GREATEST(COALESCE(s.Stock, 0), 0) AS total_stock,
-           FLOOR(GREATEST(COALESCE(s.Stock, 0), 0) / 3) AS base_qty,
-           MOD(GREATEST(COALESCE(s.Stock, 0), 0), 3) AS remainder
-    FROM shoes s
-) AS seed
-JOIN (
-    SELECT -1 AS offset
-    UNION ALL SELECT 0
-    UNION ALL SELECT 1
-) AS offsets;
-
-UPDATE `shoes` s
-SET s.Stock = (
-    SELECT COALESCE(SUM(ss.Quantity), 0)
-    FROM shoe_sizes ss
-    WHERE ss.ShoeID = s.ShoesID
-);
 
 --
 -- Indexes for dumped tables

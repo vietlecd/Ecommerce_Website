@@ -23,7 +23,7 @@ class ProductModel
     public function getRandomProducts($limit)
     {
         try {
-            $stmt = $this->pdo->prepare("SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Stock, s.Description AS description, c.Name AS category, s.CategoryID AS category_id
+            $stmt = $this->pdo->prepare("SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Stock, s.Description AS description, s.shoes_size, c.Name AS category, s.CategoryID AS category_id
                                          FROM shoes s
                                          JOIN category c ON s.CategoryID = c.CategoryID
                                          ORDER BY RAND()
@@ -82,22 +82,6 @@ class ProductModel
             }
         }
 
-        if ($needsSizeJoin) {
-            if ($minSize !== null && is_numeric($minSize)) {
-                $sql .= " AND sz.Size >= ?";
-                $params[] = (float)$minSize;
-            }
-
-            if ($maxSize !== null && is_numeric($maxSize)) {
-                $sql .= " AND sz.Size <= ?";
-                $params[] = (float)$maxSize;
-            }
-        }
-
-        if ($saleOnly) {
-            $sql .= " AND sl.ShoesID IS NOT NULL";
-        }
-
         if ($limit > 0) {
             $sql .= " LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
         }
@@ -125,6 +109,47 @@ class ProductModel
     }
 
     public function getHighDiscountSales($minDiscount = 50, $limit = 10)
+    {
+        $sql = "SELECT sh.ShoesID AS id, sh.Name AS name, sh.Price AS price, sh.Image AS image,
+                       sh.Description AS description, sh.shoes_size, sh.Stock, sh.CategoryID AS category_id,
+                       c.Name AS category
+                FROM sales s
+                JOIN shoes sh ON s.ShoesID = sh.ShoesID
+                JOIN category c ON sh.CategoryID = c.CategoryID
+                WHERE s.DiscountPercent >= :minDiscount
+                  AND (s.ExpiresAt IS NULL OR s.ExpiresAt >= NOW())
+                ORDER BY s.DiscountPercent DESC, s.ExpiresAt ASC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':minDiscount', (float)$minDiscount, PDO::PARAM_STR);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    public function getSalesEndingSoon($daysAhead = 7, $limit = 10)
+    {
+        $endDate = (new DateTime())->modify('+' . (int)$daysAhead . ' days')->format('Y-m-d H:i:s');
+        $sql = "SELECT sh.ShoesID AS id, sh.Name AS name, sh.Price AS price, sh.Image AS image,
+                       sh.Description AS description, sh.shoes_size, sh.Stock, sh.CategoryID AS category_id,
+                       c.Name AS category
+                FROM sales s
+                JOIN shoes sh ON s.ShoesID = sh.ShoesID
+                JOIN category c ON sh.CategoryID = c.CategoryID
+                WHERE s.ExpiresAt IS NOT NULL
+                  AND s.ExpiresAt BETWEEN NOW() AND :endDate
+                ORDER BY s.ExpiresAt ASC, s.DiscountPercent DESC
+                LIMIT :limit";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':endDate', $endDate);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->enrichProducts($products);
+    }
+
+    public function getTotalProducts($keyword = '', $category = '', $minPrice = null, $maxPrice = null)
     {
         $sql = "SELECT sh.ShoesID AS id, sh.Name AS name, sh.Price AS price, sh.Image AS image,
                        sh.Description AS description, sh.Stock, sh.CategoryID AS category_id,
@@ -182,7 +207,7 @@ class ProductModel
     public function getProductById($id)
     {
         $stmt = $this->pdo->prepare("SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Description AS description, 
-                                           c.Name AS category, s.CategoryID AS category_id, s.Stock, 
+                                           c.Name AS category, s.CategoryID AS category_id, s.shoes_size, s.Stock, 
                                            s.DateCreate, s.DateUpdate
                                      FROM shoes s
                                      JOIN category c ON s.CategoryID = c.CategoryID
@@ -310,7 +335,7 @@ class ProductModel
     {
         try {
             $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image, s.Description AS description, 
-                           c.Name AS category, s.Stock, s.CategoryID AS category_id
+                           c.Name AS category, s.shoes_size, s.Stock, s.CategoryID AS category_id
                     FROM shoes s
                     JOIN category c ON s.CategoryID = c.CategoryID
                     WHERE s.CategoryID = ? AND s.ShoesID != ?
@@ -361,7 +386,7 @@ class ProductModel
     {
         $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
                        s.Description AS description, c.Name AS category, s.CategoryID AS category_id,
-                       s.Stock, s.DateCreate
+                       s.Stock, s.shoes_size, s.DateCreate
                 FROM shoes s
                 JOIN category c ON s.CategoryID = c.CategoryID
                 ORDER BY s.DateCreate DESC, s.ShoesID DESC
@@ -377,11 +402,11 @@ class ProductModel
     {
         $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
                        s.Description AS description, c.Name AS category, s.CategoryID AS category_id,
-                       s.Stock, MAX(cm.Date) AS latest_comment_date
+                       s.Stock, s.shoes_size, MAX(cm.Date) AS latest_comment_date
                 FROM shoes s
                 JOIN comment cm ON cm.ShoesID = s.ShoesID
                 JOIN category c ON s.CategoryID = c.CategoryID
-                GROUP BY s.ShoesID, s.Name, s.Price, s.Image, s.Description, c.Name, s.CategoryID, s.Stock
+                GROUP BY s.ShoesID, s.Name, s.Price, s.Image, s.Description, c.Name, s.CategoryID, s.Stock, s.shoes_size
                 ORDER BY latest_comment_date DESC
                 LIMIT :limit";
         $stmt = $this->pdo->prepare($sql);
@@ -395,7 +420,7 @@ class ProductModel
     {
         $sql = "SELECT s.ShoesID AS id, s.Name AS name, s.Price AS price, s.Image AS image,
                        s.Description AS description, c.Name AS category, s.CategoryID AS category_id,
-                       s.Stock
+                       s.Stock, s.shoes_size
                 FROM shoes s
                 JOIN category c ON s.CategoryID = c.CategoryID
                 ORDER BY s.Price ASC, s.ShoesID ASC
@@ -409,174 +434,13 @@ class ProductModel
 
     private function enrichProducts(array $products)
     {
-        if (empty($products)) {
-            return [];
-        }
-
-        $productIds = array_column($products, 'id');
-        $sizeMap = $this->fetchSizesForProductIds($productIds);
-
         foreach ($products as &$product) {
-            $productSizes = $sizeMap[$product['id']] ?? [];
-            $product['sizes'] = $productSizes;
-            $product['size_summary'] = $this->formatSizeSummary($productSizes);
-            $product['shoes_size'] = $product['size_summary'];
             $product['promotion'] = $this->getPromotionForProduct($product['id']);
             $product['sale'] = $this->getSaleForProduct($product['id']);
             $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion'], $product['sale']);
         }
         unset($product);
         return $products;
-    }
-
-    private function fetchSizesForProductIds(array $productIds): array
-    {
-        if (empty($productIds)) {
-            return [];
-        }
-
-        $placeholders = implode(',', array_fill(0, count($productIds), '?'));
-        $stmt = $this->pdo->prepare("SELECT SizeID, ShoeID, Size, Quantity FROM shoe_sizes WHERE ShoeID IN ($placeholders) ORDER BY Size ASC");
-        $stmt->execute($productIds);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $result = [];
-        foreach ($rows as $row) {
-            $result[$row['ShoeID']][] = [
-                'id' => (int)$row['SizeID'],
-                'size' => (float)$row['Size'],
-                'label' => $this->formatSizeValue($row['Size']),
-                'quantity' => (int)$row['Quantity'],
-            ];
-        }
-
-        return $result;
-    }
-
-    private function formatSizeSummary(array $sizes): string
-    {
-        if (empty($sizes)) {
-            return '';
-        }
-
-        $labels = array_map(function ($sizeRow) {
-            return $this->formatSizeValue($sizeRow['size']);
-        }, $sizes);
-
-        return implode(', ', $labels);
-    }
-
-    private function formatSizeValue($value): string
-    {
-        return rtrim(rtrim(number_format((float)$value, 2, '.', ''), '0'), '.');
-    }
-
-    public function syncProductSizes(int $shoeId, array $sizes): bool
-    {
-        $prepared = [];
-        foreach ($sizes as $row) {
-            if (!isset($row['size'])) {
-                continue;
-            }
-
-            $sizeValue = is_numeric($row['size']) ? (float)$row['size'] : null;
-            if ($sizeValue === null) {
-                continue;
-            }
-
-            $quantityValue = isset($row['quantity']) ? (int)$row['quantity'] : 0;
-            if ($quantityValue < 0) {
-                $quantityValue = 0;
-            }
-
-            $normalizedSize = (float)number_format($sizeValue, 2, '.', '');
-            if (!isset($prepared[$normalizedSize])) {
-                $prepared[$normalizedSize] = ['size' => $normalizedSize, 'quantity' => 0];
-            }
-            $prepared[$normalizedSize]['quantity'] += $quantityValue;
-        }
-
-        $normalized = array_values($prepared);
-
-        try {
-            $this->pdo->beginTransaction();
-            $deleteStmt = $this->pdo->prepare("DELETE FROM shoe_sizes WHERE ShoeID = ?");
-            $deleteStmt->execute([$shoeId]);
-
-            if (!empty($normalized)) {
-                $insertStmt = $this->pdo->prepare("INSERT INTO shoe_sizes (ShoeID, Size, Quantity) VALUES (?, ?, ?)");
-                foreach ($normalized as $row) {
-                    $insertStmt->execute([$shoeId, $row['size'], $row['quantity']]);
-                }
-            }
-
-            $totalStock = array_sum(array_column($normalized, 'quantity'));
-            $baseSize = $normalized[0]['size'] ?? null;
-            $updateStmt = $this->pdo->prepare("UPDATE shoes SET Stock = ?, shoes_size = ? WHERE ShoesID = ?");
-            $updateStmt->execute([$totalStock, $baseSize, $shoeId]);
-
-            $this->pdo->commit();
-            return true;
-        } catch (PDOException $e) {
-            $this->pdo->rollBack();
-            error_log('Failed to sync product sizes: ' . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function getCategoryStats(array $categoryIds)
-    {
-        if (empty($categoryIds)) {
-            return [];
-        }
-
-        $placeholders = implode(',', array_fill(0, count($categoryIds), '?'));
-        $sql = "
-            SELECT s.CategoryID AS category_id,
-                   COUNT(*) AS total_products,
-                   SUM(CASE WHEN sl.ShoesID IS NOT NULL THEN 1 ELSE 0 END) AS sale_products,
-                   SUM(CASE WHEN s.Stock BETWEEN 1 AND 9 THEN 1 ELSE 0 END) AS low_stock_products,
-                   SUM(CASE WHEN s.Stock <= 0 THEN 1 ELSE 0 END) AS out_of_stock_products,
-                   SUM(CASE WHEN s.DateCreate >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) THEN 1 ELSE 0 END) AS new_products_week,
-                   SUM(CASE WHEN od.ShoesID IS NOT NULL THEN 1 ELSE 0 END) AS purchased_today
-            FROM shoes s
-            LEFT JOIN (
-                SELECT ShoesID
-                FROM sales
-                WHERE (ExpiresAt IS NULL OR ExpiresAt >= NOW())
-                GROUP BY ShoesID
-            ) sl ON sl.ShoesID = s.ShoesID
-            LEFT JOIN (
-                SELECT os.ShoesID
-                FROM order_shoes os
-                JOIN `order` o ON o.OrderID = os.OrderID
-                WHERE DATE(o.Date) = CURDATE()
-                GROUP BY os.ShoesID
-            ) od ON od.ShoesID = s.ShoesID
-            WHERE s.CategoryID IN ($placeholders)
-            GROUP BY s.CategoryID
-        ";
-
-        $stmt = $this->pdo->prepare($sql);
-        foreach ($categoryIds as $index => $categoryId) {
-            $stmt->bindValue($index + 1, (int)$categoryId, PDO::PARAM_INT);
-        }
-        $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $stats = [];
-        foreach ($rows as $row) {
-            $stats[$row['category_id']] = [
-                'total_products' => (int)$row['total_products'],
-                'sale_products' => (int)$row['sale_products'],
-                'low_stock_products' => (int)$row['low_stock_products'],
-                'out_of_stock_products' => (int)$row['out_of_stock_products'],
-                'new_products_week' => (int)$row['new_products_week'],
-                'purchased_today' => (int)$row['purchased_today'],
-            ];
-        }
-
-        return $stats;
     }
 }
 

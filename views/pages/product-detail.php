@@ -3,112 +3,53 @@
 $formatCurrency = function ($value) {
     return '$' . number_format($value, 2);
 };
-$descriptionSnippet = !empty($product['description'])
-    ? mb_strimwidth(strip_tags($product['description']), 0, 180, '...')
-    : 'Heritage craftsmanship meets modern cushioning for round-the-clock wear.';
-$categoryEyebrow = !empty($product['category']) ? $product['category'] . ' capsule' : 'Signature release';
-$stockUnits = isset($product['Stock']) ? max(0, (int)$product['Stock']) : null;
-$stockValue = $stockUnits !== null ? ($stockUnits > 0 ? $stockUnits . ' units ready' : 'Backorder window') : 'Ready to ship';
-$stockContext = $stockUnits !== null ? ($stockUnits > 0 ? 'Ships within 24h' : 'Dispatch in 7 days') : 'Ships within 24h';
-$sizeValue = !empty($product['sizes']) ? 'Size ' . ($product['size_summary'] ?? '') : 'Multi-size run';
-$dateValue = !empty($product['DateCreate']) ? date('M d, Y', strtotime($product['DateCreate'])) : date('M d, Y');
-$productMetrics = [
-    [
-        'label' => 'Inventory',
-        'value' => $stockValue,
-        'context' => $stockContext
-    ],
-    [
-        'label' => 'Fit profile',
-        'value' => $sizeValue,
-        'context' => 'Concierge fitting available'
-    ],
-    [
-        'label' => 'Drop date',
-        'value' => $dateValue,
-        'context' => 'Catalogued in atelier log'
-    ]
-];
-$productServices = [
-    [
-        'icon' => 'fas fa-shipping-fast',
-        'title' => 'Express shipping',
-        'copy' => 'Nationwide delivery within 48 hours.'
-    ],
-    [
-        'icon' => 'fas fa-undo',
-        'title' => '30-day returns',
-        'copy' => 'Complimentary pick-up for size swaps.'
-    ],
-    [
-        'icon' => 'fas fa-shield-alt',
-        'title' => 'Craft warranty',
-        'copy' => '12-month coverage on stitching and hardware.'
-    ]
-];
-$productFacts = [
-    [
-        'label' => 'Release ID',
-        'value' => 'SS-' . str_pad((string)$product['id'], 5, '0', STR_PAD_LEFT)
-    ],
-    [
-        'label' => 'Category',
-        'value' => !empty($product['category']) ? $product['category'] : 'Lifestyle'
-    ],
-    [
-        'label' => 'Available stock',
-        'value' => $stockUnits !== null ? ($stockUnits > 0 ? $stockUnits . ' pairs' : 'Backorder open') : 'Limited run'
-    ],
-    [
-        'label' => 'Care window',
-        'value' => 'Complimentary cleaning within 90 days'
-    ]
-];
 ?>
 
 <div class="product-detail-wrapper">
+    <div class="product-header">
+        <div class="product-breadcrumb">
+            <a href="/index.php">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="/index.php?controller=products&action=index">Products</a>
+            <?php if (!empty($product['category'])): ?>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($product['category_id']); ?>">
+                    <?php echo htmlspecialchars($product['category']); ?>
+                </a>
+            <?php endif; ?>
+        </div>
+        <h1><?php echo htmlspecialchars($product['name']); ?></h1>
+        
+        <?php if (!empty($product['category'])): ?>
+            <div class="product-category">
+                <i class="fas fa-tag"></i>
+                <a href="/index.php?controller=products&action=index&category=<?php echo urlencode($product['category_id']); ?>">
+                    <?php echo htmlspecialchars($product['category']); ?>
+                </a>
+            </div>
+        <?php endif; ?>
+    </div>
 
     <div class="product-detail">
-        <div class="product-media-stack">
-            <div class="product-detail-img">
-                <?php
-                $imageUrl = !empty($product['image']) && filter_var($product['image'], FILTER_VALIDATE_URL) 
-                    ? htmlspecialchars($product['image']) 
-                    : '/public/placeholder.jpg';
-                ?>
-                <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
-                <?php if (!empty($product['promotion'])): ?>
-                    <div class="promotion-badge">
-                        <?php if (!empty($product['promotion']['discount_percentage'])): ?>
-                            -<?php echo number_format($product['promotion']['discount_percentage']); ?>%
-                        <?php elseif (!empty($product['promotion']['fixed_price'])): ?>
-                            Offer
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <?php if (!empty($product['sizes'])): ?>
-                <div class="product-size-note">
-                    <i class="fas fa-ruler"></i>
-                    <span><?php echo htmlspecialchars($product['size_summary']); ?></span>
+        <div class="product-detail-img">
+            <?php
+            $imageUrl = !empty($product['image']) && filter_var($product['image'], FILTER_VALIDATE_URL) 
+                ? htmlspecialchars($product['image']) 
+                : '/public/placeholder.jpg';
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
+            <?php if (!empty($product['promotion'])): ?>
+                <div class="promotion-badge">
+                    <?php if (!empty($product['promotion']['discount_percentage'])): ?>
+                        -<?php echo number_format($product['promotion']['discount_percentage']); ?>%
+                    <?php elseif (!empty($product['promotion']['fixed_price'])): ?>
+                        Offer
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
-            <div class="product-highlight-metrics">
-                <?php foreach ($productMetrics as $metric): ?>
-                    <div class="product-metric-card">
-                        <span class="product-metric-label"><?php echo htmlspecialchars($metric['label']); ?></span>
-                        <strong><?php echo htmlspecialchars($metric['value']); ?></strong>
-                        <p><?php echo htmlspecialchars($metric['context']); ?></p>
-                    </div>
-                <?php endforeach; ?>
-            </div>
         </div>
         
         <div class="product-detail-info">
-            <p class="product-eyebrow"><?php echo htmlspecialchars($categoryEyebrow); ?></p>
-            <h1><?php echo htmlspecialchars($product['name']); ?></h1>
-            <p class="product-subcopy"><?php echo htmlspecialchars($descriptionSnippet); ?></p>
-
             <div class="product-price-section">
                 <?php if (isset($product['final_price']) && $product['final_price'] != $product['price']): ?>
                     <div class="price">
@@ -124,24 +65,38 @@ $productFacts = [
                         <span class="current-price"><?php echo $formatCurrency($product['price']); ?></span>
                     </div>
                 <?php endif; ?>
-                <p class="price-note">Tax included. Complimentary cleaning kit ships with every pair.</p>
             </div>
 
-            <div class="product-meta-chips">
-                <?php if (!empty($product['sizes'])): ?>
-                    <span class="product-meta-chip">
+            <div class="product-specs">
+                <?php if (!empty($product['shoes_size'])): ?>
+                    <div class="spec-item">
                         <i class="fas fa-ruler"></i>
-                        Size <?php echo htmlspecialchars($product['size_summary']); ?>
-                    </span>
+                        <span class="spec-label">Size:</span>
+                        <span class="spec-value"><?php echo htmlspecialchars($product['shoes_size']); ?></span>
+                    </div>
                 <?php endif; ?>
-                <span class="product-meta-chip <?php echo ($stockUnits !== null && $stockUnits <= 0) ? 'chip-low' : ''; ?>">
+                
+                <div class="spec-item">
                     <i class="fas fa-box"></i>
-                    <?php echo $stockUnits !== null ? ($stockUnits > 0 ? $stockUnits . ' in stock' : 'Backorder in queue') : 'Available to ship'; ?>
-                </span>
-                <span class="product-meta-chip">
-                    <i class="far fa-calendar"></i>
-                    <?php echo $dateValue; ?>
-                </span>
+                    <span class="spec-label">Stock:</span>
+                    <span class="spec-value <?php echo (isset($product['Stock']) && $product['Stock'] > 0) ? 'in-stock' : 'out-of-stock'; ?>">
+                        <?php 
+                        if (isset($product['Stock'])) {
+                            echo $product['Stock'] > 0 ? $product['Stock'] . ' units' : 'Out of stock';
+                        } else {
+                            echo 'Available';
+                        }
+                        ?>
+                    </span>
+                </div>
+
+                <?php if (!empty($product['DateCreate'])): ?>
+                    <div class="spec-item">
+                        <i class="far fa-calendar"></i>
+                        <span class="spec-label">Added On:</span>
+                        <span class="spec-value"><?php echo date('m/d/Y', strtotime($product['DateCreate'])); ?></span>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <?php if (!empty($product['promotion'])): ?>
@@ -160,49 +115,8 @@ $productFacts = [
                     </div>
                 </div>
             <?php endif; ?>
-
-            <div class="product-service-grid">
-                <?php foreach ($productServices as $service): ?>
-                    <div class="product-service-card">
-                        <div class="service-icon">
-                            <i class="<?php echo $service['icon']; ?>"></i>
-                        </div>
-                        <div>
-                            <h4><?php echo htmlspecialchars($service['title']); ?></h4>
-                            <p><?php echo htmlspecialchars($service['copy']); ?></p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
             
             <form method="post" action="" class="product-add-to-cart">
-                <?php if (!empty($product['sizes'])): ?>
-                    <div class="size-picker">
-                        <label class="size-picker-label"><i class="fas fa-ruler"></i> Choose your size:</label>
-                        <?php if (!empty($productAddError)): ?>
-                            <div class="size-picker-error"><?php echo htmlspecialchars($productAddError); ?></div>
-                        <?php endif; ?>
-                        <div class="size-select-grid" data-size-picker>
-                            <?php foreach ($product['sizes'] as $sizeOption): ?>
-                                <?php
-                                    $sizeLabel = $sizeOption['label'] ?? rtrim(rtrim(number_format((float)$sizeOption['size'], 2, '.', ''), '0'), '.');
-                                    $sizeKey = rtrim(rtrim(number_format((float)$sizeOption['size'], 2, '.', ''), '0'), '.');
-                                    $inStock = (int)$sizeOption['quantity'] > 0;
-                                ?>
-                                <button type="button"
-                                        class="size-select-btn <?php echo $inStock ? '' : 'is-disabled'; ?>"
-                                        data-size-value="<?php echo htmlspecialchars($sizeKey); ?>"
-                                        data-size-label="<?php echo htmlspecialchars($sizeLabel); ?>"
-                                        data-size-max="<?php echo (int)$sizeOption['quantity']; ?>"
-                                        <?php echo $inStock ? '' : 'disabled'; ?>>
-                                    <span>Size <?php echo htmlspecialchars($sizeLabel); ?></span>
-                                    <small><?php echo $inStock ? $sizeOption['quantity'] . ' đôi' : 'Hết hàng'; ?></small>
-                                </button>
-                            <?php endforeach; ?>
-                        </div>
-                        <input type="hidden" name="selected_size" id="selected-size-input">
-                    </div>
-                <?php endif; ?>
                 <div class="quantity-section">
                     <label for="quantity-input"><i class="fas fa-shopping-cart"></i> Quantity:</label>
                     <div class="quantity-selector">
@@ -218,40 +132,20 @@ $productFacts = [
                     </div>
                 </div>
                 
-                <?php
-                    $isOutOfStock = isset($product['Stock']) && $product['Stock'] <= 0;
-                    $requiresSize = !empty($product['sizes']) && !$isOutOfStock;
-                ?>
-                <button type="submit"
-                        name="add_to_cart"
-                        class="btn btn-add-cart"
-                        data-add-cart
-                        data-requires-size="<?php echo $requiresSize ? '1' : '0'; ?>"
-                        data-default-disabled="<?php echo $isOutOfStock ? '1' : '0'; ?>"
-                        <?php echo $isOutOfStock ? 'disabled' : ''; ?>>
+                <button type="submit" name="add_to_cart" class="btn btn-add-cart" 
+                        <?php echo (isset($product['Stock']) && $product['Stock'] <= 0) ? 'disabled' : ''; ?>>
                     <i class="fas fa-cart-plus"></i>
-                    <?php echo $isOutOfStock ? 'Out of Stock' : 'Add to Cart'; ?>
+                    <?php echo (isset($product['Stock']) && $product['Stock'] <= 0) ? 'Out of Stock' : 'Add to Cart'; ?>
                 </button>
             </form>
         </div>
     </div>
 
-    <section class="product-story-grid">
+    <section class="product-description-section">
         <div class="product-description">
             <h3><i class="fas fa-info-circle"></i> Product Description</h3>
-            <p><?php echo nl2br(htmlspecialchars($product['description'] ?? 'Detailed spec coming soon.')); ?></p>
+            <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
         </div>
-        <aside class="product-facts-panel">
-            <h3>Drop essentials</h3>
-            <ul class="product-fact-list">
-                <?php foreach ($productFacts as $fact): ?>
-                    <li>
-                        <span><?php echo htmlspecialchars($fact['label']); ?></span>
-                        <strong><?php echo htmlspecialchars($fact['value']); ?></strong>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </aside>
     </section>
 
     <?php if (!empty($relatedProducts)): ?>
@@ -308,8 +202,8 @@ $productFacts = [
                                         <?php if (!empty($related['category'])): ?>
                                             <span><i class="fas fa-tags"></i> <?php echo htmlspecialchars($related['category']); ?></span>
                                         <?php endif; ?>
-                                        <?php if (!empty($related['sizes'])): ?>
-                                            <span><i class="fas fa-ruler"></i> Size: <?php echo htmlspecialchars($related['size_summary']); ?></span>
+                                        <?php if (!empty($related['shoes_size'])): ?>
+                                            <span><i class="fas fa-ruler"></i> Size: <?php echo htmlspecialchars($related['shoes_size']); ?></span>
                                         <?php endif; ?>
                                         <?php if (isset($related['Stock'])): ?>
                                             <span><i class="fas fa-box"></i> <?php echo $related['Stock'] > 0 ? $related['Stock'] . ' in stock' : 'Out of stock'; ?></span>
@@ -496,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const quantityInput = document.querySelector('.quantity-input');
     const quantityMinus = document.querySelector('.quantity-minus');
     const quantityPlus = document.querySelector('.quantity-plus');
-    let maxQuantity = quantityInput ? parseInt(quantityInput.getAttribute('max')) || 999 : 999;
+    const maxQuantity = quantityInput ? parseInt(quantityInput.getAttribute('max')) || 999 : 999;
 
     if (quantityMinus) {
         quantityMinus.addEventListener('click', function() {
@@ -524,44 +418,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (value > maxQuantity) {
                 this.value = maxQuantity;
             }
-        });
-    }
-
-    const sizeButtons = document.querySelectorAll('[data-size-picker] .size-select-btn');
-    const sizeInput = document.getElementById('selected-size-input');
-    const addToCartButton = document.querySelector('[data-add-cart]');
-    const requiresSize = addToCartButton && addToCartButton.getAttribute('data-requires-size') === '1';
-    const defaultDisabled = addToCartButton && addToCartButton.getAttribute('data-default-disabled') === '1';
-
-    if (addToCartButton && requiresSize && !defaultDisabled) {
-        addToCartButton.disabled = true;
-        addToCartButton.classList.add('btn-disabled');
-    }
-
-    if (sizeButtons.length && sizeInput) {
-        sizeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.disabled) {
-                    return;
-                }
-                sizeButtons.forEach(btn => btn.classList.remove('is-active'));
-                this.classList.add('is-active');
-                const value = this.getAttribute('data-size-value') || '';
-                const sizeMax = parseInt(this.getAttribute('data-size-max')) || 1;
-                sizeInput.value = value;
-                maxQuantity = sizeMax;
-                if (quantityInput) {
-                    quantityInput.setAttribute('max', sizeMax);
-                    let currentValue = parseInt(quantityInput.value) || 1;
-                    if (currentValue > sizeMax) {
-                        quantityInput.value = sizeMax;
-                    }
-                }
-                if (addToCartButton && requiresSize && !defaultDisabled) {
-                    addToCartButton.disabled = false;
-                    addToCartButton.classList.remove('btn-disabled');
-                }
-            });
         });
     }
 

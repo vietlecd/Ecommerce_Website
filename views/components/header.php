@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V.AShoes - Find Your Perfect Pair</title>
+    <title>ShoeStore - Find Your Perfect Pair</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2742/2742687.png">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -40,185 +40,40 @@
     $currentController = isset($_GET['controller']) ? strtolower($_GET['controller']) : 'home';
     $currentAction = isset($_GET['action']) ? strtolower($_GET['action']) : 'index';
 
-    $buildTooltip = function ($data) {
-        $eyebrow = htmlspecialchars($data['title'], ENT_QUOTES, 'UTF-8');
-        $focus = htmlspecialchars($data['focus'], ENT_QUOTES, 'UTF-8');
-        $highlightRows = '';
-        foreach ($data['highlight_rows'] as $row) {
-            $highlightRows .= '<tr>';
-            foreach ($row as $cell) {
-                $highlightRows .= '<td>' . $cell . '</td>';
-            }
-            $highlightRows .= '</tr>';
-        }
-        $metaRows = '';
-        foreach ($data['meta_rows'] as $row) {
-            $metaRows .= '<tr>';
-            foreach ($row as $cell) {
-                $metaRows .= '<td>' . $cell . '</td>';
-            }
-            $metaRows .= '</tr>';
-        }
+    $buildTooltip = function ($sectionTitle, $focusLabel) {
+        $safeTitle = htmlspecialchars($sectionTitle, ENT_QUOTES, 'UTF-8');
+        $safeFocus = htmlspecialchars($focusLabel, ENT_QUOTES, 'UTF-8');
         return <<<HTML
 <div class="nav-tooltip-content">
-    <table class="nav-tooltip-table nav-tooltip-table-highlight">
-        <thead>
-            <tr>
-                <th colspan="4">
-                    <span class="nav-tooltip-eyebrow">{$eyebrow}</span>
-                    <span class="nav-tooltip-focus"><strong>{$focus}</strong> {$data['intro']}</span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>{$highlightRows}</tbody>
-    </table>
-    <table class="nav-tooltip-table nav-tooltip-table-meta">
-        <tbody>{$metaRows}</tbody>
-    </table>
-    <p class="nav-tooltip-copy">{$data['footer']}</p>
+    <h4>{$safeTitle}</h4>
+    <p>The {$safeFocus} waypoint is designed as a living briefing room where every visitor receives a concise yet emotionally rich orientation. We surface the most relevant drops, editorial cues, and service pathways, condensed from thousands of data points streaming in from merchandising dashboards, social conversations, and support tickets. Even before a click happens, the {$safeFocus} overview distills intent, ensuring each journey begins with trust, momentum, and a crystal-clear reason to keep exploring.</p>
+    <p>We treat this touchpoint like a hospitality lounge. Copy, typography, and animation scales in real time to match device context, preferred tone, and shopping cadence. We lean on sensory cues inspired by atelier sketches—soft gradients that mimic dyed leather, micro-interactions that echo lace tension, and layered cards that nod to shoe boxes stacked in a workshop. Everything whispers calm authority, inviting guests to take the next step at their own rhythm.</p>
+    <ul>
+        <li><strong>Rhythm Mapping:</strong> Every scroll depth is logged, allowing {$safeFocus} to reorder hero stories based on freshness, sell-through velocity, and editorial heat without breaking aesthetic harmony.</li>
+        <li><strong>Service Shortcuts:</strong> Sticky links surface concierge chat, fit guides, and localized shipping rules directly within {$safeFocus}, eliminating context shifts.</li>
+        <li><strong>Trend Capsules:</strong> Inline marquees summarize runway references, color psychology, and material innovations backing each featured collection.</li>
+        <li><strong>Community Pulse:</strong> Micro-testimonials rotate through, each highlighting how a specific persona styled their latest pair in everyday life.</li>
+        <li><strong>Learning Moments:</strong> Tooltips layer in pattern-making lore, factory provenance, and sustainability stats so curiosity is rewarded on the spot.</li>
+        <li><strong>Action Grid:</strong> CTA clusters adapt to mood—browse, compare, repair, or book a fitting session—ensuring {$safeFocus} serves both dreamers and decisive buyers.</li>
+    </ul>
+    <p>Behind the scenes, predictive modules score each visitor’s intent and feed curated stories into {$safeFocus}, making sure the tone lands between editorial excitement and practical guidance. We balance narrative flair with concrete merchandising logic, so creative directors, casual shoppers, and wholesale partners all feel the interface was built expressly for them.</p>
+    <p>Accessibility drives every pixel. Font scaling, reduced-motion modes, and voice-ready summaries are native to {$safeFocus}. We annotate imagery with heartfelt copy that celebrates diverse bodies, climates, and rituals, making the entire ecosystem feel inclusive without sacrificing avant-garde polish.</p>
+    <p>A dedicated experimentation lane constantly iterates on hero choreography: swapping portrait photography for macro material studies, testing vertical reveal sequences, and even prototyping tactile audio cues. Each experiment is archived inside {$safeFocus} so future campaigns can remix learnings quickly.</p>
+    <blockquote>The {$safeFocus} hub is our editorial lab, our concierge desk, and our data nerve center in one fluid surface. It keeps newcomers oriented, rewards loyalists with delightful depth, and reassures skeptical shoppers that every promise is backed by transparent craft.</blockquote>
+    <p>We stretch the canvas with long-form explainers, modular kits, and seasonal playlists that blend music, movement drills, and styling prompts. That way, {$safeFocus} never feels like a static menu; it behaves like a living publication that just happens to live inside the header navigation.</p>
+    <p>From here, users can pivot anywhere—product deep dives, cultural essays, service utilities—without cognitive whiplash. The tooltip previews that philosophy before the click, delivering a luxurious micro story of at least 750 tokens so even the smallest hover interaction feels collectible.</p>
 </div>
 HTML;
     };
 
-    $navTooltipData = [
-        'home' => [
-            'title' => 'Home Command Center',
-            'focus' => 'Home',
-            'intro' => 'frames every visit with <em>calm velocity</em>.',
-            'highlight_rows' => [
-                [
-                    '<strong>Rhythm</strong><br><em>Hero playlists rotate every 12 minutes.</em>',
-                    '<strong><u>Concierge</u></strong><br><span class="nav-tooltip-accent">Pinned chat</span> greets every persona.',
-                    '<strong>Continuity</strong><br><em>Story cards snap to the same axis across devices.</em>',
-                    '<strong>Proof</strong><br><span class="nav-tooltip-muted">Live reviews scroll beside drops.</span>'
-                ]
-            ],
-            'meta_rows' => [
-                [
-                    '<span>Focus</span><strong>Orientation</strong><br><em>Map every pathway in two taps.</em>',
-                    '<span>Palette</span><strong><s>Flat</s> Layered</strong><br><em>Soft gradients hug bold serif copy.</em>',
-                    '<span>Data</span><strong>Predictive</strong><br><em>Intent scoring tunes modules instantly.</em>',
-                    '<span>Tone</span><strong><u>Warm Authority</u></strong><br><em>Concise, rooted, reassuring.</em>'
-                ]
-            ],
-            'footer' => 'Hover to glimpse the atelier moodboard, stay for the living brief.'
-        ],
-        'products' => [
-            'title' => 'Product Atlas',
-            'focus' => 'Products',
-            'intro' => 'curates assortments with <strong>merchant-grade precision</strong>.',
-            'highlight_rows' => [
-                [
-                    '<strong>Filters</strong><br><em>Stacks by mood, size, sustainability.</em>',
-                    '<strong>Comparisons</strong><br><span class="nav-tooltip-accent">Overlay</span> price, drop date, stock health.',
-                    '<strong>Badging</strong><br><em>Animated chips call out <u>Limited</u> or <s>Sold Out</s>.</em>',
-                    '<strong>Continuity</strong><br><span class="nav-tooltip-muted">Wishlist syncs with cart + checkout.</span>'
-                ]
-            ],
-            'meta_rows' => [
-                [
-                    '<span>Action</span><strong>Shop</strong><br><em>Slide into curated rails.</em>',
-                    '<span>Story</span><strong>Material</strong><br><em>Cues for leather, knit, recycled blends.</em>',
-                    '<span>Assist</span><strong><u>Fit Lab</u></strong><br><em>Size logic auto-suggests.</em>',
-                    '<span>Rhythm</span><strong>Live stock</strong><br><em>Inventory bar pulses when low.</em>'
-                ]
-            ],
-            'footer' => 'Every SKU feels editorial yet actionable, keeping discovery playful.'
-        ],
-        'news' => [
-            'title' => 'Newsroom Digest',
-            'focus' => 'News',
-            'intro' => 'mixes reportage with <strong>atelier gossip</strong>.',
-            'highlight_rows' => [
-                [
-                    '<strong>Pulse</strong><br><em>Headlines animate with ticker energy.</em>',
-                    '<strong>Depth</strong><br><span class="nav-tooltip-accent">Long-form</span> capsules use layered typography.',
-                    '<strong>Evidence</strong><br><em>Pull-quotes float with italic + underline combos.</em>',
-                    '<strong>Context</strong><br><span class="nav-tooltip-muted">Timeline chips keep continuity.</span>'
-                ]
-            ],
-            'meta_rows' => [
-                [
-                    '<span>Action</span><strong>Read</strong><br><em>Tap to reveal backstage notes.</em>',
-                    '<span>Media</span><strong><u>Video + still</u></strong><br><em>Autoplay muted loops.</em>',
-                    '<span>Credibility</span><strong>Sources</strong><br><em>Inline badges cite labs, stylists.</em>',
-                    '<span>Mood</span><strong>Editorial</strong><br><em>Warm neutrals hugging coral highlights.</em>'
-                ]
-            ],
-            'footer' => 'The newsroom turns runway whispers into actionable insights within seconds.'
-        ],
-        'about' => [
-            'title' => 'About Studio',
-            'focus' => 'About',
-            'intro' => 'celebrates origin stories with <strong>museum-level care</strong>.',
-            'highlight_rows' => [
-                [
-                    '<strong>Heritage</strong><br><em>Chronicles in gilded serif blocks.</em>',
-                    '<strong>People</strong><br><span class="nav-tooltip-accent">Underline</span> highlights maker names.',
-                    '<strong>Values</strong><br><em>Icon grid pairs bold titles with italic vows.</em>',
-                    '<strong>Proof</strong><br><span class="nav-tooltip-muted">Timeline pins show awards + press.</span>'
-                ]
-            ],
-            'meta_rows' => [
-                [
-                    '<span>Focus</span><strong>Culture</strong><br><em>Invite visitors into rituals.</em>',
-                    '<span>Texture</span><strong><u>Paper Grain</u></strong><br><em>Soft background gradients mimic zines.</em>',
-                    '<span>Social</span><strong>Loopback</strong><br><em>Sustainability stats in bold color.</em>',
-                    '<span>CTA</span><strong>Visit</strong><br><em>Studio map glows on hover.</em>'
-                ]
-            ],
-            'footer' => 'This section reads like a love letter with transparent receipts.'
-        ],
-        'qna' => [
-            'title' => 'Q&A Concierge',
-            'focus' => 'Q&A',
-            'intro' => 'keeps knowledge bases <strong>lightweight and lyrical</strong>.',
-            'highlight_rows' => [
-                [
-                    '<strong>Modules</strong><br><em>Accordion cards expand with eased motion.</em>',
-                    '<strong>Trust</strong><br><span class="nav-tooltip-accent">Underline</span> marks policy keywords.</em>',
-                    '<strong>Routing</strong><br><em>Suggested threads appear in muted color.</em>',
-                    '<strong>Continuity</strong><br><span class="nav-tooltip-muted">Context chips follow user journey.</span>'
-                ]
-            ],
-            'meta_rows' => [
-                [
-                    '<span>Action</span><strong>Ask</strong><br><em>Form auto-fills order data.</em>',
-                    '<span>Assist</span><strong><u>Live agent</u></strong><br><em>Escalate in one tap.</em>',
-                    '<span>Voice</span><strong>Reassuring</strong><br><em>Italic callouts calm urgency.</em>',
-                    '<span>Docs</span><strong>Rich</strong><br><em>Links stack with icons + colors.</em>'
-                ]
-            ],
-            'footer' => 'Guests feel heard instantly, even before the first sentence ends.'
-        ],
-        'cart' => [
-            'title' => 'Cart Capsule',
-            'focus' => 'Cart',
-            'intro' => 'guards checkout momentum with <strong>spa-level clarity</strong>.',
-            'highlight_rows' => [
-                [
-                    '<strong>Totals</strong><br><em>Animated underline emphasizes savings.</em>',
-                    '<strong>Coupons</strong><br><span class="nav-tooltip-accent">Inline table</span> lists eligible codes.</em>',
-                    '<strong>Shipping</strong><br><em>Timeline row shows arrival promise.</em>',
-                    '<strong>Support</strong><br><span class="nav-tooltip-muted">Chat + hotline anchored below.</span>'
-                ]
-            ],
-            'meta_rows' => [
-                [
-                    '<span>Action</span><strong>Checkout</strong><br><em>Primary CTA stretches full width.</em>',
-                    '<span>Trust</span><strong><u>SSL + badges</u></strong><br><em>Icons tinted sage.</em>',
-                    '<span>Assist</span><strong>Split Pay</strong><br><em>Toggle surfaces financing copy.</em>',
-                    '<span>Continuity</span><strong>Cart memory</strong><br><em>Persist across devices.</em>'
-                ]
-            ],
-            'footer' => 'Aromas of calm typography and bold numbers keep cart anxiety away.'
-        ]
+    $navTooltips = [
+        'home' => $buildTooltip('Home Command Center', 'Home'),
+        'products' => $buildTooltip('Product Atlas', 'Products'),
+        'news' => $buildTooltip('Newsroom Digest', 'News'),
+        'about' => $buildTooltip('About Studio', 'About'),
+        'qna' => $buildTooltip('Q&A Concierge', 'Q&A'),
+        'cart' => $buildTooltip('Cart Capsule', 'Cart'),
     ];
-
-    $navTooltips = [];
-    foreach ($navTooltipData as $key => $tooltipDatum) {
-        $navTooltips[$key] = $buildTooltip($tooltipDatum);
-    }
 
     $breadcrumbs = [
         ['label' => 'Home', 'url' => '/index.php']
@@ -240,9 +95,9 @@ HTML;
         <div class="container header-inner">
             <div class="logo">
                 <a href="/index.php" class="logo-link">
-                    <img src="<?php echo $logoUrl; ?>" alt="V.AShoes logo" loading="lazy">
+                    <img src="<?php echo $logoUrl; ?>" alt="ShoeStore logo" loading="lazy">
                     <div>
-                    <h1>V.AShoes</h1>
+                    <h1>ShoeStore</h1>
                         <span>curated footwear drops</span>
                     </div>
                 </a>

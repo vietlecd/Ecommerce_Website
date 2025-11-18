@@ -43,34 +43,34 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>2012</td>
-                        <td>Launch of the atelier in District 3 with three artisans, two sewing machines, and a relentless playlist of lo-fi beats.</td>
-                        <td>Set the tone: hand-numbered drops, zero unsold inventory, total transparency.</td>
+                        <td data-label="Year">2012</td>
+                        <td data-label="Milestone">Launch of the atelier in District 3 with three artisans, two sewing machines, and a relentless playlist of lo-fi beats.</td>
+                        <td data-label="Impact">Set the tone: hand-numbered drops, zero unsold inventory, total transparency.</td>
                     </tr>
                     <tr>
-                        <td>2014</td>
-                        <td>Partnership with urban dancers to create the FlowForm sole.</td>
-                        <td>Introduced a cushioning system tuned for lateral expression, quickly adopted by street performers worldwide.</td>
+                        <td data-label="Year">2014</td>
+                        <td data-label="Milestone">Partnership with urban dancers to create the FlowForm sole.</td>
+                        <td data-label="Impact">Introduced a cushioning system tuned for lateral expression, quickly adopted by street performers worldwide.</td>
                     </tr>
                     <tr>
-                        <td>2016</td>
-                        <td>First archive residency in Kyoto.</td>
-                        <td>Access to century-old textile swatches sparked our signature indigo-dipped lining.</td>
+                        <td data-label="Year">2016</td>
+                        <td data-label="Milestone">First archive residency in Kyoto.</td>
+                        <td data-label="Impact">Access to century-old textile swatches sparked our signature indigo-dipped lining.</td>
                     </tr>
                     <tr>
-                        <td>2019</td>
-                        <td>Launch of Loopback Program.</td>
-                        <td>Customers return worn pairs for refurbishment or recycling; 72% of materials stay in circulation.</td>
+                        <td data-label="Year">2019</td>
+                        <td data-label="Milestone">Launch of Loopback Program.</td>
+                        <td data-label="Impact">Customers return worn pairs for refurbishment or recycling; 72% of materials stay in circulation.</td>
                     </tr>
                     <tr>
-                        <td>2021</td>
-                        <td>Immersive flagship in Fukuoka with foot-scan theater.</td>
-                        <td>Blends biometric fitting, projection mapping, and personal playlists to choreograph the try-on ritual.</td>
+                        <td data-label="Year">2021</td>
+                        <td data-label="Milestone">Immersive flagship in Fukuoka with foot-scan theater.</td>
+                        <td data-label="Impact">Blends biometric fitting, projection mapping, and personal playlists to choreograph the try-on ritual.</td>
                     </tr>
                     <tr>
-                        <td>2024</td>
-                        <td>Global community studio network spanning Hanoi, São Paulo, Lagos, and Reykjavík.</td>
-                        <td>Local curators tell hyper-specific stories; each studio leads limited runs exclusive to their city.</td>
+                        <td data-label="Year">2024</td>
+                        <td data-label="Milestone">Global community studio network spanning Hanoi, São Paulo, Lagos, and Reykjavík.</td>
+                        <td data-label="Impact">Local curators tell hyper-specific stories; each studio leads limited runs exclusive to their city.</td>
                     </tr>
                 </tbody>
             </table>

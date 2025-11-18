@@ -30,8 +30,10 @@
 
 <section class="about-chronicle">
     <div class="container">
-        <h2>Chronicle of Milestones</h2>
-        <p>The path from garage experiment to global label was anything but linear. Explore the decisions, detours, and daring collaborations that shaped us.</p>
+        <div class="section-header">
+            <h2>Chronicle of Milestones</h2>
+            <p>The path from garage experiment to global label was anything but linear. Explore the decisions, detours, and daring collaborations that shaped us.</p>
+        </div>
         <div class="timeline-table-wrapper">
             <table class="timeline-table">
                 <thead>

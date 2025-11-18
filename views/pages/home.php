@@ -39,6 +39,59 @@ $heroImages = [
     </div>
 </section>
 
+<?php if ($topSaleProduct && isset($topSaleProduct['sale'])): ?>
+<div class="sale-popup-overlay" id="salePopupOverlay">
+    <div class="sale-popup-container">
+        <button class="sale-popup-close" id="salePopupClose" aria-label="Close popup">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="sale-popup-content">
+            <div class="sale-popup-badge">
+                <span class="sale-badge-text">Limited Time</span>
+                <span class="sale-badge-percent">-<?php echo number_format($topSaleProduct['sale']['DiscountPercent'], 0); ?>%</span>
+            </div>
+            <div class="sale-popup-grid">
+                <div class="sale-popup-image-wrapper">
+                    <img src="<?php echo htmlspecialchars($topSaleProduct['image']); ?>" alt="<?php echo htmlspecialchars($topSaleProduct['name']); ?>" class="sale-popup-image">
+                    <div class="sale-popup-sparkle sale-sparkle-1"></div>
+                    <div class="sale-popup-sparkle sale-sparkle-2"></div>
+                    <div class="sale-popup-sparkle sale-sparkle-3"></div>
+                </div>
+                <div class="sale-popup-info">
+                    <div class="sale-popup-eyebrow">Flash Sale</div>
+                    <h2 class="sale-popup-title"><?php echo htmlspecialchars($topSaleProduct['name']); ?></h2>
+                    <p class="sale-popup-category"><?php echo htmlspecialchars($topSaleProduct['category']); ?></p>
+                    <div class="sale-popup-price-group">
+                        <span class="sale-popup-price-old">$<?php echo number_format($topSaleProduct['price'], 2); ?></span>
+                        <span class="sale-popup-price-new">$<?php echo number_format($topSaleProduct['final_price'], 2); ?></span>
+                    </div>
+                    <p class="sale-popup-description"><?php echo htmlspecialchars(mb_substr($topSaleProduct['description'], 0, 120)) . '...'; ?></p>
+                    <div class="sale-popup-features">
+                        <div class="sale-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Free Shipping</span>
+                        </div>
+                        <div class="sale-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>30-Day Returns</span>
+                        </div>
+                        <div class="sale-feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Authentic Guarantee</span>
+                        </div>
+                    </div>
+                    <a href="/index.php?controller=products&action=detail&id=<?php echo $topSaleProduct['id']; ?>" class="sale-popup-cta">
+                        <span>Shop Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <button class="sale-popup-dismiss" id="salePopupDismiss">Maybe Later</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
 <!-- About/Introduction Section -->
 <section class="intro-section">
     <div class="container">
@@ -740,6 +793,46 @@ document.addEventListener('DOMContentLoaded', function() {
         updateNavButtons();
 
         window.addEventListener('resize', updateNavButtons);
+    }
+
+    const salePopupOverlay = document.getElementById('salePopupOverlay');
+    const salePopupClose = document.getElementById('salePopupClose');
+    const salePopupDismiss = document.getElementById('salePopupDismiss');
+
+    function showSalePopup() {
+        if (salePopupOverlay) {
+            setTimeout(() => {
+                salePopupOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 1000);
+        }
+    }
+
+    function hideSalePopup() {
+        if (salePopupOverlay) {
+            salePopupOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (salePopupOverlay) {
+        if (salePopupClose) {
+            salePopupClose.addEventListener('click', hideSalePopup);
+        }
+        if (salePopupDismiss) {
+            salePopupDismiss.addEventListener('click', hideSalePopup);
+        }
+        salePopupOverlay.addEventListener('click', function(e) {
+            if (e.target === salePopupOverlay) {
+                hideSalePopup();
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && salePopupOverlay.classList.contains('active')) {
+                hideSalePopup();
+            }
+        });
+        showSalePopup();
     }
 });
 </script>

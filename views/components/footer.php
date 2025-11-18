@@ -41,6 +41,7 @@
             </div>
         </div>
     </footer>
+    <?php require_once __DIR__ . '/chat-widget.php'; ?>
     <script src="assets/js/script.js"></script>
 </body>
 </html>

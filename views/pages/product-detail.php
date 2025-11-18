@@ -3,10 +3,71 @@
 $formatCurrency = function ($value) {
     return '$' . number_format($value, 2);
 };
+$descriptionSnippet = !empty($product['description'])
+    ? mb_strimwidth(strip_tags($product['description']), 0, 180, '...')
+    : 'Heritage craftsmanship meets modern cushioning for round-the-clock wear.';
+$categoryEyebrow = !empty($product['category']) ? $product['category'] . ' capsule' : 'Signature release';
+$stockUnits = isset($product['Stock']) ? max(0, (int)$product['Stock']) : null;
+$stockValue = $stockUnits !== null ? ($stockUnits > 0 ? $stockUnits . ' units ready' : 'Backorder window') : 'Ready to ship';
+$stockContext = $stockUnits !== null ? ($stockUnits > 0 ? 'Ships within 24h' : 'Dispatch in 7 days') : 'Ships within 24h';
+$sizeValue = !empty($product['shoes_size']) ? 'Size ' . $product['shoes_size'] : 'Multi-size run';
+$dateValue = !empty($product['DateCreate']) ? date('M d, Y', strtotime($product['DateCreate'])) : date('M d, Y');
+$productMetrics = [
+    [
+        'label' => 'Inventory',
+        'value' => $stockValue,
+        'context' => $stockContext
+    ],
+    [
+        'label' => 'Fit profile',
+        'value' => $sizeValue,
+        'context' => 'Concierge fitting available'
+    ],
+    [
+        'label' => 'Drop date',
+        'value' => $dateValue,
+        'context' => 'Catalogued in atelier log'
+    ]
+];
+$productServices = [
+    [
+        'icon' => 'fas fa-shipping-fast',
+        'title' => 'Express shipping',
+        'copy' => 'Nationwide delivery within 48 hours.'
+    ],
+    [
+        'icon' => 'fas fa-undo',
+        'title' => '30-day returns',
+        'copy' => 'Complimentary pick-up for size swaps.'
+    ],
+    [
+        'icon' => 'fas fa-shield-alt',
+        'title' => 'Craft warranty',
+        'copy' => '12-month coverage on stitching and hardware.'
+    ]
+];
+$productFacts = [
+    [
+        'label' => 'Release ID',
+        'value' => 'SS-' . str_pad((string)$product['id'], 5, '0', STR_PAD_LEFT)
+    ],
+    [
+        'label' => 'Category',
+        'value' => !empty($product['category']) ? $product['category'] : 'Lifestyle'
+    ],
+    [
+        'label' => 'Available stock',
+        'value' => $stockUnits !== null ? ($stockUnits > 0 ? $stockUnits . ' pairs' : 'Backorder open') : 'Limited run'
+    ],
+    [
+        'label' => 'Care window',
+        'value' => 'Complimentary cleaning within 90 days'
+    ]
+];
 ?>
 
 <div class="product-detail-wrapper">
-    <div class="product-header">
+    <header class="product-header">
         <div class="product-breadcrumb">
             <a href="/index.php">Home</a>
             <i class="fas fa-chevron-right"></i>
@@ -18,8 +79,6 @@ $formatCurrency = function ($value) {
                 </a>
             <?php endif; ?>
         </div>
-        <h1><?php echo htmlspecialchars($product['name']); ?></h1>
-        
         <?php if (!empty($product['category'])): ?>
             <div class="product-category">
                 <i class="fas fa-tag"></i>
@@ -28,28 +87,43 @@ $formatCurrency = function ($value) {
                 </a>
             </div>
         <?php endif; ?>
-    </div>
+    </header>
 
     <div class="product-detail">
-        <div class="product-detail-img">
-            <?php
-            $imageUrl = !empty($product['image']) && filter_var($product['image'], FILTER_VALIDATE_URL) 
-                ? htmlspecialchars($product['image']) 
-                : '/public/placeholder.jpg';
-            ?>
-            <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
-            <?php if (!empty($product['promotion'])): ?>
-                <div class="promotion-badge">
-                    <?php if (!empty($product['promotion']['discount_percentage'])): ?>
-                        -<?php echo number_format($product['promotion']['discount_percentage']); ?>%
-                    <?php elseif (!empty($product['promotion']['fixed_price'])): ?>
-                        Offer
-                    <?php endif; ?>
-                </div>
-            <?php endif; ?>
+        <div class="product-media-stack">
+            <div class="product-detail-img">
+                <?php
+                $imageUrl = !empty($product['image']) && filter_var($product['image'], FILTER_VALIDATE_URL) 
+                    ? htmlspecialchars($product['image']) 
+                    : '/public/placeholder.jpg';
+                ?>
+                <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
+                <?php if (!empty($product['promotion'])): ?>
+                    <div class="promotion-badge">
+                        <?php if (!empty($product['promotion']['discount_percentage'])): ?>
+                            -<?php echo number_format($product['promotion']['discount_percentage']); ?>%
+                        <?php elseif (!empty($product['promotion']['fixed_price'])): ?>
+                            Offer
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="product-highlight-metrics">
+                <?php foreach ($productMetrics as $metric): ?>
+                    <div class="product-metric-card">
+                        <span class="product-metric-label"><?php echo htmlspecialchars($metric['label']); ?></span>
+                        <strong><?php echo htmlspecialchars($metric['value']); ?></strong>
+                        <p><?php echo htmlspecialchars($metric['context']); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
         
         <div class="product-detail-info">
+            <p class="product-eyebrow"><?php echo htmlspecialchars($categoryEyebrow); ?></p>
+            <h1><?php echo htmlspecialchars($product['name']); ?></h1>
+            <p class="product-subcopy"><?php echo htmlspecialchars($descriptionSnippet); ?></p>
+
             <div class="product-price-section">
                 <?php if (isset($product['final_price']) && $product['final_price'] != $product['price']): ?>
                     <div class="price">
@@ -65,38 +139,24 @@ $formatCurrency = function ($value) {
                         <span class="current-price"><?php echo $formatCurrency($product['price']); ?></span>
                     </div>
                 <?php endif; ?>
+                <p class="price-note">Tax included. Complimentary cleaning kit ships with every pair.</p>
             </div>
 
-            <div class="product-specs">
+            <div class="product-meta-chips">
                 <?php if (!empty($product['shoes_size'])): ?>
-                    <div class="spec-item">
+                    <span class="product-meta-chip">
                         <i class="fas fa-ruler"></i>
-                        <span class="spec-label">Size:</span>
-                        <span class="spec-value"><?php echo htmlspecialchars($product['shoes_size']); ?></span>
-                    </div>
-                <?php endif; ?>
-                
-                <div class="spec-item">
-                    <i class="fas fa-box"></i>
-                    <span class="spec-label">Stock:</span>
-                    <span class="spec-value <?php echo (isset($product['Stock']) && $product['Stock'] > 0) ? 'in-stock' : 'out-of-stock'; ?>">
-                        <?php 
-                        if (isset($product['Stock'])) {
-                            echo $product['Stock'] > 0 ? $product['Stock'] . ' units' : 'Out of stock';
-                        } else {
-                            echo 'Available';
-                        }
-                        ?>
+                        Size <?php echo htmlspecialchars($product['shoes_size']); ?>
                     </span>
-                </div>
-
-                <?php if (!empty($product['DateCreate'])): ?>
-                    <div class="spec-item">
-                        <i class="far fa-calendar"></i>
-                        <span class="spec-label">Added On:</span>
-                        <span class="spec-value"><?php echo date('m/d/Y', strtotime($product['DateCreate'])); ?></span>
-                    </div>
                 <?php endif; ?>
+                <span class="product-meta-chip <?php echo ($stockUnits !== null && $stockUnits <= 0) ? 'chip-low' : ''; ?>">
+                    <i class="fas fa-box"></i>
+                    <?php echo $stockUnits !== null ? ($stockUnits > 0 ? $stockUnits . ' in stock' : 'Backorder in queue') : 'Available to ship'; ?>
+                </span>
+                <span class="product-meta-chip">
+                    <i class="far fa-calendar"></i>
+                    <?php echo $dateValue; ?>
+                </span>
             </div>
 
             <?php if (!empty($product['promotion'])): ?>
@@ -115,6 +175,20 @@ $formatCurrency = function ($value) {
                     </div>
                 </div>
             <?php endif; ?>
+
+            <div class="product-service-grid">
+                <?php foreach ($productServices as $service): ?>
+                    <div class="product-service-card">
+                        <div class="service-icon">
+                            <i class="<?php echo $service['icon']; ?>"></i>
+                        </div>
+                        <div>
+                            <h4><?php echo htmlspecialchars($service['title']); ?></h4>
+                            <p><?php echo htmlspecialchars($service['copy']); ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
             
             <form method="post" action="" class="product-add-to-cart">
                 <div class="quantity-section">
@@ -141,11 +215,22 @@ $formatCurrency = function ($value) {
         </div>
     </div>
 
-    <section class="product-description-section">
+    <section class="product-story-grid">
         <div class="product-description">
             <h3><i class="fas fa-info-circle"></i> Product Description</h3>
-            <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
+            <p><?php echo nl2br(htmlspecialchars($product['description'] ?? 'Detailed spec coming soon.')); ?></p>
         </div>
+        <aside class="product-facts-panel">
+            <h3>Drop essentials</h3>
+            <ul class="product-fact-list">
+                <?php foreach ($productFacts as $fact): ?>
+                    <li>
+                        <span><?php echo htmlspecialchars($fact['label']); ?></span>
+                        <strong><?php echo htmlspecialchars($fact['value']); ?></strong>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </aside>
     </section>
 
     <?php if (!empty($relatedProducts)): ?>

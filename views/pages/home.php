@@ -97,10 +97,10 @@ $heroImages = [
     <div class="container">
         <div class="intro-content">
             <div class="intro-text">
-                <h2>Welcome to V.AShoes</h2>
+                <h2>Welcome to ShoeStore</h2>
                 <p class="intro-subtitle">Where You Find the Perfect Pair of Shoes</p>
                 <p class="intro-description">
-                    V.AShoes is proud to be the leading provider of high-quality sports shoes, casual shoes, and formal footwear. 
+                    ShoeStore is proud to be the leading provider of high-quality sports shoes, casual shoes, and formal footwear. 
                     With over 10 years of experience in the industry, we are committed to bringing customers authentic products, 
                     diverse styles and the most competitive prices on the market.
                 </p>
@@ -125,7 +125,7 @@ $heroImages = [
                 <a href="/index.php?controller=about&action=index" class="btn btn-outline">Learn More</a>
             </div>
             <div class="intro-image">
-                <img src="/assets/images/shoes_store.jpg" alt="V.AShoes Introduction">
+                <img src="/assets/images/shoes_store.jpg" alt="ShoeStore Introduction">
             </div>
         </div>
     </div>
@@ -159,7 +159,7 @@ $heroImages = [
 <section class="features-section">
     <div class="container">
         <div class="section-title">
-            <h2>Why Choose V.AShoes?</h2>
+            <h2>Why Choose ShoeStore?</h2>
         </div>
         <div class="features-grid">
             <div class="feature-card">
@@ -381,10 +381,10 @@ $heroImages = [
                                 <?php if (!empty($descriptionSnippet)): ?>
                                     <p class="product-snippet"><?php echo htmlspecialchars($descriptionSnippet); ?></p>
                                 <?php endif; ?>
-                                <?php if ((!empty($product['sizes'])) || isset($product['Stock'])): ?>
+                                <?php if (!empty($product['shoes_size']) || isset($product['Stock'])): ?>
                                     <div class="product-meta">
-                                        <?php if (!empty($product['sizes'])): ?>
-                                            <span><i class="fas fa-ruler"></i> Size: <?php echo htmlspecialchars($product['size_summary']); ?></span>
+                                        <?php if (!empty($product['shoes_size'])): ?>
+                                            <span><i class="fas fa-ruler"></i> Size: <?php echo htmlspecialchars($product['shoes_size']); ?></span>
                                         <?php endif; ?>
                                         <?php if (isset($product['Stock'])): ?>
                                             <span><i class="fas fa-box"></i> Stock: <?php echo $product['Stock'] > 0 ? $product['Stock'] : 'Out'; ?></span>

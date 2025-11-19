@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V.AShoes - Find Your Perfect Pair</title>
+    <title>ShoeStore - Find Your Perfect Pair</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2742/2742687.png">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -20,6 +20,7 @@
         ['key' => 'about', 'label' => 'About', 'url' => '/index.php?controller=about&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/1256/1256650.png'],
         ['key' => 'qna', 'label' => 'Q&A', 'url' => '/index.php?controller=qna&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/854/854866.png'],
         ['key' => 'cart', 'label' => 'Cart', 'url' => '/index.php?controller=cart&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/891/891462.png'],
+        ['key' => 'tracking', 'label' => 'Track Order', 'url' => '/index.php?controller=orderTracking&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/3135/3135715.png'],
     ];
 
     $labelMap = [
@@ -240,9 +241,9 @@ HTML;
         <div class="container header-inner">
             <div class="logo">
                 <a href="/index.php" class="logo-link">
-                    <img src="<?php echo $logoUrl; ?>" alt="V.AShoes logo" loading="lazy">
+                    <img src="<?php echo $logoUrl; ?>" alt="ShoeStore logo" loading="lazy">
                     <div>
-                    <h1>V.AShoes</h1>
+                    <h1>ShoeStore</h1>
                         <span>curated footwear drops</span>
                     </div>
                 </a>
@@ -263,7 +264,9 @@ HTML;
                             $isActive = true;
                         } elseif ($item['key'] === 'cart' && $currentController === 'cart') {
                             $isActive = true;
-                        } elseif ($item['key'] !== 'home' && $item['key'] !== 'cart' && $currentController === $item['key']) {
+                        } elseif ($item['key'] === 'tracking' && $currentController === 'ordertracking') {
+                            $isActive = true;
+                        } elseif ($item['key'] !== 'home' && $item['key'] !== 'cart' && $item['key'] !== 'tracking' && $currentController === $item['key']) {
                             $isActive = true;
                         }
                         ?>

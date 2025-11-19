@@ -81,16 +81,21 @@ class CheckoutController {
             $address = isset($_POST['address']) ? trim($_POST['address']) : '';
             $city = isset($_POST['city']) ? trim($_POST['city']) : '';
             $zip = isset($_POST['zip']) ? trim($_POST['zip']) : '';
-            $card_number = isset($_POST['card_number']) ? trim($_POST['card_number']) : '';
+            $paymentMethod = isset($_POST['payment_method']) ? trim($_POST['payment_method']) : '';
 
-            if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip) || empty($card_number)) {
-                $error = 'All fields are required';
+            if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip)) {
+                $error = 'All required fields must be filled';
+            } elseif (empty($paymentMethod)) {
+                $error = 'Please select a payment method';
             } else {
                 if (isset($_SESSION['user_id'])) {
                     $memberId = $_SESSION['user_id'];
-                    $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity);
+                    $orderResult = $this->orderModel->addOrder($memberId, $total, $totalQuantity, $paymentMethod);
 
-                    if ($orderId) {
+                    if ($orderResult && isset($orderResult['order_id'])) {
+                        $orderId = $orderResult['order_id'];
+                        $trackingId = $orderResult['tracking_id'];
+
                         foreach ($_SESSION['cart'] as $item) {
                             for ($i = 0; $i < $item['quantity']; $i++) {
                                 $this->orderModel->addOrderShoes($orderId, $item['id']);
@@ -99,13 +104,36 @@ class CheckoutController {
 
                         unset($_SESSION['cart'], $_SESSION['cart_coupon']);
                         $_SESSION['earned_vip'] = $earnedVip;
-                        $success = "Order placed successfully! Your order ID is #$orderId.";
-                        header('Refresh: 3; URL=/index.php?controller=home&action=index');
+                        $success = "Order placed successfully! Your tracking ID is <strong>$trackingId</strong>. Save this code to track your order.";
                     } else {
                         $error = 'Failed to place the order. Please try again.';
                     }
                 } else {
-                    $error = 'Please log in to place an order.';
+                    $guestInfo = [
+                        'name' => $name,
+                        'email' => $email,
+                        'address' => $address,
+                        'city' => $city,
+                        'zip' => $zip
+                    ];
+                    $orderResult = $this->orderModel->addGuestOrder($guestInfo, $total, $totalQuantity, $paymentMethod);
+
+                    if ($orderResult && isset($orderResult['order_id'])) {
+                        $orderId = $orderResult['order_id'];
+                        $trackingId = $orderResult['tracking_id'];
+
+                        foreach ($_SESSION['cart'] as $item) {
+                            for ($i = 0; $i < $item['quantity']; $i++) {
+                                $this->orderModel->addOrderShoes($orderId, $item['id']);
+                            }
+                        }
+
+                        unset($_SESSION['cart'], $_SESSION['cart_coupon']);
+                        $success = "Order placed successfully! Your tracking ID is <strong>$trackingId</strong>. Save this code to track your order.";
+                        header('Refresh: 5; URL=/index.php?controller=home&action=index');
+                    } else {
+                        $error = 'Failed to place the order. Please try again.';
+                    }
                 }
             }
         }
@@ -121,10 +149,11 @@ class CheckoutController {
         }
 
         if (file_exists($viewPath)) {
-            $renderView = function ($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success) use ($viewPath) {
+            $selectedPaymentMethod = isset($_POST['payment_method']) ? $_POST['payment_method'] : (isset($error) && isset($_POST['payment_method']) ? $_POST['payment_method'] : 'Card');
+            $renderView = function ($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $selectedPaymentMethod) use ($viewPath) {
                 require $viewPath;
             };
-            $renderView($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success);
+            $renderView($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $selectedPaymentMethod);
         } else {
             die("View file not found: $viewPath");
         }

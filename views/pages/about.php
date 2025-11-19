@@ -2,7 +2,7 @@
     <div class="about-hero-overlay"></div>
     <div class="about-hero-content">
         <p class="eyebrow">Sculpting Footwear Since 2012</p>
-        <h1>We are V.AShoes</h1>
+        <h1>We are ShoeStore</h1>
         <p>Obsessed with the craft, devoted to the community, fueled by the belief that a pair of shoes can change posture, perspective, and possibility.</p>
     </div>
 </section>
@@ -11,9 +11,9 @@
     <div class="intro-grid">
         <article class="intro-card">
             <h2>Our Manifesto</h2>
-            <p><strong>V.AShoes</strong> was born under the flickering light of a small workshop where the smell of veg-tan leather mingled with laughter, late-night espresso, and punk playlists. We pledged to build a company that celebrates <em>materials</em>, <em>movement</em>, and <em>meaningful rituals</em>. We reject fast fades. We embrace deliberate design, small-batch production, and transparent storytelling.</p>
+            <p><strong>ShoeStore</strong> was born under the flickering light of a small workshop where the smell of veg-tan leather mingled with laughter, late-night espresso, and punk playlists. We pledged to build a company that celebrates <em>materials</em>, <em>movement</em>, and <em>meaningful rituals</em>. We reject fast fades. We embrace deliberate design, small-batch production, and transparent storytelling.</p>
             <p>Every silhouette we release begins with a conversation. We interview athletes, choreographers, commuters, museum docents, and anyone whose day is measured in steps. Their anecdotes shape our sketches. Their frustrations steer our iterations. By the time a pair leaves our studio, it carries the fingerprints of dozens of collaborators who will probably never meet, yet somehow move together.</p>
-            <p>We extend an open invitation to anyone who values craft. Whether you geek out over stitch density, crave limited runs, or simply want a shoe that can sprint through a rainstorm and still look poetic, V.AShoes is for you.</p>
+            <p>We extend an open invitation to anyone who values craft. Whether you geek out over stitch density, crave limited runs, or simply want a shoe that can sprint through a rainstorm and still look poetic, ShoeStore is for you.</p>
         </article>
         <aside class="intro-card highlight">
             <h3>What we obsess over</h3>
@@ -205,7 +205,7 @@
                 <li><strong>Address:</strong> 43-13 Shiohara, Minami-ku, Fukuoka, Japan</li>
                 <li><strong>Hours:</strong> Tuesday – Sunday, 10:00–20:00 JST</li>
                 <li><strong>Phone:</strong> +81 92 555 8080</li>
-                <li><strong>Email:</strong> atelier@V.AShoes.jp</li>
+                <li><strong>Email:</strong> atelier@shoestore.jp</li>
             </ul>
         </div>
         <div>

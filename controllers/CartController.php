@@ -19,12 +19,11 @@ class CartController {
         $appliedCoupon = null;
 
         if (!empty($_SESSION['cart'])) {
-            foreach ($_SESSION['cart'] as $key => $item) {
-                $productId = $item['product_id'] ?? $key;
-                $product = $this->promotionModel->getProductById($productId);
+            foreach ($_SESSION['cart'] as $id => $item) {
+                $product = $this->promotionModel->getProductById($id);
                 if ($product) {
                     $currentPrice = $product['final_price'];
-                    $_SESSION['cart'][$key]['price'] = $currentPrice;
+                    $_SESSION['cart'][$id]['price'] = $currentPrice;
 
                     $subtotalForItem = $currentPrice * $item['quantity'];
                     $cartItems[] = [
@@ -42,7 +41,7 @@ class CartController {
                     ];
                     $subtotal += $subtotalForItem;
                 } else {
-                    unset($_SESSION['cart'][$key]);
+                    unset($_SESSION['cart'][$id]);
                 }
             }
         }
@@ -66,28 +65,14 @@ class CartController {
 
     public function update() {
         if (!empty($_POST['quantity'])) {
-            foreach ($_POST['quantity'] as $key => $quantity) {
+            foreach ($_POST['quantity'] as $id => $quantity) {
                 $quantity = (int) $quantity;
                 if ($quantity < 1) {
-                    unset($_SESSION['cart'][$key]);
-                } elseif (isset($_SESSION['cart'][$key])) {
-                    $productId = $_SESSION['cart'][$key]['product_id'] ?? $key;
-                    $product = $this->promotionModel->getProductById($productId);
+                    unset($_SESSION['cart'][$id]);
+                } elseif (isset($_SESSION['cart'][$id])) {
+                    $product = $this->promotionModel->getProductById($id);
                     if ($product) {
-                        $_SESSION['cart'][$key]['price'] = $product['final_price'];
-                        $sizeLimit = null;
-                        if (!empty($product['sizes']) && isset($_SESSION['cart'][$key]['size'])) {
-                            $selectedSize = $_SESSION['cart'][$key]['size'];
-                            foreach ($product['sizes'] as $sizeRow) {
-                                if (abs((float)$sizeRow['size'] - (float)$selectedSize) < 0.01) {
-                                    $sizeLimit = (int)$sizeRow['quantity'];
-                                    break;
-                                }
-                            }
-                        }
-                        if ($sizeLimit !== null && $sizeLimit > 0 && $quantity > $sizeLimit) {
-                            $quantity = $sizeLimit;
-                        }
+                        $_SESSION['cart'][$id]['price'] = $product['final_price'];
                     }
                     $_SESSION['cart'][$key]['quantity'] = $quantity;
                 }

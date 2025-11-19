@@ -3,6 +3,7 @@
 $formatCurrency = function ($value) {
     return '$' . number_format($value, 2);
 };
+$selectedPaymentMethod = isset($selectedPaymentMethod) ? $selectedPaymentMethod : (isset($_POST['payment_method']) ? $_POST['payment_method'] : 'Card');
 ?>
 
 <section class="checkout-page">
@@ -57,20 +58,76 @@ $formatCurrency = function ($value) {
                 <article class="checkout-card">
                     <div class="checkout-card-header">
                         <p class="section-eyebrow">Payment</p>
-                        <h3>Card details</h3>
+                        <h3>Payment method</h3>
                     </div>
                     <div class="checkout-field">
-                        <label for="card_number">Card Number</label>
-                        <input type="text" id="card_number" name="card_number" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>" required>
+                        <label>Payment Method</label>
+                        <div class="payment-method-selector" role="radiogroup" aria-label="Select payment method">
+                            <?php
+                            $paymentMethods = [
+                                ['value' => 'Card', 'title' => 'Card', 'description' => 'Visa, MasterCard, AMEX', 'icon' => 'fas fa-credit-card'],
+                                ['value' => 'Cash', 'title' => 'Cash on Delivery', 'description' => 'Pay when the courier arrives', 'icon' => 'fas fa-money-bill-wave'],
+                                ['value' => 'Bank Transfer', 'title' => 'Bank Transfer', 'description' => 'Wire from your bank account', 'icon' => 'fas fa-university'],
+                                ['value' => 'E-wallet', 'title' => 'E-wallet', 'description' => 'PayPal, Apple Pay, Google Pay', 'icon' => 'fas fa-mobile-screen-button'],
+                            ];
+                            foreach ($paymentMethods as $method):
+                                $isActive = $selectedPaymentMethod === $method['value'];
+                                $inputId = 'payment_method_' . strtolower(str_replace(' ', '_', $method['value']));
+                            ?>
+                            <label class="payment-method-option <?php echo $isActive ? 'is-active' : ''; ?>" for="<?php echo $inputId; ?>">
+                                <input type="radio" id="<?php echo $inputId; ?>" name="payment_method" value="<?php echo $method['value']; ?>" <?php echo $isActive ? 'checked' : ''; ?> required>
+                                <span class="payment-method-option-icon">
+                                    <i class="<?php echo $method['icon']; ?>"></i>
+                                </span>
+                                <span class="payment-method-option-copy">
+                                    <strong><?php echo $method['title']; ?></strong>
+                                    <span><?php echo $method['description']; ?></span>
+                                </span>
+                            </label>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
-                    <div class="checkout-row">
+
+                    <div id="payment-card-fields" class="payment-method-fields" style="display: <?php echo ($selectedPaymentMethod === 'Card') ? 'block' : 'none'; ?>;">
                         <div class="checkout-field">
-                            <label for="expiry">Expiry</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>" required>
+                            <label for="card_number">Card Number</label>
+                            <input type="text" id="card_number" name="card_number" placeholder="Mock payment (optional)" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>">
+                        </div>
+                        <div class="checkout-row">
+                            <div class="checkout-field">
+                                <label for="expiry">Expiry</label>
+                                <input type="text" id="expiry" name="expiry" placeholder="MM/YY (optional)" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>">
+                            </div>
+                            <div class="checkout-field">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" name="cvv" placeholder="Optional" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="payment-cash-fields" class="payment-method-fields" style="display: <?php echo ($selectedPaymentMethod === 'Cash') ? 'block' : 'none'; ?>;">
+                        <p class="payment-method-note">Payment will be collected upon delivery. No additional information required.</p>
+                    </div>
+
+                    <div id="payment-bank-transfer-fields" class="payment-method-fields" style="display: <?php echo ($selectedPaymentMethod === 'Bank Transfer') ? 'block' : 'none'; ?>;">
+                        <div class="checkout-field">
+                            <label for="bank_account">Account Number</label>
+                            <input type="text" id="bank_account" name="bank_account" placeholder="Enter account number (optional)" value="<?php echo isset($_POST['bank_account']) ? htmlspecialchars($_POST['bank_account']) : ''; ?>">
                         </div>
                         <div class="checkout-field">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>" required>
+                            <label for="bank_name">Bank Name</label>
+                            <input type="text" id="bank_name" name="bank_name" placeholder="Enter bank name (optional)" value="<?php echo isset($_POST['bank_name']) ? htmlspecialchars($_POST['bank_name']) : ''; ?>">
+                        </div>
+                    </div>
+
+                    <div id="payment-ewallet-fields" class="payment-method-fields" style="display: <?php echo ($selectedPaymentMethod === 'E-wallet') ? 'block' : 'none'; ?>;">
+                        <div class="checkout-field">
+                            <label for="wallet_number">Wallet Number</label>
+                            <input type="text" id="wallet_number" name="wallet_number" placeholder="Enter wallet number (optional)" value="<?php echo isset($_POST['wallet_number']) ? htmlspecialchars($_POST['wallet_number']) : ''; ?>">
+                        </div>
+                        <div class="checkout-field">
+                            <label for="wallet_provider">Wallet Provider</label>
+                            <input type="text" id="wallet_provider" name="wallet_provider" placeholder="e.g., PayPal, Apple Pay, Google Pay (optional)" value="<?php echo isset($_POST['wallet_provider']) ? htmlspecialchars($_POST['wallet_provider']) : ''; ?>">
                         </div>
                     </div>
                 </article>
@@ -148,5 +205,49 @@ $formatCurrency = function ($value) {
         </form>
     <?php endif; ?>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+    const paymentCards = document.querySelectorAll('.payment-method-option');
+    const cardFields = document.getElementById('payment-card-fields');
+    const cashFields = document.getElementById('payment-cash-fields');
+    const bankTransferFields = document.getElementById('payment-bank-transfer-fields');
+    const eWalletFields = document.getElementById('payment-ewallet-fields');
+
+    function getSelectedMethod() {
+        const checked = document.querySelector('input[name="payment_method"]:checked');
+        return checked ? checked.value : '';
+    }
+
+    function syncPaymentCards() {
+        paymentCards.forEach(card => {
+            const radio = card.querySelector('input[name="payment_method"]');
+            if (!radio) {
+                return;
+            }
+            card.classList.toggle('is-active', radio.checked);
+        });
+    }
+
+    function togglePaymentFields() {
+        const selectedMethod = getSelectedMethod();
+        cardFields.style.display = selectedMethod === 'Card' ? 'block' : 'none';
+        cashFields.style.display = selectedMethod === 'Cash' ? 'block' : 'none';
+        bankTransferFields.style.display = selectedMethod === 'Bank Transfer' ? 'block' : 'none';
+        eWalletFields.style.display = selectedMethod === 'E-wallet' ? 'block' : 'none';
+    }
+
+    paymentRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            syncPaymentCards();
+            togglePaymentFields();
+        });
+    });
+
+    syncPaymentCards();
+    togglePaymentFields();
+});
+</script>
 
 <?php require_once 'views/components/footer.php'; ?>

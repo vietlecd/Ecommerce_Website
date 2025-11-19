@@ -536,6 +536,55 @@ SET s.Stock = (
     WHERE ss.ShoeID = s.ShoesID
 );
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shoe_sizes`
+--
+
+CREATE TABLE `shoe_sizes` (
+  `SizeID` int(11) NOT NULL AUTO_INCREMENT,
+  `ShoeID` int(11) NOT NULL,
+  `Size` decimal(5,2) NOT NULL,
+  `Quantity` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`SizeID`),
+  UNIQUE KEY `uniq_shoe_size` (`ShoeID`,`Size`),
+  KEY `ShoeID` (`ShoeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `shoe_sizes`
+--
+
+INSERT INTO `shoe_sizes` (`ShoeID`, `Size`, `Quantity`)
+SELECT seed.ShoesID,
+       ROUND(seed.base_size + offsets.offset, 2) AS Size,
+       CASE offsets.offset
+           WHEN -1 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END END
+           WHEN 0 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END END
+           ELSE CASE WHEN seed.total_stock <= 0 THEN 0 ELSE GREATEST(0, seed.total_stock - (seed.base_qty * 2 + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END)) END
+       END AS Quantity
+FROM (
+    SELECT s.ShoesID,
+           ROUND(COALESCE(s.shoes_size, 40.00), 2) AS base_size,
+           GREATEST(COALESCE(s.Stock, 0), 0) AS total_stock,
+           FLOOR(GREATEST(COALESCE(s.Stock, 0), 0) / 3) AS base_qty,
+           MOD(GREATEST(COALESCE(s.Stock, 0), 0), 3) AS remainder
+    FROM shoes s
+) AS seed
+JOIN (
+    SELECT -1 AS offset
+    UNION ALL SELECT 0
+    UNION ALL SELECT 1
+) AS offsets;
+
+UPDATE `shoes` s
+SET s.Stock = (
+    SELECT COALESCE(SUM(ss.Quantity), 0)
+    FROM shoe_sizes ss
+    WHERE ss.ShoeID = s.ShoesID
+);
+
 --
 -- Indexes for dumped tables
 --

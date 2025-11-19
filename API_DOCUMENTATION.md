@@ -1,10 +1,10 @@
-# API Documentation - Products
+﻿# API Documentation - Products
 
-## Cấu hình
+## Cáº¥u hÃ¬nh
 
 **Base URL:** https://unflayed-aron-overtrustful.ngrok-free.dev/
 
-## Lấy danh sách sản phẩm
+## Láº¥y danh sÃ¡ch sáº£n pháº©m
 
 ### Endpoint
 
@@ -12,7 +12,7 @@
 GET {BASE_URL}/index.php?controller=products&action=api
 ```
 
-**Ví dụ:**
+**VÃ­ dá»¥:**
 ```
 GET {BASE_URL}/index.php?controller=products&action=api
 ```
@@ -21,96 +21,96 @@ GET {BASE_URL}/index.php?controller=products&action=api
 
 `GET`
 
-### Mô tả
+### MÃ´ táº£
 
-API này cho phép lấy danh sách sản phẩm với các tính năng:
-- Tìm kiếm theo tên giày
-- Lọc theo category
-- Lọc theo khoảng giá (min - max)
-- Phân trang kết quả
-- Trả về giá gốc và giá sau khuyến mãi
+API nÃ y cho phÃ©p láº¥y danh sÃ¡ch sáº£n pháº©m vá»›i cÃ¡c tÃ­nh nÄƒng:
+- TÃ¬m kiáº¿m theo tÃªn giÃ y
+- Lá»c theo category
+- Lá»c theo khoáº£ng giÃ¡ (min - max)
+- PhÃ¢n trang káº¿t quáº£
+- Tráº£ vá» giÃ¡ gá»‘c vÃ  giÃ¡ sau khuyáº¿n mÃ£i
 
 ### Query Parameters
 
-| Parameter | Type | Required | Default | Mô tả |
+| Parameter | Type | Required | Default | MÃ´ táº£ |
 |-----------|------|----------|---------|-------|
-| `keyword` | string | No | - | Từ khóa tìm kiếm trong tên và mô tả sản phẩm |
-| `category` | string | No | - | Tên category để lọc (phải khớp chính xác) |
-| `min_price` | float | No | - | Giá tối thiểu (áp dụng cho final_price sau khuyến mãi) |
-| `max_price` | float | No | - | Giá tối đa (áp dụng cho final_price sau khuyến mãi) |
-| `page` | integer | No | 1 | Số trang (bắt đầu từ 1) |
-| `limit` | integer | No | 20 | Số sản phẩm trên mỗi trang |
+| `keyword` | string | No | - | Tá»« khÃ³a tÃ¬m kiáº¿m trong tÃªn vÃ  mÃ´ táº£ sáº£n pháº©m |
+| `category` | string | No | - | TÃªn category Ä‘á»ƒ lá»c (pháº£i khá»›p chÃ­nh xÃ¡c) |
+| `min_price` | float | No | - | GiÃ¡ tá»‘i thiá»ƒu (Ã¡p dá»¥ng cho final_price sau khuyáº¿n mÃ£i) |
+| `max_price` | float | No | - | GiÃ¡ tá»‘i Ä‘a (Ã¡p dá»¥ng cho final_price sau khuyáº¿n mÃ£i) |
+| `page` | integer | No | 1 | Sá»‘ trang (báº¯t Ä‘áº§u tá»« 1) |
+| `limit` | integer | No | 20 | Sá»‘ sáº£n pháº©m trÃªn má»—i trang |
 
-### Danh sách Category hợp lệ
+### Danh sÃ¡ch Category há»£p lá»‡
 
-Dựa trên dữ liệu từ database table `category`, có **13 categories** với **10 category names khác nhau**:
+Dá»±a trÃªn dá»¯ liá»‡u tá»« database table `category`, cÃ³ **13 categories** vá»›i **10 category names khÃ¡c nhau**:
 
-| CategoryID | Category Name | Mô tả |
+| CategoryID | Category Name | MÃ´ táº£ |
 |------------|---------------|-------|
-| 1 | `Sneakers` | Giày thể thao |
-| 2 | `Boots` | Giày boot |
-| 3 | `Sandals` | Dép sandal |
-| 4 | `Running` | Giày chạy bộ |
-| 5 | `Sneakers` | Giày sneaker thời trang |
-| 6 | `Boots` | Giày bốt nam/nữ |
-| 7 | `Sandals` | Giày dép sandal |
-| 8 | `Formal` | Giày tây công sở |
-| 9 | `Slippers` | Dép đi trong nhà |
-| 10 | `Basketball` | Giày bóng rổ |
-| 11 | `Soccer` | Giày đá bóng |
-| 12 | `Skateboarding` | Giày trượt ván |
-| 13 | `Casual` | Giày đi hàng ngày |
+| 1 | `Sneakers` | GiÃ y thá»ƒ thao |
+| 2 | `Boots` | GiÃ y boot |
+| 3 | `Sandals` | DÃ©p sandal |
+| 4 | `Running` | GiÃ y cháº¡y bá»™ |
+| 5 | `Sneakers` | GiÃ y sneaker thá»i trang |
+| 6 | `Boots` | GiÃ y bá»‘t nam/ná»¯ |
+| 7 | `Sandals` | GiÃ y dÃ©p sandal |
+| 8 | `Formal` | GiÃ y tÃ¢y cÃ´ng sá»Ÿ |
+| 9 | `Slippers` | DÃ©p Ä‘i trong nhÃ  |
+| 10 | `Basketball` | GiÃ y bÃ³ng rá»• |
+| 11 | `Soccer` | GiÃ y Ä‘Ã¡ bÃ³ng |
+| 12 | `Skateboarding` | GiÃ y trÆ°á»£t vÃ¡n |
+| 13 | `Casual` | GiÃ y Ä‘i hÃ ng ngÃ y |
 
-**Thống kê:**
-- Tổng số categories: **13** (mỗi category có CategoryID duy nhất)
-- Số category names khác nhau: **10**
-- Một số category names xuất hiện nhiều lần nhưng là các category khác nhau:
-  - `Sneakers`: CategoryID 1 và 5 (khác nhau về mô tả)
-  - `Boots`: CategoryID 2 và 6 (khác nhau về mô tả)
-  - `Sandals`: CategoryID 3 và 7 (khác nhau về mô tả)
+**Thá»‘ng kÃª:**
+- Tá»•ng sá»‘ categories: **13** (má»—i category cÃ³ CategoryID duy nháº¥t)
+- Sá»‘ category names khÃ¡c nhau: **10**
+- Má»™t sá»‘ category names xuáº¥t hiá»‡n nhiá»u láº§n nhÆ°ng lÃ  cÃ¡c category khÃ¡c nhau:
+  - `Sneakers`: CategoryID 1 vÃ  5 (khÃ¡c nhau vá» mÃ´ táº£)
+  - `Boots`: CategoryID 2 vÃ  6 (khÃ¡c nhau vá» mÃ´ táº£)
+  - `Sandals`: CategoryID 3 vÃ  7 (khÃ¡c nhau vá» mÃ´ táº£)
 
-**Lưu ý quan trọng về Category Matching:**
-- Mỗi category có **CategoryID duy nhất**, không có category nào trùng lặp
-- Một số category có cùng **Name** nhưng là các category khác nhau với CategoryID và Description khác nhau
-- Category matching là **case-sensitive** và phải khớp chính xác với Name trong database
-- Khi filter theo category name, API sử dụng query: `WHERE c.Name = ?`
-- Khi filter theo `category=Sneakers`, API sẽ trả về sản phẩm từ **cả hai** CategoryID 1 và 5 (vì cả hai đều có Name = "Sneakers")
-- Để lấy danh sách tất cả categories: `SELECT CategoryID, Name, Description FROM category ORDER BY CategoryID`
-- Để lấy danh sách category names duy nhất: `SELECT DISTINCT Name FROM category ORDER BY Name`
+**LÆ°u Ã½ quan trá»ng vá» Category Matching:**
+- Má»—i category cÃ³ **CategoryID duy nháº¥t**, khÃ´ng cÃ³ category nÃ o trÃ¹ng láº·p
+- Má»™t sá»‘ category cÃ³ cÃ¹ng **Name** nhÆ°ng lÃ  cÃ¡c category khÃ¡c nhau vá»›i CategoryID vÃ  Description khÃ¡c nhau
+- Category matching lÃ  **case-sensitive** vÃ  pháº£i khá»›p chÃ­nh xÃ¡c vá»›i Name trong database
+- Khi filter theo category name, API sá»­ dá»¥ng query: `WHERE c.Name = ?`
+- Khi filter theo `category=Sneakers`, API sáº½ tráº£ vá» sáº£n pháº©m tá»« **cáº£ hai** CategoryID 1 vÃ  5 (vÃ¬ cáº£ hai Ä‘á»u cÃ³ Name = "Sneakers")
+- Äá»ƒ láº¥y danh sÃ¡ch táº¥t cáº£ categories: `SELECT CategoryID, Name, Description FROM category ORDER BY CategoryID`
+- Äá»ƒ láº¥y danh sÃ¡ch category names duy nháº¥t: `SELECT DISTINCT Name FROM category ORDER BY Name`
 
 ### Request Examples
 
-#### 1. Lấy tất cả sản phẩm (trang 1)
+#### 1. Láº¥y táº¥t cáº£ sáº£n pháº©m (trang 1)
 
 ```http
 GET {BASE_URL}/index.php?controller=products&action=api
 ```
 
-#### 2. Lấy sản phẩm với phân trang
+#### 2. Láº¥y sáº£n pháº©m vá»›i phÃ¢n trang
 
 ```http
 GET {BASE_URL}/index.php?controller=products&action=api&page=2&limit=10
 ```
 
-#### 3. Tìm kiếm theo category
+#### 3. TÃ¬m kiáº¿m theo category
 
 ```http
 GET {BASE_URL}/index.php?controller=products&action=api&category=Sneakers
 ```
 
-#### 4. Tìm kiếm theo tên giày
+#### 4. TÃ¬m kiáº¿m theo tÃªn giÃ y
 
 ```http
 GET {BASE_URL}/index.php?controller=products&action=api&keyword=nike
 ```
 
-#### 5. Lọc theo khoảng giá
+#### 5. Lá»c theo khoáº£ng giÃ¡
 
 ```http
 GET {BASE_URL}/index.php?controller=products&action=api&min_price=50&max_price=200
 ```
 
-#### 6. Kết hợp nhiều filter
+#### 6. Káº¿t há»£p nhiá»u filter
 
 ```http
 GET {BASE_URL}/index.php?controller=products&action=api&category=Sneakers&keyword=nike&min_price=100&max_price=300&page=1&limit=10
@@ -137,14 +137,20 @@ GET {BASE_URL}/index.php?controller=products&action=api&category=Sneakers&keywor
                 "image": "nike-air-max.jpg",
                 "image_url": "/assets/images/shoes/nike-air-max.jpg",
                 "product_url": "https://unflayed-aron-overtrustful.ngrok-free.dev/index.php?controller=products&action=detail&id=1",
-                "description": "Giày thể thao Nike Air Max chất lượng cao",
+                "description": "GiÃ y thá»ƒ thao Nike Air Max cháº¥t lÆ°á»£ng cao",
                 "category": "Sneakers",
                 "category_id": 1,
-                "shoes_size": "42",
+                "size_summary": "38, 39, 40",
+                "shoes_size": "38, 39, 40",
                 "Stock": 10,
+                "sizes": [
+                    {"size": 38, "quantity": 4},
+                    {"size": 39, "quantity": 3},
+                    {"size": 40, "quantity": 3}
+                ],
                 "promotion": {
                     "promotion_id": 1,
-                    "promotion_name": "Giảm giá 20%",
+                    "promotion_name": "Giáº£m giÃ¡ 20%",
                     "discount_percentage": 20,
                     "fixed_price": null,
                     "start_date": "2024-01-01 00:00:00",
@@ -174,52 +180,54 @@ GET {BASE_URL}/index.php?controller=products&action=api&category=Sneakers&keywor
 
 **Products Array:**
 
-| Field | Type | Mô tả |
+| Field | Type | MÃ´ táº£ |
 |-------|------|-------|
-| `id` | integer | ID của sản phẩm |
-| `name` | string | Tên sản phẩm |
-| `price` | float | Giá gốc của sản phẩm |
-| `final_price` | float | Giá sau khi áp dụng khuyến mãi |
-| `image` | string | Tên file ảnh |
-| `image_url` | string | URL đầy đủ của ảnh |
-| `product_url` | string | URL chi tiết sản phẩm |
-| `description` | string | Mô tả sản phẩm |
-| `category` | string | Tên category |
-| `category_id` | integer | ID của category |
-| `shoes_size` | string | Size giày |
-| `Stock` | integer | Số lượng tồn kho |
-| `promotion` | object\|null | Thông tin khuyến mãi (nếu có) |
+| `id` | integer | ID cá»§a sáº£n pháº©m |
+| `name` | string | TÃªn sáº£n pháº©m |
+| `price` | float | GiÃ¡ gá»‘c cá»§a sáº£n pháº©m |
+| `final_price` | float | GiÃ¡ sau khi Ã¡p dá»¥ng khuyáº¿n mÃ£i |
+| `image` | string | TÃªn file áº£nh |
+| `image_url` | string | URL Ä‘áº§y Ä‘á»§ cá»§a áº£nh |
+| `product_url` | string | URL chi tiáº¿t sáº£n pháº©m |
+| `description` | string | MÃ´ táº£ sáº£n pháº©m |
+| `category` | string | TÃªn category |
+| `category_id` | integer | ID cá»§a category |
+| `size_summary` | string | Chuá»—i kÃ­ch thÆ°á»›c hiá»ƒn thá»‹ (vd: `38, 39, 40`) |
+| `sizes` | array | Danh sÃ¡ch tá»«ng size vÃ  sá»‘ lÆ°á»£ng tá»“n |
+| `shoes_size` | string | Trường tương thích cũ, cùng giá trị với `size_summary` |
+| `Stock` | integer | Sá»‘ lÆ°á»£ng tá»“n kho |
+| `promotion` | object\|null | ThÃ´ng tin khuyáº¿n mÃ£i (náº¿u cÃ³) |
 
 **Promotion Object:**
 
-| Field | Type | Mô tả |
+| Field | Type | MÃ´ táº£ |
 |-------|------|-------|
-| `promotion_id` | integer | ID của chương trình khuyến mãi |
-| `promotion_name` | string | Tên chương trình khuyến mãi |
-| `discount_percentage` | float\|null | Phần trăm giảm giá |
-| `fixed_price` | float\|null | Giá cố định (nếu có) |
-| `start_date` | string | Ngày bắt đầu khuyến mãi |
-| `end_date` | string | Ngày kết thúc khuyến mãi |
+| `promotion_id` | integer | ID cá»§a chÆ°Æ¡ng trÃ¬nh khuyáº¿n mÃ£i |
+| `promotion_name` | string | TÃªn chÆ°Æ¡ng trÃ¬nh khuyáº¿n mÃ£i |
+| `discount_percentage` | float\|null | Pháº§n trÄƒm giáº£m giÃ¡ |
+| `fixed_price` | float\|null | GiÃ¡ cá»‘ Ä‘á»‹nh (náº¿u cÃ³) |
+| `start_date` | string | NgÃ y báº¯t Ä‘áº§u khuyáº¿n mÃ£i |
+| `end_date` | string | NgÃ y káº¿t thÃºc khuyáº¿n mÃ£i |
 
 **Pagination Object:**
 
-| Field | Type | Mô tả |
+| Field | Type | MÃ´ táº£ |
 |-------|------|-------|
-| `current_page` | integer | Trang hiện tại |
-| `total_pages` | integer | Tổng số trang |
-| `total_items` | integer | Tổng số sản phẩm |
-| `items_per_page` | integer | Số sản phẩm mỗi trang |
-| `has_next` | boolean | Có trang tiếp theo không |
-| `has_prev` | boolean | Có trang trước đó không |
+| `current_page` | integer | Trang hiá»‡n táº¡i |
+| `total_pages` | integer | Tá»•ng sá»‘ trang |
+| `total_items` | integer | Tá»•ng sá»‘ sáº£n pháº©m |
+| `items_per_page` | integer | Sá»‘ sáº£n pháº©m má»—i trang |
+| `has_next` | boolean | CÃ³ trang tiáº¿p theo khÃ´ng |
+| `has_prev` | boolean | CÃ³ trang trÆ°á»›c Ä‘Ã³ khÃ´ng |
 
 **Filters Object:**
 
-| Field | Type | Mô tả |
+| Field | Type | MÃ´ táº£ |
 |-------|------|-------|
-| `keyword` | string\|null | Từ khóa tìm kiếm đã sử dụng |
-| `category` | string\|null | Category đã lọc |
-| `min_price` | float\|null | Giá tối thiểu đã lọc |
-| `max_price` | float\|null | Giá tối đa đã lọc |
+| `keyword` | string\|null | Tá»« khÃ³a tÃ¬m kiáº¿m Ä‘Ã£ sá»­ dá»¥ng |
+| `category` | string\|null | Category Ä‘Ã£ lá»c |
+| `min_price` | float\|null | GiÃ¡ tá»‘i thiá»ƒu Ä‘Ã£ lá»c |
+| `max_price` | float\|null | GiÃ¡ tá»‘i Ä‘a Ä‘Ã£ lá»c |
 
 #### Error Response
 
@@ -231,84 +239,84 @@ GET {BASE_URL}/index.php?controller=products&action=api&category=Sneakers&keywor
 {
     "success": false,
     "error": "Internal server error",
-    "message": "Chi tiết lỗi cụ thể"
+    "message": "Chi tiáº¿t lá»—i cá»¥ thá»ƒ"
 }
 ```
 
-### Lưu ý quan trọng
+### LÆ°u Ã½ quan trá»ng
 
-1. **Filter theo giá:** 
-   - Filter `min_price` và `max_price` được áp dụng cho `final_price` (giá sau khuyến mãi), không phải `price` (giá gốc)
-   - Nếu sản phẩm có khuyến mãi, giá sẽ được tính lại và filter theo giá đã giảm
+1. **Filter theo giÃ¡:** 
+   - Filter `min_price` vÃ  `max_price` Ä‘Æ°á»£c Ã¡p dá»¥ng cho `final_price` (giÃ¡ sau khuyáº¿n mÃ£i), khÃ´ng pháº£i `price` (giÃ¡ gá»‘c)
+   - Náº¿u sáº£n pháº©m cÃ³ khuyáº¿n mÃ£i, giÃ¡ sáº½ Ä‘Æ°á»£c tÃ­nh láº¡i vÃ  filter theo giÃ¡ Ä‘Ã£ giáº£m
 
 2. **Category matching:**
-   - Mỗi category có **CategoryID duy nhất**, không có category nào trùng lặp
-   - Một số category có cùng **Name** nhưng là các category khác nhau (khác CategoryID và Description)
-   - Category name phải khớp chính xác (case-sensitive)
-   - Khi filter theo category name, API sẽ trả về **tất cả sản phẩm** của các category có cùng Name
-   - Ví dụ: `category=Sneakers` sẽ trả về sản phẩm từ cả CategoryID 1 (Giày thể thao) và CategoryID 5 (Giày sneaker thời trang)
-   - **Cách lấy danh sách category:**
-     - Lấy tất cả categories: `SELECT CategoryID, Name, Description FROM category ORDER BY CategoryID`
-     - Lấy category names duy nhất: `SELECT DISTINCT Name FROM category ORDER BY Name`
-     - Từ API response: mỗi sản phẩm có field `category` (Name) và `category_id` (CategoryID)
-   - **Category names có sẵn:** `Sneakers`, `Boots`, `Sandals`, `Running`, `Formal`, `Slippers`, `Basketball`, `Soccer`, `Skateboarding`, `Casual`
+   - Má»—i category cÃ³ **CategoryID duy nháº¥t**, khÃ´ng cÃ³ category nÃ o trÃ¹ng láº·p
+   - Má»™t sá»‘ category cÃ³ cÃ¹ng **Name** nhÆ°ng lÃ  cÃ¡c category khÃ¡c nhau (khÃ¡c CategoryID vÃ  Description)
+   - Category name pháº£i khá»›p chÃ­nh xÃ¡c (case-sensitive)
+   - Khi filter theo category name, API sáº½ tráº£ vá» **táº¥t cáº£ sáº£n pháº©m** cá»§a cÃ¡c category cÃ³ cÃ¹ng Name
+   - VÃ­ dá»¥: `category=Sneakers` sáº½ tráº£ vá» sáº£n pháº©m tá»« cáº£ CategoryID 1 (GiÃ y thá»ƒ thao) vÃ  CategoryID 5 (GiÃ y sneaker thá»i trang)
+   - **CÃ¡ch láº¥y danh sÃ¡ch category:**
+     - Láº¥y táº¥t cáº£ categories: `SELECT CategoryID, Name, Description FROM category ORDER BY CategoryID`
+     - Láº¥y category names duy nháº¥t: `SELECT DISTINCT Name FROM category ORDER BY Name`
+     - Tá»« API response: má»—i sáº£n pháº©m cÃ³ field `category` (Name) vÃ  `category_id` (CategoryID)
+   - **Category names cÃ³ sáºµn:** `Sneakers`, `Boots`, `Sandals`, `Running`, `Formal`, `Slippers`, `Basketball`, `Soccer`, `Skateboarding`, `Casual`
 
 3. **Keyword search:**
-   - Tìm kiếm trong cả `name` và `description`
-   - Không phân biệt hoa thường (LIKE query)
-   - Hỗ trợ tìm kiếm một phần từ khóa
+   - TÃ¬m kiáº¿m trong cáº£ `name` vÃ  `description`
+   - KhÃ´ng phÃ¢n biá»‡t hoa thÆ°á»ng (LIKE query)
+   - Há»— trá»£ tÃ¬m kiáº¿m má»™t pháº§n tá»« khÃ³a
 
 4. **Pagination:**
-   - Trang bắt đầu từ 1 (không phải 0)
-   - Nếu không chỉ định `limit`, mặc định là 20 sản phẩm/trang
-   - Nếu `page` lớn hơn `total_pages`, sẽ trả về mảng rỗng
+   - Trang báº¯t Ä‘áº§u tá»« 1 (khÃ´ng pháº£i 0)
+   - Náº¿u khÃ´ng chá»‰ Ä‘á»‹nh `limit`, máº·c Ä‘á»‹nh lÃ  20 sáº£n pháº©m/trang
+   - Náº¿u `page` lá»›n hÆ¡n `total_pages`, sáº½ tráº£ vá» máº£ng rá»—ng
 
 5. **Image URL:**
-   - `image_url` được tự động tạo từ `image`
-   - Nếu `image` là URL đầy đủ, `image_url` sẽ giữ nguyên
-   - Nếu `image` chỉ là tên file, `image_url` sẽ là `/assets/images/shoes/{image}`
+   - `image_url` Ä‘Æ°á»£c tá»± Ä‘á»™ng táº¡o tá»« `image`
+   - Náº¿u `image` lÃ  URL Ä‘áº§y Ä‘á»§, `image_url` sáº½ giá»¯ nguyÃªn
+   - Náº¿u `image` chá»‰ lÃ  tÃªn file, `image_url` sáº½ lÃ  `/assets/images/shoes/{image}`
 
 6. **Product URL:**
-   - `product_url` là URL đầy đủ để xem chi tiết sản phẩm
-   - URL được tự động tạo từ host của request (hỗ trợ cả ngrok và localhost)
+   - `product_url` lÃ  URL Ä‘áº§y Ä‘á»§ Ä‘á»ƒ xem chi tiáº¿t sáº£n pháº©m
+   - URL Ä‘Æ°á»£c tá»± Ä‘á»™ng táº¡o tá»« host cá»§a request (há»— trá»£ cáº£ ngrok vÃ  localhost)
    - Format: `{BASE_URL}/index.php?controller=products&action=detail&id={product_id}`
 
 7. **Promotion:**
-   - Chỉ hiển thị promotion đang active (trong khoảng thời gian start_date và end_date)
-   - Nếu có nhiều promotion, sẽ chọn promotion có discount cao nhất hoặc giá cố định thấp nhất
-   - Nếu không có promotion, `promotion` sẽ là `null`
+   - Chá»‰ hiá»ƒn thá»‹ promotion Ä‘ang active (trong khoáº£ng thá»i gian start_date vÃ  end_date)
+   - Náº¿u cÃ³ nhiá»u promotion, sáº½ chá»n promotion cÃ³ discount cao nháº¥t hoáº·c giÃ¡ cá»‘ Ä‘á»‹nh tháº¥p nháº¥t
+   - Náº¿u khÃ´ng cÃ³ promotion, `promotion` sáº½ lÃ  `null`
 
-### Ví dụ sử dụng với cURL
+### VÃ­ dá»¥ sá»­ dá»¥ng vá»›i cURL
 
-**Lưu ý:** Thay `{BASE_URL}` bằng host của bạn (ví dụ: `http://localhost:8080`)
+**LÆ°u Ã½:** Thay `{BASE_URL}` báº±ng host cá»§a báº¡n (vÃ­ dá»¥: `http://localhost:8080`)
 
 ```bash
-# Định nghĩa BASE_URL
+# Äá»‹nh nghÄ©a BASE_URL
 BASE_URL="http://localhost:8080"
 
-# Lấy tất cả sản phẩm
+# Láº¥y táº¥t cáº£ sáº£n pháº©m
 curl "${BASE_URL}/index.php?controller=products&action=api"
 
-# Tìm kiếm theo category
+# TÃ¬m kiáº¿m theo category
 curl "${BASE_URL}/index.php?controller=products&action=api&category=Sneakers"
 
-# Tìm kiếm theo keyword
+# TÃ¬m kiáº¿m theo keyword
 curl "${BASE_URL}/index.php?controller=products&action=api&keyword=nike"
 
-# Lọc theo giá
+# Lá»c theo giÃ¡
 curl "${BASE_URL}/index.php?controller=products&action=api&min_price=50&max_price=200"
 
-# Kết hợp nhiều filter
+# Káº¿t há»£p nhiá»u filter
 curl "${BASE_URL}/index.php?controller=products&action=api&category=Sneakers&keyword=nike&min_price=100&max_price=300&page=1&limit=10"
 ```
 
-### Ví dụ sử dụng với JavaScript (Fetch API)
+### VÃ­ dá»¥ sá»­ dá»¥ng vá»›i JavaScript (Fetch API)
 
 ```javascript
-// Định nghĩa BASE_URL
+// Äá»‹nh nghÄ©a BASE_URL
 const BASE_URL = 'http://localhost:8080';
 
-// Lấy tất cả sản phẩm
+// Láº¥y táº¥t cáº£ sáº£n pháº©m
 fetch(`${BASE_URL}/index.php?controller=products&action=api`)
     .then(response => response.json())
     .then(data => {
@@ -319,7 +327,7 @@ fetch(`${BASE_URL}/index.php?controller=products&action=api`)
     })
     .catch(error => console.error('Error:', error));
 
-// Tìm kiếm với filter
+// TÃ¬m kiáº¿m vá»›i filter
 const params = new URLSearchParams({
     category: 'Sneakers',
     keyword: 'nike',
@@ -341,13 +349,13 @@ fetch(`${BASE_URL}/index.php?controller=products&action=api&${params.toString()}
     .catch(error => console.error('Error:', error));
 ```
 
-### Ví dụ sử dụng với PHP
+### VÃ­ dá»¥ sá»­ dá»¥ng vá»›i PHP
 
 ```php
-// Định nghĩa BASE_URL
+// Äá»‹nh nghÄ©a BASE_URL
 $baseUrl = 'http://localhost:8080';
 
-// Lấy tất cả sản phẩm
+// Láº¥y táº¥t cáº£ sáº£n pháº©m
 $url = $baseUrl . '/index.php?controller=products&action=api';
 $response = file_get_contents($url);
 $data = json_decode($response, true);
@@ -358,7 +366,7 @@ if ($data['success']) {
     }
 }
 
-// Tìm kiếm với filter
+// TÃ¬m kiáº¿m vá»›i filter
 $params = http_build_query([
     'category' => 'Sneakers',
     'keyword' => 'nike',
@@ -379,11 +387,11 @@ if ($data['success']) {
 }
 ```
 
-### Testing với Postman
+### Testing vá»›i Postman
 
 1. **Method:** GET
 2. **URL:** `{BASE_URL}/index.php?controller=products&action=api`
-   - Thay `{BASE_URL}` bằng host của bạn (ví dụ: `http://localhost:8080`)
+   - Thay `{BASE_URL}` báº±ng host cá»§a báº¡n (vÃ­ dá»¥: `http://localhost:8080`)
 3. **Params:**
    - Key: `category`, Value: `Sneakers`
    - Key: `keyword`, Value: `nike`
@@ -394,18 +402,20 @@ if ($data['success']) {
 
 ### Troubleshooting
 
-1. **Không trả về kết quả:**
-   - Kiểm tra category name có đúng không (case-sensitive)
-   - Kiểm tra giá min_price và max_price có hợp lý không
-   - Kiểm tra database có dữ liệu không
+1. **KhÃ´ng tráº£ vá» káº¿t quáº£:**
+   - Kiá»ƒm tra category name cÃ³ Ä‘Ãºng khÃ´ng (case-sensitive)
+   - Kiá»ƒm tra giÃ¡ min_price vÃ  max_price cÃ³ há»£p lÃ½ khÃ´ng
+   - Kiá»ƒm tra database cÃ³ dá»¯ liá»‡u khÃ´ng
 
-2. **Lỗi 500:**
-   - Kiểm tra kết nối database
-   - Kiểm tra log file trong `logs/errors.log`
-   - Kiểm tra các tham số có đúng định dạng không
+2. **Lá»—i 500:**
+   - Kiá»ƒm tra káº¿t ná»‘i database
+   - Kiá»ƒm tra log file trong `logs/errors.log`
+   - Kiá»ƒm tra cÃ¡c tham sá»‘ cÃ³ Ä‘Ãºng Ä‘á»‹nh dáº¡ng khÃ´ng
 
-3. **Image không hiển thị:**
-   - Kiểm tra file ảnh có tồn tại trong `assets/images/shoes/` không
-   - Kiểm tra quyền truy cập thư mục
-   - Kiểm tra đường dẫn `image_url` có đúng không
+3. **Image khÃ´ng hiá»ƒn thá»‹:**
+   - Kiá»ƒm tra file áº£nh cÃ³ tá»“n táº¡i trong `assets/images/shoes/` khÃ´ng
+   - Kiá»ƒm tra quyá»n truy cáº­p thÆ° má»¥c
+   - Kiá»ƒm tra Ä‘Æ°á»ng dáº«n `image_url` cÃ³ Ä‘Ãºng khÃ´ng
+
+
 

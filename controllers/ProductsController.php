@@ -103,6 +103,9 @@ class ProductsController {
             exit;
         }
 
+        $productAddError = $_SESSION['product_error'] ?? null;
+        unset($_SESSION['product_error']);
+
         // Get related products (same category)
         $relatedProducts = $this->productModel->getRelatedProducts($product['category_id'], $id, 4);
 
@@ -153,44 +156,72 @@ class ProductsController {
 
         // Handle add to cart
         if (isset($_POST['add_to_cart'])) {
+            $selectedSize = isset($_POST['selected_size']) ? trim($_POST['selected_size']) : '';
+            $sizeLookup = [];
+            if (!empty($product['sizes'])) {
+                foreach ($product['sizes'] as $sizeRow) {
+                    $key = $this->normalizeSizeKey($sizeRow['size']);
+                    $sizeLookup[$key] = $sizeRow;
+                }
+            }
+
+            if ($selectedSize === '' || empty($sizeLookup)) {
+                $_SESSION['product_error'] = 'Please choose a size before adding to cart.';
+                header('Location: index.php?controller=products&action=detail&id=' . $id);
+                exit;
+            }
+
+            $selectedKey = $this->normalizeSizeKey($selectedSize);
+            if (!isset($sizeLookup[$selectedKey])) {
+                $_SESSION['product_error'] = 'Selected size is not available.';
+                header('Location: index.php?controller=products&action=detail&id=' . $id);
+                exit;
+            }
+
+            $sizeData = $sizeLookup[$selectedKey];
+            $maxQuantity = max(0, (int)$sizeData['quantity']);
+            if ($maxQuantity <= 0) {
+                $_SESSION['product_error'] = 'Selected size is out of stock.';
+                header('Location: index.php?controller=products&action=detail&id=' . $id);
+                exit;
+            }
+
             $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
-            
             if ($quantity < 1) {
                 $quantity = 1;
             }
-            
-            $maxQuantity = isset($product['Stock']) ? (int)$product['Stock'] : 999;
             if ($quantity > $maxQuantity) {
                 $quantity = $maxQuantity;
             }
-            
+
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = [];
             }
-            
-            if (isset($_SESSION['cart'][$id])) {
-                $newQuantity = $_SESSION['cart'][$id]['quantity'] + $quantity;
-                if ($newQuantity > $maxQuantity) {
-                    $newQuantity = $maxQuantity;
-                }
-                $_SESSION['cart'][$id]['quantity'] = $newQuantity;
+
+            $cartKey = $product['id'] . ':' . $selectedKey;
+            if (isset($_SESSION['cart'][$cartKey])) {
+                $newQuantity = min($maxQuantity, $_SESSION['cart'][$cartKey]['quantity'] + $quantity);
+                $_SESSION['cart'][$cartKey]['quantity'] = $newQuantity;
             } else {
-                $_SESSION['cart'][$id] = [
+                $_SESSION['cart'][$cartKey] = [
                     'id' => $product['id'],
+                    'product_id' => $product['id'],
                     'name' => $product['name'],
                     'price' => $product['final_price'],
                     'image' => $product['image'],
+                    'size' => $sizeData['size'],
+                    'size_label' => $sizeData['label'] ?? $selectedSize,
                     'quantity' => $quantity
                 ];
             }
-            
+
             header('Location: index.php?controller=cart&action=index');
             exit;
         }
 
         require_once 'views/components/header.php';
         
-        $renderView = function($product, $relatedProducts, $comments, $ratingStats, $member) {
+        $renderView = function($product, $relatedProducts, $comments, $ratingStats, $member) use ($productAddError) {
             require 'views/pages/product-detail.php';
         };
         $renderView($product, $relatedProducts, $comments, $ratingStats, $member);
@@ -271,5 +302,10 @@ class ProductsController {
             ], JSON_UNESCAPED_UNICODE);
         }
         exit;
+    }
+
+    private function normalizeSizeKey($value): string
+    {
+        return rtrim(rtrim(number_format((float)$value, 2, '.', ''), '0'), '.');
     }
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShoeStore - Find Your Perfect Pair</title>
+    <title>V.AShoes - Find Your Perfect Pair</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2742/2742687.png">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -240,9 +240,9 @@ HTML;
         <div class="container header-inner">
             <div class="logo">
                 <a href="/index.php" class="logo-link">
-                    <img src="<?php echo $logoUrl; ?>" alt="ShoeStore logo" loading="lazy">
+                    <img src="<?php echo $logoUrl; ?>" alt="V.AShoes logo" loading="lazy">
                     <div>
-                    <h1>ShoeStore</h1>
+                    <h1>V.AShoes</h1>
                         <span>curated footwear drops</span>
                     </div>
                 </a>

@@ -487,6 +487,55 @@ INSERT INTO `shoes` (`ShoesID`, `Name`, `Price`, `Stock`, `Description`, `DateCr
 (11, 'Jordan 1', 200.00, 10, 'Giày bóng rổ Jordan', '2024-01-05', '2024-04-10', 'https://product.hstatic.net/200000858039/product/jordan-1-high-black-white-trang-den_5f542b2addee453e9868730c6623d06b.png', 7, 48.00),
 (12, 'Nike Tiempo', 95.00, 12, 'Giày đá bóng Nike Tiempo', '2024-02-14', '2024-03-28', 'https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/a0f2b725-0806-41ce-b437-e0c3eacfba09/LEGEND+10+ELITE+FG+NU1.png', 8, 49.00);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shoe_sizes`
+--
+
+CREATE TABLE `shoe_sizes` (
+  `SizeID` int(11) NOT NULL AUTO_INCREMENT,
+  `ShoeID` int(11) NOT NULL,
+  `Size` decimal(5,2) NOT NULL,
+  `Quantity` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`SizeID`),
+  UNIQUE KEY `uniq_shoe_size` (`ShoeID`,`Size`),
+  KEY `ShoeID` (`ShoeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `shoe_sizes`
+--
+
+INSERT INTO `shoe_sizes` (`ShoeID`, `Size`, `Quantity`)
+SELECT seed.ShoesID,
+       ROUND(seed.base_size + offsets.offset, 2) AS Size,
+       CASE offsets.offset
+           WHEN -1 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END END
+           WHEN 0 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END END
+           ELSE CASE WHEN seed.total_stock <= 0 THEN 0 ELSE GREATEST(0, seed.total_stock - (seed.base_qty * 2 + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END)) END
+       END AS Quantity
+FROM (
+    SELECT s.ShoesID,
+           ROUND(COALESCE(s.shoes_size, 40.00), 2) AS base_size,
+           GREATEST(COALESCE(s.Stock, 0), 0) AS total_stock,
+           FLOOR(GREATEST(COALESCE(s.Stock, 0), 0) / 3) AS base_qty,
+           MOD(GREATEST(COALESCE(s.Stock, 0), 0), 3) AS remainder
+    FROM shoes s
+) AS seed
+JOIN (
+    SELECT -1 AS offset
+    UNION ALL SELECT 0
+    UNION ALL SELECT 1
+) AS offsets;
+
+UPDATE `shoes` s
+SET s.Stock = (
+    SELECT COALESCE(SUM(ss.Quantity), 0)
+    FROM shoe_sizes ss
+    WHERE ss.ShoeID = s.ShoesID
+);
+
 --
 -- Indexes for dumped tables
 --
@@ -732,6 +781,12 @@ ALTER TABLE `promotion_shoes`
 --
 ALTER TABLE `shoes`
   ADD CONSTRAINT `shoes_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `category` (`CategoryID`);
+
+--
+-- Constraints for table `shoe_sizes`
+--
+ALTER TABLE `shoe_sizes`
+  ADD CONSTRAINT `shoe_sizes_ibfk_1` FOREIGN KEY (`ShoeID`) REFERENCES `shoes` (`ShoesID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

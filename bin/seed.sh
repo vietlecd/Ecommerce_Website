@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Simple seeder runner script for MySQL in Docker
-# Usage: ./seed.sh [all|filename.sql]
-
 set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_ROOT"
 
 SEEDERS_DIR="assets/config/mysql/seeders"
 DOCKER_SERVICE="mysql"
@@ -11,12 +12,10 @@ DB_NAME="shoe"
 DB_USER="shoes_user"
 DB_PASS="shoes_pass"
 
-# Display a simple header
 echo "====================================="
 echo "MySQL Database Seeder"
 echo "====================================="
 
-# Function to check MySQL connection
 check_mysql_connection() {
     echo "Checking MySQL connection..."
     if ! docker compose exec $DOCKER_SERVICE mysql -u$DB_USER -p$DB_PASS -e "SELECT 1" &>/dev/null; then
@@ -27,12 +26,10 @@ check_mysql_connection() {
     fi
 }
 
-# Function to run a specific seeder
 run_seeder() {
     local file=$1
     local full_path="$SEEDERS_DIR/$file"
     
-    # Check if file exists
     if [ ! -f "$full_path" ]; then
         echo "Error: Seeder file not found: $full_path"
         echo "Run with --list to see available seeders or --help for usage information."
@@ -41,7 +38,6 @@ run_seeder() {
     
     echo "Running seeder: $file"
     
-    # Copy the SQL file to MySQL container and execute
     docker compose cp "$full_path" $DOCKER_SERVICE:/tmp/
     docker compose exec $DOCKER_SERVICE mysql -u$DB_USER -p$DB_PASS $DB_NAME -e "SOURCE /tmp/$file"
     
@@ -53,7 +49,6 @@ run_seeder() {
     fi
 }
 
-# Function to list available seeders
 list_seeders() {
     echo "Available seeders:"
     if [ -d "$SEEDERS_DIR" ]; then
@@ -72,9 +67,8 @@ list_seeders() {
     fi
 }
 
-# Function to display help
 show_help() {
-    echo "Usage: ./seed.sh [command] [options]"
+    echo "Usage: ./bin/seed.sh [command] [options]"
     echo "Commands:"
     echo "  all                       Run all seeders"
     echo "  reset                     Remove all seeded data"
@@ -84,20 +78,18 @@ show_help() {
     echo "  --clear [all|file.sql]    Clear tables before running seeders"
     echo ""
     echo "Examples:"
-    echo "  ./seed.sh all                           # Run all seeders"
-    echo "  ./seed.sh 001_seed_about_qna_data.sql   # Run a specific seeder"
-    echo "  ./seed.sh reset                         # Clear all seeded data"
-    echo "  ./seed.sh --clear all                   # Clear tables before running all seeders"
-    echo "  ./seed.sh --clear 001_seed_about_qna_data.sql  # Clear tables before running specific seeder"
-    echo "  ./seed.sh --list                        # List available seeders"
+    echo "  ./bin/seed.sh all                           # Run all seeders"
+    echo "  ./bin/seed.sh 001_seed_about_qna_data.sql   # Run a specific seeder"
+    echo "  ./bin/seed.sh reset                         # Clear all seeded data"
+    echo "  ./bin/seed.sh --clear all                   # Clear tables before running all seeders"
+    echo "  ./bin/seed.sh --clear 001_seed_about_qna_data.sql  # Clear tables before running specific seeder"
+    echo "  ./bin/seed.sh --list                        # List available seeders"
 }
 
-# Function to clear tables before seeding
 clear_tables_for_seeder() {
     local file=$1
     
     echo "Analyzing $file to identify tables..."
-    # Extract table names from INSERT INTO statements
     tables=$(grep -o -E "INSERT INTO \`([a-zA-Z0-9_]+)\`" "$file" | sed -E "s/INSERT INTO \`([a-zA-Z0-9_]+)\`/\1/" | sort -u)
     
     if [ -z "$tables" ]; then
@@ -120,20 +112,16 @@ clear_tables_for_seeder() {
     return 0
 }
 
-# Function to clear tables for all seeders
 clear_all_tables() {
     echo "Analyzing all seeder files to identify tables..."
     local all_tables=""
     
-    # Loop through each seeder file
     for file in $(find "$SEEDERS_DIR" -name "*.sql" -not -name "*.down.sql" | sort); do
         echo "- $(basename "$file")"
-        # Extract table names from INSERT INTO statements
         tables=$(grep -o -E "INSERT INTO \`([a-zA-Z0-9_]+)\`" "$file" | sed -E "s/INSERT INTO \`([a-zA-Z0-9_]+)\`/\1/")
         all_tables="$all_tables $tables"
     done
     
-    # Get unique table names
     unique_tables=$(echo "$all_tables" | tr ' ' '\n' | sort -u | grep -v "^$")
     
     if [ -z "$unique_tables" ]; then
@@ -156,21 +144,17 @@ clear_all_tables() {
     return 0
 }
 
-# Function to reset all seeded tables (without running seeders)
 reset_all_seeded_tables() {
     echo "Resetting all seeded tables..."
     echo "Analyzing all seeder files to identify tables..."
     local all_tables=""
     
-    # Loop through each seeder file
     for file in $(find "$SEEDERS_DIR" -name "*.sql" -not -name "*.down.sql" | sort); do
         echo "- $(basename "$file")"
-        # Extract table names from INSERT INTO statements
         tables=$(grep -o -E "INSERT INTO \`([a-zA-Z0-9_]+)\`" "$file" | sed -E "s/INSERT INTO \`([a-zA-Z0-9_]+)\`/\1/")
         all_tables="$all_tables $tables"
     done
     
-    # Get unique table names
     unique_tables=$(echo "$all_tables" | tr ' ' '\n' | sort -u | grep -v "^$")
     
     if [ -z "$unique_tables" ]; then
@@ -198,7 +182,6 @@ reset_all_seeded_tables() {
     return 0
 }
 
-# Main logic
 case "$1" in
     "all")
         check_mysql_connection
@@ -267,7 +250,6 @@ case "$1" in
         ;;
     
     *)
-        # Treat as a specific seeder file
         run_seeder "$1"
         ;;
 esac

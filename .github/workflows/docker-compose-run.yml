@@ -1,0 +1,45 @@
+name: Docker Compose Run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Start Docker Compose
+        run: |
+          docker compose up -d --build
+      
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for services to start..."
+          sleep 30
+          docker compose ps
+      
+      - name: Sleep for 5 hours
+        run: |
+          echo "Sleeping for 5 hours (18000 seconds)..."
+          sleep 18000
+      
+      - name: Check service status
+        run: |
+          echo "Checking service status after sleep..."
+          docker compose ps
+          docker compose logs --tail=50
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          echo "Stopping and removing containers..."
+          docker compose down -v
+          docker system prune -f
+

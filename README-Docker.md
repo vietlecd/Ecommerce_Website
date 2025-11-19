@@ -124,14 +124,14 @@ This project includes a database migration system for managing schema changes:
 
 ```bash
 # Using the shell script (recommended from host machine)
-./migrate.sh all                   # Run all migrations
-./migrate.sh 001_create_qna_tables.sql  # Run a specific migration
-./migrate.sh --list                # List available migrations
-./migrate.sh --status              # Show migration status
-./migrate.sh rollback              # Roll back the last migration
-./migrate.sh rollback 3            # Roll back the last 3 migrations
-./migrate.sh reset                 # Roll back all migrations
-./migrate.sh --help                # Show help
+./bin/migrate.sh all                   # Run all migrations
+./bin/migrate.sh 001_create_qna_tables.sql  # Run a specific migration
+./bin/migrate.sh --list                # List available migrations
+./bin/migrate.sh --status              # Show migration status
+./bin/migrate.sh rollback              # Roll back the last migration
+./bin/migrate.sh rollback 3            # Roll back the last 3 migrations
+./bin/migrate.sh reset                 # Roll back all migrations
+./bin/migrate.sh --help                # Show help
 
 # Using the PHP script (inside Docker container)
 docker compose exec web php /var/www/html/bin/migrate.php all            # Run all migrations
@@ -165,13 +165,13 @@ DROP TABLE IF EXISTS example;
 Then you can run:
 ```bash
 # Apply migration
-./migrate.sh 001_create_example_table.sql
+./bin/migrate.sh 001_create_example_table.sql
 
 # Check status
-./migrate.sh --status
+./bin/migrate.sh --status
 
 # Roll back migration
-./migrate.sh rollback
+./bin/migrate.sh rollback
 ```
 
 Important notes:

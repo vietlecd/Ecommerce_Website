@@ -1,143 +1,214 @@
-<style>
-    .news-list {
-        margin-top: 20px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
-    }
+<section class="news-hero">
+    <div class="news-hero-content">
+        <p class="news-hero-label">News & Updates</p>
+        <h1>Stories, insights, and launch alerts</h1>
+        <p>Curated editorials, promotion breakdowns, and behind-the-scenes articles for sneakerheads and shoppers alike.</p>
+        <div class="news-hero-stats">
+            <span><?php echo number_format($totalNews); ?> articles published</span>
+            <span>Page <?php echo $page; ?> of <?php echo max(1, $totalPages); ?></span>
+        </div>
+    </div>
+</section>
 
-    .news-item {
-        text-align: center;
-    }
+<?php if (!empty($recentNews) || !empty($popularNews)): ?>
+<section class="news-highlight-widgets">
+    <div class="news-widget-grid">
+        <?php if (!empty($recentNews)): ?>
+            <div class="news-widget-card" style="background-image: url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1000&q=80');">
+                <div class="news-widget-card-inner">
+                    <p class="news-widget-label">Recent</p>
+                    <h3>Fresh off the press</h3>
+                    <ul class="news-widget-items">
+                        <?php foreach ($recentNews as $item): ?>
+                            <?php
+                            $thumb = '/assets/images/placeholder.png';
+                            if (!empty($item['thumbnail'])) {
+                                if (filter_var($item['thumbnail'], FILTER_VALIDATE_URL)) {
+                                    $thumb = $item['thumbnail'];
+                                } elseif (file_exists($item['thumbnail'])) {
+                                    $thumb = '/' . ltrim($item['thumbnail'], '/');
+                                }
+                            }
+                            ?>
+                            <li>
+                                <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
+                                    <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
+                                    <div>
+                                        <span><?php echo date('M d, Y', strtotime($item['DateCreated'])); ?></span>
+                                        <p><?php echo htmlspecialchars($item['Title']); ?></p>
+                                    </div>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    .news-thumbnail {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
-        transition: transform 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+        <?php if (!empty($popularNews)): ?>
+            <div class="news-widget-card" style="background-image: url('https://images.unsplash.com/photo-1520970014086-2208d157c9e2?auto=format&fit=crop&w=1000&q=80');">
+                <div class="news-widget-card-inner">
+                    <p class="news-widget-label">Popular</p>
+                    <h3>Most viewed stories</h3>
+                    <ul class="news-widget-items">
+                        <?php foreach ($popularNews as $item): ?>
+                            <?php
+                            $thumb = '/assets/images/placeholder.png';
+                            if (!empty($item['thumbnail'])) {
+                                if (filter_var($item['thumbnail'], FILTER_VALIDATE_URL)) {
+                                    $thumb = $item['thumbnail'];
+                                } elseif (file_exists($item['thumbnail'])) {
+                                    $thumb = '/' . ltrim($item['thumbnail'], '/');
+                                }
+                            }
+                            ?>
+                            <li>
+                                <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
+                                    <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
+                                    <div>
+                                        <span><?php echo !empty($item['clicks']) ? number_format($item['clicks']) . ' views' : 'New'; ?></span>
+                                        <p><?php echo htmlspecialchars($item['Title']); ?></p>
+                                    </div>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>
+<?php endif; ?>
 
-    .news-thumbnail:hover {
-        transform: scale(1.05);
-    }
-
-    .pagination {
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    .pagination a {
-        display: inline-block;
-        padding: 10px 18px;
-        margin: 0 5px;
-        border: 1px solid #ddd;
-        text-decoration: none;
-        color: #333;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    .pagination a.active {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination a:hover:not(.active) {
-        background-color: #f1f1f1;
-    }
-
-    .countdown {
-        margin-top: 10px;
-        font-weight: bold;
-        color: #d9534f;
-    }
-</style>
-
-<div class="section-title">
-    <h2>News & Updates</h2>
-</div>
-
-<form method="get" action="" class="form-container">
-    <div class="form-group">
-        <label for="search">Search News</label>
-        <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Enter keyword...">
+<section class="news-search-panel">
+    <form method="get" action="" class="news-search-form">
         <input type="hidden" name="controller" value="news">
         <input type="hidden" name="action" value="index">
-        <button type="submit" class="form-btn">Search</button>
-    </div>
-</form>
+        <label for="search" class="sr-only">Search news</label>
+        <input type="text"
+               id="search"
+               name="search"
+               value="<?php echo htmlspecialchars($search); ?>"
+               placeholder="Search articles, promos, topics..."
+               class="news-search-input">
+        <button type="submit" class="news-search-btn">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </button>
+    </form>
+</section>
 
-<div class="news-list">
+<section class="news-grid-section">
     <?php if (empty($news)): ?>
-        <p>No news found.</p>
+        <div class="news-empty">
+            <i class="fas fa-newspaper"></i>
+            <p>No news found. Try another keyword.</p>
+        </div>
     <?php else: ?>
-        <?php foreach ($news as $item): ?>
-            <div class="news-item">
-                <?php if ($item['thumbnail'] && file_exists($item['thumbnail'])): ?>
-                    <a href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
-                        <img src="/<?php echo htmlspecialchars($item['thumbnail']); ?>" alt="Thumbnail" class="news-thumbnail" loading="lazy" title="<?php echo htmlspecialchars($item['Title']); ?>">
+        <div class="news-grid">
+            <?php foreach ($news as $item): ?>
+                <?php
+                    $thumbnailPath = '/assets/images/placeholder.png';
+                    if (!empty($item['thumbnail'])) {
+                        if (filter_var($item['thumbnail'], FILTER_VALIDATE_URL)) {
+                            $thumbnailPath = $item['thumbnail'];
+                        } elseif (file_exists($item['thumbnail'])) {
+                            $thumbnailPath = '/' . ltrim($item['thumbnail'], '/');
+                        }
+                    }
+                    $typeLabel = !empty($item['news_type']) ? str_replace('_', ' ', $item['news_type']) : 'Update';
+                    $descriptionSnippet = !empty($item['Description'])
+                        ? mb_strimwidth(strip_tags($item['Description']), 0, 140, '...')
+                        : 'Tap to read the full story.';
+                ?>
+                <article class="news-card">
+                    <a class="news-card-image" href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
+                        <img src="<?php echo htmlspecialchars($thumbnailPath); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
+                        <span class="news-card-tag"><?php echo htmlspecialchars(ucwords($typeLabel)); ?></span>
+                        <?php if (!empty($item['end_date'])): ?>
+                            <span class="news-card-countdown" data-end-date="<?php echo $item['end_date']; ?>">
+                                <i class="far fa-clock"></i>
+                                <span class="timer">--</span>
+                            </span>
+                        <?php endif; ?>
                     </a>
-                <?php else: ?>
-                    <a href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
-                        <img src="/assets/images/placeholder.png" alt="No Thumbnail" class="news-thumbnail" loading="lazy" title="<?php echo htmlspecialchars($item['Title']); ?>">
-                    </a>
-                <?php endif; ?>
-                <?php if (!empty($item['end_date'])): ?>
-                    <div class="countdown" data-end-date="<?php echo $item['end_date']; ?>">
-                        Time remaining: <span class="timer"></span>
+                    <div class="news-card-content">
+                        <p class="news-card-meta">
+                            <span><?php echo date('M d, Y', strtotime($item['DateCreated'])); ?></span>
+                            <?php if (!empty($item['promotion_name'])): ?>
+                                · <span><?php echo htmlspecialchars($item['promotion_name']); ?></span>
+                            <?php endif; ?>
+                        </p>
+                        <h3><?php echo htmlspecialchars($item['Title']); ?></h3>
+                        <p><?php echo htmlspecialchars($descriptionSnippet); ?></p>
+                        <div class="news-card-actions">
+                            <a class="btn btn-outline" href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
+                                Read Article
+                            </a>
+                            <a class="news-card-detail-link" href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
+                                View blog view
+                            </a>
+                        </div>
                     </div>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
+                </article>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
-</div>
+</section>
 
-<div class="pagination">
-    <?php if ($totalPages > 1): ?>
+<?php if ($totalPages > 1): ?>
+    <div class="news-pagination">
         <?php if ($page > 1): ?>
-            <a href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page - 1; ?>">Trang trước</a>
+            <a class="news-pagination-link" href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page - 1; ?>">
+                <i class="fas fa-arrow-left"></i> Previous
+            </a>
         <?php endif; ?>
 
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $i; ?>" <?php echo $i === $page ? 'class="active"' : ''; ?>><?php echo $i; ?></a>
+            <a class="news-pagination-link <?php echo $i === $page ? 'active' : ''; ?>"
+               href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $i; ?>">
+                <?php echo $i; ?>
+            </a>
         <?php endfor; ?>
 
         <?php if ($page < $totalPages): ?>
-            <a href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page + 1; ?>">Trang sau</a>
+            <a class="news-pagination-link" href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page + 1; ?>">
+                Next <i class="fas fa-arrow-right"></i>
+            </a>
         <?php endif; ?>
-    <?php endif; ?>
-</div>
+    </div>
+<?php endif; ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const countdownElements = document.querySelectorAll('.countdown');
+    const countdownElements = document.querySelectorAll('.news-card-countdown');
 
     countdownElements.forEach(function(element) {
         const endDate = new Date(element.getAttribute('data-end-date')).getTime();
         const timerElement = element.querySelector('.timer');
+
+        if (!timerElement) {
+            return;
+        }
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = endDate - now;
 
             if (distance < 0) {
-                timerElement.innerHTML = "Expired";
+                timerElement.innerHTML = 'Expired';
+                element.classList.add('expired');
                 return;
             }
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            timerElement.innerHTML = `${days}d ${hours}h left`;
         }
 
         updateCountdown();
-        setInterval(updateCountdown, 1000);
+        setInterval(updateCountdown, 60000);
     });
 });
 </script>

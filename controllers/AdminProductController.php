@@ -37,10 +37,11 @@ class AdminProductController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name'] ?? '');
             $price = trim($_POST['price'] ?? '');
-            $stock = trim($_POST['stock'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $categoryId = trim($_POST['category_id'] ?? '');
-            $shoesSize = trim($_POST['shoes_size'] ?? '');
+            $sizeTuples = $this->collectSizeInputs();
+            $totalStock = array_sum(array_column($sizeTuples, 'quantity'));
+            $primarySize = $sizeTuples[0]['size'] ?? null;
 
             $image = null;
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -72,11 +73,16 @@ class AdminProductController {
             }
 
             if (!isset($error)) {
-                if (empty($name) || empty($price) || empty($stock) || empty($description) || empty($categoryId) || empty($shoesSize)) {
-                    $error = 'Vui lòng nhập đầy đủ thông tin.';
+                if (empty($name) || empty($price) || empty($description) || empty($categoryId) || empty($sizeTuples)) {
+                    $error = 'Vui lòng nhập đầy đủ thông tin và size.';
                 } else {
-                    if ($this->productModel->addProduct($name, $price, $stock, $description, $categoryId, $shoesSize, $image)) {
-                        $success = 'Thêm sản phẩm thành công!';
+                    $productId = $this->productModel->addProduct($name, $price, $totalStock, $description, $categoryId, $primarySize, $image);
+                    if ($productId) {
+                        if ($this->productModel->syncProductSizes($productId, $sizeTuples)) {
+                            $success = 'Thêm sản phẩm thành công!';
+                        } else {
+                            $error = 'Không thể lưu size cho sản phẩm.';
+                        }
                     } else {
                         $error = 'Thêm sản phẩm thất bại.';
                     }
@@ -112,10 +118,11 @@ class AdminProductController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name'] ?? '');
             $price = trim($_POST['price'] ?? '');
-            $stock = trim($_POST['stock'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $categoryId = trim($_POST['category_id'] ?? '');
-            $shoesSize = trim($_POST['shoes_size'] ?? '');
+            $sizeTuples = $this->collectSizeInputs();
+            $totalStock = array_sum(array_column($sizeTuples, 'quantity'));
+            $primarySize = $sizeTuples[0]['size'] ?? null;
 
             $image = $product['image'] ?? null;
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
@@ -148,12 +155,16 @@ class AdminProductController {
             }
 
             if (!isset($error)) {
-                if (empty($name) || empty($price) || empty($stock) || empty($description) || empty($categoryId) || empty($shoesSize)) {
-                    $error = 'Vui lòng nhập đầy đủ thông tin.';
+                if (empty($name) || empty($price) || empty($description) || empty($categoryId) || empty($sizeTuples)) {
+                    $error = 'Vui lòng nhập đầy đủ thông tin và size.';
                 } else {
-                    if ($this->productModel->updateProduct($id, $name, $price, $stock, $description, $categoryId, $shoesSize, $image)) {
-                        $success = 'Cập nhật sản phẩm thành công!';
-                        $product = $this->productModel->getProductById($id);
+                    if ($this->productModel->updateProduct($id, $name, $price, $totalStock, $description, $categoryId, $primarySize, $image)) {
+                        if ($this->productModel->syncProductSizes($id, $sizeTuples)) {
+                            $success = 'Cập nhật sản phẩm thành công!';
+                            $product = $this->productModel->getProductById($id);
+                        } else {
+                            $error = 'Không thể lưu size cho sản phẩm.';
+                        }
                     } else {
                         $error = 'Cập nhật sản phẩm thất bại.';
                     }
@@ -189,5 +200,30 @@ class AdminProductController {
 
         header('Location: /views/admin/index.php?controller=adminProduct&action=products');
         exit;
+    }
+
+    private function collectSizeInputs(): array {
+        $sizes = $_POST['sizes'] ?? [];
+        $quantities = $_POST['size_quantities'] ?? [];
+        $tuples = [];
+
+        foreach ($sizes as $index => $sizeValue) {
+            $sizeValue = trim((string)$sizeValue);
+            if ($sizeValue === '' || !is_numeric($sizeValue)) {
+                continue;
+            }
+
+            $quantity = isset($quantities[$index]) ? (int)$quantities[$index] : 0;
+            if ($quantity < 0) {
+                $quantity = 0;
+            }
+
+            $tuples[] = [
+                'size' => (float)$sizeValue,
+                'quantity' => $quantity
+            ];
+        }
+
+        return $tuples;
     }
 }

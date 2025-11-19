@@ -339,7 +339,7 @@ $truncateText = function($text, $limit = 120) {
                             $saleInfo = $item['sale'] ?? null;
                             $saleExpiryIso = !empty($saleInfo['ExpiresAt']) ? date('c', strtotime($saleInfo['ExpiresAt'])) : null;
                             $itemSnippet = $truncateText($item['description'] ?? '', 90);
-                            $itemSize = !empty($item['shoes_size']) ? $item['shoes_size'] : null;
+                            $itemSize = !empty($item['size_summary']) ? $item['size_summary'] : null;
                             $itemCategory = !empty($item['category']) ? $item['category'] : ($slide['eyebrow'] ?? 'Collection');
                             $itemStock = isset($item['Stock']) ? (int)$item['Stock'] : 0;
                             $stockLabel = $itemStock > 0 ? $itemStock . ' in stock' : 'Out of stock';
@@ -444,7 +444,7 @@ $truncateText = function($text, $limit = 120) {
                         }
                         $productSnippet = $truncateText($product['description'] ?? '', 120);
                         $productCategory = !empty($product['category']) ? $product['category'] : 'Uncategorized';
-                        $productSize = !empty($product['shoes_size']) ? $product['shoes_size'] : null;
+                        $productSize = !empty($product['size_summary']) ? $product['size_summary'] : null;
                         $productStock = isset($product['Stock']) ? (int)$product['Stock'] : 0;
                         $productStockLabel = $productStock > 0 ? $productStock . ' in stock' : 'Out of stock';
                         $productStockClass = $productStock > 0 ? 'stock-available' : 'stock-out';

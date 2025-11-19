@@ -40,23 +40,23 @@ class AdminController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name'] ?? '');
             $price = trim($_POST['price'] ?? '');
-            $stock = trim($_POST['stock'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $categoryId = trim($_POST['category_id'] ?? '');
-            $shoesSize = trim($_POST['shoes_size'] ?? '');
+            $sizeTuples = $this->collectSizeInputs();
+            $totalStock = array_sum(array_column($sizeTuples, 'quantity'));
+            $primarySize = $sizeTuples[0]['size'] ?? null;
 
-            // Xử lý tải lên hình ảnh
             $image = null;
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                $maxFileSize = 5 * 1024 * 1024; // 5MB
+                $maxFileSize = 5 * 1024 * 1024;
                 $fileType = mime_content_type($_FILES['image']['tmp_name']);
                 $fileSize = $_FILES['image']['size'];
 
                 if (!in_array($fileType, $allowedTypes)) {
-                    $error = 'Chỉ hỗ trợ các định dạng hình ảnh JPEG, PNG, GIF.';
+                    $error = 'Unsupported image format (JPEG, PNG, GIF only).';
                 } elseif ($fileSize > $maxFileSize) {
-                    $error = 'Kích thước hình ảnh không được vượt quá 5MB.';
+                    $error = 'Image must be smaller than 5MB.';
                 } else {
                     $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
                     $uploadDir = 'assets/images/';
@@ -65,26 +65,32 @@ class AdminController {
                     if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
                         $image = $imageName;
                     } else {
-                        $error = 'Không thể tải lên hình ảnh.';
+                        $error = 'Unable to upload image.';
                     }
                 }
             } else {
-                $error = 'Vui lòng chọn một hình ảnh.';
+                $error = 'Please choose an image.';
             }
 
             if (!isset($error)) {
-                if (empty($name) || empty($price) || empty($stock) || empty($description) || empty($categoryId) || empty($shoesSize)) {
-                    $error = 'Vui lòng nhập đầy đủ thông tin.';
+                if (empty($name) || empty($price) || empty($description) || empty($categoryId) || empty($sizeTuples)) {
+                    $error = 'Please fill in all required fields and at least one size.';
                 } else {
                     $stmt = $this->db->prepare("INSERT INTO shoes (Name, Price, Stock, Description, DateCreate, DateUpdate, CategoryID, shoes_size, Image) VALUES (?, ?, ?, ?, CURDATE(), CURDATE(), ?, ?, ?)");
-                    if ($stmt->execute([$name, $price, $stock, $description, $categoryId, $shoesSize, $image])) {
-                        $success = 'Thêm sản phẩm thành công!';
+                    if ($stmt->execute([$name, $price, $totalStock, $description, $categoryId, $primarySize, $image])) {
+                        $shoeId = (int)$this->db->lastInsertId();
+                        if ($this->productModel->syncProductSizes($shoeId, $sizeTuples)) {
+                            $success = 'Product created successfully!';
+                        } else {
+                            $error = 'Could not save size information.';
+                        }
                     } else {
-                        $error = 'Thêm sản phẩm thất bại.';
+                        $error = 'Failed to create product.';
                     }
                 }
             }
         }
+
 
         $categories = $this->db->query("SELECT * FROM category")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -116,54 +122,61 @@ class AdminController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name'] ?? '');
             $price = trim($_POST['price'] ?? '');
-            $stock = trim($_POST['stock'] ?? '');
             $description = trim($_POST['description'] ?? '');
             $categoryId = trim($_POST['category_id'] ?? '');
-            $shoesSize = trim($_POST['shoes_size'] ?? '');
+            $sizeTuples = $this->collectSizeInputs();
+            $totalStock = array_sum(array_column($sizeTuples, 'quantity'));
+            $primarySize = $sizeTuples[0]['size'] ?? null;
 
-            // Xử lý hình ảnh
             $image = $product['Image'] ?? null;
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                $maxFileSize = 5 * 1024 * 1024; // 5MB
+                $maxFileSize = 5 * 1024 * 1024;
                 $fileType = mime_content_type($_FILES['image']['tmp_name']);
                 $fileSize = $_FILES['image']['size'];
 
                 if (!in_array($fileType, $allowedTypes)) {
-                    $error = 'Chỉ hỗ trợ các định dạng hình ảnh JPEG, PNG, GIF.';
+                    $error = 'Unsupported image format (JPEG, PNG, GIF only).';
                 } elseif ($fileSize > $maxFileSize) {
-                    $error = 'Kích thước hình ảnh không được vượt quá 5MB.';
+                    $error = 'Image must be smaller than 5MB.';
                 } else {
                     $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
                     $uploadDir = 'assets/images/';
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0755, true);
+                    }
                     $uploadPath = $uploadDir . $imageName;
 
                     if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-                        // Xóa hình ảnh cũ nếu có
                         if ($image && file_exists($uploadDir . $image)) {
                             unlink($uploadDir . $image);
                         }
                         $image = $imageName;
                     } else {
-                        $error = 'Không thể tải lên hình ảnh.';
+                        $error = 'Unable to upload image.';
                     }
                 }
             }
 
             if (!isset($error)) {
-                if (empty($name) || empty($price) || empty($stock) || empty($description) || empty($categoryId) || empty($shoesSize)) {
-                    $error = 'Vui lòng nhập đầy đủ thông tin.';
+                if (empty($name) || empty($price) || empty($description) || empty($categoryId) || empty($sizeTuples)) {
+                    $error = 'Please fill in all required fields and at least one size.';
                 } else {
                     $stmt = $this->db->prepare("UPDATE shoes SET Name = ?, Price = ?, Stock = ?, Description = ?, DateUpdate = CURDATE(), CategoryID = ?, shoes_size = ?, Image = ? WHERE ShoesID = ?");
-                    if ($stmt->execute([$name, $price, $stock, $description, $categoryId, $shoesSize, $image, $id])) {
-                        $success = 'Cập nhật sản phẩm thành công!';
-                        $product = $this->productModel->getProductById($id);
+                    if ($stmt->execute([$name, $price, $totalStock, $description, $categoryId, $primarySize, $image, $id])) {
+                        if ($this->productModel->syncProductSizes($id, $sizeTuples)) {
+                            $success = 'Product updated successfully!';
+                            $product = $this->productModel->getProductById($id);
+                        } else {
+                            $error = 'Could not save size information.';
+                        }
                     } else {
-                        $error = 'Cập nhật sản phẩm thất bại.';
+                        $error = 'Failed to update product.';
                     }
                 }
             }
         }
+
 
         $categories = $this->db->query("SELECT * FROM category")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -234,5 +247,30 @@ class AdminController {
 
         require_once 'views/admin/components/header.php';
         require_once 'views/admin/pages/customers.php';
+    }
+
+    private function collectSizeInputs(): array {
+        $sizes = $_POST['sizes'] ?? [];
+        $quantities = $_POST['size_quantities'] ?? [];
+        $tuples = [];
+
+        foreach ($sizes as $index => $sizeValue) {
+            $sizeValue = trim((string)$sizeValue);
+            if ($sizeValue === '' || !is_numeric($sizeValue)) {
+                continue;
+            }
+
+            $quantity = isset($quantities[$index]) ? (int)$quantities[$index] : 0;
+            if ($quantity < 0) {
+                $quantity = 0;
+            }
+
+            $tuples[] = [
+                'size' => (float)$sizeValue,
+                'quantity' => $quantity
+            ];
+        }
+
+        return $tuples;
     }
 }

@@ -39,3 +39,36 @@ INSERT IGNORE INTO `shoes` (`Name`, `Price`, `Stock`, `Description`, `DateCreate
 ('Adidas Ultraboost Performance', 2800.00, 60, 'Performance Boost runner for athletes', '2024-02-18', '2024-07-25', 'https://images.unsplash.com/photo-1613972798457-45fc5237ae32?ixid=M3w4MTI2OTd8MHwxfHNlYXJjaHwxfHxBZGlkYXMlMjBVbHRyYWJvb3N0JTIwcnVubmluZyUyMHNob2VzfGVufDB8fHx8MTc2MjY5NTY4M3ww&ixlib=rb-4.1.0', 4, 41.00),
 ('Converse Chuck Taylor Original', 850.00, 90, 'Heritage Chuck Taylor with clean lines', '2024-04-05', '2024-10-12', 'https://images.unsplash.com/photo-1601131831144-5d096d7a832c?ixid=M3w4MTI2OTd8MHwxfHNlYXJjaHwxfHxDb252ZXJzZSUyMENodWNrJTIwVGF5bG9yJTIwQWxsJTIwU3RhcnxlbnwwfHx8fDE3NjI2OTY0Mjd8MA&ixlib=rb-4.1.0', 5, 38.00);
 
+-- Populate multi-size inventory entries for any newly added shoes
+INSERT INTO `shoe_sizes` (`ShoeID`, `Size`, `Quantity`)
+SELECT seed.ShoesID,
+       ROUND(seed.base_size + offsets.offset, 2) AS Size,
+       CASE offsets.offset
+           WHEN -1 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END END
+           WHEN 0 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END END
+           ELSE CASE WHEN seed.total_stock <= 0 THEN 0 ELSE GREATEST(0, seed.total_stock - (seed.base_qty * 2 + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END)) END
+       END AS Quantity
+FROM (
+    SELECT s.ShoesID,
+           ROUND(COALESCE(s.shoes_size, 40.00), 2) AS base_size,
+           GREATEST(COALESCE(s.Stock, 0), 0) AS total_stock,
+           FLOOR(GREATEST(COALESCE(s.Stock, 0), 0) / 3) AS base_qty,
+           MOD(GREATEST(COALESCE(s.Stock, 0), 0), 3) AS remainder
+    FROM shoes s
+    WHERE NOT EXISTS (
+        SELECT 1 FROM shoe_sizes ss WHERE ss.ShoeID = s.ShoesID
+    )
+) AS seed
+JOIN (
+    SELECT -1 AS offset
+    UNION ALL SELECT 0
+    UNION ALL SELECT 1
+) AS offsets;
+
+UPDATE `shoes` s
+SET s.Stock = (
+    SELECT COALESCE(SUM(ss.Quantity), 0)
+    FROM shoe_sizes ss
+    WHERE ss.ShoeID = s.ShoesID
+);
+

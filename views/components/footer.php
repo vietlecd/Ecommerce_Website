@@ -4,12 +4,12 @@
         <div class="container">
             <div class="footer-grid">
                 <section class="footer-panel footer-brand">
-                    <p class="footer-eyebrow">ShoeStore atelier</p>
+                    <p class="footer-eyebrow">V.AShoes atelier</p>
                     <h2>Crafted for motion, curated with heart.</h2>
                     <p>Limited footwear capsules, concierge care, and radical transparency for movers who treat every stride like a story.</p>
                     <ul class="footer-contact">
                         <li><i class="fas fa-phone"></i> +81 92 555 8080</li>
-                        <li><i class="fas fa-envelope"></i> atelier@shoestore.jp</li>
+                        <li><i class="fas fa-envelope"></i> atelier@V.AShoes.jp</li>
                         <li><i class="fas fa-map-marker-alt"></i> 43-13 Shiohara, Minami-ku, Fukuoka</li>
                     </ul>
                     <div class="socials">
@@ -42,7 +42,7 @@
                     <div>
                         <h3>Studio</h3>
                         <ul>
-                            <li><a href="/index.php?controller=about&action=index">About ShoeStore</a></li>
+                            <li><a href="/index.php?controller=about&action=index">About V.AShoes</a></li>
                             <li><a href="/index.php?controller=news&action=index">Newsroom</a></li>
                             <li><a href="#">Wholesale</a></li>
                             <li><a href="#">Careers</a></li>
@@ -80,7 +80,7 @@
                     <strong>Track every pair via NFC-enabled packaging.</strong>
                 </div>
                 <div>
-                    <p class="label">© <?php echo date('Y'); ?> ShoeStore</p>
+                    <p class="label">© <?php echo date('Y'); ?> V.AShoes</p>
                     <strong>Designed in Fukuoka • Built for global movers.</strong>
                 </div>
             </div>

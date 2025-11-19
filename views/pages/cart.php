@@ -57,6 +57,9 @@ $selectedCouponId = $selectedCouponId ?? null;
                         <?php foreach ($cartItems as $item): ?>
                             <?php
                             $product = $item['product'];
+                            $cartKey = $item['key'] ?? $product['id'];
+                            $sizeLabel = $item['size_label'] ?? null;
+                            $inputId = 'quantity_' . preg_replace('/[^A-Za-z0-9_-]/', '_', (string)$cartKey);
                             $image = $resolveImagePath($product['image'] ?? null);
                             $hasDiscount = $product['price'] > $product['final_price'];
                             $discountPercent = $hasDiscount && $product['price'] > 0
@@ -71,6 +74,9 @@ $selectedCouponId = $selectedCouponId ?? null;
                                     <div class="cart-card-header">
                                         <div>
                                             <p class="cart-card-label">Product ID #<?php echo htmlspecialchars($product['id']); ?></p>
+                                            <?php if (!empty($sizeLabel)): ?>
+                                                <p class="cart-card-label">Size <?php echo htmlspecialchars($sizeLabel); ?></p>
+                                            <?php endif; ?>
                                             <h3><?php echo htmlspecialchars($product['name']); ?></h3>
                                         </div>
                                         <?php if ($hasDiscount): ?>
@@ -86,11 +92,11 @@ $selectedCouponId = $selectedCouponId ?? null;
                                                 <span class="price-current"><?php echo $formatCurrency($product['final_price']); ?></span>
                                             <?php endif; ?>
                                         </div>
-                                        <label class="cart-quantity-label" for="quantity_<?php echo $product['id']; ?>">Quantity</label>
+                                        <label class="cart-quantity-label" for="<?php echo htmlspecialchars($inputId); ?>">Quantity</label>
                                         <input
-                                            id="quantity_<?php echo $product['id']; ?>"
+                                            id="<?php echo htmlspecialchars($inputId); ?>"
                                             type="number"
-                                            name="quantity[<?php echo $product['id']; ?>]"
+                                            name="quantity[<?php echo htmlspecialchars($cartKey); ?>]"
                                             value="<?php echo $item['quantity']; ?>"
                                             min="1"
                                             class="cart-quantity-input">
@@ -100,7 +106,7 @@ $selectedCouponId = $selectedCouponId ?? null;
                                         </div>
                                     </div>
                                     <div class="cart-card-footer">
-                                        <a href="/index.php?controller=cart&action=remove&id=<?php echo $product['id']; ?>" class="cart-remove-link" onclick="return confirm('Remove this item from cart?');">
+                                        <a href="/index.php?controller=cart&action=remove&id=<?php echo urlencode($cartKey); ?>" class="cart-remove-link" onclick="return confirm('Remove this item from cart?');">
                                             <i class="fas fa-times"></i> Remove
                                         </a>
                                     </div>
@@ -131,7 +137,7 @@ $selectedCouponId = $selectedCouponId ?? null;
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <p class="cart-coupon-hint">Pick a ShoeStore code to update totals instantly.</p>
+                            <p class="cart-coupon-hint">Pick a V.AShoes code to update totals instantly.</p>
                         </div>
                     <?php endif; ?>
                     <ul class="cart-summary-list">

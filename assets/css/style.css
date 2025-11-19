@@ -19,6 +19,7 @@ body {
   background-attachment: fixed, scroll;
   background-position: center, 0 0;
   background-blend-mode: lighten;
+  overflow-x: hidden;
 }
 
 .container {
@@ -46,6 +47,8 @@ ul {
   backdrop-filter: blur(18px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .header-glow {
@@ -65,6 +68,8 @@ ul {
   align-items: center;
   padding: 14px 0;
   gap: 16px;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .header-actions {
@@ -107,11 +112,17 @@ ul {
   transform: translateY(-8px) rotate(-45deg);
 }
 
+.logo {
+  flex-shrink: 0;
+  min-width: 0;
+}
+
 .logo-link {
   display: flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .logo-link img {
@@ -136,10 +147,18 @@ ul {
   text-transform: uppercase;
 }
 
+.primary-nav {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .primary-nav ul {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .primary-nav li {
@@ -147,6 +166,7 @@ ul {
   position: relative;
   padding-bottom: 12px;
   overflow: visible;
+  flex-shrink: 0;
 }
 
 .primary-nav a {
@@ -160,6 +180,8 @@ ul {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.5);
   position: relative;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .primary-nav a img {
@@ -404,6 +426,17 @@ ul {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) scale(1);
+}
+
+@media (max-width: 1400px) {
+  .primary-nav ul {
+    gap: 6px;
+  }
+
+  .primary-nav a {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -2669,6 +2702,181 @@ main {
   border: 1px solid rgba(15, 23, 42, 0.12);
   padding: 12px 14px;
   background: rgba(248, 250, 252, 0.85);
+  font-size: 1rem;
+  color: #1a1a1a;
+}
+
+.checkout-field select {
+  border-radius: 14px;
+  border: 2px solid rgba(15, 23, 42, 0.08);
+  padding: 14px 44px 14px 16px;
+  background: white;
+  font-size: 1rem;
+  color: #1a1a1a;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%2347484A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  font-weight: 500;
+}
+
+.checkout-field select:hover {
+  border-color: rgba(15, 23, 42, 0.16);
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.checkout-field select:focus {
+  outline: none;
+  border-color: #2563eb;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(0);
+}
+
+.checkout-field select:active {
+  transform: translateY(0);
+}
+
+.checkout-field select option {
+  padding: 12px 16px;
+  background: white;
+  color: #1a1a1a;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.checkout-field select option:first-child {
+  color: #999;
+  font-weight: 400;
+}
+
+.checkout-field select option:hover {
+  background: #f5f5f5;
+}
+
+.checkout-field select option:checked {
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.payment-method-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.payment-method-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 2px solid rgba(15, 23, 42, 0.1);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  width: 100%;
+}
+
+.payment-method-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.payment-method-option-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.payment-method-option-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.payment-method-option-copy strong {
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.payment-method-option-copy span {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.payment-method-option.is-active {
+  border-color: #2563eb;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(14, 165, 233, 0.08));
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+}
+
+.payment-method-option.is-active .payment-method-option-icon {
+  background: #2563eb;
+  color: white;
+}
+
+.payment-method-option:hover {
+  transform: translateY(-2px);
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.12);
+}
+
+.checkout-field select option:hover {
+  background: #f5f5f5;
+}
+
+.checkout-field select option:checked {
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+.payment-method-fields {
+  margin-top: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.payment-method-note {
+  padding: 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  color: #1e40af;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
 }
 
 .checkout-row {

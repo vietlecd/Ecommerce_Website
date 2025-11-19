@@ -20,6 +20,7 @@
         ['key' => 'about', 'label' => 'About', 'url' => '/index.php?controller=about&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/1256/1256650.png'],
         ['key' => 'qna', 'label' => 'Q&A', 'url' => '/index.php?controller=qna&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/854/854866.png'],
         ['key' => 'cart', 'label' => 'Cart', 'url' => '/index.php?controller=cart&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/891/891462.png'],
+        ['key' => 'tracking', 'label' => 'Track Order', 'url' => '/index.php?controller=orderTracking&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/3135/3135715.png'],
     ];
 
     $labelMap = [
@@ -263,7 +264,9 @@ HTML;
                             $isActive = true;
                         } elseif ($item['key'] === 'cart' && $currentController === 'cart') {
                             $isActive = true;
-                        } elseif ($item['key'] !== 'home' && $item['key'] !== 'cart' && $currentController === $item['key']) {
+                        } elseif ($item['key'] === 'tracking' && $currentController === 'ordertracking') {
+                            $isActive = true;
+                        } elseif ($item['key'] !== 'home' && $item['key'] !== 'cart' && $item['key'] !== 'tracking' && $currentController === $item['key']) {
                             $isActive = true;
                         }
                         ?>

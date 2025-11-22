@@ -228,25 +228,57 @@ class NewsModel
     }
 
 
-    public function getNewsWithAdmin($search = '', $limit = 10, $offset = 0, $status = 'all')
-    {
+    public function getNewsWithAdmin(
+        $search = '',
+        $limit = 10,
+        $offset = 0,
+        $status = 'all',
+        $sort = 'newest'
+    ) {
         $query = "
-        SELECT 
-            n.*,
-            CONCAT(admin.Fname, ' ', admin.Lname) AS AdminName
-        FROM news n
-        JOIN admin ON n.CreatedBy = admin.AdminID
-    ";
+            SELECT 
+                n.*,
+                CONCAT(a.Fname, ' ', a.Lname) AS AdminName,
+                COALESCE(nc.ClickCount, 0)    AS ClickCount,
+                nc.LastClickedAt
+            FROM news n
+            JOIN admin a ON n.CreatedBy = a.AdminID
+            LEFT JOIN (
+                SELECT 
+                    news_id,
+                    SUM(click_count)      AS ClickCount,
+                    MAX(last_clicked_at)  AS LastClickedAt
+                FROM news_clicks
+                GROUP BY news_id
+            ) nc ON nc.news_id = n.NewsID
+        ";
 
         $conditions = [];
-        $params = [];
+        $params     = [];
 
-        if (!empty($search)) {
-            $conditions[] = "(n.Title LIKE :search_title OR n.Description LIKE :search_desc OR n.Content LIKE :search_content) OR CONCAT(admin.Fname, ' ', admin.Lname) LIKE :search_author";
-            $params[':search_title'] = "%{$search}%";
-            $params[':search_desc'] = "%{$search}%";
-            $params[':search_content'] = "%{$search}%";
-            $params[':search_author'] = "%{$search}%";
+        if ($search !== '') {
+            $isNumericSearch = ctype_digit($search);
+            $like            = "%{$search}%";
+
+            $searchParts   = [];
+            $searchParts[] = 'n.Title LIKE :search_title';
+            $params[':search_title'] = $like;
+
+            $searchParts[] = 'n.Description LIKE :search_desc';
+            $params[':search_desc'] = $like;
+
+            $searchParts[] = 'n.Content LIKE :search_content';
+            $params[':search_content'] = $like;
+
+            $searchParts[] = 'CONCAT(a.Fname, " ", a.Lname) LIKE :search_author';
+            $params[':search_author'] = $like;
+
+            if ($isNumericSearch) {
+                $searchParts[]        = 'n.NewsID = :search_id';
+                $params[':search_id'] = (int)$search;
+            }
+
+            $conditions[] = '(' . implode(' OR ', $searchParts) . ')';
         }
 
         if ($status === 'pending') {
@@ -286,14 +318,17 @@ class NewsModel
             $query .= " WHERE " . implode(" AND ", $conditions);
         }
 
-        $query .= " ORDER BY n.CreatedAt DESC LIMIT :limit OFFSET :offset";
+        $orderBy = $this->getNewsWithAdminSort($sort);
+        $query  .= $orderBy . " LIMIT :limit OFFSET :offset";
+
         $stmt = $this->db->prepare($query);
 
-        if (!empty($search)) {
-            $stmt->bindValue(':search_title', "%{$search}%", PDO::PARAM_STR);
-            $stmt->bindValue(':search_desc', "%{$search}%", PDO::PARAM_STR);
-            $stmt->bindValue(':search_content', "%{$search}%", PDO::PARAM_STR);
-            $stmt->bindValue(':search_author', "%{$search}%", PDO::PARAM_STR);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(
+                $key,
+                $value,
+                is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR
+            );
         }
 
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
@@ -301,6 +336,39 @@ class NewsModel
 
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    private function getNewsWithAdminSort($sort)
+    {
+        switch ($sort) {
+            case 'oldest':
+                return " ORDER BY n.CreatedAt ASC";
+
+            case 'views_desc':
+                return " ORDER BY ClickCount DESC, n.CreatedAt DESC";
+            case 'views_asc':
+                return " ORDER BY ClickCount ASC, n.CreatedAt DESC";
+
+            case 'author_asc':
+                return " ORDER BY AdminName ASC, n.CreatedAt DESC";
+            case 'author_desc':
+                return " ORDER BY AdminName DESC, n.CreatedAt DESC";
+
+            case 'title_asc':
+                return " ORDER BY n.Title ASC, n.CreatedAt DESC";
+            case 'title_desc':
+                return " ORDER BY n.Title DESC, n.CreatedAt DESC";
+
+            case 'id_desc':
+                return " ORDER BY n.NewsID DESC";
+            case 'id_asc':
+                return " ORDER BY n.NewsID ASC";
+
+            case 'newest':
+            default:
+                return " ORDER BY n.CreatedAt DESC";
+        }
     }
 
 

@@ -30,11 +30,29 @@ class AdminNewsController
 
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $status = isset($_GET['status']) ? trim($_GET['status']) : 'all';
-        $limit = 5;
+        $limit = isset($_GET['limit']) ? max(1, (int)$_GET['limit']) : 20;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
 
-        $news = $this->newsModel->getNewsWithAdmin($search, $limit, $offset, $status);
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
+        $allowedSorts = [
+            'newest',
+            'oldest',
+            'views_desc',
+            'views_asc',
+            'author_asc',
+            'author_desc',
+            'title_asc',
+            'title_desc',
+            'id_asc',
+            'id_desc'
+        ];
+
+        if (!in_array($sort, $allowedSorts, true)) {
+            $sort = 'newest';
+        }
+
+        $news = $this->newsModel->getNewsWithAdmin($search, $limit, $offset, $status, $sort);
         $totalNews = $this->newsModel->getNewsCount($search, $status);
         $totalPages = ceil($totalNews / $limit);
 
@@ -108,9 +126,8 @@ class AdminNewsController
                 $tmp  = $_FILES['thumbnail']['tmp_name'];
                 $size = (int)($_FILES['thumbnail']['size'] ?? 0);
 
-                $fi   = finfo_open(FILEINFO_MIME_TYPE);
-                $mime = finfo_file($fi, $tmp);
-                finfo_close($fi);
+                $fi   = new finfo(FILEINFO_MIME_TYPE);
+                $mime = $fi->file($tmp);
 
                 $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
                 if (!in_array($mime, $allowed, true)) {
@@ -294,9 +311,8 @@ class AdminNewsController
                 $tmp  = $_FILES['thumbnail']['tmp_name'];
                 $size = (int)($_FILES['thumbnail']['size'] ?? 0);
 
-                $fi   = finfo_open(FILEINFO_MIME_TYPE);
-                $mime = finfo_file($fi, $tmp);
-                finfo_close($fi);
+                $fi = new finfo(FILEINFO_MIME_TYPE);
+                $mime = $fi->file($tmp);
 
                 $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
                 if (!in_array($mime, $allowed, true)) {

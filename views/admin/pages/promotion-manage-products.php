@@ -1,6 +1,4 @@
 <?php
-require 'views/admin/components/header.php';
-
 $promoName  = $promotion['PromotionName']      ?? $promotion['promotion_name']      ?? '';
 $promoType  = $promotion['PromotionType']      ?? $promotion['promotion_type']      ?? '';
 $discount   = $promotion['DiscountPercentage'] ?? $promotion['discount_percentage'] ?? null;

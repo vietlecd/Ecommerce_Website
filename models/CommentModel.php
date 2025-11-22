@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__ . '/Database.php';
 
-class CommentModel {
+class CommentModel
+{
     private $pdo;
 
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $this->pdo = $database->getConnection();
     }
 
-    public function getCommentsByProductId($shoesId) {
+    public function getCommentsByProductId($shoesId)
+    {
         try {
             $sql = "SELECT c.CommentID, c.Mem_ID, c.Rating, c.Date, c.Content, c.GuestName,
                            m.Username, m.Name AS MemberName
@@ -26,33 +29,35 @@ class CommentModel {
         }
     }
 
-    public function addComment($shoesId, $memId, $rating, $content, $guestName = null) {
+    public function addComment($shoesId, $memId, $rating, $content, $guestName = null)
+    {
         try {
             $sql = "INSERT INTO comment (ShoesID, Mem_ID, Rating, Content, GuestName, Date) 
                     VALUES (?, ?, ?, ?, ?, CURDATE())";
             $stmt = $this->pdo->prepare($sql);
             $result = $stmt->execute([$shoesId, $memId, $rating, $content, $guestName]);
-            
+
             if (!$result) {
                 $errorInfo = $stmt->errorInfo();
                 error_log("CommentModel Execute Error: " . print_r($errorInfo, true));
                 return ['success' => false, 'error' => $errorInfo[2] ?? 'Unknown error'];
             }
-            
+
             return ['success' => true];
         } catch (PDOException $e) {
             $errorMessage = $e->getMessage();
             error_log("CommentModel PDOException: " . $errorMessage);
-            
+
             if (strpos($errorMessage, 'Unknown column') !== false) {
                 return ['success' => false, 'error' => 'Database columns missing. Please run migration: 002_add_comment_content.sql'];
             }
-            
+
             return ['success' => false, 'error' => $errorMessage];
         }
     }
 
-    public function getAverageRating($shoesId) {
+    public function getAverageRating($shoesId)
+    {
         try {
             $stmt = $this->pdo->prepare("SELECT AVG(Rating) AS avgRating, COUNT(*) AS totalComments 
                                          FROM comment WHERE ShoesID = ?");
@@ -62,5 +67,135 @@ class CommentModel {
             error_log("CommentModel Error: " . $e->getMessage());
             return ['avgRating' => 0, 'totalComments' => 0];
         }
+    }
+
+    public function deleteComment($commentId)
+    {
+        $query = "DELETE FROM comment WHERE CommentID = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(1, $commentId);
+        return $stmt->execute();
+    }
+
+
+    public function bulkDelete(array $ids): void
+    {
+        if (!$ids) return;
+        $in = implode(',', array_fill(0, count($ids), '?'));
+        $sql = "DELETE FROM comment WHERE CommentID IN ($in)";
+        $stmt = $this->pdo->prepare($sql);
+        $i = 1;
+        foreach ($ids as $id) {
+            $stmt->bindValue($i++, $id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+    }
+
+
+    public function countComments(array $filters = []): int
+    {
+        $sql = "SELECT COUNT(*) 
+                FROM comment c
+                LEFT JOIN shoes s ON c.ShoesID = s.ShoesID
+                WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['rating'])) {
+            $sql .= " AND c.Rating = :rating";
+            $params[':rating'] = $filters['rating'];
+        }
+
+        if (!empty($filters['shoesId'])) {
+            $sql .= " AND c.ShoesID = :sid";
+            $params[':sid'] = $filters['shoesId'];
+        }
+
+        if (!empty($filters['search'])) {
+            $sql .= " AND (
+                        c.Content   LIKE :q_content
+                        OR c.GuestName LIKE :q_guest
+                        OR s.Name LIKE :q_shoe
+                     )";
+            $params[':q_content'] = '%' . $filters['search'] . '%';
+            $params[':q_guest'] = '%' . $filters['search'] . '%';
+            $params[':q_shoe'] = '%' . $filters['search'] . '%';
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function getComments(array $filters = [], int $limit = 20, int $offset = 0): array
+    {
+        $sql = "SELECT 
+                    c.*,
+                    s.Name
+                FROM comment c
+                LEFT JOIN shoes s ON c.ShoesID = s.ShoesID
+                WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['rating'])) {
+            $sql .= " AND c.Rating = :rating";
+            $params[':rating'] = $filters['rating'];
+        }
+
+        if (!empty($filters['shoesId'])) {
+            $sql .= " AND c.ShoesID = :sid";
+            $params[':sid'] = $filters['shoesId'];
+        }
+
+        if (!empty($filters['search'])) {
+            $sql .= " AND (
+                        c.Content    LIKE :q_content
+                        OR c.GuestName LIKE :q_guest
+                        OR s.Name LIKE :q_shoe
+                     )";
+            $params[':q_content'] = '%' . $filters['search'] . '%';
+            $params[':q_guest'] = '%' . $filters['search'] . '%';
+            $params[':q_shoe'] = '%' . $filters['search'] . '%';
+        }
+
+        // sort
+        $sort = $filters['sort'] ?? 'newest';
+        switch ($sort) {
+            case 'oldest':
+                $sql .= " ORDER BY c.Date ASC";
+                break;
+            case 'rating_desc':
+                $sql .= " ORDER BY c.Rating DESC, c.Date DESC";
+                break;
+            case 'rating_asc':
+                $sql .= " ORDER BY c.Rating ASC, c.Date DESC";
+                break;
+            case 'newest':
+            default:
+                $sql .= " ORDER BY c.Date DESC";
+                break;
+        }
+
+        $sql .= " LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /** Lấy danh sách shoes cho filter dropdown (chỉ dùng từ CommentModel) */
+    public function getShoesForFilter(): array
+    {
+        $sql = "SELECT DISTINCT s.ShoesID, s.Name
+                FROM shoes s
+                INNER JOIN comment c ON c.ShoesID = s.ShoesID
+                ORDER BY s.Name ASC";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

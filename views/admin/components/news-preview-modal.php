@@ -44,30 +44,38 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body p-0">
-                <article class="pv-scope">
-                    <div class="news-detail">
-                        <div class="thumbnail-container" id="pvThumbWrap" style="display:none;">
-                            <div class="news-thumbnail">
-                                <img id="pvThumb" alt="Thumbnail">
-                            </div>
-                        </div>
+            <div class="modal-body">
+                <div class="news-detail-page pv-page">
+                    <section class="news-detail-hero">
+                        <p class="news-detail-meta">
+                            By <span id="pvAuthor">Admin</span>
+                            · <span id="pvDate"></span>
+                        </p>
+                        <h1 id="pvTitle"></h1>
 
-                        <h1 id="pvTitle" class="pv-title"></h1>
-
-                        <div class="news-meta">
-                            <p><strong id="pvAuthor">Admin</strong></p>
-                            <span class="separator">•</span>
-                            <p id="pvDate"></p>
-                        </div>
-
-                        <div id="pvDescBlock" class="news-description" style="display:none;">
+                        <p id="pvDescBlock" class="news-detail-description" style="display:none;">
                             <span id="pvDesc"></span>
-                        </div>
+                        </p>
+                    </section>
 
-                        <div id="pvContent" class="news-content"></div>
+                    <div class="news-detail-layout">
+                        <article class="news-article" id="pvArticle">
+                            <!-- Thumbnail -->
+                            <div id="pvThumbWrap" style="display:none;">
+                                <img id="pvThumb" alt="Thumbnail" loading="lazy">
+                            </div>
+
+                            <!-- Optional promo card (nếu em có set từ JS thì show) -->
+                            <div id="pvPromoCard" class="news-promo-card" style="display:none;">
+                                <strong id="pvPromoName"></strong>
+                                <p id="pvPromoDates"></p>
+                            </div>
+
+                            <!-- Main content -->
+                            <div id="pvContent" class="news-rich-content"></div>
+                        </article>
                     </div>
-                </article>
+                </div>
             </div>
 
             <div class="modal-footer">
@@ -78,80 +86,74 @@
 </div>
 
 <style>
-    /* ---- Preview styles ---- */
-    #previewModal .pv-scope .news-detail {
-        margin: 0 auto;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    #previewModal .news-detail-page {
+        padding: 24px 0 40px;
     }
 
-    #previewModal .pv-scope .news-detail h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1.2;
-        margin: 0 16px 20px;
-        color: #211922;
-        letter-spacing: -.5px;
+    #previewModal .news-detail-hero {
+        max-width: 760px;
+        margin: 0 auto 24px;
+        text-align: center;
     }
 
-    #previewModal .pv-scope .news-meta {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 0 16px 32px;
-        padding-bottom: 24px;
-        border-bottom: 1px solid #e9e9e9;
+    #previewModal .news-detail-hero h1 {
+        font-size: 32px;
+        margin: 12px 0;
+        color: #111;
     }
 
-    #previewModal .pv-scope .news-meta p {
+    #previewModal .news-detail-meta {
+        color: #777;
+        font-size: 14px;
+    }
+
+    #previewModal .news-detail-description {
+        color: #555;
+        line-height: 1.7;
+        font-size: 16px;
         margin: 0;
-        color: #767676;
-        font-size: .875rem;
     }
 
-    #previewModal .pv-scope .news-meta .separator {
-        color: #e9e9e9;
+    #previewModal .news-detail-layout {
+        max-width: 900px;
+        margin: 0 auto;
     }
 
-    #previewModal .pv-scope .news-thumbnail {
+    #previewModal .news-article {
+        background: #fff;
+        border-radius: 20px;
+        padding: 24px 24px 32px;
+        box-shadow: 0 20px 40px rgba(17, 17, 17, 0.05);
+    }
+
+    #previewModal .news-article img {
         width: 100%;
-        margin-top: -32px;
-        margin-bottom: 32px;
-        overflow: hidden;
-    }
-
-    #previewModal .pv-scope .news-thumbnail img {
-        width: 100%;
-        height: 400px;
-        object-fit: cover;
-        object-position: center;
+        border-radius: 16px;
+        margin-bottom: 24px;
         display: block;
-        overflow-clip-margin: content-box;
-        overflow: clip;
     }
 
-    #previewModal .pv-scope .news-description {
-        font-size: 1.125rem;
-        line-height: 1.6;
-        color: #333;
-        margin: 0 16px 32px;
-        padding: 20px;
-        background: #f7f7f7;
+    #previewModal .news-promo-card {
+        background: rgba(255, 107, 107, 0.08);
+        border: 1px solid rgba(255, 107, 107, 0.2);
+        padding: 16px;
         border-radius: 12px;
-        border-left: 4px solid #e60023;
+        margin-bottom: 24px;
     }
 
-    #previewModal .pv-scope .news-content {
-        font-size: 1rem;
+    #previewModal .news-rich-content h2,
+    #previewModal .news-rich-content h3 {
+        margin-top: 32px;
+        color: #111;
+    }
+
+    #previewModal .news-rich-content p {
+        color: #444;
         line-height: 1.8;
-        color: #211922;
-        margin: 0 16px 32px;
+        margin-bottom: 1rem;
     }
 
-    #previewModal .pv-scope .news-content p {
-        margin-bottom: 20px;
-    }
-
-    #previewModal .pv-scope .news-content img {
+    #previewModal .news-rich-content img {
         max-width: 100%;
         height: auto;
         border-radius: 12px;
@@ -159,56 +161,29 @@
         display: block;
     }
 
-    #previewModal .pv-scope .news-content strong,
-    #previewModal .pv-scope .news-content b {
-        font-weight: 600;
-        color: #211922;
-    }
-
-    #previewModal .pv-scope .news-content h2 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin: 32px 0 16px;
-        color: #211922;
-    }
-
-    #previewModal .pv-scope .news-content h3 {
-        font-size: 1.375rem;
-        font-weight: 600;
-        margin: 24px 0 12px;
-        color: #211922;
-    }
-
-    #previewModal .pv-scope .news-content ul,
-    #previewModal .pv-scope .news-content ol {
+    #previewModal .news-rich-content ul,
+    #previewModal .news-rich-content ol {
         margin: 16px 0;
         padding-left: 24px;
     }
 
-    #previewModal .pv-scope .news-content li {
+    #previewModal .news-rich-content li {
         margin-bottom: 8px;
     }
 
-    #previewModal .pv-scope .news-content a {
-        color: #e60023;
+    #previewModal .news-rich-content a {
+        color: #0d6efd;
         text-decoration: none;
         border-bottom: 1px solid transparent;
         transition: border-color .2s;
     }
 
-    #previewModal .pv-scope .news-content a:hover {
-        border-bottom-color: #e60023;
+    #previewModal .news-rich-content a:hover {
+        border-bottom-color: #0d6efd;
     }
 
-    #previewModal .pv-scope .news-content blockquote {
-        border-left: 3px solid #e60023;
-        padding-left: 20px;
-        margin: 24px 0;
-        color: #5f5f5f;
-        font-style: italic;
-    }
-
-    #previewModal .pv-scope .news-content a.promo-mention {
+    /* Inline promo mention trong content (nếu em còn dùng) */
+    #previewModal .news-rich-content a.promo-mention {
         display: inline-flex;
         align-items: center;
         gap: .25rem;
@@ -220,18 +195,28 @@
         white-space: nowrap;
     }
 
-    #previewModal .pv-scope .news-content a.promo-mention:hover {
+    #previewModal .news-rich-content a.promo-mention:hover {
         background: #e7f1ff;
         color: #06357a;
     }
 
-    @media (max-width:480px) {
-        #previewModal .pv-scope .news-thumbnail img {
-            height: 200px;
+    @media (max-width: 768px) {
+        #previewModal .news-detail-page {
+            padding-inline: 0;
         }
 
-        #previewModal .pv-scope .news-detail h1 {
-            font-size: 1.875rem;
+        #previewModal .news-detail-hero h1 {
+            font-size: 1.7rem;
+        }
+
+        #previewModal .news-article {
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        #previewModal .news-article img {
+            max-height: 220px;
+            object-fit: cover;
         }
     }
 </style>

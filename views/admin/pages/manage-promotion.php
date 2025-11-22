@@ -1,9 +1,7 @@
-<?php require 'views/admin/components/header.php'; ?>
-
 <style>
-    .filter-bar .field-narrow {
+    /* .filter-bar .field-narrow {
         max-width: 180px;
-    }
+    } */
 
     .filter-bar .btn-search {
         min-width: 110px;
@@ -30,127 +28,98 @@
     </div>
 </div>
 
-<!-- <?php if (isset($_SESSION['message']) || isset($_SESSION['error'])): ?>
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100;">
-        <?php if (isset($_SESSION['message'])): ?>
-            <div class="toast align-items-center text-bg-success border-0 mb-2"
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <?php echo htmlspecialchars($_SESSION['message'], ENT_QUOTES, 'UTF-8'); ?>
-                    </div>
-                    <button type="button"
-                        class="btn-close btn-close-white me-2 m-auto"
-                        data-bs-dismiss="toast"
-                        aria-label="Close"></button>
-                </div>
-            </div>
-            <?php unset($_SESSION['message']); ?>
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="toast align-items-center text-bg-danger border-0"
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <?php echo htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8'); ?>
-                    </div>
-                    <button type="button"
-                        class="btn-close btn-close-white me-2 m-auto"
-                        data-bs-dismiss="toast"
-                        aria-label="Close"></button>
-                </div>
-            </div>
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-            toastElList.forEach(function(toastEl) {
-                var toast = new bootstrap.Toast(toastEl, {
-                    delay: 4000
-                });
-                toast.show();
-            });
-        });
-    </script>
-<?php endif; ?> -->
-
 
 <div class="actions">
-    <div class="card shadow-sm mb-4 mt-4">
-        <div class="card-body">
-            <form class="row g-3 align-items-end filter-bar" method="GET" action="index.php">
-                <input type="hidden" name="controller" value="adminPromotion">
-                <input type="hidden" name="action" value="manage">
-                <input type="hidden" name="page" value="<?php echo (int)$page; ?>">
+    <form class="card shadow-sm mb-4 mt-4" method="get" action="index.php">
+        <input type="hidden" name="controller" value="adminPromotion">
+        <input type="hidden" name="action" value="manage">
+        <input type="hidden" name="page" value="<?= (int)($page ?? 1); ?>">
 
+        <div class="card-body">
+            <div class="row g-3 align-items-end">
                 <div class="col-12 col-lg-4">
-                    <label class="form-label mb-1 small text-muted">Keyword</label>
+                    <label class="form-label mb-1 fw-semibold small" for="promo_keyword">Search</label>
                     <input
                         type="text"
                         class="form-control"
+                        id="promo_keyword"
                         name="keyword"
                         placeholder="Search by name..."
-                        value="<?php echo isset($keyword) ? htmlspecialchars($keyword) : ''; ?>">
+                        value="<?= isset($keyword) ? htmlspecialchars($keyword, ENT_QUOTES, 'UTF-8') : ''; ?>">
                 </div>
 
                 <!-- From -->
-                <div class="col-6 col-md-auto">
-                    <label class="form-label mb-1 small text-muted">From</label>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label mb-1 fw-semibold small" for="promo_from">From</label>
                     <input
                         type="date"
                         name="from"
+                        id="promo_from"
                         class="form-control field-narrow"
-                        value="<?php echo isset($_GET['from']) ? htmlspecialchars($_GET['from']) : ''; ?>">
+                        value="<?= isset($_GET['from']) ? htmlspecialchars($_GET['from'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                 </div>
 
                 <!-- To -->
-                <div class="col-6 col-md-auto">
-                    <label class="form-label mb-1 small text-muted">To</label>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label mb-1 fw-semibold small" for="promo_to">To</label>
                     <input
                         type="date"
                         name="to"
+                        id="promo_to"
                         class="form-control field-narrow"
-                        value="<?php echo isset($_GET['to']) ? htmlspecialchars($_GET['to']) : ''; ?>">
+                        value="<?= isset($_GET['to']) ? htmlspecialchars($_GET['to'], ENT_QUOTES, 'UTF-8') : ''; ?>">
                 </div>
 
-                <div class="col-12 col-md-auto d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary btn-search">
-                        Search
-                    </button>
-                </div>
-
-                <div class="col-12 col-md-auto ms-lg-auto">
-                    <label class="form-label mb-1 small text-muted d-flex justify-content-lg-end">
-                        Sort by ID
-                    </label>
+                <!-- Sort -->
+                <div class="col-6 col-md-3 col-lg-2">
+                    <label class="form-label mb-1 fw-semibold small" for="promo_sort">Sort by</label>
+                    <?php $sortDir = $sort ?? 'ASC'; ?>
                     <select
                         name="sort"
-                        class="form-select field-narrow"
-                        onchange="this.form.submit()">
-                        <option value="ASC" <?php echo (isset($sort) && $sort === 'ASC')  ? 'selected' : ''; ?>>
-                            ID Ascending
-                        </option>
-                        <option value="DESC" <?php echo (isset($sort) && $sort === 'DESC') ? 'selected' : ''; ?>>
-                            ID Descending
-                        </option>
+                        id="promo_sort"
+                        class="form-select field-narrow">
+                        <option value="ASC" <?= $sortDir === 'ASC'  ? 'selected' : ''; ?>>ID Ascending</option>
+                        <option value="DESC" <?= $sortDir === 'DESC' ? 'selected' : ''; ?>>ID Descending</option>
                     </select>
                 </div>
-            </form>
 
+                <!-- Items per page -->
+                <div class="col-6 col-md-auto">
+                    <label class="form-label mb-1 fw-semibold small" for="promo_limit">Items per page</label>
+                    <?php $promoLimit = (int)($limit ?? 10); ?>
+                    <select
+                        name="limit"
+                        id="promo_limit"
+                        class="form-select field-narrow">
+                        <?php foreach ([10, 20, 50, 100] as $opt): ?>
+                            <option value="<?= $opt ?>" <?= $promoLimit === $opt ? 'selected' : ''; ?>>
+                                <?= $opt ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+            </div>
+            <!-- Buttons -->
+            <div class="mt-3 d-flex justify-content-end gap-2">
+                <div class="d-flex gap-2">
+                    <a
+                        href="/index.php?controller=adminPromotion&action=manage"
+                        class="btn btn-outline-secondary">
+                        Reset
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-search">
+                        Apply filters
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
+    </form>
+
 
 
     <div class="card shadow-sm">
-        <div class="table-wrapper mt-3">
+        <div class="table-wrapper table-responsive mt-3">
             <table class="table table-hover align-middle mb-0">
                 <thead class="border-bottom">
                     <tr>
@@ -242,56 +211,91 @@
                 </tbody>
             </table>
 
-            <?php if (!empty($totalPages) && $totalPages > 1): ?>
-                <div class="card-footer">
-                    <div class="pagination pagination-sm justify-content-center mb-0">
-                        <?php if ($totalPages > 1): ?>
-                            <?php if ($page > 1): ?>
-                                <a href="index.php?controller=adminPromotion&action=manage&page=<?php echo $page - 1; ?>&keyword=<?php echo urlencode($keyword ?? ''); ?>&sort=<?php echo $sort; ?>&from=<?php echo urlencode($_GET['from'] ?? ''); ?>&to=<?php echo urlencode($_GET['to'] ?? ''); ?>">Previous</a>
-                            <?php endif; ?>
+        </div>
+        <?php if (isset($totalPages)): ?>
+            <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                <p class="mb-0 text-muted small">
+                    Page <?= (int)$page ?> of <?= (int)$totalPages ?> —
+                    Total <?= (int)$totalPromotions ?> promotions
+                </p>
 
-                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                <a href="index.php?controller=adminPromotion&action=manage&page=<?php echo $i; ?>&keyword=<?php echo urlencode($keyword ?? ''); ?>&sort=<?php echo $sort; ?>&from=<?php echo urlencode($_GET['from'] ?? ''); ?>&to=<?php echo urlencode($_GET['to'] ?? ''); ?>"
-                                    <?php echo $i === $page ? 'class="active"' : ''; ?>>
-                                    <?php echo $i; ?>
-                                </a>
-                            <?php endfor; ?>
+                <nav aria-label="Pagination">
+                    <ul class="pagination pagination-sm mb-0">
+                        <?php
+                        $baseUrl = '/index.php?controller=adminPromotion&action=manage'
+                            . '&keyword=' . urlencode($keyword ?? '')
+                            . '&sort=' . urlencode($sort)
+                            . '&from=' . urlencode($_GET['from'] ?? '')
+                            . '&to=' . urlencode($_GET['to'] ?? '')
+                            . '&limit=' . (int)$limit;
 
-                            <?php if ($page < $totalPages): ?>
-                                <a href="index.php?controller=adminPromotion&action=manage&page=<?php echo $page + 1; ?>&keyword=<?php echo urlencode($keyword ?? ''); ?>&sort=<?php echo $sort; ?>&from=<?php echo urlencode($_GET['from'] ?? ''); ?>&to=<?php echo urlencode($_GET['to'] ?? ''); ?>">Next</a>
+                        $window     = 3;
+                        $totalPages = max(1, (int)$totalPages);
+                        $page       = max(1, min($page, $totalPages));
+
+                        $half  = intdiv($window, 2);
+
+                        $start = max(1, $page - $half);
+                        $end   = min($totalPages, $start + $window - 1);
+                        if ($end - $start + 1 < $window) {
+                            $start = max(1, $end - $window + 1);
+                        }
+                        ?>
+
+                        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                            <a class="page-link"
+                                href="<?= $page <= 1 ? '#' : $baseUrl . '&page=' . ($page - 1) ?>">
+                                «
+                            </a>
+                        </li>
+
+                        <?php if ($start > 1): ?>
+                            <li class="page-item <?= $page === 1 ? 'active' : '' ?>">
+                                <a class="page-link" href="<?= $baseUrl . '&page=1' ?>">1</a>
+                            </li>
+
+                            <?php if ($start > 2): ?>
+                                <li class="page-item disabled">
+                                    <span class="page-link">…</span>
+                                </li>
                             <?php endif; ?>
                         <?php endif; ?>
-                    </div>
 
-                    <div class="card-footer bg-white">
-                        <nav aria-label="Pagination">
-                            <ul class="pagination pagination-sm justify-content-center mb-0">
-                                <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
-                                    <a class="page-link"
-                                        href="/index.php?controller=adminPromotion&action=manage&keyword=<?php echo urlencode($keyword ?? ''); ?>&sort=<?php echo $sort; ?>&from=<?php echo urlencode($_GET['from'] ?? ''); ?>&to=<?php echo urlencode($_GET['to'] ?? ''); ?>&page=<?php echo max(1, $page - 1); ?>">«</a>
+                        <?php for ($p = $start; $p <= $end; $p++): ?>
+                            <li class="page-item <?= $p === $page ? 'active' : '' ?>">
+                                <a class="page-link" href="<?= $baseUrl . '&page=' . $p ?>">
+                                    <?= $p ?>
+                                </a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <?php if ($end < $totalPages): ?>
+                            <?php if ($end < $totalPages - 1): ?>
+                                <li class="page-item disabled">
+                                    <span class="page-link">…</span>
                                 </li>
-                                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                    <li class="page-item <?php echo $i === $page ? 'active' : ''; ?>">
-                                        <a class="page-link"
-                                            href="/index.php?controller=adminPromotion&action=manage&keyword=<?php echo urlencode($keyword ?? ''); ?>&sort=<?php echo $sort; ?>&from=<?php echo urlencode($_GET['from'] ?? ''); ?>&to=<?php echo urlencode($_GET['to'] ?? ''); ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                                    </li>
-                                <?php endfor; ?>
-                                <li class="page-item <?php echo $page >= $totalPages ? 'disabled' : ''; ?>">
-                                    <a class="page-link"
-                                        href="/index.php?controller=adminPromotion&action=manage&keyword=<?php echo urlencode($keyword ?? ''); ?>&sort=<?php echo $sort; ?>&from=<?php echo urlencode($_GET['from'] ?? ''); ?>&to=<?php echo urlencode($_GET['to'] ?? ''); ?>&page=<?php echo min($totalPages, $page + 1); ?>">»</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            <?php endif; ?>
-        </div>
+                            <?php endif; ?>
+
+                            <li class="page-item <?= $page === $totalPages ? 'active' : '' ?>">
+                                <a class="page-link" href="<?= $baseUrl . '&page=' . $totalPages ?>">
+                                    <?= $totalPages ?>
+                                </a>
+                            </li>
+                        <?php endif; ?>
+
+                        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                            <a class="page-link"
+                                href="<?= $page >= $totalPages ? '#' : $baseUrl . '&page=' . ($page + 1) ?>">
+                                »
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 <?php require 'views/admin/components/promotion-modal.php'; ?>
-
-
-<?php require 'views/admin/components/admin_footer.php'; ?>
 
 
 <script>

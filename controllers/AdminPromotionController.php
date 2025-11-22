@@ -405,7 +405,9 @@ class AdminPromotionController
             exit;
         }
 
+        require_once 'views/admin/components/header.php';
         require_once 'views/admin/pages/promotion-manage-products.php';
+        require_once 'views/admin/components/admin_footer.php';
     }
 
 
@@ -420,7 +422,7 @@ class AdminPromotionController
             exit;
         }
 
-        $limit = 5;
+        $limit = isset($_GET['limit']) ? max(1, (int)$_GET['limit']) : 20;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $page = max(1, $page);
         $offset = ($page - 1) * $limit;
@@ -451,6 +453,8 @@ class AdminPromotionController
         $sortSafe    = htmlspecialchars($sort, ENT_QUOTES, 'UTF-8');
         $fromSafe    = htmlspecialchars($fromDate, ENT_QUOTES, 'UTF-8');
         $toSafe      = htmlspecialchars($toDate, ENT_QUOTES, 'UTF-8');
+        require_once 'views/admin/components/header.php';
         require_once 'views/admin/pages/manage-promotion.php';
+        require_once 'views/admin/components/admin_footer.php';
     }
 }

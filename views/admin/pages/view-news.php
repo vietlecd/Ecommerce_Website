@@ -13,7 +13,6 @@ function e($s)
     return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
 }
 
-// Thumbnail (schema: Thumbnail)
 $thumbnailPath = null;
 $thumbRaw = $news['Thumbnail'] ?? '';
 if (!empty($thumbRaw)) {
@@ -26,13 +25,11 @@ if (!empty($thumbRaw)) {
     }
 }
 
-// Chuẩn bị content (không cần TOC cho admin, nên khỏi DOMDocument cho nhẹ)
 $contentHtml = $news['Content'] ?? '';
 if (trim((string)$contentHtml) === '') {
     $contentHtml = '<p>Content will be updated soon.</p>';
 }
 
-// Promo info (support cả dạng CamelCase và snake_case cho an toàn)
 $promoName = $news['PromotionName'] ?? ($news['promotion_name'] ?? null);
 $startDate = $news['StartDate'] ?? ($news['start_date'] ?? null);
 $endDate   = $news['EndDate'] ?? ($news['end_date'] ?? null);

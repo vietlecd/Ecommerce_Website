@@ -108,6 +108,15 @@
                             </a>
                         </li>
 
+
+                        <li class="sidebar-item <?php echo $currentController === 'adminComments' ? 'active' : ''; ?>">
+                            <a href="/index.php?controller=adminComments&action=manage" class='sidebar-link'>
+                                <i class="fas fa-comments"></i>
+                                <span>Comments</span>
+                            </a>
+                        </li>
+
+
                         <li class="sidebar-item <?php echo ($currentController === 'adminContent' && isset($_GET['key']) && $_GET['key'] === 'about') ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminContent&action=edit&key=about" class='sidebar-link'>
                                 <i class="fas fa-info-circle"></i>

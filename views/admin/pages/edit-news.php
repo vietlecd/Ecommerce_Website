@@ -21,17 +21,14 @@ if (!$selectedPromotionIds && $currentPromotionId !== '') {
 ?>
 <style>
     #editor.form-control {
-        min-height: 340px;
-        overflow: auto;
+        height: 640px;
+        max-height: 640px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     #editor p {
         margin-bottom: .75rem;
-    }
-
-    #editor h2 {
-        font-size: 1.125rem;
-        margin-bottom: .5rem;
     }
 
     #editor a {
@@ -133,9 +130,26 @@ if (!$selectedPromotionIds && $currentPromotionId !== '') {
                                     <button type="button" class="btn btn-light border" data-cmd="bold"><strong>B</strong></button>
                                     <button type="button" class="btn btn-light border" data-cmd="italic"><em>I</em></button>
                                     <button type="button" class="btn btn-light border" data-cmd="underline"><u>U</u></button>
-                                    <button type="button" class="btn btn-light border" data-cmd="h2">H2</button>
                                     <button type="button" class="btn btn-light border" data-cmd="ul">• List</button>
                                 </div>
+
+                                <div class="btn-group btn-group-sm me-2" role="group">
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyLeft" title="Align left"><i class="bi bi-text-left"></i></button>
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyCenter" title="Center"><i class="bi bi-text-center"></i></button>
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyRight" title="Align right"><i class="bi bi-text-right"></i></button>
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyFull" title="Justify"><i class="bi bi-justify"></i></button>
+                                </div>
+
+
+                                <div class="btn-group btn-group-sm me-2" role="group">
+                                    <select id="blockFormat" class="form-select form-select-sm">
+                                        <option value="p">Paragraph</option>
+                                        <option value="h2">Heading 2</option>
+                                        <option value="h3">Heading 3</option>
+                                        <option value="h4">Heading 4</option>
+                                    </select>
+                                </div>
+
 
                                 <div class="btn-group btn-group-sm me-2" role="group">
                                     <button type="button" class="btn btn-light border" id="aLink">Link</button>
@@ -171,12 +185,24 @@ if (!$selectedPromotionIds && $currentPromotionId !== '') {
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label for="news_type" class="form-label">News type</label>
-                                    <select id="news_type" name="news_type" class="form-select" required>
-                                        <option value="general" <?= $currentNewsType === 'general'     ? 'selected' : '' ?>>General</option>
-                                        <option value="flash_sale" <?= $currentNewsType === 'flash_sale'  ? 'selected' : '' ?>>Flash Sale</option>
-                                        <option value="fixed_price" <?= $currentNewsType === 'fixed_price' ? 'selected' : '' ?>>Fixed Price</option>
-                                    </select>
+
+                                    <input
+                                        id="news_type"
+                                        name="news_type"
+                                        type="text"
+                                        class="form-control"
+                                        required
+                                        value="<?= htmlspecialchars($currentNewsType) ?>"
+                                        placeholder="VD: general, flash_sale, fixed_price..."
+                                        list="news_type_suggestions">
+
+                                    <datalist id="news_type_suggestions">
+                                        <option value="general">
+                                        <option value="flash_sale">
+                                        <option value="fixed_price">
+                                    </datalist>
                                 </div>
+
 
                                 <div class="mb-3">
                                     <label for="promotion_ids" class="form-label">Promotions</label>
@@ -192,7 +218,7 @@ if (!$selectedPromotionIds && $currentPromotionId !== '') {
                                             <?php foreach ($promotions as $p): ?>
                                                 <?php
                                                 $pid   = (int)($p['promotion_id'] ?? $p['PromotionID'] ?? 0);
-                                                $pname = $p['promotion_name'] ?? $p['Name'] ?? ('Promotion #' . $pid);
+                                                $pname = $p['promotion_name'] ?? $p['PromotionName'] ?? ('Promotion #' . $pid);
                                                 $isSelected = in_array($pid, $selectedPromotionIds, true);
                                                 ?>
                                                 <option
@@ -321,19 +347,26 @@ if (!$selectedPromotionIds && $currentPromotionId !== '') {
             bold: document.querySelector('[data-cmd="bold"]'),
             italic: document.querySelector('[data-cmd="italic"]'),
             underline: document.querySelector('[data-cmd="underline"]'),
-            h2: document.querySelector('[data-cmd="h2"]'),
             ul: document.querySelector('[data-cmd="ul"]'),
             link: document.getElementById('aLink'),
             clean: document.getElementById('clean')
         };
 
+        const blockFormatSel = document.getElementById('blockFormat');
+
+        const alignButtons = {
+            left: document.querySelector('[data-cmd="justifyLeft"]'),
+            center: document.querySelector('[data-cmd="justifyCenter"]'),
+            right: document.querySelector('[data-cmd="justifyRight"]'),
+            full: document.querySelector('[data-cmd="justifyFull"]')
+        };
+
+
+
         document.querySelectorAll('[data-cmd]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const cmd = btn.getAttribute('data-cmd');
-                if (cmd === 'h2') {
-                    const isH2 = getBlockAncestor()?.nodeName === 'H2';
-                    document.execCommand('formatBlock', false, isH2 ? 'p' : 'h2');
-                } else if (cmd === 'ul') {
+                if (cmd === 'ul') {
                     document.execCommand('insertUnorderedList');
                 } else {
                     document.execCommand(cmd);
@@ -342,6 +375,17 @@ if (!$selectedPromotionIds && $currentPromotionId !== '') {
                 markDirtyIfChanged();
             });
         });
+
+        if (blockFormatSel) {
+            blockFormatSel.addEventListener('change', () => {
+                const value = blockFormatSel.value || 'p';
+                document.execCommand('formatBlock', false, value);
+                refreshToolbarState();
+                markDirtyIfChanged();
+            });
+        }
+
+
 
         cmdButtons.link.addEventListener('click', () => {
             const sel = window.getSelection();
@@ -400,10 +444,32 @@ if (!$selectedPromotionIds && $currentPromotionId !== '') {
                 toggleActive(cmdButtons.italic, document.queryCommandState('italic'));
                 toggleActive(cmdButtons.underline, document.queryCommandState('underline'));
                 toggleActive(cmdButtons.ul, document.queryCommandState('insertUnorderedList'));
+
+                if (alignButtons.left)
+                    toggleActive(alignButtons.left, document.queryCommandState('justifyLeft'));
+                if (alignButtons.center)
+                    toggleActive(alignButtons.center, document.queryCommandState('justifyCenter'));
+                if (alignButtons.right)
+                    toggleActive(alignButtons.right, document.queryCommandState('justifyRight'));
+                if (alignButtons.full)
+                    toggleActive(alignButtons.full, document.queryCommandState('justifyFull'));
             } catch (e) {}
+
             const block = getBlockAncestor();
-            toggleActive(cmdButtons.h2, block && block.nodeName === 'H2');
+            if (blockFormatSel) {
+                let tag = block ? block.nodeName.toLowerCase() : 'p';
+                if (!['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag)) {
+                    tag = 'p';
+                }
+                if ([...blockFormatSel.options].some(opt => opt.value === tag)) {
+                    blockFormatSel.value = tag;
+                } else {
+                    blockFormatSel.value = 'p';
+                }
+            }
         }
+
+
 
         function toggleActive(el, on) {
             if (el) el.classList.toggle('active', !!on);

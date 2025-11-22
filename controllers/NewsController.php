@@ -47,7 +47,9 @@ class NewsController
         }
 
         // Ghi lại lượt nhấp
-        // $this->newsModel->incrementClickCount($news_id);
+        $this->newsModel->incrementClickCount($news_id);
+
+        $promotions = $this->promotionModel->getPromotionsByNewsId($news_id);
 
         require_once 'views/components/header.php';
         require_once 'views/pages/news_detail.php';

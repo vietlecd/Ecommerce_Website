@@ -1,3 +1,14 @@
+<style>
+    .filter-bar .field-narrow {
+        max-width: 180px;
+    }
+
+    .filter-bar .btn-search {
+        min-width: 110px;
+    }
+</style>
+
+<?php $sortNews = $sort ?? 'newest'; ?>
 <div class="page-header">
     <div class="row align-items-center g-3">
         <div class="col-12 col-lg-6">
@@ -34,39 +45,83 @@
 
 <div class="card shadow-sm mb-4 mt-4">
     <div class="card-body">
-        <form method="get" class="row g-3">
+        <form method="get" class="row g-3 align-items-end">
             <input type="hidden" name="controller" value="adminNews">
             <input type="hidden" name="action" value="manage">
 
-            <div class="col-12 col-md-7">
-                <label class="form-label fw-semibold small">Search</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-white">
+            <!-- Search -->
+            <div class="col-12 col-lg-4">
+                <label class="form-label fw-semibold small mb-1" for="news_search">Search</label>
+                <div class="input-group search-input-group">
+                    <span class="input-group-text">
                         <i class="fas fa-search text-muted"></i>
                     </span>
-                    <input type="text" name="search" class="form-control"
-                        placeholder="Enter title, description or author..." value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                    <input
+                        type="text"
+                        name="search"
+                        id="news_search"
+                        class="form-control"
+                        placeholder="Enter title, description or author..."
+                        value="<?= htmlspecialchars($search ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                 </div>
             </div>
 
-            <div class="col-12 col-sm-6 col-md-3">
-                <label class="form-label fw-semibold small">Status</label>
-                <select name="status" class="form-select">
-                    <option value="all" <?php echo ($status ?? 'all') === 'all' ? 'selected' : ''; ?>>All</option>
-                    <option value="pending" <?php echo ($status ?? '') === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                    <option value="active" <?php echo ($status ?? '') === 'active' ? 'selected' : ''; ?>>Active</option>
-                    <option value="expired" <?php echo ($status ?? '') === 'expired' ? 'selected' : ''; ?>>Expired</option>
+            <!-- Status -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label fw-semibold small mb-1" for="news_status">Status</label>
+                <select name="status" id="news_status" class="form-select field-narrow">
+                    <?php $stVal = $status ?? 'all'; ?>
+                    <option value="all" <?= $stVal === 'all'     ? 'selected' : ''; ?>>All</option>
+                    <option value="pending" <?= $stVal === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                    <option value="active" <?= $stVal === 'active'  ? 'selected' : ''; ?>>Active</option>
+                    <option value="expired" <?= $stVal === 'expired' ? 'selected' : ''; ?>>Expired</option>
                 </select>
             </div>
 
-            <div class="col-12 col-sm-6 col-md-2">
-                <label class="form-label d-block">&nbsp;</label>
-                <div class="d-flex gap-2">
+            <!-- Sort -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label fw-semibold small mb-1" for="news_sort">Sort by</label>
+                <select name="sort" id="news_sort" class="form-select field-narrow">
+
+                    <option value="newest" <?= $sortNews === 'newest'      ? 'selected' : ''; ?>>Newest first</option>
+                    <option value="oldest" <?= $sortNews === 'oldest'      ? 'selected' : ''; ?>>Oldest first</option>
+                    <option value="views_desc" <?= $sortNews === 'views_desc'  ? 'selected' : ''; ?>>Most viewed</option>
+                    <option value="views_asc" <?= $sortNews === 'views_asc'   ? 'selected' : ''; ?>>Least viewed</option>
+                    <option value="author_asc" <?= $sortNews === 'author_asc'  ? 'selected' : ''; ?>>Author A–Z</option>
+                    <option value="author_desc" <?= $sortNews === 'author_desc' ? 'selected' : ''; ?>>Author Z–A</option>
+                    <option value="title_asc" <?= $sortNews === 'title_asc'   ? 'selected' : ''; ?>>Title A–Z</option>
+                    <option value="title_desc" <?= $sortNews === 'title_desc'  ? 'selected' : ''; ?>>Title Z–A</option>
+                    <option value="id_asc" <?= $sortNews === 'id_asc'      ? 'selected' : ''; ?>>ID Ascending</option>
+                    <option value="id_desc" <?= $sortNews === 'id_desc'     ? 'selected' : ''; ?>>ID Descending</option>
+                </select>
+            </div>
+
+
+            <!-- Items per page -->
+            <div class="col-6 col-md-3 col-lg-2">
+                <label class="form-label fw-semibold small mb-1" for="news_limit">Items per page</label>
+                <select name="limit" id="news_limit" class="form-select field-narrow">
+                    <?php
+                    $currentLimit = (int)($limit ?? 10);
+                    foreach ([10, 20, 50, 100] as $opt):
+                    ?>
+                        <option value="<?= $opt ?>" <?= $currentLimit === $opt ? 'selected' : ''; ?>>
+                            <?= $opt ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <!-- Buttons -->
+            <div class="col-12 col-md-3 col-lg-2 d-flex align-items-end">
+                <div class="d-flex gap-2 w-100 justify-content-md-end">
                     <button type="submit" class="btn btn-primary flex-grow-1">
                         <i class="fas fa-filter me-1"></i>Filter
                     </button>
-                    <a href="/index.php?controller=adminNews&action=manage"
-                        class="btn btn-outline-secondary" title="Reset">
+                    <a
+                        href="/index.php?controller=adminNews&action=manage"
+                        class="btn btn-outline-secondary"
+                        title="Reset">
                         <i class="fas fa-redo"></i>
                     </a>
                 </div>
@@ -76,26 +131,30 @@
 </div>
 
 <div class="card shadow-sm">
-    <div class="table-wrapper mt-3">
+    <div class="table-responsive table-wrapper mt-3">
         <table class="table table-hover align-middle mb-0">
             <colgroup>
+                <col>
                 <col style="width: 120px;">
                 <col style="min-width: 240px;">
                 <col style="min-width: 280px;">
                 <col style="width: 130px;">
                 <col style="width: 140px;">
                 <col style="width: 130px;">
+                <col>
                 <!-- <col style="width: 110px;"> -->
                 <col style="width: 140px;">
             </colgroup>
             <thead class="border-bottom">
                 <tr>
+                    <th>ID</th>
                     <th>Image</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Type</th>
                     <th>Author</th>
                     <th>Published Date</th>
+                    <th>Clicks</th>
                     <!-- <th style="width: 110px;">Status</th> -->
                     <th class="text-center">Actions</th>
                 </tr>
@@ -112,22 +171,13 @@
                         'flash_sale'  => 'Flash Sale',
                         'fixed_price' => 'Best Price',
                     ];
-                    function status_badge(?string $st): string
-                    {
-                        return match ($st) {
-                            'pending' => '<span class="badge rounded-pill bg-warning-subtle text-warning-emphasis">Pending</span>',
-                            'active'  => '<span class="badge rounded-pill bg-success-subtle text-success-emphasis">Active</span>',
-                            'expired' => '<span class="badge rounded-pill bg-danger-subtle text-danger-emphasis">Expired</span>',
-                            default   => '—',
-                        };
-                    }
                     ?>
                     <?php foreach ($news as $item): ?>
                         <?php
-                        $typeLabel = $news_types[$item['NewsType']] ?? 'Unknown';
                         $thumb = !empty($item['Thumbnail']) ?  ltrim($item['Thumbnail'], '/\\') : null;
                         ?>
                         <tr>
+                            <td><?php echo (int)$item['NewsID']; ?></td>
                             <td>
                                 <?php if ($thumb): ?>
                                     <div class="ratio ratio-16x9">
@@ -149,11 +199,12 @@
                                     <?php echo htmlspecialchars($item['Description']); ?>
                                 </div>
                             </td>
-                            <td><span class="badge bg-danger-subtle text-danger badge-type"><?php echo htmlspecialchars($typeLabel); ?></span></td>
+                            <td><span class="badge bg-danger-subtle text-danger badge-type"><?php echo htmlspecialchars($item['NewsType'] ?? 'Unknown'); ?></span></td>
                             <td>
                                 <div class="small text-muted"><?php echo htmlspecialchars($item['AdminName'] ?? 'Unknown'); ?></div>
                             </td>
                             <td><?php echo date('d/m/Y H:i', strtotime($item['CreatedAt'])); ?></td>
+                            <td><?php echo (int)$item['ClickCount']; ?></td>
                             <td>
                                 <div class="d-flex gap-1 justify-content-center" role="group" aria-label="actions">
                                     <a href="/index.php?controller=adminNews&action=show&id=<?php echo (int)$item['NewsID']; ?>"
@@ -177,23 +228,81 @@
         <p class="text-muted">No articles found</p>
     </div>
 
-    <?php if (!empty($totalPages) && $totalPages > 1): ?>
-        <div class="card-footer bg-white">
+    <?php if (isset($totalPages)): ?>
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+            <p class="mb-0 text-muted small">
+                Page <?= (int)$page ?> of <?= (int)$totalPages ?> —
+                Total <?= (int)$totalNews ?> news
+            </p>
+
             <nav aria-label="Pagination">
-                <ul class="pagination pagination-sm justify-content-center mb-0">
-                    <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                <ul class="pagination pagination-sm mb-0">
+                    <?php
+                    $baseUrl = '/index.php?controller=adminNews&action=manage'
+                        . '&search=' . urlencode($search ?? '')
+                        . '&sort=' . urlencode($sortNews)
+                        . '&status=' . urlencode($status ?? 'all')
+                        . '&limit=' . (int)$limit;
+
+                    $window     = 3;
+                    $totalPages = max(1, (int)$totalPages);
+                    $page       = max(1, min($page, $totalPages));
+
+                    $half  = intdiv($window, 2);
+
+                    $start = max(1, $page - $half);
+                    $end   = min($totalPages, $start + $window - 1);
+                    if ($end - $start + 1 < $window) {
+                        $start = max(1, $end - $window + 1);
+                    }
+                    ?>
+
+                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
                         <a class="page-link"
-                            href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search ?? ''); ?>&status=<?php echo urlencode($status ?? 'all'); ?>&page=<?php echo max(1, $page - 1); ?>">«</a>
+                            href="<?= $page <= 1 ? '#' : $baseUrl . '&page=' . ($page - 1) ?>">
+                            «
+                        </a>
                     </li>
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li class="page-item <?php echo $i === $page ? 'active' : ''; ?>">
-                            <a class="page-link"
-                                href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search ?? ''); ?>&status=<?php echo urlencode($status ?? 'all'); ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+
+                    <?php if ($start > 1): ?>
+                        <li class="page-item <?= $page === 1 ? 'active' : '' ?>">
+                            <a class="page-link" href="<?= $baseUrl . '&page=1' ?>">1</a>
+                        </li>
+
+                        <?php if ($start > 2): ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">…</span>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php for ($p = $start; $p <= $end; $p++): ?>
+                        <li class="page-item <?= $p === $page ? 'active' : '' ?>">
+                            <a class="page-link" href="<?= $baseUrl . '&page=' . $p ?>">
+                                <?= $p ?>
+                            </a>
                         </li>
                     <?php endfor; ?>
-                    <li class="page-item <?php echo $page >= $totalPages ? 'disabled' : ''; ?>">
+
+                    <?php if ($end < $totalPages): ?>
+                        <?php if ($end < $totalPages - 1): ?>
+                            <li class="page-item disabled">
+                                <span class="page-link">…</span>
+                            </li>
+                        <?php endif; ?>
+
+                        <li class="page-item <?= $page === $totalPages ? 'active' : '' ?>">
+                            <a class="page-link" href="<?= $baseUrl . '&page=' . $totalPages ?>">
+                                <?= $totalPages ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
                         <a class="page-link"
-                            href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search ?? ''); ?>&status=<?php echo urlencode($status ?? 'all'); ?>&page=<?php echo min($totalPages, $page + 1); ?>">»</a>
+                            href="<?= $page >= $totalPages ? '#' : $baseUrl . '&page=' . ($page + 1) ?>">
+                            »
+                        </a>
                     </li>
                 </ul>
             </nav>

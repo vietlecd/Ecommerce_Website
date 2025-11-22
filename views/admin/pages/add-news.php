@@ -10,9 +10,28 @@ $_SESSION['draft_tokens'][$draftToken] = time();
 ?>
 <style>
     #editor.form-control {
-        min-height: 340px;
-        overflow: auto;
+        height: 640px;
+        max-height: 640px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
     }
+
+    #editor.form-control::before {
+        content: attr(data-placeholder);
+        position: absolute;
+        inset: 1rem 1rem auto 1rem;
+        color: #6c757d;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity .15s ease-in-out;
+        font-weight: 400;
+    }
+
+    #editor.form-control[data-placeholder-visible="true"]::before {
+        opacity: 1;
+    }
+
 
     #editor p {
         margin-bottom: .75rem;
@@ -105,9 +124,26 @@ $_SESSION['draft_tokens'][$draftToken] = time();
                                     <button type="button" class="btn btn-light border" data-cmd="bold"><strong>B</strong></button>
                                     <button type="button" class="btn btn-light border" data-cmd="italic"><em>I</em></button>
                                     <button type="button" class="btn btn-light border" data-cmd="underline"><u>U</u></button>
-                                    <button type="button" class="btn btn-light border" data-cmd="h2">H2</button>
                                     <button type="button" class="btn btn-light border" data-cmd="ul">• List</button>
                                 </div>
+
+                                <div class="btn-group btn-group-sm me-2" role="group">
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyLeft" title="Align left"><i class="bi bi-text-left"></i></button>
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyCenter" title="Center"><i class="bi bi-text-center"></i></button>
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyRight" title="Align right"><i class="bi bi-text-right"></i></button>
+                                    <button type="button" class="btn btn-light border" data-cmd="justifyFull" title="Justify"><i class="bi bi-justify"></i></button>
+                                </div>
+
+
+                                <div class="btn-group btn-group-sm me-2" role="group">
+                                    <select id="blockFormat" class="form-select form-select-sm">
+                                        <option value="p">Paragraph</option>
+                                        <option value="h2">Heading 2</option>
+                                        <option value="h3">Heading 3</option>
+                                        <option value="h4">Heading 4</option>
+                                    </select>
+                                </div>
+
 
                                 <div class="btn-group btn-group-sm me-2" role="group">
                                     <button type="button" class="btn btn-light border" id="aLink">Link</button>
@@ -128,9 +164,15 @@ $_SESSION['draft_tokens'][$draftToken] = time();
                             </div>
 
                             <!-- Editor -->
-                            <div id="editor" class="form-control p-3" contenteditable="true" spellcheck="true" aria-label="Article content">
-                                <p>Write your content here...</p>
-                            </div>
+                            <div
+                                id="editor"
+                                class="form-control p-3"
+                                contenteditable="true"
+                                spellcheck="true"
+                                aria-label="Article content"
+                                data-placeholder="Write your content here..."
+                                data-placeholder-visible="true"></div>
+
                         </div>
                     </div>
 
@@ -140,11 +182,22 @@ $_SESSION['draft_tokens'][$draftToken] = time();
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label for="news_type" class="form-label">News type</label>
-                                    <select id="news_type" name="news_type" class="form-select">
-                                        <option value="general">General</option>
-                                        <option value="flash_sale">Flash Sale</option>
-                                        <option value="fixed_price">Fixed Price</option>
-                                    </select>
+
+                                    <input
+                                        id="news_type"
+                                        name="news_type"
+                                        type="text"
+                                        class="form-control"
+                                        required
+                                        value=""
+                                        placeholder="VD: general, flash_sale, fixed_price..."
+                                        list="news_type_suggestions">
+
+                                    <datalist id="news_type_suggestions">
+                                        <option value="general">
+                                        <option value="flash_sale">
+                                        <option value="fixed_price">
+                                    </datalist>
                                 </div>
 
                                 <!-- MANY-TO-MANY Promotions -->
@@ -155,7 +208,7 @@ $_SESSION['draft_tokens'][$draftToken] = time();
                                             <?php foreach ($promotions as $p): ?>
                                                 <?php
                                                 $pid   = (int)($p['promotion_id'] ?? $p['PromotionID'] ?? 0);
-                                                $pname = $p['promotion_name'] ?? $p['Name'] ?? ('Promotion #' . $pid);
+                                                $pname = $p['promotion_name'] ?? $p['PromotionName'] ?? ('Promotion #' . $pid);
                                                 $isSelected = in_array($pid, $selectedPromotionIds, true);
                                                 ?>
                                                 <option
@@ -229,6 +282,22 @@ $_SESSION['draft_tokens'][$draftToken] = time();
         isSubmitting = true;
         contentHidden.value = editor.innerHTML;
     });
+
+    function updateEditorPlaceholder() {
+        const isEmpty = !editor.textContent.trim();
+        editor.dataset.placeholderVisible = isEmpty ? 'true' : 'false';
+    }
+
+    editor.addEventListener('input', updateEditorPlaceholder);
+    editor.addEventListener('keyup', updateEditorPlaceholder);
+    editor.addEventListener('paste', () => {
+        setTimeout(updateEditorPlaceholder, 0);
+    });
+    editor.addEventListener('drop', () => {
+        setTimeout(updateEditorPlaceholder, 0);
+    });
+    updateEditorPlaceholder();
+
 
     backBtn.addEventListener('click', () => {
         if (window.history.length > 1) window.history.back();
@@ -375,11 +444,20 @@ $_SESSION['draft_tokens'][$draftToken] = time();
         bold: document.querySelector('[data-cmd="bold"]'),
         italic: document.querySelector('[data-cmd="italic"]'),
         underline: document.querySelector('[data-cmd="underline"]'),
-        h2: document.querySelector('[data-cmd="h2"]'),
         ul: document.querySelector('[data-cmd="ul"]'),
         link: document.getElementById('aLink'),
         clean: document.getElementById('clean')
     };
+
+    const blockFormatSel = document.getElementById('blockFormat');
+
+    const alignButtons = {
+        left: document.querySelector('[data-cmd="justifyLeft"]'),
+        center: document.querySelector('[data-cmd="justifyCenter"]'),
+        right: document.querySelector('[data-cmd="justifyRight"]'),
+        full: document.querySelector('[data-cmd="justifyFull"]')
+    };
+
 
     document.querySelectorAll('[data-cmd]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -395,6 +473,15 @@ $_SESSION['draft_tokens'][$draftToken] = time();
             refreshToolbarState();
         });
     });
+
+    if (blockFormatSel) {
+        blockFormatSel.addEventListener('change', () => {
+            const value = blockFormatSel.value || 'p';
+            document.execCommand('formatBlock', false, value);
+            refreshToolbarState();
+            markDirtyIfChanged();
+        });
+    }
 
     cmdButtons.link.addEventListener('click', () => {
         const sel = window.getSelection();
@@ -451,10 +538,31 @@ $_SESSION['draft_tokens'][$draftToken] = time();
             toggleActive(cmdButtons.italic, document.queryCommandState('italic'));
             toggleActive(cmdButtons.underline, document.queryCommandState('underline'));
             toggleActive(cmdButtons.ul, document.queryCommandState('insertUnorderedList'));
+
+            if (alignButtons.left)
+                toggleActive(alignButtons.left, document.queryCommandState('justifyLeft'));
+            if (alignButtons.center)
+                toggleActive(alignButtons.center, document.queryCommandState('justifyCenter'));
+            if (alignButtons.right)
+                toggleActive(alignButtons.right, document.queryCommandState('justifyRight'));
+            if (alignButtons.full)
+                toggleActive(alignButtons.full, document.queryCommandState('justifyFull'));
         } catch (e) {}
+
         const block = getBlockAncestor();
-        toggleActive(cmdButtons.h2, block && block.nodeName === 'H2');
+        if (blockFormatSel) {
+            let tag = block ? block.nodeName.toLowerCase() : 'p';
+            if (!['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tag)) {
+                tag = 'p';
+            }
+            if ([...blockFormatSel.options].some(opt => opt.value === tag)) {
+                blockFormatSel.value = tag;
+            } else {
+                blockFormatSel.value = 'p';
+            }
+        }
     }
+
 
     function toggleActive(el, on) {
         if (el) el.classList.toggle('active', !!on);

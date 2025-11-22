@@ -1,89 +1,3 @@
-<?php
-$categories = $categories ?? [];
-$selectedCategory = $_GET['category'] ?? '';
-$search = $search ?? '';
-$totalNews = $totalNews ?? count($news ?? []);
-$page = $page ?? 1;
-$totalPages = $totalPages ?? 1;
-
-/**
- * Resolve thumbnail path:
- * - Ưu tiên field 'Thumbnail', nếu không có thì dùng 'thumbnail'
- * - Nếu là URL => dùng luôn
- * - Nếu là path local => normalize và prefix "/"
- * - Nếu không có => dùng placeholder
- */
-function resolve_thumbnail($item)
-{
-    $raw = null;
-
-    if (!empty($item['Thumbnail'])) {
-        $raw = $item['Thumbnail'];
-    } elseif (!empty($item['thumbnail'])) {
-        $raw = $item['thumbnail'];
-    }
-
-    $fallback = '/assets/images/placeholder.png';
-    if (empty($raw)) {
-        return $fallback;
-    }
-
-    // Trường hợp là URL tuyệt đối
-    if (filter_var($raw, FILTER_VALIDATE_URL)) {
-        return $raw;
-    }
-
-    // Trường hợp là đường dẫn tương đối trong project
-    $normalized = ltrim($raw, '/\\');
-
-    // Nếu file tồn tại trên server, trả về path có prefix "/"
-    if (file_exists($normalized)) {
-        return '/' . $normalized;
-    }
-
-    // Nếu không chắc, vẫn cứ trả về path đã normalize (để browser thử load)
-    return '/' . $normalized;
-}
-
-/**
- * Helper định dạng ngày – giữ lại từ HEAD vì cũng hữu ích
- */
-function get_news_date(array $item)
-{
-    $candidates = [
-        'CreatedAt',
-        'DateCreated',
-        'created_at',
-        'created',
-        'start_date',
-        'startDate',
-        'Date',
-        'PublishedAt',
-        'published_at'
-    ];
-    $raw = null;
-    foreach ($candidates as $key) {
-        if (!empty($item[$key])) {
-            $raw = $item[$key];
-            break;
-        }
-    }
-    if (empty($raw) && !empty($item['end_date'])) $raw = $item['end_date'];
-    if (empty($raw)) $raw = date('c');
-
-    $ts = strtotime($raw);
-    if ($ts === false || $ts === -1) {
-        $iso = date('c');
-        $fmt = date('d M Y');
-    } else {
-        $iso = date('c', $ts);
-        $fmt = date('d M Y', $ts);
-    }
-
-    return ['raw' => $raw, 'iso' => $iso, 'fmt' => $fmt];
-}
-?>
-
 <section class="news-hero">
     <div class="news-hero-content">
         <p class="news-hero-label">News & Updates</p>
@@ -107,17 +21,20 @@ function get_news_date(array $item)
                         <ul class="news-widget-items">
                             <?php foreach ($recentNews as $item): ?>
                                 <?php
-                                $thumb = resolve_thumbnail($item);
+                                $thumb = '/assets/images/placeholder.png';
+                                if (!empty($item['Thumbnail'])) {
+                                    if (filter_var($item['Thumbnail'], FILTER_VALIDATE_URL)) {
+                                        $thumb = $item['Thumbnail'];
+                                    } elseif (file_exists($item['Thumbnail'])) {
+                                        $thumb = '/' . ltrim($item['Thumbnail'], '/');
+                                    }
+                                }
                                 ?>
                                 <li>
                                     <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
-                                        <img src="<?php echo htmlspecialchars($thumb); ?>"
-                                            alt="<?php echo htmlspecialchars($item['Title']); ?>"
-                                            loading="lazy"
-                                            onerror="this.onerror=null;this.src='/assets/images/placeholder.png'">
+                                        <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
                                         <div>
-                                            <?php $d = get_news_date($item); ?>
-                                            <span><?php echo htmlspecialchars($d['fmt']); ?></span>
+                                            <span><?php echo date('M d, Y', strtotime($item['CreatedAt'])); ?></span>
                                             <p><?php echo htmlspecialchars($item['Title']); ?></p>
                                         </div>
                                     </a>
@@ -136,24 +53,20 @@ function get_news_date(array $item)
                         <ul class="news-widget-items">
                             <?php foreach ($popularNews as $item): ?>
                                 <?php
-                                $thumb = resolve_thumbnail($item);
+                                $thumb = '/assets/images/placeholder.png';
+                                if (!empty($item['Thumbnail'])) {
+                                    if (filter_var($item['Thumbnail'], FILTER_VALIDATE_URL)) {
+                                        $thumb = $item['Thumbnail'];
+                                    } elseif (file_exists($item['Thumbnail'])) {
+                                        $thumb = '/' . ltrim($item['Thumbnail'], '/');
+                                    }
+                                }
                                 ?>
                                 <li>
                                     <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
-                                        <img src="<?php echo htmlspecialchars($thumb); ?>"
-                                            alt="<?php echo htmlspecialchars($item['Title']); ?>"
-                                            loading="lazy"
-                                            onerror="this.onerror=null;this.src='/assets/images/placeholder.png'">
+                                        <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
                                         <div>
-                                            <span>
-                                                <?php
-                                                if (!empty($item['clicks'])) {
-                                                    echo number_format($item['clicks']) . ' views';
-                                                } else {
-                                                    echo 'New';
-                                                }
-                                                ?>
-                                            </span>
+                                            <span><?php echo !empty($item['clicks']) ? number_format($item['clicks']) . ' views' : 'New'; ?></span>
                                             <p><?php echo htmlspecialchars($item['Title']); ?></p>
                                         </div>
                                     </a>
@@ -195,20 +108,22 @@ function get_news_date(array $item)
         <div class="news-grid">
             <?php foreach ($news as $item): ?>
                 <?php
-                $thumbnailPath = resolve_thumbnail($item);
+                $thumbnailPath = '/assets/images/placeholder.png';
+                if (!empty($item['Thumbnail'])) {
+                    if (filter_var($item['Thumbnail'], FILTER_VALIDATE_URL)) {
+                        $thumbnailPath = $item['Thumbnail'];
+                    } elseif (file_exists($item['Thumbnail'])) {
+                        $thumbnailPath = '/' . ltrim($item['Thumbnail'], '/');
+                    }
+                }
                 $typeLabel = !empty($item['news_type']) ? str_replace('_', ' ', $item['news_type']) : 'Update';
                 $descriptionSnippet = !empty($item['Description'])
                     ? mb_strimwidth(strip_tags($item['Description']), 0, 140, '...')
                     : 'Tap to read the full story.';
-                $d = get_news_date($item);
                 ?>
                 <article class="news-card">
-                    <a class="news-card-image"
-                        href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
-                        <img src="<?php echo htmlspecialchars($thumbnailPath); ?>"
-                            alt="<?php echo htmlspecialchars($item['Title']); ?>"
-                            loading="lazy"
-                            onerror="this.onerror=null;this.src='/assets/images/placeholder.png'">
+                    <a class="news-card-image" href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
+                        <img src="<?php echo htmlspecialchars($thumbnailPath); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
                         <span class="news-card-tag"><?php echo htmlspecialchars(ucwords($typeLabel)); ?></span>
                         <?php if (!empty($item['end_date'])): ?>
                             <span class="news-card-countdown" data-end-date="<?php echo $item['end_date']; ?>">
@@ -219,20 +134,18 @@ function get_news_date(array $item)
                     </a>
                     <div class="news-card-content">
                         <p class="news-card-meta">
-                            <span><?php echo htmlspecialchars($d['fmt']); ?></span>
-                            <?php if (!empty($item['promotion_name'])): ?>
-                                · <span><?php echo htmlspecialchars($item['promotion_name']); ?></span>
+                            <span><?php echo date('M d, Y', strtotime($item['CreatedAt'])); ?></span>
+                            <?php if (!empty($item['PromotionName'])): ?>
+                                · <span><?php echo htmlspecialchars($item['PromotionName']); ?></span>
                             <?php endif; ?>
                         </p>
                         <h3><?php echo htmlspecialchars($item['Title']); ?></h3>
                         <p><?php echo htmlspecialchars($descriptionSnippet); ?></p>
                         <div class="news-card-actions">
-                            <a class="btn btn-outline"
-                                href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
+                            <a class="btn btn-outline" href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
                                 Read Article
                             </a>
-                            <a class="news-card-detail-link"
-                                href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
+                            <a class="news-card-detail-link" href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
                                 View blog view
                             </a>
                         </div>
@@ -246,8 +159,7 @@ function get_news_date(array $item)
 <?php if ($totalPages > 1): ?>
     <div class="news-pagination">
         <?php if ($page > 1): ?>
-            <a class="news-pagination-link"
-                href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page - 1; ?>">
+            <a class="news-pagination-link" href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page - 1; ?>">
                 <i class="fas fa-arrow-left"></i> Previous
             </a>
         <?php endif; ?>
@@ -260,8 +172,7 @@ function get_news_date(array $item)
         <?php endfor; ?>
 
         <?php if ($page < $totalPages): ?>
-            <a class="news-pagination-link"
-                href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page + 1; ?>">
+            <a class="news-pagination-link" href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $page + 1; ?>">
                 Next <i class="fas fa-arrow-right"></i>
             </a>
         <?php endif; ?>
@@ -273,33 +184,31 @@ function get_news_date(array $item)
         const countdownElements = document.querySelectorAll('.news-card-countdown');
 
         countdownElements.forEach(function(element) {
-            const endDateAttr = element.getAttribute('data-end-date');
-            if (!endDateAttr) return;
-
-            const endDate = new Date(endDateAttr).getTime();
+            const endDate = new Date(element.getAttribute('data-end-date')).getTime();
             const timerElement = element.querySelector('.timer');
-            if (!timerElement) return;
+
+            if (!timerElement) {
+                return;
+            }
 
             function updateCountdown() {
                 const now = new Date().getTime();
                 const distance = endDate - now;
 
-                if (distance <= 0) {
-                    timerElement.textContent = 'Expired';
+                if (distance < 0) {
+                    timerElement.innerHTML = 'Expired';
                     element.classList.add('expired');
                     return;
                 }
 
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                timerElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                timerElement.innerHTML = `${days}d ${hours}h left`;
             }
 
             updateCountdown();
-            setInterval(updateCountdown, 1000);
+            setInterval(updateCountdown, 60000);
         });
     });
 </script>

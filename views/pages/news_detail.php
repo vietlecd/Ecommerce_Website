@@ -62,7 +62,6 @@ if (!empty(trim($contentHtml))) {
     $contentHtml = nl2br(htmlspecialchars($news['Content'] ?? ''));
 }
 
-// Thumbnail (schema mới dùng 'thumbnail')
 $thumbnailPath = null;
 if (!empty($news['Thumbnail'])) {
     if (filter_var($news['Thumbnail'], FILTER_VALIDATE_URL)) {
@@ -70,7 +69,6 @@ if (!empty($news['Thumbnail'])) {
     } elseif (file_exists($news['Thumbnail'])) {
         $thumbnailPath = '/' . ltrim($news['Thumbnail'], '/');
     } else {
-        // fallback: cứ prepand slash cho path
         $thumbnailPath = '/' . ltrim($news['Thumbnail'], '/');
     }
 }

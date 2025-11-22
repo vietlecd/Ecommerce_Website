@@ -1,5 +1,5 @@
 -- Seeder 018: Tech Whitepaper
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Whitepaper: Sensor-Enabled Footwear Ecosystem',
     'Comprehensive technical documentation covering sensor integration, data architecture, security protocols, use case applications, and future development roadmap for intelligent footwear systems.',
@@ -40,6 +40,5 @@ VALUES (
      <p>Open APIs for third-party coaches and applications create <u>ecosystem approach</u> that allows broader community to build upon sensor platform and create value-added services. The APIs provide secure access to sensor data and analysis capabilities, enabling developers to create specialized applications that serve specific user needs or market segments. The open approach recognizes that no single organization can address all potential use cases effectively, so enabling third-party innovation creates more comprehensive solutions than closed systems. <strong>API documentation</strong> and developer support help third parties integrate effectively, ensuring that ecosystem grows in ways that benefit users and maintain quality standards. The APIs include authentication and authorization mechanisms that ensure only approved applications can access user data, maintaining security and privacy while enabling innovation. The third-party integration extends to healthcare providers, fitness coaches, research institutions, and other organizations that can provide specialized services based on sensor data. The open ecosystem approach creates network effects where value increases as more developers and services participate, benefiting all stakeholders including users, third-party developers, and platform provider. The APIs are designed to be stable and well-documented, ensuring that third-party investments in integration are protected and that applications can rely on continued platform support. The open approach also includes governance mechanisms that ensure third-party applications meet quality and privacy standards, protecting users while enabling innovation. The ecosystem development represents long-term strategic approach that recognizes platform value comes not just from core features, but from entire ecosystem of services and applications that build upon foundation.</p>',
     7,
     'whitepaper',
-    NULL,
     'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80'
 );

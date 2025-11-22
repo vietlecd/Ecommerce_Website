@@ -1,5 +1,5 @@
 -- Seeder 015: Style Manifesto
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Style Manifesto: How to Build a Capsule Around Statement Footwear',
     'Editorial advice for assembling a seasonal wardrobe anchored by hero shoes, complete with rituals, palettes, and care systems.',
@@ -41,7 +41,6 @@ VALUES (
      <p>Download printable checklists and closet planner grids inside the ShoeStore app.</p>',
     3,
     'style',
-    NULL,
     'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80'
 );
 

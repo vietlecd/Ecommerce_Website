@@ -1,8 +1,8 @@
 -- Drop the news table
 
-SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS `news_clicks`;
 
--- DROP TABLE IF EXISTS `comment`;
+SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `news`;
 
 

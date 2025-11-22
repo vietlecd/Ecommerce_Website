@@ -7,9 +7,9 @@ SET CHARACTER SET utf8mb4;
 
 -- Insert sample Promotion data
 INSERT INTO `promotion` (`PromotionID`, `PromotionType`, `PromotionName`, `DiscountPercentage`, `FixedPrice`, `StartDate`, `EndDate`) VALUES
-(1,'Black Friday', 'Black Friday Sale', 20.00, NULL, '2025-11-24 00:00:00', '2025-11-30 23:59:59'),
-(2,'Cyber Monday', 'Cyber Monday Deals', 15.00, NULL, '2025-11-27 00:00:00', '2025-11-30 23:59:59'),
-(3,'Christmas', 'Christmas Discounts', NULL, 50.00, '2025-12-01 00:00:00', '2025-12-25 23:59:59'),
+(1,'discount', 'Black Friday Sale', 20.00, NULL, '2025-11-24 00:00:00', '2025-11-30 23:59:59'),
+(2,'fixed', 'Cyber Monday Deals', 15.00, NULL, '2025-11-27 00:00:00', '2025-11-30 23:59:59'),
+(3,'discount', 'Christmas Discounts', NULL, 50.00, '2025-12-01 00:00:00', '2025-12-25 23:59:59'),
 (4,'discount', 'Flash Sale 50%', 50.00, NULL, '2025-04-16 00:00:00', '2025-05-09 23:59:00'),
 (5,'fixed', 'Rẻ Vô Địch 10$', NULL, 10.00, '2025-04-29 00:00:00', '2025-06-07 23:59:00'),
 (6,'fixed', 'Xả kho 20$', NULL, 20.00, '2025-04-29 00:00:00', '2025-05-30 23:59:00'),

@@ -105,7 +105,7 @@ class NewsModel
         $stmt = $this->db->prepare("SELECT n.NewsID, n.Title, n.Description, n.Thumbnail, n.CreatedAt, COALESCE(nc.click_count, 0) AS clicks
                                     FROM news n
                                     LEFT JOIN news_clicks nc ON n.NewsID = nc.news_id
-                                    ORDER BY clicks DESC, n.DateCreated DESC
+                                    ORDER BY clicks DESC, n.CreatedAt DESC
                                     LIMIT :limit");
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->execute();
@@ -405,58 +405,5 @@ class NewsModel
         $stmt->bindParam(2, $search);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getCommentsByNewsId($newsId, int $limit = 5,  ?string $lastCreatedAt = null)
-    {
-        $lastCreatedAt = $lastCreatedAt ?? date('Y-m-d H:i:s');
-        $query = "
-            SELECT nc.*, m.Username
-            FROM comment AS nc 
-            LEFT JOIN member AS m ON nc.CreatedBy = m.MemberID
-            WHERE NewsID = :nid AND nc.CreatedAt < :lastCreatedAt
-            ORDER BY nc.CreatedAt DESC, nc.CommentID DESC
-            LIMIT :lim 
-        ";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':nid', $newsId, PDO::PARAM_INT);
-        $stmt->bindValue(':lim', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':lastCreatedAt', $lastCreatedAt, PDO::PARAM_STR);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getCommentCountByNewsId($newsId)
-    {
-        $query = "SELECT COUNT(*) FROM comment WHERE NewsID = ?";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(1, $newsId);
-        $stmt->execute();
-        return (int)$stmt->fetchColumn();
-    }
-
-    public function getCommentById($commentId)
-    {
-        $query = "
-            SELECT nc.*, m.Username
-            FROM comment AS nc 
-            LEFT JOIN member AS m ON nc.CreatedBy = m.MemberID
-            WHERE CommentID = :comment_id
-        ";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':comment_id', $commentId);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function addComment($newsId, $comment)
-    {
-        $query = "INSERT INTO comment (NewsID, Content) VALUES (?, ?)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(1, $newsId);
-        $stmt->bindParam(2, $comment);
-        $stmt->execute();
-
-        return (int)$this->db->lastInsertId();
     }
 }

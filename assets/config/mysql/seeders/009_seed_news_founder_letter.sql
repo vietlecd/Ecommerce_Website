@@ -1,5 +1,5 @@
 -- Seeder 009: Founder Letter
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Founder Letter: Five Principles Guiding Our Next Chapter',
     'An expansive open letter outlining how culture, sustainability, craft, and community commitments evolve through data-backed actions, storytelling, and radical accountability.',
@@ -47,7 +47,6 @@ VALUES (
      <p>This letter is not sign-off; it is an invitation. We will host quarterly AMAs where you can ask me anything, livestream factory walkthroughs, and release annual anthologies compiling wins, losses, and lessons. <strong>Stay loud</strong>, stay curious, stay in touch. Our soles are only as strong as the communities that walk beside us.</p>',
     1,
     'letter',
-    NULL,
     'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80'
 );
 

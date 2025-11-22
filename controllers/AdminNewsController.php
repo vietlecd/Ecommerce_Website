@@ -482,10 +482,6 @@ class AdminNewsController
             return;
         }
 
-        $comments = $this->newsModel->getCommentsByNewsId($id);
-        $totalComments = $this->newsModel->getCommentCountByNewsId($id);
-        $hasMore = count($comments) < $totalComments;
-
         require_once 'views/admin/components/header.php';
         require_once 'views/admin/pages/view-news.php';
         require_once 'views/admin/components/admin_footer.php';

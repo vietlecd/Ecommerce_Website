@@ -1,326 +1,283 @@
-<style>
-    .admin-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-    }
+<div class="page-header">
+    <div class="row align-items-center g-3">
+        <div class="col-12 col-lg-6">
+            <h1 class="h3 mb-1">Manage News</h1>
+            <p class="text-muted mb-0 small">Manage articles and visibility status</p>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="d-flex gap-2 justify-content-lg-end">
+                <!-- <a href="/index.php?controller=adminNews&action=stats" class="btn btn-outline-secondary">
+                    <i class="fas fa-chart-line me-1"></i>
+                    <span class="d-none d-sm-inline">Stats</span>
+                </a> -->
+                <a href="/index.php?controller=adminNews&action=addNews" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i>
+                    <span class="d-none d-sm-inline">Add Article</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    .admin-header h1 {
-        font-size: 24px;
-        font-weight: 600;
-        color: #333;
-    }
+<div class="alert alert-success alert-dismissible fade show d-none" role="alert" id="successAlert">
+    <i class="fas fa-check-circle me-2"></i>
+    <span id="successText">Action successful!</span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 
-    .admin-actions {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
+<div class="alert alert-danger alert-dismissible fade show d-none" role="alert" id="errorAlert">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    <span id="errorText">An error occurred!</span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 
-    .btn {
-        padding: 10px 20px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 500;
-        transition: background-color 0.3s ease;
-    }
 
-    .btn-primary {
-        background-color: #007bff;
-        color: white;
-        border: none;
-    }
+<div class="card shadow-sm mb-4 mt-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <input type="hidden" name="controller" value="adminNews">
+            <input type="hidden" name="action" value="manage">
 
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
+            <div class="col-12 col-md-7">
+                <label class="form-label fw-semibold small">Search</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" name="search" class="form-control"
+                        placeholder="Enter title, description or author..." value="<?php echo htmlspecialchars($search ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                </div>
+            </div>
 
-    .btn-secondary {
-        background-color: #6c757d;
-        color: white;
-        border: none;
-    }
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label fw-semibold small">Status</label>
+                <select name="status" class="form-select">
+                    <option value="all" <?php echo ($status ?? 'all') === 'all' ? 'selected' : ''; ?>>All</option>
+                    <option value="pending" <?php echo ($status ?? '') === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                    <option value="active" <?php echo ($status ?? '') === 'active' ? 'selected' : ''; ?>>Active</option>
+                    <option value="expired" <?php echo ($status ?? '') === 'expired' ? 'selected' : ''; ?>>Expired</option>
+                </select>
+            </div>
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
-    }
+            <div class="col-12 col-sm-6 col-md-2">
+                <label class="form-label d-block">&nbsp;</label>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-grow-1">
+                        <i class="fas fa-filter me-1"></i>Filter
+                    </button>
+                    <a href="/index.php?controller=adminNews&action=manage"
+                        class="btn btn-outline-secondary" title="Reset">
+                        <i class="fas fa-redo"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-    .btn-danger {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-    }
+<div class="card shadow-sm">
+    <div class="table-wrapper mt-3">
+        <table class="table table-hover align-middle mb-0">
+            <colgroup>
+                <col style="width: 120px;">
+                <col style="min-width: 240px;">
+                <col style="min-width: 280px;">
+                <col style="width: 130px;">
+                <col style="width: 140px;">
+                <col style="width: 130px;">
+                <!-- <col style="width: 110px;"> -->
+                <col style="width: 140px;">
+            </colgroup>
+            <thead class="border-bottom">
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Author</th>
+                    <th>Published Date</th>
+                    <!-- <th style="width: 110px;">Status</th> -->
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($news)): ?>
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-muted">No articles found.</td>
+                    </tr>
+                <?php else: ?>
+                    <?php
+                    $news_types = [
+                        'general'     => 'Regular',
+                        'flash_sale'  => 'Flash Sale',
+                        'fixed_price' => 'Best Price',
+                    ];
+                    function status_badge(?string $st): string
+                    {
+                        return match ($st) {
+                            'pending' => '<span class="badge rounded-pill bg-warning-subtle text-warning-emphasis">Pending</span>',
+                            'active'  => '<span class="badge rounded-pill bg-success-subtle text-success-emphasis">Active</span>',
+                            'expired' => '<span class="badge rounded-pill bg-danger-subtle text-danger-emphasis">Expired</span>',
+                            default   => '—',
+                        };
+                    }
+                    ?>
+                    <?php foreach ($news as $item): ?>
+                        <?php
+                        $typeLabel = $news_types[$item['NewsType']] ?? 'Unknown';
+                        $thumb = !empty($item['Thumbnail']) ?  ltrim($item['Thumbnail'], '/\\') : null;
+                        ?>
+                        <tr>
+                            <td>
+                                <?php if ($thumb): ?>
+                                    <div class="ratio ratio-16x9">
+                                        <img src="<?php echo htmlspecialchars($thumb); ?>" alt="Thumb" class="news-thumb rounded border" loading="lazy"
+                                            onerror="this.parentNode.classList.add('thumb-placeholder'); this.remove();">
+                                    </div>
+                                <?php else: ?>
+                                    <div class="thumb-placeholder"></div>
+                                <?php endif; ?>
 
-    .btn-danger:hover {
-        background-color: #c82333;
-    }
+                            </td>
+                            <td title="<?php echo htmlspecialchars($item['Title']); ?>">
+                                <div class="text-truncate-2 fw-semibold">
+                                    <?php echo htmlspecialchars($item['Title']); ?>
+                                </div>
+                            </td>
+                            <td title="<?php echo htmlspecialchars($item['Description']); ?>">
+                                <div class="text-truncate-2 text-muted small">
+                                    <?php echo htmlspecialchars($item['Description']); ?>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-danger-subtle text-danger badge-type"><?php echo htmlspecialchars($typeLabel); ?></span></td>
+                            <td>
+                                <div class="small text-muted"><?php echo htmlspecialchars($item['AdminName'] ?? 'Unknown'); ?></div>
+                            </td>
+                            <td><?php echo date('d/m/Y H:i', strtotime($item['CreatedAt'])); ?></td>
+                            <td>
+                                <div class="d-flex gap-1 justify-content-center" role="group" aria-label="actions">
+                                    <a href="/index.php?controller=adminNews&action=show&id=<?php echo (int)$item['NewsID']; ?>"
+                                        class="btn btn-sm btn-outline-primary btn-action"> <i class="fas fa-eye"></i></a>
+                                    <a href="/index.php?controller=adminNews&action=editNews&id=<?php echo (int)$item['NewsID']; ?>"
+                                        class="btn btn-sm btn-outline-primary btn-action"> <i class="fas fa-edit"></i></a>
+                                    <a href="/index.php?controller=adminNews&action=deleteNews&id=<?php echo (int)$item['NewsID']; ?>"
+                                        class="btn btn-sm btn-outline-danger btn-action"
+                                        onclick="return confirm('Are you sure you want to delete this article?')"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
-    .search-form {
-        display: flex;
-        gap: 15px;
-        margin-bottom: 30px;
-        align-items: center;
-    }
+    <div class="text-center py-5 d-none" id="emptyState">
+        <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+        <p class="text-muted">No articles found</p>
+    </div>
 
-    .search-form input[type="text"],
-    .search-form select {
-        padding: 10px;
-        border: 2px solid #e0e0e0;
-        border-radius: 6px;
-        font-size: 14px;
-        width: 200px;
-        transition: border-color 0.3s ease;
-    }
+    <?php if (!empty($totalPages) && $totalPages > 1): ?>
+        <div class="card-footer bg-white">
+            <nav aria-label="Pagination">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                    <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                        <a class="page-link"
+                            href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search ?? ''); ?>&status=<?php echo urlencode($status ?? 'all'); ?>&page=<?php echo max(1, $page - 1); ?>">«</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?php echo $i === $page ? 'active' : ''; ?>">
+                            <a class="page-link"
+                                href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search ?? ''); ?>&status=<?php echo urlencode($status ?? 'all'); ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li class="page-item <?php echo $page >= $totalPages ? 'disabled' : ''; ?>">
+                        <a class="page-link"
+                            href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search ?? ''); ?>&status=<?php echo urlencode($status ?? 'all'); ?>&page=<?php echo min($totalPages, $page + 1); ?>">»</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    <?php endif; ?>
 
-    .search-form input[type="text"]:focus,
-    .search-form select:focus {
-        border-color: #007bff;
-        outline: none;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-    }
-
-    .search-form button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: background-color 0.3s ease;
-    }
-
-    .search-form button:hover {
-        background-color: #0056b3;
-    }
-
-    .admin-table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #ffffff;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .admin-table th,
-    .admin-table td {
-        padding: 15px;
-        text-align: left;
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    .admin-table th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-        color: #333;
-    }
-
-    .admin-table tbody tr:hover {
-        background-color: #f1f3f5;
-    }
-
-    .admin-table img {
-        max-width: 50px;
-        border-radius: 5px;
-        object-fit: cover;
-    }
-
-    .admin-table .action-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .admin-table .action-buttons a {
-        padding: 8px 15px;
-        font-size: 13px;
-        border-radius: 5px;
-        text-align: center;
-        min-width: 70px;
-    }
-
-    .pagination {
-        margin-top: 30px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .pagination a {
-        padding: 10px 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #333;
-        font-size: 14px;
-        transition: background-color 0.3s ease;
-    }
-
-    .pagination a.active {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination a:hover:not(.active) {
-        background-color: #e9ecef;
-    }
-
-    .status-pending {
-        color: #ff8c00;
-        font-weight: 500;
-    }
-
-    .status-active {
-        color: #28a745;
-        font-weight: 500;
-    }
-
-    .status-expired {
-        color: #dc3545;
-        font-weight: 500;
-    }
-
-    .alert {
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 6px;
-        text-align: center;
-    }
-
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .alert-danger {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-</style>
-
-<div class="admin-header">
-    <h1>Quản Lý Tin Tức</h1>
-    <a href="/index.php?controller=adminNews&action=stats" class="btn btn-secondary">Thống Kê Truy Cập</a>
 </div>
 
 <?php if (isset($error)): ?>
-    <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+    <div class="alert alert-danger mb-3"><?php echo htmlspecialchars($error); ?></div>
 <?php endif; ?>
 <?php if (isset($success)): ?>
-    <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
+    <div class="alert alert-success mb-3"><?php echo htmlspecialchars($success); ?></div>
 <?php endif; ?>
 
-<div class="admin-actions">
-    <a href="/index.php?controller=adminNews&action=addNews" class="btn btn-primary">Thêm Bài Viết Mới</a>
-    <a href="/index.php?controller=adminPromotion&action=index" class="btn btn-primary">Chỉnh Sửa Khuyến Mãi</a>
-</div>
+<style>
+    .table-scroll {
+        max-height: 70vh;
+        overflow: auto
+    }
 
-<form method="get" class="search-form">
-    <input type="hidden" name="controller" value="adminNews">
-    <input type="hidden" name="action" value="manage">
-    <input type="text" name="search" placeholder="Tìm kiếm bài viết..." value="<?php echo htmlspecialchars($search); ?>">
-    <select name="status">
-        <option value="all" <?php echo $status === 'all' ? 'selected' : ''; ?>>Tất Cả</option>
-        <option value="pending" <?php echo $status === 'pending' ? 'selected' : ''; ?>>Pending</option>
-        <option value="active" <?php echo $status === 'active' ? 'selected' : ''; ?>>Active</option>
-        <option value="expired" <?php echo $status === 'expired' ? 'selected' : ''; ?>>Expired</option>
-    </select>
-    <button type="submit">Tìm Kiếm</button>
-</form>
+    .thumb {
+        width: 56px
+    }
 
-<table class="table admin-table">
-    <thead>
-        <tr>
-            <th>Thumbnail</th>
-            <th>Tiêu Đề</th>
-            <th>Mô Tả</th>
-            <th>Loại Tin Tức</th>
-            <th>Khuyến Mãi</th>
-            <th>Người Đăng</th>
-            <th>Ngày Đăng</th>
-            <th>Status</th>
-            <th>Hành Động</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (empty($news)): ?>
-            <tr>
-                <td colspan="9">Không tìm thấy bài viết nào.</td>
-            </tr>
-        <?php else: ?>
-            <?php foreach ($news as $item): ?>
-                <tr>
-                    <td>
-                        <?php if ($item['thumbnail'] && file_exists($item['thumbnail'])): ?>
-                            <img src="/<?php echo htmlspecialchars($item['thumbnail']); ?>" alt="Thumbnail">
-                        <?php else: ?>
-                            Không có ảnh
-                        <?php endif; ?>
-                    </td>
-                    <td><?php echo htmlspecialchars($item['Title']); ?></td>
-                    <td><?php echo htmlspecialchars($item['Description']); ?></td>
-                    <td>
-                        <?php
-                        $news_types = [
-                            'general' => 'Tin Tức Thông Thường',
-                            'flash_sale' => 'Sale Sập Sàn',
-                            'fixed_price' => 'Rẻ Vô Địch',
-                        ];
-                        echo $news_types[$item['news_type']] ?? 'Không xác định';
-                        ?>
-                    </td>
-                    <td><?php echo htmlspecialchars($item['promotion_name'] ?? 'Không có'); ?></td>
-                    <td><?php echo htmlspecialchars($item['AdminName'] ?? 'Unknown'); ?></td>
-                    <td><?php echo date('d/m/Y H:i', strtotime($item['DateCreated'])); ?></td>
-                    <td>
-                        <?php
-                        if ($item['promotion_id']) {
-                            $now = new DateTime();
-                            $startDate = new DateTime($item['start_date']);
-                            $endDate = new DateTime($item['end_date']);
-                            if ($now < $startDate) {
-                                echo '<span class="status-pending">Pending</span>';
-                            } elseif ($now >= $startDate && $now <= $endDate) {
-                                echo '<span class="status-active">Active</span>';
-                            } else {
-                                echo '<span class="status-expired">Expired</span>';
-                            }
-                        } else {
-                            echo '-';
-                        }
-                        ?>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <a href="/index.php?controller=adminNews&action=editNews&id=<?php echo $item['NewsID']; ?>" class="btn btn-primary">Sửa</a>
-                            <a href="/index.php?controller=adminNews&action=deleteNews&id=<?php echo $item['NewsID']; ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa bài viết này?')">Xóa</a>
-                        </div>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </tbody>
-</table>
+    .thumb-placeholder {
+        width: 100%;
+        height: 100%
+    }
 
-<div class="pagination">
-    <?php if ($totalPages > 1): ?>
-        <?php if ($page > 1): ?>
-            <a href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search); ?>&status=<?php echo urlencode($status); ?>&page=<?php echo $page - 1; ?>">Trang Trước</a>
-        <?php endif; ?>
+    .row-actions {
+        opacity: .6;
+        transition: opacity .15s ease
+    }
 
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search); ?>&status=<?php echo urlencode($status); ?>&page=<?php echo $i; ?>" class="<?php echo $i === $page ? 'active' : ''; ?>"><?php echo $i; ?></a>
-        <?php endfor; ?>
+    .table-hover tbody tr:hover .row-actions {
+        opacity: 1
+    }
 
-        <?php if ($page < $totalPages): ?>
-            <a href="/index.php?controller=adminNews&action=manage&search=<?php echo urlencode($search); ?>&status=<?php echo urlencode($status); ?>&page=<?php echo $page + 1; ?>">Trang Sau</a>
-        <?php endif; ?>
-    <?php endif; ?>
-</div>
+    .line-clamp {
+        --lc: 2;
+        display: -webkit-box;
+        line-clamp: var(--lc);
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: var(--lc);
+        overflow: hidden
+    }
+
+    .line-clamp-3 {
+        --lc: 3;
+        display: -webkit-box;
+        line-clamp: var(--lc);
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: var(--lc);
+        overflow: hidden
+    }
+
+    .bg-success-subtle {
+        background-color: rgba(25, 135, 84, .12) !important
+    }
+
+    .text-success-emphasis {
+        color: #198754 !important
+    }
+
+    .bg-warning-subtle {
+        background-color: rgba(255, 193, 7, .18) !important
+    }
+
+    .text-warning-emphasis {
+        color: #997404 !important
+    }
+
+    .bg-danger-subtle {
+        background-color: rgba(220, 53, 69, .12) !important
+    }
+
+    .text-danger-emphasis {
+        color: #dc3545 !important
+    }
+
+    @media (max-width: 780px) {
+        #app>#main {
+            padding-inline: 16px;
+        }
+    }
+</style>

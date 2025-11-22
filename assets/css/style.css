@@ -619,7 +619,7 @@ footer {
 }
 
 /* News Page Styles */
-.news-list {
+/* .news-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 30px;
@@ -659,21 +659,7 @@ footer {
 
 .news-item a:hover {
   color: #ff5252;
-}
-
-/* News Detail Page Styles */
-.news-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  line-height: 1.8;
-}
-
-.news-content p {
-  margin-bottom: 15px;
-}
+} */
 
 /* Manage News Page Styles */
 .alert-error {

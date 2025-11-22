@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,71 +56,78 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
-                        
+
                         <?php
                         // Lấy controller và action hiện tại từ URL
                         $currentController = isset($_GET['controller']) ? $_GET['controller'] : 'adminDashboard';
                         $currentAction = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
                         ?>
-                        
+
                         <li class="sidebar-item <?php echo $currentController === 'adminDashboard' ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminDashboard&action=dashboard" class='sidebar-link'>
                                 <i class="fas fa-tachometer-alt"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-item <?php echo $currentController === 'adminProduct' ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminProduct&action=products" class='sidebar-link'>
                                 <i class="fas fa-shoe-prints"></i>
                                 <span>Products</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-item <?php echo $currentController === 'adminOrder' ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminOrder&action=orders" class='sidebar-link'>
                                 <i class="fas fa-shopping-cart"></i>
                                 <span>Orders</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-item <?php echo $currentController === 'adminCustomer' ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminCustomer&action=customers" class='sidebar-link'>
                                 <i class="fas fa-users"></i>
                                 <span>Customers</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-item <?php echo $currentController === 'adminNews' ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminNews&action=manage" class='sidebar-link'>
                                 <i class="fas fa-newspaper"></i>
                                 <span>News</span>
                             </a>
                         </li>
-                        
+
+                        <li class="sidebar-item <?php echo $currentController === 'adminPromotion' ? 'active' : ''; ?>">
+                            <a href="/index.php?controller=adminPromotion&action=manage" class='sidebar-link'>
+                                <i class="fas fa-percent"></i>
+                                <span>Promotions</span>
+                            </a>
+                        </li>
+
                         <li class="sidebar-item <?php echo $currentController === 'adminAbout' ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminAbout&action=edit" class='sidebar-link'>
                                 <i class="fas fa-info-circle"></i>
                                 <span>About Page</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-item <?php echo $currentController === 'adminQna' ? 'active' : ''; ?>">
                             <a href="/index.php?controller=adminQna&action=manage" class='sidebar-link'>
                                 <i class="fas fa-question-circle"></i>
                                 <span>Q&A</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-title">Actions</li>
-                        
+
                         <li class="sidebar-item">
                             <a href="/index.php?controller=home&action=index" class='sidebar-link'>
                                 <i class="fas fa-home"></i>
                                 <span>Back to Site</span>
                             </a>
                         </li>
-                        
+
                         <li class="sidebar-item">
                             <a href="/index.php?controller=auth&action=logout" class='sidebar-link'>
                                 <i class="fas fa-sign-out-alt"></i>
@@ -136,8 +144,8 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-            
+
             <div class="page-content">
-        
-        
+
+
 </body>

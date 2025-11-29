@@ -19,7 +19,7 @@ $isAdmin = (strpos($path, '/admin') === 0);
 $controller = isset($_GET['controller']) ? preg_replace('/[^a-zA-Z0-9]/', '', $_GET['controller']) : ($isAdmin ? 'adminDashboard' : 'home');
 $action = isset($_GET['action']) ? preg_replace('/[^a-zA-Z0-9]/', '', trim($_GET['action'])) : 'index';
 
-$adminControllers = ['adminDashboard', 'adminProduct', 'adminOrder', 'adminCustomer', 'adminNews', 'adminPromotion', 'adminMember', 'adminAbout', 'adminQna'];
+$adminControllers = ['adminDashboard', 'adminProduct', 'adminOrder', 'adminCustomer', 'adminNews', 'adminPromotion', 'adminMember', 'adminContent'];
 if (in_array($controller, $adminControllers) && (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin')) {
     header('Location: /index.php?controller=auth&action=login');
     exit;

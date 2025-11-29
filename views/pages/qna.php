@@ -1,3 +1,8 @@
+<?php if (!empty($htmlContent)): ?>
+    <div class="dynamic-qna-content">
+        <?php echo $htmlContent; ?>
+    </div>
+<?php else: ?>
 <section class="qna-page">
     <div class="container">
         <header class="qna-hero">
@@ -207,3 +212,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<?php endif; ?>

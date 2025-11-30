@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/iconly.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="https://cdn.tiny.cloud/1/4x5hb9ffv86aidqa4em2gen7jpm7d2i5gm8xettlzmg1xlai/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -98,15 +100,15 @@
                             </a>
                         </li>
                         
-                        <li class="sidebar-item <?php echo $currentController === 'adminAbout' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminAbout&action=edit" class='sidebar-link'>
+                        <li class="sidebar-item <?php echo ($currentController === 'adminContent' && isset($_GET['key']) && $_GET['key'] === 'about') ? 'active' : ''; ?>">
+                            <a href="/index.php?controller=adminContent&action=edit&key=about" class='sidebar-link'>
                                 <i class="fas fa-info-circle"></i>
-                                <span>About Page</span>
+                                <span>About</span>
                             </a>
                         </li>
                         
-                        <li class="sidebar-item <?php echo $currentController === 'adminQna' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminQna&action=manage" class='sidebar-link'>
+                        <li class="sidebar-item <?php echo ($currentController === 'adminContent' && isset($_GET['key']) && $_GET['key'] === 'qna') ? 'active' : ''; ?>">
+                            <a href="/index.php?controller=adminContent&action=edit&key=qna" class='sidebar-link'>
                                 <i class="fas fa-question-circle"></i>
                                 <span>Q&A</span>
                             </a>

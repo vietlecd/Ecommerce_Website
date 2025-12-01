@@ -129,27 +129,89 @@ INSERT INTO `cart_shoes` (`CartID`, `ShoesID`) VALUES
 CREATE TABLE `category` (
   `CategoryID` int(11) NOT NULL,
   `Name` varchar(100) DEFAULT NULL,
-  `Description` text DEFAULT NULL
+  `Description` text DEFAULT NULL,
+  `ImageUrl` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`CategoryID`, `Name`, `Description`) VALUES
-(1, 'Sneakers', 'Giày thể thao'),
-(2, 'Boots', 'Giày boot'),
-(3, 'Sandals', 'Dép sandal'),
-(4, 'Running', 'Giày chạy bộ'),
-(5, 'Sneakers', 'Giày sneaker thời trang'),
-(6, 'Boots', 'Giày bốt nam/nữ'),
-(7, 'Sandals', 'Giày dép sandal'),
-(8, 'Formal', 'Giày tây công sở'),
-(9, 'Slippers', 'Dép đi trong nhà'),
-(10, 'Basketball', 'Giày bóng rổ'),
-(11, 'Soccer', 'Giày đá bóng'),
-(12, 'Skateboarding', 'Giày trượt ván'),
-(13, 'Casual', 'Giày đi hàng ngày');
+INSERT INTO `category` (`CategoryID`, `Name`, `Description`, `ImageUrl`) VALUES
+(1, 'Sneakers', 'Performance sports sneakers', 'https://cdn-icons-png.flaticon.com/512/3205/3205973.png'),
+(2, 'Boots', 'Versatile boot silhouettes', 'https://cdn-icons-png.flaticon.com/512/2977/2977951.png'),
+(3, 'Sandals', 'Comfort-first sandals', 'https://cdn-icons-png.flaticon.com/512/554/554857.png'),
+(4, 'Running', 'Mileage-ready running shoes', 'https://cdn-icons-png.flaticon.com/512/1043/1043493.png'),
+(5, 'Sneakers', 'Lifestyle sneaker edits', 'https://cdn-icons-png.flaticon.com/128/5026/5026374.png'),
+(6, 'Boots', 'Boots for men and women', 'https://cdn-icons-png.flaticon.com/512/2377/2377810.png'),
+(7, 'Sandals', 'Statement sandal picks', 'https://cdn-icons-png.flaticon.com/512/204/204274.png'),
+(8, 'Formal', 'Office-ready formal shoes', 'https://cdn-icons-png.flaticon.com/512/836/836923.png'),
+(9, 'Slippers', 'Cozy indoor slippers', 'https://cdn-icons-png.flaticon.com/512/4158/4158972.png'),
+(10, 'Basketball', 'Court-ready basketball shoes', 'https://cdn-icons-png.flaticon.com/512/3005/3005722.png'),
+(11, 'Soccer', 'Pro-fit soccer cleats', 'https://cdn-icons-png.flaticon.com/512/3205/3205970.png'),
+(12, 'Skateboarding', 'Skateboarding footwear', 'https://cdn-icons-png.flaticon.com/512/1043/1043470.png'),
+(13, 'Casual', 'Everyday casual essentials', 'https://cdn-icons-png.flaticon.com/512/1043/1043464.png');
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `sales`
+--
+CREATE TABLE `sales` (
+  `SaleID` int(11) NOT NULL AUTO_INCREMENT,
+  `ShoesID` int(11) NOT NULL,
+  `DiscountPercent` decimal(5,2) NOT NULL CHECK (`DiscountPercent` BETWEEN 0 AND 100),
+  `ExpiresAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`SaleID`),
+  KEY `FK_sales_shoes` (`ShoesID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `sales` (`SaleID`, `ShoesID`, `DiscountPercent`, `ExpiresAt`) VALUES
+(1, 1, 55.00, '2025-11-19 23:59:59'),
+(2, 2, 62.00, '2025-11-19 23:59:59'),
+(3, 3, 58.00, '2025-11-20 23:59:59'),
+(4, 4, 52.00, '2025-11-20 23:59:59'),
+(5, 5, 65.00, '2025-11-21 23:59:59'),
+(6, 6, 54.00, '2025-11-21 23:59:59'),
+(7, 7, 68.00, '2025-11-22 23:59:59'),
+(8, 8, 57.00, '2025-11-22 23:59:59'),
+(9, 9, 51.00, '2025-11-23 23:59:59'),
+(10, 10, 70.00, '2025-11-23 23:59:59'),
+(11, 11, 60.00, '2025-11-24 23:59:59'),
+(12, 12, 56.00, '2025-11-25 23:59:59'),
+(13, 13, 62.00, '2025-12-05 23:59:59'),
+(14, 14, 35.00, '2025-12-12 23:59:59'),
+(15, 15, 32.00, '2025-12-18 23:59:59'),
+(16, 16, 45.00, '2025-12-28 23:59:59'),
+(17, 17, 59.00, '2026-01-05 23:59:59'),
+(18, 18, 61.00, '2026-01-18 23:59:59'),
+(19, 19, 27.50, '2026-02-01 23:59:59'),
+(20, 20, 53.00, '2026-02-15 23:59:59'),
+(21, 21, 38.00, '2026-03-01 23:59:59'),
+(22, 22, 64.00, '2026-03-18 23:59:59'),
+(23, 23, 55.00, '2026-04-05 23:59:59'),
+(24, 24, 30.00, '2026-04-20 23:59:59');
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `discount_codes`
+--
+CREATE TABLE `discount_codes` (
+  `CodeID` int(11) NOT NULL,
+  `CodeTitle` varchar(120) NOT NULL,
+  `CodePercent` decimal(5,2) NOT NULL,
+  `CodeDescription` varchar(255) DEFAULT NULL,
+  `IsActive` tinyint(1) DEFAULT 1,
+  `ValidUntil` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `discount_codes`
+--
+INSERT INTO `discount_codes` (`CodeID`, `CodeTitle`, `CodePercent`, `CodeDescription`, `IsActive`, `ValidUntil`) VALUES
+(1, 'SHOE-LOUNGE-10', 10.00, 'Concierge welcome treat for the ShoeStore lounge', 1, '2026-01-01 23:59:59'),
+(2, 'SNEAKER-STAPLE-15', 15.00, 'Daily sneaker staples curated by ShoeStore stylists', 1, '2025-12-31 23:59:59'),
+(3, 'BOOT-BOUTIQUE-20', 20.00, 'Boot boutique spotlight for seasonal icons', 1, '2025-12-15 23:59:59'),
+(4, 'RUNWAY-RUSH-25', 25.00, 'Runway rush drop for limited-edition pairs', 1, '2025-11-30 23:59:59');
 
 -- --------------------------------------------------------
 
@@ -202,17 +264,17 @@ CREATE TABLE `contact` (
 --
 
 INSERT INTO `contact` (`ContactID`, `Name`, `Phone`, `Message`, `Status`, `AdminID`) VALUES
-(1, 'Khách A', '0909333444', 'Tôi muốn đổi size', 'Chưa xử lý', 1),
-(2, 'Nguyễn A', '0911000101', 'Cần hỗ trợ đơn hàng #1', 'Open', 1),
-(3, 'Trần B', '0911000102', 'Hỏi về chính sách đổi trả', 'Closed', 2),
-(4, 'Lê C', '0911000103', 'Phản hồi về sản phẩm lỗi', 'Open', 3),
-(5, 'Phạm D', '0911000104', 'Yêu cầu tư vấn kích cỡ', 'Closed', 4),
-(6, 'Hoàng E', '0911000105', 'Phản hồi dịch vụ giao hàng', 'Open', 5),
-(7, 'Vũ F', '0911000106', 'Thắc mắc về giá', 'Open', 6),
-(8, 'Bùi G', '0911000107', 'Yêu cầu hủy đơn', 'Closed', 7),
-(9, 'Đặng H', '0911000108', 'Hỏi về khuyến mãi', 'Open', 8),
-(10, 'Hà I', '0911000109', 'Góp ý giao diện website', 'Closed', 9),
-(11, 'Phan J', '0911000110', 'Phản hồi trải nghiệm mua hàng', 'Open', 10);
+(1, 'Alex Carter', '0909333444', 'Requesting a size exchange', 'Pending', 1),
+(2, 'Nathan Nguyen', '0911000101', 'Need help with order #1', 'Open', 1),
+(3, 'Brian Tran', '0911000102', 'Question about return policy', 'Closed', 2),
+(4, 'Liam Lee', '0911000103', 'Reporting a defective product', 'Open', 3),
+(5, 'Daniel Pham', '0911000104', 'Sizing advice needed', 'Closed', 4),
+(6, 'Ethan Hoang', '0911000105', 'Feedback on delivery service', 'Open', 5),
+(7, 'Victor Vu', '0911000106', 'Price clarification request', 'Open', 6),
+(8, 'Bella Bui', '0911000107', 'Requesting order cancellation', 'Closed', 7),
+(9, 'Hannah Dang', '0911000108', 'Question about promotions', 'Open', 8),
+(10, 'Isla Ha', '0911000109', 'Website UI suggestion', 'Closed', 9),
+(11, 'Jason Phan', '0911000110', 'Feedback on shopping experience', 'Open', 10);
 
 -- --------------------------------------------------------
 
@@ -237,47 +299,16 @@ CREATE TABLE `member` (
 
 INSERT INTO `member` (`MemberID`, `Username`, `Password`, `Name`, `Email`, `Phone`, `Exp_VIP`, `AdminID`) VALUES
 (1, 'user1', 'userpass', 'Bob Tran', 'bob@email.com', '0909111222', '2025-12-31', 1),
-(2, 'user1', 'pwd1', 'Nam Nguyễn', 'nam1@mail.com', '0911000001', '2025-12-31', 1),
-(3, 'user2', 'pwd2', 'Linh Trần', 'linh2@mail.com', '0911000002', '2025-12-30', 1),
-(4, 'user3', 'pwd3', 'Hùng Phạm', 'hung3@mail.com', '0911000003', '2025-12-29', 2),
-(5, 'user4', 'pwd4', 'Mai Lê', 'mai4@mail.com', '0911000004', '2025-12-28', 2),
-(6, 'user5', 'pwd5', 'Minh Đỗ', 'minh5@mail.com', '0911000005', '2025-12-27', 3),
-(7, 'user6', 'pwd6', 'Thảo Hồ', 'thao6@mail.com', '0911000006', '2025-12-26', 3),
-(8, 'user7', 'pwd7', 'Khang Võ', 'khang7@mail.com', '0911000007', '2025-12-25', 4),
-(9, 'user8', 'pwd8', 'Yến Bùi', 'yen8@mail.com', '0911000008', '2025-12-24', 4),
-(10, 'user9', 'pwd9', 'Quân Đặng', 'quan9@mail.com', '0911000009', '2025-12-23', 5),
-(11, 'user10', 'pwd10', 'Hà Vũ', 'ha10@mail.com', '0911000010', '2025-12-22', 5);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `news_clicks`
---
-
-CREATE TABLE `news_clicks` (
-  `click_id` int(11) NOT NULL,
-  `news_id` int(11) NOT NULL,
-  `click_count` int(11) DEFAULT 0,
-  `last_clicked_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `news_clicks`
---
-
-INSERT INTO `news_clicks` (`click_id`, `news_id`, `click_count`, `last_clicked_at`) VALUES
-(1, 4, 16, '2025-05-06 03:39:29'),
-(2, 6, 29, '2025-05-07 07:49:48'),
-(3, 5, 6, '2025-05-07 07:49:49'),
-(4, 7, 5, '2025-05-06 11:30:18'),
-(5, 3, 11, '2025-05-06 11:34:43'),
-(6, 1, 26, '2025-05-07 07:50:49'),
-(7, 2, 28, '2025-05-07 07:47:39'),
-(8, 19, 7, '2025-05-06 11:35:35'),
-(9, 18, 7, '2025-05-06 11:35:37'),
-(10, 11, 4, '2025-05-06 14:50:11'),
-(11, 8, 3, '2025-05-07 07:49:51'),
-(12, 9, 1, '2025-05-06 11:35:32');
+(2, 'user1', 'pwd1', 'Nam Nguyen', 'nam1@mail.com', '0911000001', '2025-12-31', 1),
+(3, 'user2', 'pwd2', 'Linh Tran', 'linh2@mail.com', '0911000002', '2025-12-30', 1),
+(4, 'user3', 'pwd3', 'Hung Pham', 'hung3@mail.com', '0911000003', '2025-12-29', 2),
+(5, 'user4', 'pwd4', 'Mai Le', 'mai4@mail.com', '0911000004', '2025-12-28', 2),
+(6, 'user5', 'pwd5', 'Minh Do', 'minh5@mail.com', '0911000005', '2025-12-27', 3),
+(7, 'user6', 'pwd6', 'Thao Ho', 'thao6@mail.com', '0911000006', '2025-12-26', 3),
+(8, 'user7', 'pwd7', 'Khang Vo', 'khang7@mail.com', '0911000007', '2025-12-25', 4),
+(9, 'user8', 'pwd8', 'Yen Bui', 'yen8@mail.com', '0911000008', '2025-12-24', 4),
+(10, 'user9', 'pwd9', 'Quan Dang', 'quan9@mail.com', '0911000009', '2025-12-23', 5),
+(11, 'user10', 'pwd10', 'Ha Vu', 'ha10@mail.com', '0911000010', '2025-12-22', 5);
 
 -- --------------------------------------------------------
 
@@ -376,14 +407,14 @@ CREATE TABLE `promotions` (
 
 INSERT INTO `promotions` (`promotion_id`, `promotion_type`, `promotion_name`, `discount_percentage`, `fixed_price`, `start_date`, `end_date`) VALUES
 (1, 'discount', 'Flash Sale 50%', 50.00, NULL, '2025-04-16 00:00:00', '2025-05-09 23:59:00'),
-(2, 'fixed', 'Rẻ Vô Địch 10$', NULL, 10.00, '2025-04-29 00:00:00', '2025-06-07 23:59:00'),
-(3, 'fixed', 'Xả kho 20$', NULL, 20.00, '2025-04-29 00:00:00', '2025-05-30 23:59:00'),
+(2, 'fixed', 'Unbeatable $10 Deal', NULL, 10.00, '2025-04-29 00:00:00', '2025-06-07 23:59:00'),
+(3, 'fixed', 'Warehouse Blowout $20', NULL, 20.00, '2025-04-29 00:00:00', '2025-05-30 23:59:00'),
 (4, 'discount', 'Sale 10%', 10.00, NULL, '2025-05-01 00:04:00', '2025-05-29 00:05:00'),
 (5, 'discount', 'Sale 20%', 20.00, NULL, '2025-05-03 00:08:00', '2025-05-29 00:08:00'),
 (6, 'discount', 'Sale 90%', 90.00, NULL, '2025-04-09 17:35:00', '2025-05-08 17:35:00'),
 (7, 'discount', 'Sale 40%', 40.00, NULL, '2025-04-12 17:35:00', '2025-05-09 17:35:00'),
 (8, 'discount', 'Sale 30%', 30.00, NULL, '2025-04-19 17:35:00', '2025-05-09 17:35:00'),
-(13, 'fixed', '30$', NULL, 30.00, '2025-04-30 00:17:00', '2025-06-05 00:17:00');
+(13, 'fixed', '$30 Price Lock', NULL, 30.00, '2025-04-30 00:17:00', '2025-06-05 00:17:00');
 
 
 -- --------------------------------------------------------
@@ -410,18 +441,79 @@ CREATE TABLE `shoes` (
 --
 
 INSERT INTO `shoes` (`ShoesID`, `Name`, `Price`, `Stock`, `Description`, `DateCreate`, `DateUpdate`, `Image`, `CategoryID`, `shoes_size`) VALUES
-(1, 'Nike Air Max', 2500.00, 100, 'Giày chạy bộ cao cấp', '2025-01-01', '2025-05-07', 'https://sneakerdaily.vn/wp-content/uploads/2024/01/Giay-Nike-Air-Max-1-White-Black-FD9082-107-1.jpg', 1, 38.00),
-(2, 'Dr. Martens', 3000000.00, 50, 'Giày boot thời trang', '2025-02-01', '2025-03-15', 'https://images-na.ssl-images-amazon.com/images/I/71LL6yCVP4L.jpg', 2, 39.00),
-(3, 'Nike Air Zoom', 120.00, 50, 'Giày chạy bộ cao cấp', '2024-01-01', '2024-03-01', 'https://supersports.com.vn/cdn/shop/files/FD2722-002-2_1024x1024.jpg?v=1726656415', 1, 40.00),
-(4, 'Adidas Ultraboost', 150.00, 30, 'Giày thể thao Adidas', '2024-02-01', '2024-04-01', 'https://product.hstatic.net/1000361048/product/giay_ultraboost_light_djen_gy9351_01_standard_f5f5bedd68df46a9bc78d9dcdccb49f8_master.jpg', 1, 41.00),
-(5, 'Converse Classic', 60.00, 40, 'Giày cổ điển Converse', '2024-01-15', '2024-03-10', 'https://drake.vn/image/cache/catalog/Converse/GIA%CC%80Y%202/M9160C/M9160C_1-650x650.jpg', 2, 42.00),
-(6, 'Vans Old Skool', 70.00, 35, 'Giày Vans thời trang', '2024-02-10', '2024-04-12', 'https://product.hstatic.net/1000382698/product/vn0a5fcby28-2s_147ed67b9ed04d679f3a56e5e9ae2595_master.jpg', 2, 43.00),
-(7, 'Timberland Boots', 180.00, 20, 'Giày bốt cao cấp', '2024-01-25', '2024-04-05', 'https://assets.timberland.com/images/t_img/f_auto,h_650,w_650,e_sharpen:60/dpr_2.0/v1719373359/TB165016713-HERO/Mens-Direct-Attach-6-Steel-Toe-Waterproof-Work-Boot.png', 3, 44.00),
-(8, 'Nike Sandals', 40.00, 25, 'Dép sandal Nike', '2024-03-01', '2024-03-20', 'https://supersports.com.vn/cdn/shop/files/FJ6043-001-1_1200x1200.jpg?v=1725613858', 4, 45.00),
-(9, 'Oxford Shoes', 90.00, 15, 'Giày tây nam lịch sự', '2024-01-18', '2024-02-25', 'https://www.beckettsimonon.com/cdn/shop/products/color_black_1_dean_oxford.jpg?v=1618340935', 5, 46.00),
-(10, 'Adidas Slides', 35.00, 60, 'Dép đi trong nhà Adidas', '2024-02-22', '2024-03-30', 'https://assets.adidas.com/images/w_600,f_auto,q_auto/854a6fec31404ffd8cfaaf4200bd0b13_9366/Dep_adilette_22_trang_HQ4672_01_standard.jpg', 6, 47.00),
-(11, 'Jordan 1', 200.00, 10, 'Giày bóng rổ Jordan', '2024-01-05', '2024-04-10', 'https://product.hstatic.net/200000858039/product/jordan-1-high-black-white-trang-den_5f542b2addee453e9868730c6623d06b.png', 7, 48.00),
-(12, 'Nike Tiempo', 95.00, 12, 'Giày đá bóng Nike Tiempo', '2024-02-14', '2024-03-28', 'https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/a0f2b725-0806-41ce-b437-e0c3eacfba09/LEGEND+10+ELITE+FG+NU1.png', 8, 49.00);
+(1, 'Nike Air Max', 2500.00, 100, 'Premium running shoe with Air cushioning', '2025-01-01', '2025-05-07', 'https://sneakerdaily.vn/wp-content/uploads/2024/01/Giay-Nike-Air-Max-1-White-Black-FD9082-107-1.jpg', 1, 38.00),
+(2, 'Dr. Martens', 3000000.00, 50, 'Fashion-forward leather boot', '2025-02-01', '2025-03-15', 'https://images-na.ssl-images-amazon.com/images/I/71LL6yCVP4L.jpg', 2, 39.00),
+(3, 'Nike Air Zoom', 120.00, 50, 'High-performance running sneaker', '2024-01-01', '2024-03-01', 'https://supersports.com.vn/cdn/shop/files/FD2722-002-2_1024x1024.jpg?v=1726656415', 1, 40.00),
+(4, 'Adidas Ultraboost', 150.00, 30, 'Adidas performance trainer', '2024-02-01', '2024-04-01', 'https://product.hstatic.net/1000361048/product/giay_ultraboost_light_djen_gy9351_01_standard_f5f5bedd68df46a9bc78d9dcdccb49f8_master.jpg', 1, 41.00),
+(5, 'Converse Classic', 60.00, 40, 'Classic Converse high-top', '2024-01-15', '2024-03-10', 'https://drake.vn/image/cache/catalog/Converse/GIA%CC%80Y%202/M9160C/M9160C_1-650x650.jpg', 2, 42.00),
+(6, 'Vans Old Skool', 70.00, 35, 'Streetwear-ready Vans sneaker', '2024-02-10', '2024-04-12', 'https://product.hstatic.net/1000382698/product/vn0a5fcby28-2s_147ed67b9ed04d679f3a56e5e9ae2595_master.jpg', 2, 43.00),
+(7, 'Timberland Boots', 180.00, 20, 'Premium waterproof boot', '2024-01-25', '2024-04-05', 'https://assets.timberland.com/images/t_img/f_auto,h_650,w_650,e_sharpen:60/dpr_2.0/v1719373359/TB165016713-HERO/Mens-Direct-Attach-6-Steel-Toe-Waterproof-Work-Boot.png', 3, 44.00),
+(8, 'Nike Sandals', 40.00, 25, 'Casual Nike sandal', '2024-03-01', '2024-03-20', 'https://supersports.com.vn/cdn/shop/files/FJ6043-001-1_1200x1200.jpg?v=1725613858', 4, 45.00),
+(9, 'Oxford Shoes', 90.00, 15, 'Polished oxford dress shoe', '2024-01-18', '2024-02-25', 'https://www.beckettsimonon.com/cdn/shop/products/color_black_1_dean_oxford.jpg?v=1618340935', 5, 46.00),
+(10, 'Adidas Slides', 35.00, 60, 'Adidas comfort slides', '2024-02-22', '2024-03-30', 'https://assets.adidas.com/images/w_600,f_auto,q_auto/854a6fec31404ffd8cfaaf4200bd0b13_9366/Dep_adilette_22_trang_HQ4672_01_standard.jpg', 6, 47.00),
+(11, 'Jordan 1', 200.00, 10, 'Iconic Jordan basketball shoe', '2024-01-05', '2024-04-10', 'https://product.hstatic.net/200000858039/product/jordan-1-high-black-white-trang-den_5f542b2addee453e9868730c6623d06b.png', 7, 48.00),
+(12, 'Nike Tiempo', 95.00, 12, 'Nike Tiempo soccer cleat', '2024-02-14', '2024-03-28', 'https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/a0f2b725-0806-41ce-b437-e0c3eacfba09/LEGEND+10+ELITE+FG+NU1.png', 8, 49.00),
+(13, 'Luminous Glide', 185.00, 28, 'Light-reactive runner inspired by neon bazaars.', '2025-03-02', '2025-05-01', 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80', 1, 40.00),
+(14, 'Monsoon Trekker', 220.00, 18, 'Seam-sealed boot for city storms and hikes.', '2025-02-14', '2025-04-11', 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=900&q=80', 2, 42.00),
+(15, 'Cerulean Slide', 58.00, 42, 'Pool-ready comfort slide with algae foam.', '2025-03-21', '2025-04-30', 'https://images.unsplash.com/photo-1528701800489-20be3c4f5691?auto=format&fit=crop&w=900&q=80', 6, 43.00),
+(16, 'Midnight Derby', 145.00, 26, 'Dress shoe lined with eucalyptus fiber.', '2025-01-18', '2025-05-03', 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80', 5, 44.00),
+(17, 'Atlas Voyager', 210.00, 32, 'Hybrid sneaker-boot for long-haul travelers.', '2025-02-05', '2025-05-05', 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=900&q=80', 3, 45.00),
+(18, 'Studio Whisper', 125.00, 38, 'Ultra-quiet sole for dancers and presenters.', '2025-03-08', '2025-04-25', 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80', 7, 39.00),
+(19, 'Lagoon Runner', 175.00, 22, 'Breathable mesh runner dyed with seaweed pigments.', '2025-03-15', '2025-05-06', 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80', 4, 41.00),
+(20, 'Amber Pathway', 205.00, 17, 'Hand-burnished leather boot with sheepskin collar.', '2025-02-27', '2025-05-04', 'https://images.unsplash.com/photo-1475180098004-ca77a66827be?auto=format&fit=crop&w=900&q=80', 2, 43.00),
+(21, 'Orbit Cleat', 130.00, 24, 'Next-gen soccer cleat with micro traction domes.', '2025-03-10', '2025-05-02', 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=900&q=80', 8, 44.00),
+(22, 'Velvet Harbor', 165.00, 19, 'Loafer crafted from marine velvet with cork footbed.', '2025-03-04', '2025-05-01', 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80', 5, 42.00),
+(23, 'Solar Pulse', 190.00, 27, 'High-top with photovoltaic lace guards charging NFC tag.', '2025-02-23', '2025-05-07', 'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=900&q=80', 1, 40.50),
+(24, 'Nimbus Slide', 78.00, 55, 'Indoor slide sculpted from memory foam clouds.', '2025-03-30', '2025-05-06', 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80', 6, 41.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shoe_sizes`
+--
+
+CREATE TABLE `shoe_sizes` (
+  `SizeID` int(11) NOT NULL AUTO_INCREMENT,
+  `ShoeID` int(11) NOT NULL,
+  `Size` decimal(5,2) NOT NULL,
+  `Quantity` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`SizeID`),
+  UNIQUE KEY `uniq_shoe_size` (`ShoeID`,`Size`),
+  KEY `ShoeID` (`ShoeID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `shoe_sizes`
+--
+
+INSERT INTO `shoe_sizes` (`ShoeID`, `Size`, `Quantity`)
+SELECT seed.ShoesID,
+       ROUND(seed.base_size + offsets.offset, 2) AS Size,
+       CASE offsets.offset
+           WHEN -1 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END END
+           WHEN 0 THEN CASE WHEN seed.total_stock <= 0 THEN 0 ELSE seed.base_qty + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END END
+           ELSE CASE WHEN seed.total_stock <= 0 THEN 0 ELSE GREATEST(0, seed.total_stock - (seed.base_qty * 2 + CASE WHEN seed.remainder > 0 THEN 1 ELSE 0 END + CASE WHEN seed.remainder > 1 THEN 1 ELSE 0 END)) END
+       END AS Quantity
+FROM (
+    SELECT s.ShoesID,
+           ROUND(COALESCE(s.shoes_size, 40.00), 2) AS base_size,
+           GREATEST(COALESCE(s.Stock, 0), 0) AS total_stock,
+           FLOOR(GREATEST(COALESCE(s.Stock, 0), 0) / 3) AS base_qty,
+           MOD(GREATEST(COALESCE(s.Stock, 0), 0), 3) AS remainder
+    FROM shoes s
+) AS seed
+JOIN (
+    SELECT -1 AS offset
+    UNION ALL SELECT 0
+    UNION ALL SELECT 1
+) AS offsets;
+
+UPDATE `shoes` s
+SET s.Stock = (
+    SELECT COALESCE(SUM(ss.Quantity), 0)
+    FROM shoe_sizes ss
+    WHERE ss.ShoeID = s.ShoesID
+);
 
 --
 -- Indexes for dumped tables
@@ -469,26 +561,17 @@ ALTER TABLE `contact`
   ADD KEY `AdminID` (`AdminID`);
 
 --
+-- Indexes for table `discount_codes`
+--
+ALTER TABLE `discount_codes`
+  ADD PRIMARY KEY (`CodeID`);
+
+--
 -- Indexes for table `member`
 --
 ALTER TABLE `member`
   ADD PRIMARY KEY (`MemberID`),
   ADD KEY `AdminID` (`AdminID`);
-
---
--- Indexes for table `news`
---
-ALTER TABLE `news`
-  ADD PRIMARY KEY (`NewsID`),
-  ADD KEY `AdminID` (`AdminID`),
-  ADD KEY `fk_news_promotion` (`promotion_id`);
-
---
--- Indexes for table `news_clicks`
---
-ALTER TABLE `news_clicks`
-  ADD PRIMARY KEY (`click_id`),
-  ADD KEY `news_id` (`news_id`);
 
 --
 -- Indexes for table `order`
@@ -553,22 +636,16 @@ ALTER TABLE `contact`
   MODIFY `ContactID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT for table `discount_codes`
+--
+ALTER TABLE `discount_codes`
+  MODIFY `CodeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
   MODIFY `MemberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `news`
---
-ALTER TABLE `news`
-  MODIFY `NewsID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `news_clicks`
---
-ALTER TABLE `news_clicks`
-  MODIFY `click_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `order`
@@ -625,18 +702,6 @@ ALTER TABLE `member`
   ADD CONSTRAINT `member_ibfk_1` FOREIGN KEY (`AdminID`) REFERENCES `admin` (`AdminID`);
 
 --
--- Constraints for table `news`
---
-ALTER TABLE `news`
-  ADD CONSTRAINT `news_ibfk_1` FOREIGN KEY (`AdminID`) REFERENCES `admin` (`AdminID`);
-
---
--- Constraints for table `news_clicks`
---
-ALTER TABLE `news_clicks`
-  ADD CONSTRAINT `news_clicks_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`NewsID`) ON DELETE CASCADE;
-
---
 -- Constraints for table `order`
 --
 ALTER TABLE `order`
@@ -650,10 +715,22 @@ ALTER TABLE `order_shoes`
   ADD CONSTRAINT `order_shoes_ibfk_2` FOREIGN KEY (`ShoesID`) REFERENCES `shoes` (`ShoesID`);
 
 --
+-- Constraints for table `sales`
+--
+ALTER TABLE `sales`
+  ADD CONSTRAINT `fk_sales_shoes` FOREIGN KEY (`ShoesID`) REFERENCES `shoes` (`ShoesID`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `shoes`
 --
 ALTER TABLE `shoes`
   ADD CONSTRAINT `shoes_ibfk_1` FOREIGN KEY (`CategoryID`) REFERENCES `category` (`CategoryID`);
+
+--
+-- Constraints for table `shoe_sizes`
+--
+ALTER TABLE `shoe_sizes`
+  ADD CONSTRAINT `shoe_sizes_ibfk_1` FOREIGN KEY (`ShoeID`) REFERENCES `shoes` (`ShoesID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -89,6 +89,29 @@ class NewsModel
         return $news;
     }
 
+    public function getRecentNews($limit = 4)
+    {
+        $stmt = $this->db->prepare("SELECT NewsID, Title, Description, Thumbnail, CreatedAt 
+                                    FROM news 
+                                    ORDER BY CreatedAt DESC 
+                                    LIMIT :limit");
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getPopularNews($limit = 4)
+    {
+        $stmt = $this->db->prepare("SELECT n.NewsID, n.Title, n.Description, n.Thumbnail, n.CreatedAt, COALESCE(nc.click_count, 0) AS clicks
+                                    FROM news n
+                                    LEFT JOIN news_clicks nc ON n.NewsID = nc.news_id
+                                    ORDER BY clicks DESC, n.DateCreated DESC
+                                    LIMIT :limit");
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function incrementClickCount($newsId)
     {
         $query = "SELECT click_count FROM news_clicks WHERE news_id = :news_id";

@@ -1,15 +1,16 @@
 <?php
-require_once 'models/AboutModel.php';
+require_once 'models/ContentModel.php';
 
 class AboutController {
-    private $aboutModel;
+    private $contentModel;
 
     public function __construct() {
-        $this->aboutModel = new AboutModel();
+        $this->contentModel = new ContentModel();
     }
 
     public function index() {
-        $aboutContent = $this->aboutModel->getAboutContent();
+        $content = $this->contentModel->getContentByKey('about');
+        $htmlContent = $content ? $content['html_content'] : '';
         
         require_once 'views/components/header.php';
         require_once 'views/pages/about.php';

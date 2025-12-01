@@ -33,6 +33,25 @@ class PromotionalProductModel
         return $product;
     }
 
+    public function getTopSaleProducts($limit = 4)
+    {
+        $products = $this->getAllProducts();
+        $discounted = array_filter($products, function ($product) {
+            return isset($product['price'], $product['final_price']) && $product['price'] > 0 && $product['final_price'] < $product['price'];
+        });
+
+        usort($discounted, function ($a, $b) {
+            $discountA = ($a['price'] - $a['final_price']) / $a['price'];
+            $discountB = ($b['price'] - $b['final_price']) / $b['price'];
+            if ($discountA === $discountB) {
+                return $a['final_price'] <=> $b['final_price'];
+            }
+            return $discountB <=> $discountA;
+        });
+
+        return array_slice($discounted, 0, $limit);
+    }
+
     private function getPromotionForProduct($product_id)
     {
         $current_date = date('Y-m-d H:i:s');

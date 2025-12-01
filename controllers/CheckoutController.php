@@ -1,18 +1,20 @@
 <?php
 require_once __DIR__ . '/../models/OrderModel.php';
 require_once __DIR__ . '/../models/ProductModelv2.php';
+require_once __DIR__ . '/../models/CouponModel.php';
 
 class CheckoutController {
     private $orderModel;
     private $productModel;
+    private $couponModel;
 
     public function __construct() {
         $this->orderModel = new OrderModel();
         $this->productModel = new ProductModel();
+        $this->couponModel = new CouponModel();
     }
 
     public function index() {
-        // Redirect nếu giỏ hàng rỗng
         if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
             header('Location: /index.php?controller=cart&action=index');
             exit;
@@ -20,23 +22,60 @@ class CheckoutController {
 
         $success = '';
         $error = '';
-
-        // Tính tổng giỏ hàng và tổng số lượng
+        $cartItems = [];
         $subtotal = 0;
         $totalQuantity = 0;
+
         foreach ($_SESSION['cart'] as $item) {
-            $subtotal += $item['price'] * $item['quantity'];
+            $lineTotal = $item['price'] * $item['quantity'];
+            $subtotal += $lineTotal;
             $totalQuantity += $item['quantity'];
+            $cartItems[] = [
+                'id' => $item['id'],
+                'name' => $item['name'],
+                'price' => $item['price'],
+                'quantity' => $item['quantity'],
+                'subtotal' => $lineTotal
+            ];
         }
 
-        $shipping = 10.00; // Chi phí vận chuyển cố định
-        $total = $subtotal + $shipping;
+        $shipping = 10.00;
+        $availableCoupons = $this->couponModel->getActiveCoupons();
 
-        // Xử lý earned_vip
-        $earnedVip = isset($_SESSION['earned_vip']) && is_numeric($_SESSION['earned_vip']) ? (float)$_SESSION['earned_vip'] : 0.00;
+        if (isset($_POST['apply_coupon']) && array_key_exists('selected_coupon', $_POST)) {
+            $couponId = (int) $_POST['selected_coupon'];
+            if ($couponId > 0) {
+                $coupon = $this->couponModel->getCouponById($couponId);
+                if ($coupon) {
+                    $_SESSION['cart_coupon'] = $couponId;
+                } else {
+                    unset($_SESSION['cart_coupon']);
+                }
+            } else {
+                unset($_SESSION['cart_coupon']);
+            }
+            header('Location: /index.php?controller=checkout&action=index');
+            exit;
+        }
+
+        $discountAmount = 0;
+        $appliedCoupon = null;
+
+        if (!empty($_SESSION['cart_coupon'])) {
+            $coupon = $this->couponModel->getCouponById((int) $_SESSION['cart_coupon']);
+            if ($coupon) {
+                $appliedCoupon = $coupon;
+                $discountAmount = $subtotal * ($coupon['CodePercent'] / 100);
+            } else {
+                unset($_SESSION['cart_coupon']);
+            }
+        }
+
+        $availableCoupons = $this->couponModel->getActiveCoupons();
+        $total = max(0, $subtotal - $discountAmount + $shipping);
+        $earnedVip = isset($_SESSION['earned_vip']) && is_numeric($_SESSION['earned_vip']) ? (float) $_SESSION['earned_vip'] : 0.00;
 
         if (isset($_POST['place_order'])) {
-            // Xác thực đơn giản
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
             $address = isset($_POST['address']) ? trim($_POST['address']) : '';
@@ -47,30 +86,20 @@ class CheckoutController {
             if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip) || empty($card_number)) {
                 $error = 'All fields are required';
             } else {
-                // Giả định địa chỉ giao hàng là chuỗi kết hợp (vì không có cột ShippingAddress)
-                $shippingAddress = "$address, $city, $zip"; // Không lưu vào database vì không có cột
-
-                // Thêm đơn hàng vào bảng `order`
                 if (isset($_SESSION['user_id'])) {
                     $memberId = $_SESSION['user_id'];
                     $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity);
 
                     if ($orderId) {
-                        // Thêm chi tiết đơn hàng vào bảng `order_shoes`
                         foreach ($_SESSION['cart'] as $item) {
                             for ($i = 0; $i < $item['quantity']; $i++) {
                                 $this->orderModel->addOrderShoes($orderId, $item['id']);
                             }
                         }
 
-                        // Xóa giỏ hàng sau khi đặt hàng thành công
-                        unset($_SESSION['cart']);
-
-                        // Lưu earned_vip vào session (nếu cần sử dụng sau này)
+                        unset($_SESSION['cart'], $_SESSION['cart_coupon']);
                         $_SESSION['earned_vip'] = $earnedVip;
-
                         $success = "Order placed successfully! Your order ID is #$orderId.";
-                        // Chuyển hướng về trang chủ sau 3 giây
                         header('Refresh: 3; URL=/index.php?controller=home&action=index');
                     } else {
                         $error = 'Failed to place the order. Please try again.';
@@ -81,7 +110,6 @@ class CheckoutController {
             }
         }
 
-        // Hiển thị giao diện checkout
         $headerPath = dirname(__DIR__) . '/views/components/header.php';
         $viewPath = dirname(__DIR__) . '/views/pages/checkout.php';
         $footerPath = dirname(__DIR__) . '/views/components/footer.php';
@@ -93,10 +121,10 @@ class CheckoutController {
         }
 
         if (file_exists($viewPath)) {
-            $renderView = function ($subtotal, $shipping, $total, $error, $success) use ($viewPath) {
+            $renderView = function ($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success) use ($viewPath) {
                 require $viewPath;
             };
-            $renderView($subtotal, $shipping, $total, $error, $success);
+            $renderView($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success);
         } else {
             die("View file not found: $viewPath");
         }

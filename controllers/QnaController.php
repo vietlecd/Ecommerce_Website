@@ -1,15 +1,16 @@
 <?php
-require_once 'models/QnaModel.php';
+require_once 'models/ContentModel.php';
 
 class QnaController {
-    private $qnaModel;
+    private $contentModel;
 
     public function __construct() {
-        $this->qnaModel = new QnaModel();
+        $this->contentModel = new ContentModel();
     }
 
     public function index() {
-        $qnaList = $this->qnaModel->getAllActiveQna();
+        $content = $this->contentModel->getContentByKey('qna');
+        $htmlContent = $content ? $content['html_content'] : '';
         
         require_once 'views/components/header.php';
         require_once 'views/pages/qna.php';

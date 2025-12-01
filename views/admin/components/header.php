@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - ShoeStore</title>
+    <title>Admin Dashboard - V.AShoes</title>
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2742/2742687.png">
     <!-- Mazer CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/iconly.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="https://cdn.tiny.cloud/1/4x5hb9ffv86aidqa4em2gen7jpm7d2i5gm8xettlzmg1xlai/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -18,7 +21,7 @@
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo">
-                            <a href="/index.php?controller=adminDashboard&action=dashboard">ShoeStore Admin</a>
+                            <a href="/index.php?controller=adminDashboard&action=dashboard">V.AShoes Admin</a>
                         </div>
                         <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
@@ -105,15 +108,15 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item <?php echo $currentController === 'adminAbout' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminAbout&action=edit" class='sidebar-link'>
+                        <li class="sidebar-item <?php echo ($currentController === 'adminContent' && isset($_GET['key']) && $_GET['key'] === 'about') ? 'active' : ''; ?>">
+                            <a href="/index.php?controller=adminContent&action=edit&key=about" class='sidebar-link'>
                                 <i class="fas fa-info-circle"></i>
-                                <span>About Page</span>
+                                <span>About</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item <?php echo $currentController === 'adminQna' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminQna&action=manage" class='sidebar-link'>
+                        <li class="sidebar-item <?php echo ($currentController === 'adminContent' && isset($_GET['key']) && $_GET['key'] === 'qna') ? 'active' : ''; ?>">
+                            <a href="/index.php?controller=adminContent&action=edit&key=qna" class='sidebar-link'>
                                 <i class="fas fa-question-circle"></i>
                                 <span>Q&A</span>
                             </a>

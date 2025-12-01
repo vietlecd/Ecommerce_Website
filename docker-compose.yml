@@ -1,3 +1,5 @@
+
+
 services:
   # MySQL Database
   mysql:
@@ -17,9 +19,10 @@ services:
     command: --innodb-buffer-pool-size=256M --innodb-log-file-size=64M --max-connections=1000
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456789"]
-      interval: 2s
-      timeout: 5s
-      retries: 3
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 30s
     networks:
       - shoes_network
 
@@ -40,6 +43,7 @@ services:
     volumes:
       - .:/var/www/html
     user: "www-data"
+    entrypoint: ["/bin/bash", "/var/www/html/bin/docker-entrypoint.sh"]
     environment:
       - DB_HOST=mysql
       - DB_NAME=shoe
@@ -142,6 +146,24 @@ services:
 
 
 
+
+  # ngrok
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: shoes_ngrok
+    restart: unless-stopped
+    ports:
+      - "4040:4040"
+    environment:
+      - NGROK_AUTHTOKEN=35EwNeajg2LR3WrXmjcVS1Dmpol_7i9UrC3SQn65CX1rGtCEn
+    command:
+      - http
+      - web:80
+      - --log=stdout
+    depends_on:
+      - web
+    networks:
+      - shoes_network
 
 volumes:
   mysql_data:

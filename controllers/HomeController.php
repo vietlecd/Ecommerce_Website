@@ -1,20 +1,29 @@
 <?php
 require_once __DIR__ . '/../models/ProductModelv2.php';
 require_once __DIR__ . '/../models/CategoryModel.php';
+require_once __DIR__ . '/../models/NewsModel.php';
 
 class HomeController {
     private $productModel;
     private $categoryModel;
+    private $newsModel;
 
     public function __construct() {
         $this->productModel = new ProductModel();
         $this->categoryModel = new CategoryModel();
+        $this->newsModel = new NewsModel();
     }
 
     public function index() {
         $featuredProducts = $this->productModel->getRandomProducts(4);
-
         $categories = $this->categoryModel->getAllCategories();
+        $categoryIds = array_column($categories, 'CategoryID');
+        $categoryStats = $this->productModel->getCategoryStats($categoryIds);
+        $highDiscountSales = $this->productModel->getHighDiscountSales(50, 12);
+        $weeklySales = $this->productModel->getSalesEndingSoon(7, 8);
+        $topSaleProduct = $this->productModel->getHighDiscountSales(30, 1);
+        $topSaleProduct = !empty($topSaleProduct) ? $topSaleProduct[0] : null;
+        $latestNews = $this->newsModel->getAllNews('', 3, 0);
 
         $headerPath = dirname(__DIR__) . '/views/components/header.php';
         $viewPath = dirname(__DIR__) . '/views/pages/home.php';
@@ -27,10 +36,10 @@ class HomeController {
         }
 
         if (file_exists($viewPath)) {
-            $renderView = function ($featuredProducts, $categories) use ($viewPath) {
+            $renderView = function ($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales, $categoryStats, $topSaleProduct) use ($viewPath) {
                 require $viewPath;
             };
-            $renderView($featuredProducts, $categories);
+            $renderView($featuredProducts, $categories, $latestNews, $highDiscountSales, $weeklySales, $categoryStats, $topSaleProduct);
         } else {
             die("View file not found: $viewPath");
         }
@@ -40,5 +49,15 @@ class HomeController {
         } else {
             die("Footer file not found: $footerPath");
         }
+    }
+    
+    public function chat() {
+        $viewPath = dirname(__DIR__) . '/views/pages/chat-render.php';
+        if (file_exists($viewPath)) {
+            require $viewPath;
+        } else {
+            die("Chat view file not found: $viewPath");
+        }
+        exit;
     }
 }

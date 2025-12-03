@@ -15,7 +15,19 @@ class AdminOrderController {
             exit;
         }
 
-        $orders = $this->orderModel->getOrders();
+        $perPage = 10;
+        $currentPage = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+        $offset = ($currentPage - 1) * $perPage;
+
+        $totalOrders = $this->orderModel->getTotalOrders();
+        $totalPages = $totalOrders > 0 ? (int)ceil($totalOrders / $perPage) : 1;
+        if ($currentPage > $totalPages) {
+            $currentPage = $totalPages;
+            $offset = ($currentPage - 1) * $perPage;
+        }
+
+        $orders = $this->orderModel->getOrders($perPage, $offset);
+        $pageTitle = 'Quản lý đơn hàng';
         require_once __DIR__ . '/../views/admin/components/header.php';
         require_once __DIR__ . '/../views/admin/pages/orders.php';
     }
@@ -40,6 +52,7 @@ class AdminOrderController {
             exit;
         }
 
+        $pageTitle = 'Chi tiết đơn hàng #' . $orderId;
         require_once __DIR__ . '/../views/admin/components/header.php';
         require_once __DIR__ . '/../views/admin/pages/order-detail.php';
     }

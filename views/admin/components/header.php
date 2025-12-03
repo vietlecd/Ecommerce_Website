@@ -1,146 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - V.AShoes</title>
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!defined('ADMIN_LAYOUT_SHUTDOWN_REGISTERED')) {
+    define('ADMIN_LAYOUT_SHUTDOWN_REGISTERED', true);
+    register_shutdown_function(function () {
+        $footerPath = __DIR__ . '/admin_footer.php';
+        if (!defined('ADMIN_LAYOUT_FOOTER_RENDERED') && file_exists($footerPath)) {
+            require $footerPath;
+        }
+    });
+}
+
+$currentController = $_GET['controller'] ?? 'adminDashboard';
+$currentAction = $_GET['action'] ?? 'dashboard';
+$contentKey = $_GET['key'] ?? null;
+$pageTitle = $pageTitle ?? 'V.AShoes Admin';
+$userDisplayName = $_SESSION['name'] ?? ($_SESSION['email'] ?? 'Administrator');
+
+$navItems = [
+    [
+        'label' => 'Dashboard',
+        'icon' => 'ti ti-layout-dashboard',
+        'url' => '/index.php?controller=adminDashboard&action=dashboard',
+        'is_active' => function () use ($currentController) {
+            return $currentController === 'adminDashboard';
+        },
+    ],
+    [
+        'label' => 'Products',
+        'icon' => 'ti ti-shopping-bag',
+        'url' => '/index.php?controller=adminProduct&action=products',
+        'is_active' => function () use ($currentController) {
+            return $currentController === 'adminProduct';
+        },
+    ],
+    [
+        'label' => 'Orders',
+        'icon' => 'ti ti-receipt-2',
+        'url' => '/index.php?controller=adminOrder&action=orders',
+        'is_active' => function () use ($currentController) {
+            return $currentController === 'adminOrder';
+        },
+    ],
+    [
+        'label' => 'Customers',
+        'icon' => 'ti ti-users',
+        'url' => '/index.php?controller=adminCustomer&action=customers',
+        'is_active' => function () use ($currentController) {
+            return $currentController === 'adminCustomer';
+        },
+    ],
+    [
+        'label' => 'News',
+        'icon' => 'ti ti-news',
+        'url' => '/index.php?controller=adminNews&action=manage',
+        'is_active' => function () use ($currentController) {
+            return $currentController === 'adminNews';
+        },
+    ],
+    [
+        'label' => 'About',
+        'icon' => 'ti ti-info-circle',
+        'url' => '/index.php?controller=adminContent&action=edit&key=about',
+        'is_active' => function () use ($currentController, $contentKey) {
+            return $currentController === 'adminContent' && $contentKey === 'about';
+        },
+    ],
+    [
+        'label' => 'Q&A',
+        'icon' => 'ti ti-help-hexagon',
+        'url' => '/index.php?controller=adminContent&action=edit&key=qna',
+        'is_active' => function () use ($currentController, $contentKey) {
+            return $currentController === 'adminContent' && $contentKey === 'qna';
+        },
+    ],
+];
+?>
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title><?php echo htmlspecialchars($pageTitle); ?> · V.AShoes Admin</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2742/2742687.png">
-    <!-- Mazer CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/app.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/zuramai/mazer@docs/demo/assets/compiled/css/iconly.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler-flags.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler-payments.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler-vendors.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/tabler-icons.min.css" rel="stylesheet" />
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root { font-feature-settings: "cv03","cv04","cv11"; }
+    </style>
     <script src="https://cdn.tiny.cloud/1/4x5hb9ffv86aidqa4em2gen7jpm7d2i5gm8xettlzmg1xlai/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <div id="app">
-        <div id="sidebar">
-            <div class="sidebar-wrapper">
-                <div class="sidebar-header position-relative">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="logo">
-                            <a href="/index.php?controller=adminDashboard&action=dashboard">V.AShoes Admin</a>
-                        </div>
-                        <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                role="img" class="iconify iconify--system-uicons" width="20" height="20"
-                                preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
-                                <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path
-                                        d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
-                                        opacity=".3"></path>
-                                    <g transform="translate(-210 -1)">
-                                        <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
-                                        <circle cx="220.5" cy="11.5" r="4"></circle>
-                                        <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
-                                    </g>
-                                </g>
-                            </svg>
-                            <div class="form-check form-switch fs-6">
-                                <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
-                                <label class="form-check-label"></label>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                                role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
-                                viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
-                                </path>
-                            </svg>
-                        </div>
-                        <div class="sidebar-toggler x">
-                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-menu">
-                    <ul class="menu">
-                        <li class="sidebar-title">Menu</li>
-                        
-                        <?php
-                        // Lấy controller và action hiện tại từ URL
-                        $currentController = isset($_GET['controller']) ? $_GET['controller'] : 'adminDashboard';
-                        $currentAction = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
-                        ?>
-                        
-                        <li class="sidebar-item <?php echo $currentController === 'adminDashboard' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminDashboard&action=dashboard" class='sidebar-link'>
-                                <i class="fas fa-tachometer-alt"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item <?php echo $currentController === 'adminProduct' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminProduct&action=products" class='sidebar-link'>
-                                <i class="fas fa-shoe-prints"></i>
-                                <span>Products</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item <?php echo $currentController === 'adminOrder' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminOrder&action=orders" class='sidebar-link'>
-                                <i class="fas fa-shopping-cart"></i>
-                                <span>Orders</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item <?php echo $currentController === 'adminCustomer' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminCustomer&action=customers" class='sidebar-link'>
-                                <i class="fas fa-users"></i>
-                                <span>Customers</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item <?php echo $currentController === 'adminNews' ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminNews&action=manage" class='sidebar-link'>
-                                <i class="fas fa-newspaper"></i>
-                                <span>News</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item <?php echo ($currentController === 'adminContent' && isset($_GET['key']) && $_GET['key'] === 'about') ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminContent&action=edit&key=about" class='sidebar-link'>
-                                <i class="fas fa-info-circle"></i>
-                                <span>About</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item <?php echo ($currentController === 'adminContent' && isset($_GET['key']) && $_GET['key'] === 'qna') ? 'active' : ''; ?>">
-                            <a href="/index.php?controller=adminContent&action=edit&key=qna" class='sidebar-link'>
-                                <i class="fas fa-question-circle"></i>
-                                <span>Q&A</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-title">Actions</li>
-                        
-                        <li class="sidebar-item">
-                            <a href="/index.php?controller=home&action=index" class='sidebar-link'>
-                                <i class="fas fa-home"></i>
-                                <span>Back to Site</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item">
-                            <a href="/index.php?controller=auth&action=logout" class='sidebar-link'>
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Logout</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div id="main">
-            <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
+  </head>
+  <body class="layout-fluid">
+    <div class="page">
+      <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <h1 class="navbar-brand navbar-brand-autodark">
+            <a href="/index.php?controller=adminDashboard&action=dashboard" class="text-decoration-none text-white fw-bold">V.AShoes Admin</a>
+          </h1>
+          <div class="collapse navbar-collapse" id="sidebar-menu">
+            <ul class="navbar-nav pt-lg-3">
+              <?php foreach ($navItems as $item): ?>
+                <?php
+                $isActive = false;
+                if (isset($item['is_active']) && is_callable($item['is_active'])) {
+                    $isActive = (bool) $item['is_active']();
+                }
+                ?>
+                <li class="nav-item">
+                  <a class="nav-link <?php echo $isActive ? 'active' : ''; ?>" href="<?php echo htmlspecialchars($item['url']); ?>">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <i class="ti <?php echo htmlspecialchars($item['icon']); ?>"></i>
+                    </span>
+                    <span class="nav-link-title"><?php echo htmlspecialchars($item['label']); ?></span>
+                  </a>
+                </li>
+              <?php endforeach; ?>
+              <li class="nav-item mt-3">
+                <span class="nav-link text-uppercase text-secondary fw-bold small">Shortcuts</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/index.php?controller=home&action=index">
+                  <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="ti ti-world"></i></span>
+                  <span class="nav-link-title">Back to site</span>
                 </a>
-            </header>
-            
-            <div class="page-content">
-        
-        
-</body>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/index.php?controller=auth&action=logout">
+                  <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="ti ti-logout"></i></span>
+                  <span class="nav-link-title">Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+      <div class="page-wrapper">
+        <header class="navbar navbar-expand-md d-print-none">
+          <div class="container-xl">
+            <div class="d-flex align-items-center w-100">
+              <button class="navbar-toggler d-lg-none me-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="flex-fill">
+                <div class="page-pretitle text-secondary text-uppercase">Admin workspace</div>
+                <h2 class="page-title mb-0"><?php echo htmlspecialchars($pageTitle); ?></h2>
+              </div>
+              <div class="navbar-nav flex-row order-md-last ms-auto">
+                <div class="nav-item dropdown">
+                  <a href="#" class="nav-link d-flex align-items-center" data-bs-toggle="dropdown" aria-label="Open user menu">
+                    <span class="avatar avatar-sm" style="background-image: url('https://avatars.dicebear.com/api/initials/<?php echo urlencode($userDisplayName); ?>.svg');"></span>
+                    <div class="d-none d-xl-block ps-2 lh-sm">
+                      <div><?php echo htmlspecialchars($userDisplayName); ?></div>
+                      <div class="mt-1 small text-secondary">Administrator</div>
+                    </div>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <a href="/index.php?controller=home&action=index" class="dropdown-item">
+                      <i class="ti ti-world me-2"></i> View website
+                    </a>
+                    <a href="/index.php?controller=auth&action=logout" class="dropdown-item text-danger">
+                      <i class="ti ti-logout me-2"></i> Logout
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div class="page-body">
+          <div class="container-xl">

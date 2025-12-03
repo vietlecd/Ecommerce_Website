@@ -1,87 +1,205 @@
-<div class="admin-header">
-    <h1>Sản Phẩm</h1>
-    <a href="/views/admin/index.php?controller=adminProduct&action=addProduct" class="btn">Thêm Sản Phẩm Mới</a>
-</div>
+<?php
+$keyword = $keyword ?? '';
+$category = $category ?? '';
+$currentPage = $currentPage ?? 1;
+$perPage = $perPage ?? 8;
+$offset = max(0, ($currentPage - 1) * $perPage);
+$fromRecord = $totalProducts > 0 ? $offset + 1 : 0;
+$toRecord = $totalProducts > 0 ? min($offset + count($products), $totalProducts) : 0;
 
-<!-- Form tìm kiếm -->
-<div class="search-form" style="margin: 20px 0; text-align: center;">
-    <form action="/views/admin/index.php?controller=adminProduct&action=products" method="get" style="display: inline-block;">
-        <input type="hidden" name="controller" value="adminProduct">
-        <input type="hidden" name="action" value="products">
-        <input type="text" name="keyword" placeholder="Search products..." value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>" style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
-        <button type="submit" style="padding: 10px 20px; background-color: #ff6b6b#; color: white; border: none; border-radius: 4px; cursor: pointer;"
-                onmouseover="this.style.backgroundColor='#ff5252'"
-                onmouseout="this.style.backgroundColor='#ff6b6b'">Tìm kiếm</button>
-    </form>
-</div>
+$baseQuery = [
+    'controller' => 'adminProduct',
+    'action' => 'products',
+];
+if ($keyword !== '') {
+    $baseQuery['keyword'] = $keyword;
+}
+if ($category !== '') {
+    $baseQuery['category'] = $category;
+}
 
-<table class="admin-table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Hình Ảnh</th>
-            <th>Tên</th>
-            <th>Giá</th>
-            <th>Danh Mục</th>
-            <th>Hành Động</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (empty($products)): ?>
-            <tr>
-                <td colspan="6" style="text-align: center;">Không tìm thấy sản phẩm.</td>
-            </tr>
-        <?php else: ?>
-            <?php foreach ($products as $product): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($product['id']); ?></td>
-                    <td>
-                    <?php $imageUrl = !empty($product['image']) && filter_var($product['image'], FILTER_VALIDATE_URL) ? htmlspecialchars($product['image']) : '/public/placeholder.jpg';
-                    echo '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($product['name']) . '" loading="lazy" width="80px">' ;?>
-                    </td>
-                    <td><?php echo htmlspecialchars($product['name']); ?></td>
-                    <td>$<?php echo number_format($product['price'], 2); ?></td>
-                    <td><?php echo htmlspecialchars($product['category']); ?></td>
-                    <td>
-                        <a href="/views/admin/index.php?controller=adminProduct&action=editProduct&id=<?php echo $product['id']; ?>" class="btn-edit">Sửa</a>
-                        <a href="/views/admin/index.php?controller=adminProduct&action=deleteProduct&id=<?php echo $product['id']; ?>" class="btn-delete" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">Xóa</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </tbody>
-</table>
+$buildPageUrl = function (int $page) use ($baseQuery): string {
+    if ($page < 1) {
+        $page = 1;
+    }
+    return '/views/admin/index.php?' . http_build_query(array_merge($baseQuery, ['page' => $page]));
+};
 
-<?php if (!empty($products) && $totalPages > 1): ?>
-        <div class="pagination" style="margin: 20px 0; text-align: center;">
-            <?php
-            $baseUrl = '/views/admin/index.php?controller=adminProduct&action=products';
-            if (!empty($keyword)) $baseUrl .= '&keyword=' . urlencode($keyword);
-            if (!empty($category)) $baseUrl .= '&category=' . urlencode($category);
+$resolveProductImage = function (?string $imageValue): string {
+    $placeholder = '/public/placeholder.jpg';
+    if (empty($imageValue)) {
+        return $placeholder;
+    }
+    if (filter_var($imageValue, FILTER_VALIDATE_URL)) {
+        return $imageValue;
+    }
+    $normalized = ltrim($imageValue, '/');
+    if (strpos($normalized, 'assets/') === 0) {
+        return '/' . $normalized;
+    }
+    if (strpos($normalized, 'public/') === 0) {
+        return '/' . $normalized;
+    }
+    return '/assets/images/shoes/' . $normalized;
+};
+?>
 
-            // Nút Previous
-            $prevPage = $currentPage > 1 ? $currentPage - 1 : 1;
-            echo '<a href="' . $baseUrl . '&page=' . $prevPage . '" 
-                     style="display: inline-block; padding: 8px 12px; margin: 0 5px; text-decoration: none; color: #ff6b6b; border: 1px solid #ddd; border-radius: 4px; ' . ($currentPage === 1 ? 'color: #ccc; pointer-events: none; border-color: #ccc;' : '') . '"
-                     onmouseover="' . ($currentPage === 1 ? '' : 'this.style.backgroundColor=\'#f5f5f5\'') . '"
-                     onmouseout="' . ($currentPage === 1 ? '' : 'this.style.backgroundColor=\'\'') . '">Previous</a>';
-
-            // Các số trang
-            for ($i = 1; $i <= $totalPages; $i++) {
-                echo '<a href="' . $baseUrl . '&page=' . $i . '" 
-                         style="display: inline-block; padding: 8px 12px; margin: 0 5px; text-decoration: none; color: #ff6b6b; border: 1px solid #ddd; border-radius: 4px; ' . ($currentPage === $i ? 'background-color: #ff6b6b; color: white; border-color: #ff6b6b;' : '') . '"
-                         onmouseover="' . ($currentPage === $i ? '' : 'this.style.backgroundColor=\'#f5f5f5\'') . '"
-                         onmouseout="' . ($currentPage === $i ? '' : 'this.style.backgroundColor=\'\'') . '">' . $i . '</a>';
-            }
-
-            // Nút Next
-            $nextPage = $currentPage < $totalPages ? $currentPage + 1 : $totalPages;
-            echo '<a href="' . $baseUrl . '&page=' . $nextPage . '" 
-                     style="display: inline-block; padding: 8px 12px; margin: 0 5px; text-decoration: none; color: #ff6b6b; border: 1px solid #ddd; border-radius: 4px; ' . ($currentPage === $totalPages ? 'color: #ccc; pointer-events: none; border-color: #ccc;' : '') . '"
-                     onmouseover="' . ($currentPage === $totalPages ? '' : 'this.style.backgroundColor=\'#f5f5f5\'') . '"
-                     onmouseout="' . ($currentPage === $totalPages ? '' : 'this.style.backgroundColor=\'\'') . '">Next</a>';
-            ?>
+<div class="row g-4">
+  <div class="col-12">
+    <div class="card card-stacked">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Quản lý sản phẩm</div>
+          <div class="text-secondary">Theo dõi tồn kho, tìm kiếm và cập nhật nhanh từng mặt hàng.</div>
         </div>
-    <?php endif; ?>
+        <div class="ms-auto">
+          <a href="/views/admin/index.php?controller=adminProduct&action=addProduct" class="btn btn-primary">
+            <i class="ti ti-plus me-1"></i> Thêm sản phẩm
+          </a>
+        </div>
+      </div>
+      <div class="card-body border-bottom py-3">
+        <form class="row g-2 align-items-end" method="get" action="/views/admin/index.php">
+          <input type="hidden" name="controller" value="adminProduct">
+          <input type="hidden" name="action" value="products">
+          <div class="col-12 col-md-5 col-lg-4">
+            <label class="form-label">Từ khóa</label>
+            <input type="text" name="keyword" class="form-control" placeholder="Tên, mô tả sản phẩm" value="<?php echo htmlspecialchars($keyword); ?>">
+          </div>
+          <div class="col-12 col-md-4 col-lg-3">
+            <label class="form-label">Danh mục</label>
+            <select name="category" class="form-select">
+              <option value="">Tất cả danh mục</option>
+              <?php foreach ($categories as $categoryRow): ?>
+                <option value="<?php echo htmlspecialchars($categoryRow['id']); ?>" <?php echo (string)$categoryRow['id'] === (string)$category ? 'selected' : ''; ?>>
+                  <?php echo htmlspecialchars($categoryRow['name']); ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="col-12 col-md-3 col-lg-2">
+            <label class="form-label d-none d-md-block">&nbsp;</label>
+            <button type="submit" class="btn btn-outline-primary w-100">
+              <i class="ti ti-search me-1"></i> Tìm kiếm
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <?php if (empty($products)): ?>
+        <div class="card-body">
+          <div class="empty">
+            <div class="empty-header">Không có dữ liệu</div>
+            <p class="empty-subtitle text-secondary">Chưa tìm thấy sản phẩm trùng khớp tiêu chí. Hãy thử từ khóa khác hoặc thêm sản phẩm mới.</p>
+            <div class="empty-action">
+              <a class="btn btn-primary" href="/views/admin/index.php?controller=adminProduct&action=addProduct">
+                <i class="ti ti-plus me-1"></i> Thêm sản phẩm đầu tiên
+              </a>
+            </div>
+          </div>
+        </div>
+      <?php else: ?>
+        <div class="table-responsive">
+          <table class="table table-vcenter">
+            <thead>
+              <tr>
+                <th>Sản phẩm</th>
+                <th>Danh mục</th>
+                <th class="text-center">Tồn kho</th>
+                <th>Giá bán</th>
+                <th class="w-1">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($products as $product): ?>
+                <?php
+                $imagePath = $resolveProductImage($product['image'] ?? null);
+                $stockValue = isset($product['Stock']) ? (int)$product['Stock'] : (int)($product['stock'] ?? 0);
+                $sizeSummary = $product['size_summary'] ?? '';
+                $finalPrice = isset($product['final_price']) ? (float)$product['final_price'] : null;
+                $basePrice = isset($product['price']) ? (float)$product['price'] : 0;
+                $displayFinalPrice = $finalPrice !== null && $finalPrice > 0 && $finalPrice < $basePrice;
+                ?>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <span class="avatar me-2" style="background-image: url('<?php echo htmlspecialchars($imagePath); ?>')"></span>
+                      <div>
+                        <div class="fw-semibold"><?php echo htmlspecialchars($product['name'] ?? ''); ?></div>
+                        <div class="text-secondary small text-truncate">
+                          <?php if ($sizeSummary): ?>
+                            Size: <?php echo htmlspecialchars($sizeSummary); ?>
+                          <?php else: ?>
+                            Chưa cấu hình size
+                          <?php endif; ?>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-secondary">
+                    <?php echo htmlspecialchars($product['category'] ?? 'Không xác định'); ?>
+                  </td>
+                  <td class="text-center">
+                    <?php if ($stockValue <= 0): ?>
+                      <span class="badge bg-red-lt">Hết hàng</span>
+                    <?php elseif ($stockValue < 10): ?>
+                      <span class="badge bg-orange-lt">Chỉ còn <?php echo $stockValue; ?></span>
+                    <?php else: ?>
+                      <span class="badge bg-green-lt"><?php echo $stockValue; ?> sẵn có</span>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <?php if ($displayFinalPrice): ?>
+                      <div class="fw-semibold text-danger"><?php echo number_format($finalPrice, 2); ?> VND</div>
+                      <div class="text-secondary text-decoration-line-through small"><?php echo number_format($basePrice, 2); ?> VND</div>
+                    <?php else: ?>
+                      <div class="fw-semibold"><?php echo number_format($basePrice, 2); ?> VND</div>
+                    <?php endif; ?>
+                  </td>
+                  <td class="text-nowrap">
+                    <div class="btn-list flex-nowrap mb-0">
+                      <a href="/views/admin/index.php?controller=adminProduct&action=editProduct&id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-primary">
+                        <i class="ti ti-pencil me-1"></i> Sửa
+                      </a>
+                      <a href="/views/admin/index.php?controller=adminProduct&action=deleteProduct&id=<?php echo $product['id']; ?>"
+                         class="btn btn-sm btn-outline-danger"
+                         onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                        <i class="ti ti-trash me-1"></i> Xóa
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer d-flex align-items-center">
+          <p class="m-0 text-secondary">
+            Hiển thị <?php echo $fromRecord; ?>–<?php echo $toRecord; ?> / <?php echo $totalProducts; ?> sản phẩm
+          </p>
+          <?php if ($totalPages > 1): ?>
+            <ul class="pagination m-0 ms-auto">
+              <li class="page-item <?php echo $currentPage <= 1 ? 'disabled' : ''; ?>">
+                <a class="page-link" href="<?php echo $buildPageUrl(max(1, $currentPage - 1)); ?>" tabindex="-1" aria-disabled="<?php echo $currentPage <= 1 ? 'true' : 'false'; ?>">
+                  <i class="ti ti-chevron-left"></i> Trước
+                </a>
+              </li>
+              <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <li class="page-item <?php echo $currentPage === $i ? 'active' : ''; ?>">
+                  <a class="page-link" href="<?php echo $buildPageUrl($i); ?>"><?php echo $i; ?></a>
+                </li>
+              <?php endfor; ?>
+              <li class="page-item <?php echo $currentPage >= $totalPages ? 'disabled' : ''; ?>">
+                <a class="page-link" href="<?php echo $buildPageUrl(min($totalPages, $currentPage + 1)); ?>">
+                  Sau <i class="ti ti-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
+    </div>
+  </div>
 </div>
 
+<?php require_once __DIR__ . '/../components/admin_footer.php'; ?>

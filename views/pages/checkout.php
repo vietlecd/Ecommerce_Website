@@ -12,6 +12,10 @@ $formatCurrency = function ($value) {
         <p class="section-subtitle">Shipping, payment, and review live side by side so you never lose context.</p>
     </div>
 
+    <?php if (!isset($_SESSION['user_id'])): ?>
+        <div class="checkout-alert"><?php echo 'Please log in to place an order.'; ?></div>
+    <?php endif; ?>
+
     <?php if (!empty($error)): ?>
         <div class="checkout-alert checkout-alert-error"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
@@ -57,20 +61,35 @@ $formatCurrency = function ($value) {
                 <article class="checkout-card">
                     <div class="checkout-card-header">
                         <p class="section-eyebrow">Payment</p>
-                        <h3>Card details</h3>
+                        <h3>How would you like to pay?</h3>
                     </div>
                     <div class="checkout-field">
-                        <label for="card_number">Card Number</label>
-                        <input type="text" id="card_number" name="card_number" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>" required>
-                    </div>
-                    <div class="checkout-row">
-                        <div class="checkout-field">
-                            <label for="expiry">Expiry</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>" required>
+                        <div class="checkout-payment-methods">
+                            <?php $selectedMethod = isset($_POST['payment_method']) ? $_POST['payment_method'] : 'card'; ?>
+                            <label class="checkout-payment-pill">
+                                <input type="radio" name="payment_method" value="card" <?php echo $selectedMethod === 'card' ? 'checked' : ''; ?>>
+                                <span>Card</span>
+                            </label>
+                            <label class="checkout-payment-pill">
+                                <input type="radio" name="payment_method" value="cod" <?php echo $selectedMethod === 'cod' ? 'checked' : ''; ?>>
+                                <span>Cash on delivery</span>
+                            </label>
                         </div>
+                    </div>
+                    <div id="card-details" class="checkout-card-details">
                         <div class="checkout-field">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>" required>
+                            <label for="card_number">Card Number</label>
+                            <input type="text" id="card_number" name="card_number" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>">
+                        </div>
+                        <div class="checkout-row">
+                            <div class="checkout-field">
+                                <label for="expiry">Expiry</label>
+                                <input type="text" id="expiry" name="expiry" placeholder="MM/YY" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>">
+                            </div>
+                            <div class="checkout-field">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" name="cvv" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>">
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -148,5 +167,28 @@ $formatCurrency = function ($value) {
         </form>
     <?php endif; ?>
 </section>
+
+<script>
+(function() {
+    var paymentInputs = document.querySelectorAll('input[name="payment_method"]');
+    var cardDetails = document.getElementById('card-details');
+    if (!paymentInputs.length || !cardDetails) {
+        return;
+    }
+    var updatePaymentView = function() {
+        var method = 'card';
+        paymentInputs.forEach(function(input) {
+            if (input.checked) {
+                method = input.value;
+            }
+        });
+        cardDetails.style.display = method === 'card' ? '' : 'none';
+    };
+    paymentInputs.forEach(function(input) {
+        input.addEventListener('change', updatePaymentView);
+    });
+    updatePaymentView();
+})();
+</script>
 
 <?php require_once 'views/components/footer.php'; ?>

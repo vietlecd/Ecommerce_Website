@@ -14,6 +14,13 @@ class CheckoutController {
         $this->couponModel = new CouponModel();
     }
 
+    private function getMemberIdForOrder() {
+        if (isset($_SESSION['user_id'])) {
+            return $_SESSION['user_id'];
+        }
+        return null;
+    }
+
     public function index() {
         if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
             header('Location: /index.php?controller=cart&action=index');
@@ -82,30 +89,35 @@ class CheckoutController {
             $city = isset($_POST['city']) ? trim($_POST['city']) : '';
             $zip = isset($_POST['zip']) ? trim($_POST['zip']) : '';
             $card_number = isset($_POST['card_number']) ? trim($_POST['card_number']) : '';
+            $paymentMethod = isset($_POST['payment_method']) ? trim($_POST['payment_method']) : 'card';
 
-            if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip) || empty($card_number)) {
+            if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip)) {
                 $error = 'All fields are required';
             } else {
-                if (isset($_SESSION['user_id'])) {
-                    $memberId = $_SESSION['user_id'];
-                    $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity);
+                $memberId = $this->getMemberIdForOrder();
+                $shippingData = [
+                    'name' => $name,
+                    'email' => $email,
+                    'address' => $address,
+                    'city' => $city,
+                    'zip' => $zip,
+                    'payment_method' => $paymentMethod
+                ];
+                $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity, $shippingData);
 
-                    if ($orderId) {
-                        foreach ($_SESSION['cart'] as $item) {
-                            for ($i = 0; $i < $item['quantity']; $i++) {
-                                $this->orderModel->addOrderShoes($orderId, $item['id']);
-                            }
+                if ($orderId) {
+                    foreach ($_SESSION['cart'] as $item) {
+                        for ($i = 0; $i < $item['quantity']; $i++) {
+                            $this->orderModel->addOrderShoes($orderId, $item['id']);
                         }
-
-                        unset($_SESSION['cart'], $_SESSION['cart_coupon']);
-                        $_SESSION['earned_vip'] = $earnedVip;
-                        $success = "Order placed successfully! Your order ID is #$orderId.";
-                        header('Refresh: 3; URL=/index.php?controller=home&action=index');
-                    } else {
-                        $error = 'Failed to place the order. Please try again.';
                     }
+
+                    unset($_SESSION['cart'], $_SESSION['cart_coupon']);
+                    $_SESSION['earned_vip'] = $earnedVip;
+                    $success = "Order placed successfully! Your order ID is #$orderId.";
+                    header('Refresh: 3; URL=/index.php?controller=home&action=index');
                 } else {
-                    $error = 'Please log in to place an order.';
+                    $error = 'Failed to place the order. Please try again.';
                 }
             }
         }

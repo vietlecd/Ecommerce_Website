@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V.AShoes - Find Your Perfect Pair</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/128/2742/2742687.png">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
@@ -19,6 +19,7 @@
         ['key' => 'news', 'label' => 'News', 'url' => '/index.php?controller=news&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/2965/2965879.png'],
         ['key' => 'about', 'label' => 'About', 'url' => '/index.php?controller=about&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/1256/1256650.png'],
         ['key' => 'qna', 'label' => 'Q&A', 'url' => '/index.php?controller=qna&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/854/854866.png'],
+        ['key' => 'orderLookup', 'label' => 'Track order', 'url' => '/index.php?controller=orderLookup&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/992/992700.png'],
         ['key' => 'cart', 'label' => 'Cart', 'url' => '/index.php?controller=cart&action=index', 'icon' => 'https://cdn-icons-png.flaticon.com/128/891/891462.png'],
     ];
 
@@ -29,6 +30,7 @@
         'about' => 'About',
         'qna' => 'Q&A',
         'cart' => 'Cart',
+        'orderlookup' => 'Track order',
         'account' => 'My Account',
         'auth' => 'Account',
         'admin' => 'Admin',

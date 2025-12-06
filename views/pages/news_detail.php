@@ -1,5 +1,4 @@
 <?php
-// Chuẩn bị content + TOC từ Content HTML
 $contentHtml = $news['Content'] ?? '';
 $tocItems = [];
 
@@ -15,7 +14,6 @@ if (!empty(trim($contentHtml))) {
     $generatedIds = [];
 
     foreach ($headings as $heading) {
-        // Fix cho Intelephense + safety
         if (!$heading instanceof DOMElement) {
             continue;
         }
@@ -98,20 +96,74 @@ if (!empty($news['Thumbnail'])) {
                     loading="lazy">
             <?php endif; ?>
 
-            <?php if (!empty($news['promotion_name']) || !empty($news['start_date']) || !empty($news['end_date'])): ?>
-                <div class="news-promo-card">
-                    <strong><?php echo htmlspecialchars($news['PromotionName'] ?? 'Promotion'); ?></strong>
-                    <p>
-                        <?php if (!empty($news['StartDate'])): ?>
-                            Starts: <?php echo date('M d, Y', strtotime($news['StartDate'])); ?>
-                        <?php endif; ?>
-                        <?php if (!empty($news['EndDate'])): ?>
-                            <?php if (!empty($news['StartDate'])): ?> · <?php endif; ?>
-                            Ends: <?php echo date('M d, Y', strtotime($news['EndDate'])); ?>
-                        <?php endif; ?>
-                    </p>
-                </div>
+            <?php if (!empty($promotions)): ?>
+                <?php
+                // Lọc ra những promotion có ID hợp lệ
+                $validPromos = [];
+                foreach ($promotions as $p) {
+                    $pid = (int)($p['promotion_id'] ?? $p['PromotionID'] ?? 0);
+                    if ($pid > 0) {
+                        $validPromos[] = $p;
+                    }
+                }
+
+                $totalPromos = count($validPromos);
+                $maxDisplay  = 3; // số pill hiển thị ban đầu
+                ?>
+
+                <?php if ($totalPromos > 0): ?>
+                    <section class="news-promos-inline">
+                        <span class="news-promos-inline-label">
+                            Active promotions:
+                        </span>
+
+                        <div class="news-promos-inline-list">
+                            <?php for ($i = 0; $i < min($maxDisplay, $totalPromos); $i++): ?>
+                                <?php
+                                $p     = $validPromos[$i];
+                                $pid   = (int)($p['promotion_id'] ?? $p['PromotionID'] ?? 0);
+                                $pname = $p['promotion_name'] ?? $p['PromotionName'] ?? ('Promotion #' . $pid);
+                                ?>
+                                <a
+                                    class="news-promo-pill"
+                                    href="/index.php?controller=promotionalProducts&action=index&id=<?= $pid ?>">
+                                    <span class="news-promo-pill-dot"></span>
+                                    <span class="news-promo-pill-text">
+                                        <?= htmlspecialchars($pname, ENT_QUOTES, 'UTF-8') ?>
+                                    </span>
+                                </a>
+                            <?php endfor; ?>
+
+                            <?php if ($totalPromos > $maxDisplay): ?>
+                                <?php for ($i = $maxDisplay; $i < $totalPromos; $i++): ?>
+                                    <?php
+                                    $p     = $validPromos[$i];
+                                    $pid   = (int)($p['promotion_id'] ?? $p['PromotionID'] ?? 0);
+                                    $pname = $p['promotion_name'] ?? $p['PromotionName'] ?? ('Promotion #' . $pid);
+                                    ?>
+                                    <a
+                                        class="news-promo-pill news-promo-pill-hidden"
+                                        href="/index.php?controller=promotionalProducts&action=index&id=<?= $pid ?>">
+                                        <span class="news-promo-pill-dot"></span>
+                                        <span class="news-promo-pill-text">
+                                            <?= htmlspecialchars($pname, ENT_QUOTES, 'UTF-8') ?>
+                                        </span>
+                                    </a>
+                                <?php endfor; ?>
+
+                                <button
+                                    type="button"
+                                    class="news-promo-pill news-promo-pill-toggle"
+                                    data-state="collapsed"
+                                    data-hidden-count="<?= $totalPromos - $maxDisplay ?>">
+                                    +<?= $totalPromos - $maxDisplay ?> more
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </section>
+                <?php endif; ?>
             <?php endif; ?>
+
 
             <div class="news-rich-content">
                 <?php echo !empty($contentHtml) ? $contentHtml : '<p>Content will be updated soon.</p>'; ?>
@@ -138,6 +190,97 @@ if (!empty($news['Thumbnail'])) {
         </aside>
     </div>
 </div>
+
+<style>
+    .news-promos-inline {
+        margin-top: 12px;
+        margin-bottom: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .news-promos-inline-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #6b7280;
+        white-space: nowrap;
+    }
+
+    .news-promos-inline-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .news-promo-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        font-size: 0.8rem;
+        text-decoration: none;
+        color: #111827;
+        transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+        cursor: pointer;
+    }
+
+    .news-promo-pill-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #2563eb;
+    }
+
+    .news-promo-pill-text {
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .news-promo-pill-hidden {
+        display: none;
+    }
+
+    .news-promo-pill-toggle {
+        background: #111827;
+        color: #f9fafb;
+        border-color: transparent;
+        font-weight: 500;
+    }
+
+    .news-promo-pill:hover {
+        background-color: #f9fafb;
+        border-color: #d4d4d8;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+        transform: translateY(-1px);
+    }
+
+    .news-promo-pill-toggle:hover {
+        background-color: #020617;
+    }
+
+    @media (max-width: 768px) {
+        .news-promos-inline {
+            padding: 8px 10px;
+            border-radius: 10px;
+        }
+
+        .news-promo-pill-text {
+            max-width: 140px;
+        }
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -178,6 +321,36 @@ if (!empty($news['Thumbnail'])) {
 
             observerTargets.forEach(function(target) {
                 observer.observe(target);
+            });
+        }
+
+
+        const promoToggle = document.querySelector('.news-promo-pill-toggle');
+        if (promoToggle) {
+            const hiddenPills = document.querySelectorAll('.news-promo-pill-hidden');
+            const hiddenCount = parseInt(promoToggle.getAttribute('data-hidden-count'), 10) || hiddenPills.length;
+
+            const updateToggleText = () => {
+                const state = promoToggle.getAttribute('data-state');
+                if (state === 'expanded') {
+                    promoToggle.textContent = 'Show less';
+                } else {
+                    promoToggle.textContent = `+${hiddenCount} more`;
+                }
+            };
+
+            updateToggleText();
+
+            promoToggle.addEventListener('click', function() {
+                const currentState = this.getAttribute('data-state');
+                const willExpand = currentState !== 'expanded';
+
+                hiddenPills.forEach(function(pill) {
+                    pill.style.display = willExpand ? 'inline-flex' : 'none';
+                });
+
+                this.setAttribute('data-state', willExpand ? 'expanded' : 'collapsed');
+                updateToggleText();
             });
         }
     });

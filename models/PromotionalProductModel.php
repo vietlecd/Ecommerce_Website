@@ -17,7 +17,7 @@ class PromotionalProductModel
     {
         $products = $this->productModel->getAllProducts();
         foreach ($products as &$product) {
-            $product['promotion'] = $this->getPromotionForProduct($product['id']);
+            $product['promotion'] = $this->getActivePromotionForProduct($product['id']);
             $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion']);
         }
         return $products;
@@ -27,7 +27,7 @@ class PromotionalProductModel
     {
         $product = $this->productModel->getProductById($id);
         if ($product) {
-            $product['promotion'] = $this->getPromotionForProduct($id);
+            $product['promotion'] = $this->getActivePromotionForProduct($id);
             $product['final_price'] = $this->calculateDiscountedPrice($product, $product['promotion']);
         }
         return $product;
@@ -52,50 +52,89 @@ class PromotionalProductModel
         return array_slice($discounted, 0, $limit);
     }
 
-    private function getPromotionForProduct($product_id)
+    private function getActivePromotionForProduct($productId)
     {
-        $current_date = date('Y-m-d H:i:s');
-        $query = "SELECT p.* 
-                  FROM promotions p 
-                  JOIN promotion_shoes ps ON p.promotion_id = ps.promotion_id 
-                  WHERE ps.shoe_id = :shoe_id 
-                  AND p.start_date <= :start_date 
-                  AND p.end_date >= :end_date";
+        $now = date('Y-m-d H:i:s');
 
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':shoe_id', (int)$product_id, PDO::PARAM_INT);
-        $stmt->bindValue(':start_date', $current_date, PDO::PARAM_STR);
-        $stmt->bindValue(':end_date', $current_date, PDO::PARAM_STR);
+        $sql = "
+            SELECT
+                p.PromotionID        AS promotion_id,
+                p.PromotionName      AS promotion_name,
+                p.PromotionType      AS promotion_type,
+                p.DiscountPercentage AS discount_percentage,
+                p.FixedPrice         AS fixed_price,
+                p.StartDate          AS start_date,
+                p.EndDate            AS end_date
+            FROM promotion p
+            INNER JOIN promotion_shoes ps
+                ON p.PromotionID = ps.PromotionID
+            WHERE ps.ShoesID = :shoes_id
+              AND p.StartDate <= :start_date
+              AND p.EndDate   >= :end_date
+            ORDER BY
+                -- ưu tiên có phần trăm giảm
+                (p.DiscountPercentage IS NULL) ASC,
+                p.DiscountPercentage DESC,
+                p.PromotionID ASC
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':shoes_id', (int)$productId, PDO::PARAM_INT);
+        $stmt->bindValue(':start_date', $now, PDO::PARAM_STR);
+        $stmt->bindValue(':end_date', $now, PDO::PARAM_STR);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
     }
 
-    private function calculateDiscountedPrice($product, $promotion)
+    private function calculateDiscountedPrice(array $product, ?array $promotion)
     {
-        if (!empty($promotion)) {
-            if ($promotion['discount_percentage']) {
-                return $product['price'] * (1 - $promotion['discount_percentage'] / 100);
-            } elseif ($promotion['fixed_price']) {
-                return $promotion['fixed_price'];
+        $price = (float)$product['price'];
+
+        if ($promotion) {
+            $discountPct = $promotion['discount_percentage'] ?? null;
+            $fixedPrice  = $promotion['fixed_price'] ?? null;
+
+            if ($discountPct !== null && $discountPct !== '') {
+                return $price * (1 - (float)$discountPct / 100);
+            }
+
+            if ($fixedPrice !== null && $fixedPrice !== '') {
+                return (float)$fixedPrice;
             }
         }
-        return $product['price'];
+
+        return $price;
     }
 
     public function getAllPromotions($limit = 10, $offset = 0, $keyword = '', $sort = 'ASC')
     {
-        $query = "SELECT * FROM promotions WHERE 1=1";
+        $sql = "
+            SELECT
+                p.PromotionID,
+                p.PromotionName,
+                p.PromotionType,
+                p.DiscountPercentage,
+                p.FixedPrice,
+                p.StartDate,
+                p.EndDate
+            FROM promotion p
+            WHERE 1 = 1
+        ";
+
         $params = [];
 
         if (!empty($keyword)) {
-            $query .= " AND promotion_name LIKE :keyword";
+            $sql .= " AND p.PromotionName LIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $query .= " ORDER BY promotion_id " . ($sort === 'DESC' ? 'DESC' : 'ASC');
-        $query .= " LIMIT :limit OFFSET :offset";
+        $sql .= " ORDER BY p.PromotionID " . ($sort === 'DESC' ? 'DESC' : 'ASC');
+        $sql .= " LIMIT :limit OFFSET :offset";
 
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
         if (!empty($keyword)) {
@@ -107,116 +146,145 @@ class PromotionalProductModel
 
     public function getPromotionsCount($keyword = '')
     {
-        $query = "SELECT COUNT(*) FROM promotions WHERE 1=1";
+        $sql = "SELECT COUNT(*) FROM promotion p WHERE 1 = 1";
         $params = [];
 
         if (!empty($keyword)) {
-            $query .= " AND promotion_name LIKE :keyword";
+            $sql .= " AND p.PromotionName LIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare($sql);
         if (!empty($keyword)) {
             $stmt->bindValue(':keyword', $params[':keyword'], PDO::PARAM_STR);
         }
         $stmt->execute();
-        return $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
 
     public function getPromotionById($promotionId)
     {
-        $query = "SELECT * FROM promotions WHERE promotion_id = :promotion_id";
-        $stmt = $this->db->prepare($query);
+        $sql = "
+            SELECT
+                p.PromotionID,
+                p.PromotionName,
+                p.PromotionType,
+                p.DiscountPercentage,
+                p.FixedPrice,
+                p.StartDate,
+                p.EndDate
+            FROM promotion p
+            WHERE p.PromotionID = :promotion_id
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getProductsByPromotionId($promotionId)
     {
-        $query = "SELECT shoe_id FROM promotion_shoes WHERE promotion_id = :promotion_id";
-        $stmt = $this->db->prepare($query);
+        $sql = "SELECT ShoesID FROM promotion_shoes WHERE PromotionID = :promotion_id";
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
-        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'shoe_id');
+
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'ShoesID');
     }
 
     public function removeAllProductsFromPromotion($promotionId)
     {
-        $query = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
-        $stmt = $this->db->prepare($query);
+        $sql = "DELETE FROM promotion_shoes WHERE PromotionID = :promotion_id";
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
     }
 
     public function assignProductToPromotion($promotionId, $productId)
     {
-        $this->removeProductFromAllPromotions($productId);
+        $sql = "
+            INSERT IGNORE INTO promotion_shoes (PromotionID, ShoesID)
+            VALUES (:promotion_id, :shoes_id)
+        ";
 
-        $query = "INSERT INTO promotion_shoes (promotion_id, shoe_id) VALUES (:promotion_id, :shoe_id)";
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
-        $stmt->bindValue(':shoe_id', (int)$productId, PDO::PARAM_INT);
-        $stmt->execute();
-    }
-
-    public function removeProductFromAllPromotions($productId)
-    {
-        $query = "DELETE FROM promotion_shoes WHERE shoe_id = :shoe_id";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':shoe_id', (int)$productId, PDO::PARAM_INT);
+        $stmt->bindValue(':shoes_id', (int)$productId, PDO::PARAM_INT);
         $stmt->execute();
     }
 
     public function createPromotion($name, $startDate, $endDate, $discountPercentage, $fixedPrice, $promotionType)
     {
-        $query = "INSERT INTO promotions (promotion_name, start_date, end_date, discount_percentage, fixed_price, promotion_type) 
-                  VALUES (:promotion_name, :start_date, :end_date, :discount_percentage, :fixed_price, :promotion_type)";
-        $stmt = $this->db->prepare($query);
+        $sql = "
+            INSERT INTO promotion (
+                PromotionName,
+                PromotionType,
+                DiscountPercentage,
+                FixedPrice,
+                StartDate,
+                EndDate
+            ) VALUES (
+                :promotion_name,
+                :promotion_type,
+                :discount_percentage,
+                :fixed_price,
+                :start_date,
+                :end_date
+            )
+        ";
+
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_name', $name, PDO::PARAM_STR);
+        $stmt->bindValue(':promotion_type', $promotionType, PDO::PARAM_STR);
+        $stmt->bindValue(':discount_percentage', $discountPercentage !== '' ? $discountPercentage : null, PDO::PARAM_STR);
+        $stmt->bindValue(':fixed_price', $fixedPrice !== '' ? $fixedPrice : null, PDO::PARAM_STR);
         $stmt->bindValue(':start_date', $startDate, PDO::PARAM_STR);
         $stmt->bindValue(':end_date', $endDate, PDO::PARAM_STR);
-        $stmt->bindValue(':discount_percentage', $discountPercentage, PDO::PARAM_STR);
-        $stmt->bindValue(':fixed_price', $fixedPrice, PDO::PARAM_STR);
-        $stmt->bindValue(':promotion_type', $promotionType, PDO::PARAM_STR);
         $stmt->execute();
     }
 
     public function updatePromotion($promotionId, $name, $startDate, $endDate, $discountPercentage, $fixedPrice, $promotionType)
     {
-        $query = "UPDATE promotions 
-                  SET promotion_name = :promotion_name, 
-                      start_date = :start_date, 
-                      end_date = :end_date, 
-                      discount_percentage = :discount_percentage, 
-                      fixed_price = :fixed_price, 
-                      promotion_type = :promotion_type 
-                  WHERE promotion_id = :promotion_id";
-        $stmt = $this->db->prepare($query);
+        $sql = "
+            UPDATE promotion
+            SET
+                PromotionName      = :promotion_name,
+                PromotionType      = :promotion_type,
+                DiscountPercentage = :discount_percentage,
+                FixedPrice         = :fixed_price,
+                StartDate          = :start_date,
+                EndDate            = :end_date
+            WHERE PromotionID = :promotion_id
+        ";
+
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->bindValue(':promotion_name', $name, PDO::PARAM_STR);
+        $stmt->bindValue(':promotion_type', $promotionType, PDO::PARAM_STR);
+        $stmt->bindValue(':discount_percentage', $discountPercentage !== '' ? $discountPercentage : null, PDO::PARAM_STR);
+        $stmt->bindValue(':fixed_price', $fixedPrice !== '' ? $fixedPrice : null, PDO::PARAM_STR);
         $stmt->bindValue(':start_date', $startDate, PDO::PARAM_STR);
         $stmt->bindValue(':end_date', $endDate, PDO::PARAM_STR);
-        $stmt->bindValue(':discount_percentage', $discountPercentage, PDO::PARAM_STR);
-        $stmt->bindValue(':fixed_price', $fixedPrice, PDO::PARAM_STR);
-        $stmt->bindValue(':promotion_type', $promotionType, PDO::PARAM_STR);
         $stmt->execute();
     }
 
     public function deletePromotion($promotionId)
     {
-        $query = "UPDATE news SET promotion_id = NULL WHERE promotion_id = :promotion_id";
-        $stmt = $this->db->prepare($query);
+        $sql = "DELETE FROM news_promotion WHERE PromotionID = :promotion_id";
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $query = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
-        $stmt = $this->db->prepare($query);
+        $sql = "DELETE FROM promotion_shoes WHERE PromotionID = :promotion_id";
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $query = "DELETE FROM promotions WHERE promotion_id = :promotion_id";
-        $stmt = $this->db->prepare($query);
+        $sql = "DELETE FROM promotion WHERE PromotionID = :promotion_id";
+        $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
     }

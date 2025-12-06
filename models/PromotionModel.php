@@ -139,15 +139,24 @@ class PromotionModel
     }
 
 
-    public function getPromotionsByNewsId(int $newsId): array
+    public function getPromotionsByNewsId(int $newsId, ?bool $onlyActive = null): array
     {
         $sql = "
         SELECT p.*
         FROM news_promotion np
         INNER JOIN promotion p ON p.PromotionID = np.PromotionID
         WHERE np.NewsID = :news_id
-        ORDER BY p.StartDate ASC
     ";
+        if ($onlyActive === true) {
+            $sql .= "
+            AND (
+                (p.StartDate IS NULL OR p.StartDate <= CURDATE())
+                AND (p.EndDate IS NULL OR p.EndDate >= CURDATE())
+            )
+        ";
+        }
+
+        $sql .= " ORDER BY p.StartDate ASC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':news_id', $newsId, PDO::PARAM_INT);

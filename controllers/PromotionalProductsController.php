@@ -1,14 +1,17 @@
 <?php
 require_once 'models/PromotionalProductModel.php';
+require_once 'models/PromotionModel.php';
 
 class PromotionalProductsController
 {
     private $productModel;
+    private $promotionModel;
 
     public function __construct()
     {
         try {
             $this->productModel = new PromotionalProductModel();
+            $this->promotionModel = new PromotionModel();
         } catch (Exception $e) {
             error_log("Lỗi khởi tạo PromotionalProductModel: " . $e->getMessage(), 3, 'logs/errors.log');
             exit;
@@ -18,16 +21,26 @@ class PromotionalProductsController
     public function index()
     {
 
-        // Lấy promotion_id từ URL nếu có
-        $promotionId = isset($_GET['promotion_id']) ? (int)$_GET['promotion_id'] : 0;
+        $promotionId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
         try {
-            // Lấy full list sản phẩm (kèm final_price + promotion active nếu có)
+            $promotion = $promotionId > 0 ? $this->promotionModel->getPromotionById($promotionId) : null;
+        } catch (Exception $e) {
+            echo "Lỗi khi lấy danh sách sản phẩm khuyến mãi: " . $e->getMessage() . "<br>";
+            error_log("Lỗi lấy danh sách sản phẩm khuyến mãi: " . $e->getMessage(), 3, 'logs/errors.log');
+            exit;
+        }
+
+        $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 12;
+
+        if ($page < 1)  $page  = 1;
+        if ($limit < 1) $limit = 12;
+
+        try {
             $products = $this->productModel->getAllProducts();
 
-            // Nếu có promotion_id => lọc theo mapping promotion_shoes
             if ($promotionId > 0) {
-                // Lấy list ShoesID gắn với promotion này (không phụ thuộc ngày)
                 $productIds = $this->productModel->getProductsByPromotionId($promotionId);
 
                 if (!empty($productIds)) {
@@ -37,19 +50,36 @@ class PromotionalProductsController
                         })
                     );
                 } else {
-                    // Promotion này chưa gán sản phẩm nào
                     $products = [];
                 }
             }
+
+            $totalItems = count($products);
+            $totalPages = max(1, (int)ceil($totalItems / $limit));
+
+            if ($page > $totalPages) {
+                $page = $totalPages;
+            }
+
+            $offset   = ($page - 1) * $limit;
+            $products = array_slice($products, $offset, $limit);
+
+            $pagination = [
+                'page'       => $page,
+                'limit'      => $limit,
+                'totalItems' => $totalItems,
+                'totalPages' => $totalPages,
+                'offset'     => $offset,
+            ];
         } catch (Exception $e) {
             echo "Lỗi khi lấy danh sách sản phẩm: " . $e->getMessage() . "<br>";
             error_log("Lỗi lấy danh sách sản phẩm: " . $e->getMessage(), 3, 'logs/errors.log');
             exit;
         }
 
-        // Gọi file giao diện
         require_once 'views/components/header.php';
         require_once 'views/pages/promotional-products.php';
+        require_once 'views/components/footer.php';
     }
 
 

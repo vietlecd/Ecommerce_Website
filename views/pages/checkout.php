@@ -74,6 +74,10 @@ $formatCurrency = function ($value) {
                                 <input type="radio" name="payment_method" value="cod" <?php echo $selectedMethod === 'cod' ? 'checked' : ''; ?>>
                                 <span>Cash on delivery</span>
                             </label>
+                            <label class="checkout-payment-pill">
+                                <input type="radio" name="payment_method" value="payos" <?php echo $selectedMethod === 'payos' ? 'checked' : ''; ?>>
+                                <span>PayOS (QR Code)</span>
+                            </label>
                         </div>
                     </div>
                     <div id="card-details" class="checkout-card-details">

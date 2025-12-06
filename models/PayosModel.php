@@ -9,8 +9,9 @@ class PayosModel
     public function __construct()
     {
         $this->config = require __DIR__ . '/../config/payos.php';
+        // Use different endpoints for sandbox and production
         $this->apiUrl = $this->config['sandbox'] 
-            ? 'https://api-merchant.payos.vn' 
+            ? 'https://api-merchant.payos.vn/sandbox' 
             : 'https://api-merchant.payos.vn';
     }
 

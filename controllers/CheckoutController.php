@@ -340,6 +340,28 @@ class CheckoutController {
         }
     }
 
+    public function checkPaymentStatus() {
+        header('Content-Type: application/json');
+        
+        $orderId = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
+        
+        if (!$orderId) {
+            echo json_encode(['error' => 'Invalid order ID']);
+            exit;
+        }
+        
+        // Get payment info from PayOS
+        $paymentInfo = $this->payosModel->getPaymentLinkInfo($orderId);
+        
+        if ($paymentInfo) {
+            $status = strtolower($paymentInfo['status'] ?? 'pending');
+            echo json_encode(['status' => $status]);
+        } else {
+            echo json_encode(['status' => 'unknown']);
+        }
+        exit;
+    }
+
     public function failed() {
         $orderId = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
         $message = $_SESSION['payment_error'] ?? 'Payment failed. Please try again.';

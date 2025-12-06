@@ -431,11 +431,36 @@ $formatCurrency = function ($value) {
 </style>
 
 <script>
-// Auto-refresh payment status every 10 seconds
-setInterval(function() {
-    // You can implement AJAX to check payment status
-    // and redirect to success page when payment is confirmed
-}, 10000);
+// Check payment status periodically
+(function() {
+    var orderId = <?php echo json_encode($orderId); ?>;
+    var checkCount = 0;
+    var maxChecks = 90; // Check for 15 minutes (every 10 seconds)
+    
+    function checkPaymentStatus() {
+        checkCount++;
+        if (checkCount > maxChecks) {
+            console.log('Payment check timeout');
+            return;
+        }
+        
+        fetch('/index.php?controller=checkout&action=checkPaymentStatus&order_id=' + orderId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'paid') {
+                    window.location.href = '/index.php?controller=checkout&action=success&order_id=' + orderId;
+                } else if (data.status === 'cancelled' || data.status === 'expired') {
+                    window.location.href = '/index.php?controller=checkout&action=failed&order_id=' + orderId;
+                }
+            })
+            .catch(error => {
+                console.error('Error checking payment status:', error);
+            });
+    }
+    
+    // Check every 10 seconds
+    setInterval(checkPaymentStatus, 10000);
+})();
 </script>
 
 <?php require_once 'views/components/footer.php'; ?>

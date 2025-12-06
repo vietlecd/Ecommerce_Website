@@ -20,15 +20,33 @@ class OrderModel
     }
 
     // Lấy danh sách đơn hàng
-    public function getOrders()
+    public function getOrders(int $limit = 0, int $offset = 0)
     {
-        $stmt = $this->pdo->query("
+        $sql = "
             SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status, m.Name AS customer_name, m.Email
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
             ORDER BY o.Date DESC
-        ");
+        ";
+
+        if ($limit > 0) {
+            $sql .= " LIMIT :limit OFFSET :offset";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', max(0, $offset), PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            $stmt = $this->pdo->query($sql);
+        }
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalOrders(): int
+    {
+        $stmt = $this->pdo->query("SELECT COUNT(*) AS total FROM `order`");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)($row['total'] ?? 0);
     }
 
     // Lấy chi tiết đơn hàng theo ID

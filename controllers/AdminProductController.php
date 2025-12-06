@@ -23,7 +23,9 @@ class AdminProductController {
         $products = $this->productModel->getProducts($keyword, $category, $perPage, $offset);
         $totalProducts = $this->productModel->getTotalProducts($keyword, $category);
         $totalPages = ceil($totalProducts / $perPage);
+        $categories = $this->productModel->getCategories();
 
+        $pageTitle = 'Quản lý sản phẩm';
         require_once __DIR__ . '/../views/admin/components/header.php';
         require_once __DIR__ . '/../views/admin/pages/products.php';
     }
@@ -91,6 +93,7 @@ class AdminProductController {
         }
 
         $categories = $this->productModel->getCategories();
+        $pageTitle = 'Thêm sản phẩm';
         require_once __DIR__ . '/../views/admin/components/header.php';
         require_once __DIR__ . '/../views/admin/pages/add-product.php';
     }
@@ -137,7 +140,7 @@ class AdminProductController {
                     $error = 'Kích thước hình ảnh không được vượt quá 5MB.';
                 } else {
                     $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
-                    $uploadDir = __DIR__ . '/../assets/images/'; // Sửa đường dẫn
+                    $uploadDir = __DIR__ . '/../assets/images/shoes/';
                     if (!is_dir($uploadDir)) {
                         mkdir($uploadDir, 0755, true);
                     }
@@ -173,6 +176,7 @@ class AdminProductController {
         }
 
         $categories = $this->productModel->getCategories();
+        $pageTitle = 'Chỉnh sửa sản phẩm';
         require_once __DIR__ . '/../views/admin/components/header.php';
         require_once __DIR__ . '/../views/admin/pages/edit-product.php';
     }
@@ -192,8 +196,8 @@ class AdminProductController {
         $product = $this->productModel->getProductById($id);
 
         if ($product) {
-            if ($product['image'] && file_exists(__DIR__ . '/../assets/images/' . $product['image'])) { // Sửa đường dẫn
-                unlink(__DIR__ . '/../assets/images/' . $product['image']);
+            if ($product['image'] && file_exists(__DIR__ . '/../assets/images/shoes/' . $product['image'])) {
+                unlink(__DIR__ . '/../assets/images/shoes/' . $product['image']);
             }
             $this->productModel->deleteProduct($id);
         }

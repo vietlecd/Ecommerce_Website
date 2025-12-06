@@ -1,5 +1,5 @@
 -- Seeder 011: Market Outlook
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Market Outlook Q3: Velocity, Inventory, and Community Signals',
     'A 20-page digest forecasting demand drivers, category pivots, community trends, and marketing levers for Q3 with actionable dashboards.',
@@ -40,7 +40,6 @@ VALUES (
      <p>OKRs tie to dashboard tiles so teams see direct links between actions and outcomes. We embed feedback prompts inside dashboards—if planners spot data mismatches, they flag within the tile and analysts respond within 24 hours. Download the interactive Tableau dashboard for category deep dives, but also bookmark the living README that explains methodology, biases, and planned upgrades. Outlooks should empower, not overwhelm. Share widely, iterate often, stay humble.</p>',
     9,
     'outlook',
-    NULL,
     'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80'
 );
 

@@ -313,45 +313,6 @@ INSERT INTO `member` (`MemberID`, `Username`, `Password`, `Name`, `Email`, `Phon
 -- --------------------------------------------------------
 
 --
--- Table structure for table `news`
---
-
-CREATE TABLE `news` (
-  `NewsID` int(11) NOT NULL,
-  `Title` varchar(200) DEFAULT NULL,
-  `Description` text DEFAULT NULL,
-  `Content` text DEFAULT NULL,
-  `AdminID` int(11) DEFAULT NULL,
-  `thumbnail` varchar(255) DEFAULT NULL,
-  `DateCreated` datetime DEFAULT current_timestamp(),
-  `news_type` varchar(50) DEFAULT 'normal',
-  `promotion_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- (Seed data intentionally omitted; use dedicated news seeders.)
-
--- --------------------------------------------------------
-
---
--- Table structure for table `news_clicks`
---
-
-CREATE TABLE `news_clicks` (
-  `click_id` int(11) NOT NULL,
-  `news_id` int(11) NOT NULL,
-  `click_count` int(11) DEFAULT 0,
-  `last_clicked_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `news_clicks`
---
--- (Seed data intentionally omitted; use dedicated seeders.)
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `order`
 --
 
@@ -455,33 +416,6 @@ INSERT INTO `promotions` (`promotion_id`, `promotion_type`, `promotion_name`, `d
 (8, 'discount', 'Sale 30%', 30.00, NULL, '2025-04-19 17:35:00', '2025-05-09 17:35:00'),
 (13, 'fixed', '$30 Price Lock', NULL, 30.00, '2025-04-30 00:17:00', '2025-06-05 00:17:00');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `promotion_shoes`
---
-
-CREATE TABLE `promotion_shoes` (
-  `promotion_id` int(11) NOT NULL,
-  `shoe_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `promotion_shoes`
---
-
-INSERT INTO `promotion_shoes` (`promotion_id`, `shoe_id`) VALUES
-(1, 1),
-(2, 4),
-(3, 2),
-(4, 5),
-(5, 3),
-(6, 6),
-(7, 7),
-(7, 8),
-(8, 9),
-(8, 10),
-(13, 11);
 
 -- --------------------------------------------------------
 
@@ -640,21 +574,6 @@ ALTER TABLE `member`
   ADD KEY `AdminID` (`AdminID`);
 
 --
--- Indexes for table `news`
---
-ALTER TABLE `news`
-  ADD PRIMARY KEY (`NewsID`),
-  ADD KEY `AdminID` (`AdminID`),
-  ADD KEY `fk_news_promotion` (`promotion_id`);
-
---
--- Indexes for table `news_clicks`
---
-ALTER TABLE `news_clicks`
-  ADD PRIMARY KEY (`click_id`),
-  ADD KEY `news_id` (`news_id`);
-
---
 -- Indexes for table `order`
 --
 ALTER TABLE `order`
@@ -674,12 +593,6 @@ ALTER TABLE `order_shoes`
 ALTER TABLE `promotions`
   ADD PRIMARY KEY (`promotion_id`);
 
---
--- Indexes for table `promotion_shoes`
---
-ALTER TABLE `promotion_shoes`
-  ADD PRIMARY KEY (`promotion_id`,`shoe_id`),
-  ADD KEY `promotion_shoes_ibfk_2` (`shoe_id`);
 
 --
 -- Indexes for table `shoes`
@@ -733,18 +646,6 @@ ALTER TABLE `discount_codes`
 --
 ALTER TABLE `member`
   MODIFY `MemberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT for table `news`
---
-ALTER TABLE `news`
-  MODIFY `NewsID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
---
--- AUTO_INCREMENT for table `news_clicks`
---
-ALTER TABLE `news_clicks`
-  MODIFY `click_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `order`
@@ -801,19 +702,6 @@ ALTER TABLE `member`
   ADD CONSTRAINT `member_ibfk_1` FOREIGN KEY (`AdminID`) REFERENCES `admin` (`AdminID`);
 
 --
--- Constraints for table `news`
---
-ALTER TABLE `news`
-  ADD CONSTRAINT `fk_news_promotion` FOREIGN KEY (`promotion_id`) REFERENCES `promotions` (`promotion_id`),
-  ADD CONSTRAINT `news_ibfk_1` FOREIGN KEY (`AdminID`) REFERENCES `admin` (`AdminID`);
-
---
--- Constraints for table `news_clicks`
---
-ALTER TABLE `news_clicks`
-  ADD CONSTRAINT `news_clicks_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `news` (`NewsID`) ON DELETE CASCADE;
-
---
 -- Constraints for table `order`
 --
 ALTER TABLE `order`
@@ -825,13 +713,6 @@ ALTER TABLE `order`
 ALTER TABLE `order_shoes`
   ADD CONSTRAINT `order_shoes_ibfk_1` FOREIGN KEY (`OrderID`) REFERENCES `order` (`OrderID`),
   ADD CONSTRAINT `order_shoes_ibfk_2` FOREIGN KEY (`ShoesID`) REFERENCES `shoes` (`ShoesID`);
-
---
--- Constraints for table `promotion_shoes`
---
-ALTER TABLE `promotion_shoes`
-  ADD CONSTRAINT `promotion_shoes_ibfk_1` FOREIGN KEY (`promotion_id`) REFERENCES `promotions` (`promotion_id`),
-  ADD CONSTRAINT `promotion_shoes_ibfk_2` FOREIGN KEY (`shoe_id`) REFERENCES `shoes` (`ShoesID`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `sales`

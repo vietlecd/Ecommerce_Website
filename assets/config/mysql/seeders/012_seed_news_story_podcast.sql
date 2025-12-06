@@ -1,5 +1,5 @@
 -- Seeder 012: Story + Podcast Transcript
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Podcast Transcript: Behind the Outsole Episode 12',
     'Full transcript of our design podcast featuring the Outsole Engineering Lead, layered with behind-the-mic commentary, cultural footnotes, and community shoutouts.',
@@ -47,7 +47,6 @@ VALUES (
      <p>Maya teases an upcoming episode featuring cobblers in Nairobi who stitch recycled banners into sandals. She thanks the audience, fades the music, and the episode ends with the sound of a single heel strike echoing down a hallway—a reminder that every journey begins with one step cared for.</p>',
     4,
     'podcast',
-    NULL,
     'https://images.unsplash.com/photo-1475724017904-b712052c192a?auto=format&fit=crop&w=1200&q=80'
 );
 

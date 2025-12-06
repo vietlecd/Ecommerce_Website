@@ -1,5 +1,5 @@
 -- Seeder 021: Artist Residency Journal
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Artist Residency Journal: Week-by-Week Notes',
     'Resident artist Talia Owens documents her four-week stay inside our atelier with immersive detail.',
@@ -36,7 +36,6 @@ VALUES (
      <p>Download the residency zine, behind-the-scenes film, and blueprint pack. Zine includes essays, sketches, and poems. Film documents process, while blueprint pack shares patterns for educational use. Residency impact extends beyond walls.</p>',
     10,
     'journal',
-    NULL,
     'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1200&q=80'
 );
 

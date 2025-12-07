@@ -1,5 +1,5 @@
 -- Seeder 008: City Guide Tokyo
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'City Guide: Tokyo Sneaker Trail',
     'An immersive 10,000-word field guide charting every micro-moment of the ultimate day in Tokyo for footwear obsessives, blending cultural context with tactical navigation tips.',
@@ -40,7 +40,6 @@ VALUES (
      <p>End the night near Asakusa''s Sumida River promenade where lantern-lit bridges cast amber halos on water. Swap into cushioned slip-ons to give arches respite. Glide along the boardwalk, letting cool breezes wick away lacquer fumes from the workshop. Record final reflections in your journal: lessons learned, strangers met, textures felt. Use <em>italic handwriting</em> for intentions you''ll carry home and bold strokes for immediate to-dos like ordering replacement laces before customs reroute your suitcase. Seal the entry with a washi sticker depicting koi fish; legend says they symbolize perseverance. Before heading to your capsule hotel, scan QR codes on each purchase so the ShoeStore app unlocks hidden badges commemorating Tokyo''s neighborhoods. Crawl into your pod, dim the light, and sync sleep mode on your wearable. Tomorrow, you edit photos, share stories, and maybe plan Osaka. For tonight, breathe gratitude for a city that treated your sneakers as passports to endless discovery.</p>',
     7,
     'city-guide',
-    NULL,
     'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80'
 );
 

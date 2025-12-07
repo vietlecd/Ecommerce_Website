@@ -2,28 +2,55 @@
 require_once 'models/NewsModel.php';
 require_once 'models/PromotionModel.php';
 
-class AdminNewsController {
+class AdminNewsController
+{
     private $newsModel;
     private $promotionModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->newsModel = new NewsModel();
         $this->promotionModel = new PromotionModel();
     }
 
-    public function manage() {
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    private function assertAdmin(): void
+    {
+        if (empty($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
+            http_response_code(401);
             header('Location: index.php?controller=auth&action=login');
             exit;
         }
+    }
+
+    public function manage()
+    {
+        $this->assertAdmin();
 
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $status = isset($_GET['status']) ? trim($_GET['status']) : 'all';
-        $limit = 5;
+        $limit = isset($_GET['limit']) ? max(1, (int)$_GET['limit']) : 20;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
 
-        $news = $this->newsModel->getNewsWithAdmin($search, $limit, $offset, $status);
+        $sort = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
+        $allowedSorts = [
+            'newest',
+            'oldest',
+            'views_desc',
+            'views_asc',
+            'author_asc',
+            'author_desc',
+            'title_asc',
+            'title_desc',
+            'id_asc',
+            'id_desc'
+        ];
+
+        if (!in_array($sort, $allowedSorts, true)) {
+            $sort = 'newest';
+        }
+
+        $news = $this->newsModel->getNewsWithAdmin($search, $limit, $offset, $status, $sort);
         $totalNews = $this->newsModel->getNewsCount($search, $status);
         $totalPages = ceil($totalNews / $limit);
 
@@ -32,11 +59,9 @@ class AdminNewsController {
         require_once 'views/admin/components/admin_footer.php';
     }
 
-    public function stats() {
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            header('Location: index.php?controller=auth&action=login');
-            exit;
-        }
+    public function stats()
+    {
+        $this->assertAdmin();
 
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $limit = 5;
@@ -52,133 +77,399 @@ class AdminNewsController {
         require_once 'views/admin/components/admin_footer.php';
     }
 
-    public function addNews() {
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            header('Location: index.php?controller=auth&action=login');
-            exit;
-        }
+    public function addNews()
+    {
+        $this->assertAdmin();
 
         $promotions = $this->promotionModel->getAllPromotions();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
-            $content = trim($_POST['content']);
-            $admin_id = $_SESSION['user_id'];
-            $news_type = trim($_POST['news_type']);
-            $promotion_id = !empty($_POST['promotion_id']) ? (int)$_POST['promotion_id'] : null;
-            $thumbnail = null;
+        $fieldErrors  = [];
+        $old          = [];
+        $toastError   = null;
+        $toastSuccess = null;
 
-            // Xử lý upload ảnh
-            if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                $maxFileSize = 5 * 1024 * 1024;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            require_once 'views/admin/components/header.php';
+            require_once 'views/admin/pages/add-news.php';
+            require_once 'views/admin/components/admin_footer.php';
+            return;
+        }
 
-                $fileType = $_FILES['thumbnail']['type'];
-                $fileSize = $_FILES['thumbnail']['size'];
-                $fileTmp = $_FILES['thumbnail']['tmp_name'];
+        $title       = trim($_POST['title']        ?? '');
+        $description = trim($_POST['description']  ?? '');
+        $content     = trim($_POST['content_html'] ?? '');
+        $news_type   = trim($_POST['news_type']    ?? 'general');
+        $draft_token = trim($_POST['draft_token']  ?? '');
 
-                if (!in_array($fileType, $allowedTypes)) {
-                    $error = 'Chỉ cho phép upload file ảnh (JPEG, PNG, GIF).';
-                } elseif ($fileSize > $maxFileSize) {
-                    $error = 'Kích thước file không được vượt quá 5MB.';
-                } else {
-                    $fileExt = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
-                    $fileName = 'news_' . time() . '.' . $fileExt;
-                    $uploadPath = 'assets/images/news/' . $fileName;
+        $promotionIdsRaw = $_POST['promotion_ids'] ?? [];
+        if (!is_array($promotionIdsRaw)) {
+            $promotionIdsRaw = [$promotionIdsRaw];
+        }
 
-                    if (move_uploaded_file($fileTmp, $uploadPath)) {
-                        $thumbnail = $uploadPath;
-                    } else {
-                        $error = 'Không thể upload ảnh. Vui lòng thử lại.';
+        $promotionIds = array_values(
+            array_filter(
+                array_map('intval', $promotionIdsRaw),
+                fn($x) => $x > 0
+            )
+        );
+
+        $admin_id = $_SESSION['user_id'] ?? null;
+
+        if ($title === '') {
+            $fieldErrors['title'][] = 'Tiêu đề không được để trống.';
+        }
+        if ($description === '') {
+            $fieldErrors['description'][] = 'Mô tả ngắn không được để trống.';
+        }
+        if ($content === '') {
+            $fieldErrors['content_html'][] = 'Nội dung không được để trống.';
+        }
+        if ($news_type === '') {
+            $fieldErrors['news_type'][] = 'Loại tin không hợp lệ.';
+        }
+        if (!$admin_id) {
+            $fieldErrors['general'][] = 'Phiên đăng nhập không hợp lệ.';
+        }
+
+        $thumbnailUrl = null;
+
+        if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
+            try {
+                $tmp  = $_FILES['thumbnail']['tmp_name'];
+                $size = (int)($_FILES['thumbnail']['size'] ?? 0);
+
+                $fi   = new finfo(FILEINFO_MIME_TYPE);
+                $mime = $fi->file($tmp);
+
+                $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+                if (!in_array($mime, $allowed, true)) {
+                    $fieldErrors['thumbnail'][] = 'Thumbnail phải là JPEG/PNG/WebP/GIF.';
+                }
+                if ($size > 10 * 1024 * 1024) {
+                    $fieldErrors['thumbnail'][] = 'Thumbnail vượt quá 10MB.';
+                }
+
+                if (empty($fieldErrors['thumbnail'])) {
+                    $rootDir = dirname(__DIR__);
+                    $baseDir = $rootDir . '/images/news/thumb';
+                    $baseUrl = '/images/news/thumb';
+
+                    $targetDir = $baseDir . '/' . date('Y/m');
+                    if (!is_dir($targetDir) && !mkdir($targetDir, 0775, true) && !is_dir($targetDir)) {
+                        throw new RuntimeException('Không thể tạo thư mục thumbnail');
                     }
-                }
-            }
 
-            if (empty($title) || empty($description) || empty($content) || empty($news_type)) {
-                $error = 'Vui lòng điền đầy đủ các trường bắt buộc.';
-            } else {
-                if ($this->newsModel->addNews($title, $description, $content, $admin_id, $news_type, $promotion_id, $thumbnail)) {
-                    $success = 'Thêm bài viết thành công!';
-                } else {
-                    $error = 'Không thể thêm bài viết. Vui lòng thử lại.';
+                    $ext = match ($mime) {
+                        'image/jpeg' => '.jpg',
+                        'image/png'  => '.png',
+                        'image/webp' => '.webp',
+                        'image/gif'  => '.gif',
+                        default      => '.bin'
+                    };
+
+                    $filename   = bin2hex(random_bytes(16)) . $ext;
+                    $targetPath = $targetDir . '/' . $filename;
+
+                    if (!move_uploaded_file($tmp, $targetPath)) {
+                        throw new RuntimeException('Không thể lưu file thumbnail');
+                    }
+
+                    $thumbnailUrl = $baseUrl . '/' . date('Y/m') . '/' . $filename;
                 }
+            } catch (\Throwable $e) {
+                $fieldErrors['thumbnail'][] = 'Upload thumbnail thất bại: ' . $e->getMessage();
             }
         }
+
+        $old = [
+            'title'         => $title,
+            'description'   => $description,
+            'content_html'  => $content,
+            'news_type'     => $news_type,
+            'promotion_ids' => $promotionIds,
+        ];
+
+        $hasValidationError = false;
+        foreach ($fieldErrors as $arr) {
+            if (!empty($arr)) {
+                $hasValidationError = true;
+                break;
+            }
+        }
+
+        if ($hasValidationError) {
+            require_once 'views/admin/components/header.php';
+            require_once 'views/admin/pages/add-news.php';
+            require_once 'views/admin/components/admin_footer.php';
+            return;
+        }
+
+        $newsId = $this->newsModel->addNews(
+            $title,
+            $description,
+            $content,
+            $admin_id,
+            $news_type,
+            $thumbnailUrl
+        );
+
+        if (!$newsId) {
+            $toastError = 'Không thể thêm bài viết. Vui lòng thử lại.';
+
+            require_once 'views/admin/components/header.php';
+            require_once 'views/admin/pages/add-news.php';
+            require_once 'views/admin/components/admin_footer.php';
+            return;
+        }
+
+        if (!empty($promotionIds)) {
+            $this->promotionModel->syncNewsPromotions($newsId, $promotionIds);
+        }
+
+        $toastSuccess = 'Thêm bài viết thành công!';
+        $old            = [];
+        $fieldErrors    = [];
+        $selectedPromotionIds = [];
 
         require_once 'views/admin/components/header.php';
         require_once 'views/admin/pages/add-news.php';
         require_once 'views/admin/components/admin_footer.php';
+        return;
     }
 
-    public function editNews() {
+
+    public function editNews()
+    {
+        $isAjax = $this->isAjax();
+
         if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            if ($isAjax) {
+                header('Content-Type: application/json; charset=utf-8');
+                http_response_code(401);
+                echo json_encode(['ok' => false, 'error' => 'Unauthorized'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
             header('Location: index.php?controller=auth&action=login');
             exit;
         }
 
         if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+            if ($isAjax) {
+                header('Content-Type: application/json; charset=utf-8');
+                http_response_code(400);
+                echo json_encode(['ok' => false, 'error' => 'Thiếu hoặc sai id'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
             header('Location: index.php?controller=adminNews&action=manage');
             exit;
         }
 
-        $news_id = intval($_GET['id']);
+        $news_id   = (int)$_GET['id'];
         $edit_news = $this->newsModel->getNewsById($news_id);
-
         if (!$edit_news) {
+            if ($isAjax) {
+                header('Content-Type: application/json; charset=utf-8');
+                http_response_code(404);
+                echo json_encode(['ok' => false, 'error' => 'Bài viết không tồn tại'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
             header('Location: index.php?controller=adminNews&action=manage');
             exit;
         }
 
         $promotions = $this->promotionModel->getAllPromotions();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = trim($_POST['title']);
-            $description = trim($_POST['description']);
-            $content = trim($_POST['content']);
-            $news_type = trim($_POST['news_type']);
-            $promotion_id = !empty($_POST['promotion_id']) ? (int)$_POST['promotion_id'] : null;
-            $thumbnail = $edit_news['thumbnail'];
-
-            if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
-                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-                $maxFileSize = 5 * 1024 * 1024;
-
-                $fileType = $_FILES['thumbnail']['type'];
-                $fileSize = $_FILES['thumbnail']['size'];
-                $fileTmp = $_FILES['thumbnail']['tmp_name'];
-
-                if (!in_array($fileType, $allowedTypes)) {
-                    $error = 'Chỉ cho phép upload file ảnh (JPEG, PNG, GIF).';
-                } elseif ($fileSize > $maxFileSize) {
-                    $error = 'Kích thước file không được vượt quá 5MB.';
-                } else {
-                    $fileExt = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
-                    $fileName = 'news_' . $news_id . '_' . time() . '.' . $fileExt;
-                    $uploadPath = 'assets/images/news/' . $fileName;
-
-                    if ($thumbnail && file_exists($thumbnail)) {
-                        unlink($thumbnail);
-                    }
-
-                    if (move_uploaded_file($fileTmp, $uploadPath)) {
-                        $thumbnail = $uploadPath;
-                    } else {
-                        $error = 'Không thể upload ảnh. Vui lòng thử lại.';
-                    }
+        $selectedPromotionIds = [];
+        try {
+            $existingPromos = $this->promotionModel->getPromotionsByNewsId($news_id);
+            foreach ($existingPromos as $p) {
+                if (isset($p['PromotionID'])) {
+                    $selectedPromotionIds[] = (int)$p['PromotionID'];
                 }
             }
+            $selectedPromotionIds = array_values(array_unique($selectedPromotionIds));
+        } catch (\Throwable $e) {
+            error_log('getPromotionsByNewsId failed for news ' . $news_id . ': ' . $e->getMessage());
+        }
 
-            if (empty($title) || empty($description) || empty($content) || empty($news_type)) {
-                $error = 'Vui lòng điền đầy đủ các trường bắt buộc.';
+        $old          = [];
+        $fieldErrors  = [];
+        $toastError   = null;
+        $toastSuccess = null;
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            require_once 'views/admin/components/header.php';
+            require_once 'views/admin/pages/edit-news.php';
+            require_once 'views/admin/components/admin_footer.php';
+            return;
+        }
+
+        ini_set('display_errors', '0');
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+        $title       = trim($_POST['title']        ?? '');
+        $description = trim($_POST['description']  ?? '');
+        $content     = trim($_POST['content_html'] ?? '');
+        $news_type   = trim($_POST['news_type']    ?? 'general');
+
+        $promotionIdsRaw = $_POST['promotion_ids'] ?? [];
+        if (!is_array($promotionIdsRaw)) {
+            $promotionIdsRaw = [$promotionIdsRaw];
+        }
+
+        $promotionIds = array_values(
+            array_filter(
+                array_map('intval', $promotionIdsRaw),
+                fn($x) => $x > 0
+            )
+        );
+
+        $old = [
+            'title'         => $title,
+            'description'   => $description,
+            'content_html'  => $content,
+            'news_type'     => $news_type,
+            'promotion_ids' => $promotionIds,
+        ];
+        $selectedPromotionIds = $promotionIds;
+
+        $fieldErrors = [];
+
+        if ($title === '') {
+            $fieldErrors['title'][] = 'Tiêu đề không được để trống.';
+        }
+        if ($description === '') {
+            $fieldErrors['description'][] = 'Mô tả ngắn không được để trống.';
+        }
+        if ($content === '') {
+            $fieldErrors['content_html'][] = 'Nội dung không được để trống.';
+        }
+        if ($news_type === '') {
+            $fieldErrors['news_type'][] = 'Loại tin không hợp lệ.';
+        }
+
+        $thumbnailUrl = $edit_news['Thumbnail'] ?? null;
+
+        if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] !== UPLOAD_ERR_NO_FILE) {
+            if ($_FILES['thumbnail']['error'] === UPLOAD_ERR_OK) {
+                try {
+                    $tmp  = $_FILES['thumbnail']['tmp_name'];
+                    $size = (int)($_FILES['thumbnail']['size'] ?? 0);
+
+                    $fi   = new finfo(FILEINFO_MIME_TYPE);
+                    $mime = $fi->file($tmp);
+
+                    $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+                    if (!in_array($mime, $allowed, true)) {
+                        $fieldErrors['thumbnail'][] = 'Thumbnail phải là JPEG/PNG/WebP/GIF.';
+                    }
+                    if ($size > 10 * 1024 * 1024) {
+                        $fieldErrors['thumbnail'][] = 'Thumbnail vượt quá 10MB.';
+                    }
+
+                    if (empty($fieldErrors['thumbnail'])) {
+                        $rootDir = dirname(__DIR__);
+                        $baseDir = $rootDir . '/assets/images/news/thumb';
+                        $baseUrl = '/assets/images/news/thumb';
+
+                        $targetDir = $baseDir . '/' . date('Y/m');
+                        if (!is_dir($targetDir) && !mkdir($targetDir, 0775, true) && !is_dir($targetDir)) {
+                            throw new RuntimeException('Không thể tạo thư mục thumbnail');
+                        }
+
+                        $ext = match ($mime) {
+                            'image/jpeg' => '.jpg',
+                            'image/png'  => '.png',
+                            'image/webp' => '.webp',
+                            'image/gif'  => '.gif',
+                            default      => '.bin'
+                        };
+
+                        $filename   = bin2hex(random_bytes(16)) . $ext;
+                        $targetPath = $targetDir . '/' . $filename;
+
+                        if (!move_uploaded_file($tmp, $targetPath)) {
+                            throw new RuntimeException('Không thể lưu file thumbnail');
+                        }
+
+                        $thumbnailUrl = $baseUrl . '/' . date('Y/m') . '/' . $filename;
+                    }
+                } catch (\Throwable $e) {
+                    $fieldErrors['thumbnail'][] = 'Upload thumbnail thất bại: ' . $e->getMessage();
+                }
             } else {
-                if ($this->newsModel->updateNews($news_id, $title, $description, $content, $news_type, $promotion_id, $thumbnail)) {
-                    $success = 'Cập nhật bài viết thành công!';
-                    $edit_news = $this->newsModel->getNewsById($news_id);
-                } else {
-                    $error = 'Không thể cập nhật bài viết. Vui lòng thử lại.';
+                $fieldErrors['thumbnail'][] = 'Upload thumbnail thất bại (mã lỗi: ' . $_FILES['thumbnail']['error'] . ').';
+            }
+        }
+
+        if (!empty($fieldErrors)) {
+            $flat = [];
+            foreach ($fieldErrors as $msgs) {
+                foreach ($msgs as $m) {
+                    $flat[] = $m;
                 }
             }
+            $toastError = implode("\n", $flat);
+
+            if ($isAjax) {
+                header('Content-Type: application/json; charset=utf-8');
+                http_response_code(400);
+                echo json_encode([
+                    'ok'          => false,
+                    'error'       => $toastError,
+                    'fieldErrors' => $fieldErrors,
+                ], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            require_once 'views/admin/components/header.php';
+            require_once 'views/admin/pages/edit-news.php';
+            require_once 'views/admin/components/admin_footer.php';
+            return;
+        }
+
+        $ok = $this->newsModel->updateNews(
+            $news_id,
+            $title,
+            $description,
+            $content,
+            $news_type,
+            $thumbnailUrl
+        );
+
+        if ($ok) {
+            $this->promotionModel->syncNewsPromotions($news_id, $promotionIds);
+        }
+
+        if ($isAjax) {
+            header('Content-Type: application/json; charset=utf-8');
+            if ($ok) {
+                http_response_code(200);
+                echo json_encode([
+                    'ok'            => true,
+                    'message'       => 'Cập nhật bài viết thành công!',
+                    'thumbnail_url' => $thumbnailUrl
+                ], JSON_UNESCAPED_UNICODE);
+            } else {
+                http_response_code(500);
+                echo json_encode([
+                    'ok'    => false,
+                    'error' => 'Không thể cập nhật bài viết. Vui lòng thử lại.'
+                ], JSON_UNESCAPED_UNICODE);
+            }
+            exit;
+        }
+
+        if ($ok) {
+            $toastSuccess = 'Cập nhật bài viết thành công!';
+            $edit_news = $this->newsModel->getNewsById($news_id);
+            $selectedPromotionIds = $promotionIds;
+            $old = [];
+            $fieldErrors = [];
+        } else {
+            $toastError = 'Không thể cập nhật bài viết. Vui lòng thử lại.';
         }
 
         require_once 'views/admin/components/header.php';
@@ -186,11 +477,11 @@ class AdminNewsController {
         require_once 'views/admin/components/admin_footer.php';
     }
 
-    public function deleteNews() {
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            header('Location: index.php?controller=auth&action=login');
-            exit;
-        }
+
+
+    public function deleteNews()
+    {
+        $this->assertAdmin();
 
         if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
             header('Location: index.php?controller=adminNews&action=manage');
@@ -200,9 +491,19 @@ class AdminNewsController {
         $news_id = intval($_GET['id']);
         $news = $this->newsModel->getNewsById($news_id);
 
-        if ($news && $news['thumbnail'] && file_exists($news['thumbnail'])) {
-            unlink($news['thumbnail']);
+        if ($news && !empty($news['Thumbnail'])) {
+            $thumbUrl = $news['Thumbnail'];
+
+            if (str_starts_with($thumbUrl, '/assets/images/')) {
+                $rootDir  = dirname(__DIR__);
+                $filePath = $rootDir . $thumbUrl;
+
+                if (is_file($filePath)) {
+                    @unlink($filePath);
+                }
+            }
         }
+
 
         if ($this->newsModel->deleteNews($news_id)) {
             $success = 'Xóa bài viết thành công!';
@@ -212,5 +513,39 @@ class AdminNewsController {
 
         header('Location: index.php?controller=adminNews&action=manage');
         exit;
+    }
+
+    public function show()
+    {
+        $this->assertAdmin();
+
+        $id = (int)($_GET['id'] ?? 0);
+        if ($id <= 0) {
+            http_response_code(404);
+            echo 'Not found';
+            return;
+        }
+
+        $news = $this->newsModel->getNewsById($id);
+        if (!$news) {
+            http_response_code(404);
+            echo 'Not found';
+            return;
+        }
+
+        $promotions = $this->promotionModel->getPromotionsByNewsId($id, true);
+
+        require_once 'views/admin/components/header.php';
+        require_once 'views/admin/pages/view-news.php';
+        require_once 'views/admin/components/admin_footer.php';
+    }
+
+    private function isAjax(): bool
+    {
+        if (strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest') return true;
+        if (($_POST['ajax'] ?? '') === '1') return true;
+        $accept = strtolower($_SERVER['HTTP_ACCEPT'] ?? '');
+        if (strpos($accept, 'application/json') !== false) return true;
+        return false;
     }
 }

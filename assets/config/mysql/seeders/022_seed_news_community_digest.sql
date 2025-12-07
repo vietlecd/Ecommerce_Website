@@ -1,5 +1,5 @@
 -- Seeder 022: Community Digest
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Community Digest: July Highlights',
     'Monthly roundup featuring member spotlights, forum threads, and UGC challenges with expanded storytelling.',
@@ -36,7 +36,6 @@ VALUES (
      <p>Meetup RSVPs now include accessibility notes, buddy systems, and gear swaps. Photos and recaps uploaded within 48 hours.</p>',
     1,
     'community',
-    NULL,
     'https://images.unsplash.com/photo-1475724017904-b712052c192a?auto=format&fit=crop&w=1200&q=80'
 );
 

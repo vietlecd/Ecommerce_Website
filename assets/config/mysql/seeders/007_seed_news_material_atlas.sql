@@ -1,5 +1,5 @@
 -- Seeder 007: Material Atlas Dossier
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Material Atlas Dossier: 12 Fabrics, 30 Experiments',
     'Comprehensive lab documentation covering experimental materials, testing methodologies, performance analysis, and future research directions from the Material Futures Lab.',
@@ -47,6 +47,5 @@ VALUES (
      <p>The Material Futures Lab will host <em>live demonstrations</em> on material splicing techniques in August, providing opportunities for researchers, designers, and industry partners to observe processes and discuss applications. These events facilitate knowledge sharing that accelerates development and helps identify opportunities for collaboration. The lab maintains open approach to sharing findings through publications, presentations, and partnerships that advance material innovation broadly rather than keeping knowledge proprietary. <strong>Community engagement</strong> includes R&D forum where researchers can discuss challenges, share insights, and collaborate on solutions that benefit entire field. The RSVP process for August demonstrations ensures appropriate capacity while allowing interested parties to participate. The collaboration extends to partnerships with academic institutions, material suppliers, and product manufacturers who bring different perspectives and capabilities to material development. These partnerships create synergies that accelerate progress beyond what any single organization could achieve independently. The knowledge sharing also includes transparent communication about both successes and failures, recognizing that learning from challenges is as valuable as celebrating achievements. The collaborative approach reflects understanding that material innovation requires collective effort and that progress benefits entire industry rather than individual organizations. The future of material development depends on continued collaboration and knowledge sharing that builds on current findings and explores new possibilities.</p>',
     6,
     'lab-notes',
-    NULL,
     'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1200&q=80'
 );

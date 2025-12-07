@@ -1,6 +1,6 @@
 -- Seeder 016: Autumn/Winter Lookbook Story
 
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Autumn/Winter Lookbook Story: 6 Editorial Spreads',
     'Narrative photo essay walking through each spread of the AW lookbook, blending product specs with immersion cues.',
@@ -55,6 +55,5 @@ VALUES (
      <p>Download high-res spreads and behind-the-scenes footage in the media kit.</p>',
     5,
     'lookbook',
-    NULL,
     'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80'
 );

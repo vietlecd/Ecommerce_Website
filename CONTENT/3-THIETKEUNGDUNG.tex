@@ -1,0 +1,108 @@
+\section{Thiết kế ứng dụng}
+
+\subsection{Kiến trúc hệ thống}
+
+Website bán giày trực tuyến được thiết kế dựa trên kiến trúc MVC (Model-View-Controller), đảm bảo sự tách biệt rõ ràng giữa dữ liệu, giao diện và logic xử lý. Cụ thể:
+
+\begin{itemize}
+    \item \textbf{Model}: Đại diện cho cấu trúc dữ liệu của ứng dụng, bao gồm các bảng trong cơ sở dữ liệu như Members, Products, Orders và các mối quan hệ giữa chúng.
+    \item \textbf{View}: Hiển thị thông tin cho người dùng thông qua giao diện trực quan được phát triển bằng HTML5, CSS3 và JavaScript.
+    \item \textbf{Controller}: Xử lý các yêu cầu từ người dùng, tương tác với Model và trả kết quả về View.
+\end{itemize}
+
+Nền tảng công nghệ bao gồm:
+\begin{itemize}
+    \item \textbf{Frontend}: HTML5, CSS3, JavaScript
+    \item \textbf{Backend}: PHP
+    \item \textbf{Database}: MySQL
+    \item \textbf{Web Server}: Apache
+\end{itemize}
+
+Kiến trúc này cho phép phát triển ứng dụng có tính mở rộng cao, dễ bảo trì và đáp ứng các yêu cầu nghiệp vụ phức tạp.
+
+\subsection{Các module chính của hệ thống}
+
+\subsubsection{Module người dùng}
+Module này quản lý mọi thông tin và hoạt động liên quan đến người dùng trên hệ thống:
+\begin{itemize}
+    \item \textbf{Đăng ký/Đăng nhập}: Cho phép người dùng tạo tài khoản mới hoặc đăng nhập vào hệ thống.
+    \item \textbf{Quản lý thông tin cá nhân}: Người dùng có thể cập nhật thông tin cá nhân, địa chỉ giao hàng, thay đổi mật khẩu.
+    \item \textbf{Lịch sử đơn hàng}: Hiển thị các đơn hàng đã đặt và trạng thái hiện tại.
+\end{itemize}
+
+\subsubsection{Module sản phẩm}
+Module này quản lý toàn bộ danh mục và thông tin sản phẩm trong hệ thống:
+\begin{itemize}
+    \item \textbf{Chi tiết sản phẩm}: Hiển thị thông tin chi tiết về từng sản phẩm.
+    \item \textbf{Quản lý kho hàng}: Cập nhật trạng thái.
+    \item \textbf{Quản lý giá cả}: Thiết lập giá bán, giá khuyến mãi và các chính sách giá.
+\end{itemize}
+
+\subsubsection{Module giỏ hàng và thanh toán}
+Module này xử lý quy trình mua hàng của người dùng:
+\begin{itemize}
+    \item \textbf{Thêm/Xóa sản phẩm}: Cho phép người dùng thêm hoặc xóa sản phẩm khỏi giỏ hàng.
+    \item \textbf{Cập nhật số lượng}: Điều chỉnh số lượng sản phẩm trong giỏ hàng.
+    \item \textbf{Tính toán giá}: Tự động tính toán tổng giá trị đơn hàng, bao gồm thuế và phí vận chuyển.
+    \item \textbf{Tích hợp cổng thanh toán}: Kết nối với các cổng thanh toán trực tuyến.
+    \item \textbf{Xác nhận đơn hàng}: Xử lý xác nhận và hoàn tất đơn hàng.
+\end{itemize}
+
+\subsubsection{Module quản trị}
+Module này cung cấp công cụ cho quản trị viên điều hành hệ thống:
+\begin{itemize}
+    \item \textbf{Quản lý người dùng}: Theo dõi và quản lý tài khoản người dùng.
+    \item \textbf{Quản lý sản phẩm}: Thêm, sửa, xóa sản phẩm và danh mục.
+    \item \textbf{Quản lý đơn hàng}: Xem và cập nhật trạng thái đơn hàng.
+    \item \textbf{Quản lý khuyến mãi}: Thiết lập và theo dõi các chương trình khuyến mãi.
+\end{itemize}
+
+
+\subsection{Giao diện người dùng}
+
+\subsubsection{Trang chủ}
+\begin{itemize}
+    \item \textbf{Banner quảng cáo}: Hiển thị các chiến dịch tiếp thị và sản phẩm mới.
+    \item \textbf{Sản phẩm nổi bật}: Trưng bày các sản phẩm bán chạy hoặc đang khuyến mãi.
+    \item \textbf{Danh mục sản phẩm}: Liệt kê các danh mục sản phẩm chính.
+    \item \textbf{Tin tức/Khuyến mãi}: Thông báo về các sự kiện và ưu đãi đặc biệt.
+\end{itemize}
+
+\subsubsection{Trang sản phẩm}
+\begin{itemize}
+    \item \textbf{Hiển thị sản phẩm dạng lưới}: Sắp xếp sản phẩm dạng lưới cho hiển thị tối ưu.
+    \item \textbf{Phân trang}: Chia nhỏ danh sách sản phẩm thành nhiều trang.
+\end{itemize}
+
+\subsubsection{Trang chi tiết sản phẩm}
+\begin{itemize}
+    \item \textbf{Thông tin chi tiết}: Mô tả đầy đủ về sản phẩm, bao gồm kích thước, màu sắc.
+\end{itemize}
+
+\subsubsection{Trang Khuyến Mãi:}
+\begin{itemize}
+    \item \textbf{Danh sách bài viết}: Hiển thị các bài khuyến mãi dưới dạng danh sách hoặc lưới.
+    \item \textbf{Hình ảnh đại diện}: Mỗi khuyến mãi có hình ảnh thumbnail minh họa.
+    \item \textbf{Thông tin cơ bản}: Hiển thị tiêu đề, mô tả ngắn, và ngày đăng của khuyến mãi.
+\end{itemize}
+\subsection{Quy trình xử lý đơn hàng}
+
+Quy trình xử lý đơn hàng trên hệ thống bao gồm các bước sau:
+\begin{enumerate}
+    \item \textbf{Thêm vào giỏ hàng}: Người dùng chọn sản phẩm và thêm vào giỏ hàng.
+    \item \textbf{Xác nhận thông tin}: Người dùng kiểm tra và cập nhật thông tin giao hàng.
+    \item \textbf{Chọn phương thức thanh toán}: Người dùng chọn phương thức thanh toán phù hợp.
+    \item \textbf{Xác nhận đơn hàng}: Người dùng xác nhận chi tiết đơn hàng.
+    \item \textbf{Xử lý thanh toán}: Hệ thống xử lý giao dịch thanh toán.
+    \item \textbf{Cập nhật trạng thái}: Hệ thống cập nhật trạng thái đơn hàng.
+\end{enumerate}
+\subsection{Cơ sở dữ liệu}
+
+Hệ thống sử dụng cơ sở dữ liệu MySQL với các bảng chính sau:
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{IMG/showimages/ERD.jpg} 
+    \caption{ERD minh họa cơ sở dữ liệu}
+    \label{fig:my_label}
+\end{figure}

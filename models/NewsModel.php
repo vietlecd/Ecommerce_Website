@@ -1,18 +1,18 @@
 <?php
 
-class NewsModel {
+class NewsModel
+{
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $database = new Database();
         $this->db = $database->getConnection();
     }
 
-    public function getAllNews($search = '', $limit = 10, $offset = 0) {
-        $query = "SELECT n.*, p.promotion_type, p.promotion_name, p.end_date, p.start_date 
-                  FROM news n 
-                  LEFT JOIN promotions p ON n.promotion_id = p.promotion_id 
-                  WHERE (n.promotion_id IS NULL OR (p.start_date <= NOW() AND p.end_date >= NOW()))";
+    public function getAllNews($search = '', $limit = 10, $offset = 0)
+    {
+        $query = "SELECT n.* FROM news n";
         $params = [];
 
         if (!empty($search)) {
@@ -37,38 +37,72 @@ class NewsModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getNewsById($id) {
-        $stmt = $this->db->prepare("SELECT news.*, admin.Fname, admin.Lname, CONCAT(admin.Fname, ' ', admin.Lname) AS AdminName, p.end_date, p.start_date, p.promotion_name 
-                                   FROM news 
-                                   JOIN admin ON news.AdminID = admin.AdminID 
-                                   LEFT JOIN promotions p ON news.promotion_id = p.promotion_id 
-                                   WHERE NewsID = ?");
+    public function getNewsById($id)
+    {
+        $stmt = $this->db->prepare("
+            SELECT 
+                n.*,
+                CONCAT(a.Fname, ' ', a.Lname) AS AdminName,
+                p.*
+            FROM news n
+            JOIN admin a ON a.AdminID = n.CreatedBy
+            LEFT JOIN news_promotion np ON np.NewsID = n.NewsID
+            LEFT JOIN promotion p ON p.PromotionID = np.PromotionID
+            WHERE n.NewsID = :id
+            ORDER BY p.StartDate DESC;
+        ");
         $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (!$rows) return null;
+
+        $news = $rows[0];
+        $news['promotions'] = [];
+
+        foreach ($rows as $r) {
+            if ($r['PromotionID'] !== null) {
+                $news['promotions'][] = [
+                    'PromotionID'     => (int)$r['PromotionID'],
+                    'PromotionType'   => $r['PromotionType'],
+                    'PromotionName'   => $r['PromotionName'],
+                    'DiscountPercentage' => $r['DiscountPercentage'],
+                    'FixedPrice'      => $r['FixedPrice'],
+                    'StartDate'       => $r['StartDate'],
+                    'EndDate'         => $r['EndDate'],
+                    'Active'           => ($r['StartDate'] <= date('Y-m-d H:i:s')
+                        && date('Y-m-d H:i:s') <= $r['EndDate']),
+                ];
+            }
+        }
+
+        return $news;
     }
 
-    public function getRecentNews($limit = 4) {
-        $stmt = $this->db->prepare("SELECT NewsID, Title, Description, thumbnail, DateCreated 
+    public function getRecentNews($limit = 4)
+    {
+        $stmt = $this->db->prepare("SELECT NewsID, Title, Description, Thumbnail, CreatedAt 
                                     FROM news 
-                                    ORDER BY DateCreated DESC 
+                                    ORDER BY CreatedAt DESC 
                                     LIMIT :limit");
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getPopularNews($limit = 4) {
-        $stmt = $this->db->prepare("SELECT n.NewsID, n.Title, n.Description, n.thumbnail, n.DateCreated, COALESCE(nc.click_count, 0) AS clicks
+    public function getPopularNews($limit = 4)
+    {
+        $stmt = $this->db->prepare("SELECT n.NewsID, n.Title, n.Description, n.Thumbnail, n.CreatedAt, COALESCE(nc.click_count, 0) AS clicks
                                     FROM news n
                                     LEFT JOIN news_clicks nc ON n.NewsID = nc.news_id
-                                    ORDER BY clicks DESC, n.DateCreated DESC
+                                    ORDER BY clicks DESC, n.CreatedAt DESC
                                     LIMIT :limit");
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function incrementClickCount($newsId) {
+    public function incrementClickCount($newsId)
+    {
         $query = "SELECT click_count FROM news_clicks WHERE news_id = :news_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':news_id', (int)$newsId, PDO::PARAM_INT);
@@ -87,7 +121,8 @@ class NewsModel {
         $stmt->execute();
     }
 
-    public function getClickStats($search = '', $limit = 10, $offset = 0) {
+    public function getClickStats($search = '', $limit = 10, $offset = 0)
+    {
         $query = "SELECT n.NewsID, n.Title, nc.click_count, nc.last_clicked_at 
                   FROM news n 
                   LEFT JOIN news_clicks nc ON n.NewsID = nc.news_id";
@@ -114,7 +149,8 @@ class NewsModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getClickStatsCount($search = '') {
+    public function getClickStatsCount($search = '')
+    {
         $query = "SELECT COUNT(*) FROM news n";
         $params = [];
 
@@ -132,66 +168,156 @@ class NewsModel {
         return $stmt->fetchColumn();
     }
 
-    public function addNews($title, $description, $content, $admin_id, $news_type, $promotion_id = null, $thumbnail = null) {
-        $query = "INSERT INTO news (Title, Description, Content, AdminID, news_type, promotion_id, thumbnail) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public function addNews($title, $description, $content, $admin_id, $news_type, $thumbnail = null)
+    {
+        $query = "INSERT INTO news (Title, Description, Content, CreatedBy, NewsType, Thumbnail) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($query);
-        return $stmt->execute([$title, $description, $content, $admin_id, $news_type, $promotion_id, $thumbnail]);
+
+        $ok = $stmt->execute([$title, $description, $content, $admin_id, $news_type, $thumbnail]);
+
+        if (!$ok) {
+            return 0;
+        }
+
+        return (int)$this->db->lastInsertId();
     }
 
-    public function updateNews($id, $title, $description, $content, $news_type, $promotion_id = null, $thumbnail = null) {
-        $query = "UPDATE news SET Title = ?, Description = ?, Content = ?, news_type = ?, promotion_id = ?, thumbnail = ? 
+
+    public function updateNews($id, $title, $description, $content, $news_type, $thumbnail = null)
+    {
+        $query = "UPDATE news SET Title = ?, Description = ?, Content = ?, NewsType = ?, Thumbnail = ? 
                   WHERE NewsID = ?";
         $stmt = $this->db->prepare($query);
-        return $stmt->execute([$title, $description, $content, $news_type, $promotion_id, $thumbnail, $id]);
+        return $stmt->execute([$title, $description, $content, $news_type, $thumbnail, $id]);
     }
 
-    public function deleteNews($id) {
-        $stmt = $this->db->prepare("DELETE FROM news WHERE NewsID = ?");
-        return $stmt->execute([$id]);
+    public function deleteNews($id)
+    {
+        $id = (int)$id;
+
+        try {
+            $this->db->beginTransaction();
+
+            $stmt = $this->db->prepare("DELETE FROM news_promotion WHERE NewsID = :id");
+            $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $stmt2 = $this->db->prepare("DELETE FROM news WHERE NewsID = :id");
+            $stmt2->bindValue(':id', $id, PDO::PARAM_INT);
+            $stmt2->execute();
+
+            $this->db->commit();
+
+            return $stmt2->rowCount() > 0;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            error_log('deleteNews error: ' . $e->getMessage());
+            return false;
+        }
     }
 
-    public function getNewsWithAdmin($search = '', $limit = 10, $offset = 0, $status = 'all') {
-        $query = "SELECT n.*, CONCAT(admin.Fname, ' ', admin.Lname) AS AdminName, p.promotion_name, p.start_date, p.end_date 
-                  FROM news n 
-                  JOIN admin ON n.AdminID = admin.AdminID 
-                  LEFT JOIN promotions p ON n.promotion_id = p.promotion_id";
-        $params = [];
+
+    public function getNewsWithAdmin(
+        $search = '',
+        $limit = 10,
+        $offset = 0,
+        $status = 'all',
+        $sort = 'newest'
+    ) {
+        $query = "
+            SELECT 
+                n.*,
+                CONCAT(a.Fname, ' ', a.Lname) AS AdminName,
+                COALESCE(nc.ClickCount, 0)    AS ClickCount,
+                nc.LastClickedAt
+            FROM news n
+            JOIN admin a ON n.CreatedBy = a.AdminID
+            LEFT JOIN (
+                SELECT 
+                    news_id,
+                    SUM(click_count)      AS ClickCount,
+                    MAX(last_clicked_at)  AS LastClickedAt
+                FROM news_clicks
+                GROUP BY news_id
+            ) nc ON nc.news_id = n.NewsID
+        ";
 
         $conditions = [];
+        $params     = [];
 
-        // Bộ lọc trạng thái
-        if ($status !== 'all') {
-            if ($status === 'pending') {
-                $conditions[] = "n.promotion_id IS NOT NULL AND p.start_date > NOW()";
-            } elseif ($status === 'active') {
-                $conditions[] = "n.promotion_id IS NOT NULL AND p.start_date <= NOW() AND p.end_date >= NOW()";
-            } elseif ($status === 'expired') {
-                $conditions[] = "n.promotion_id IS NOT NULL AND p.end_date < NOW()";
+        if ($search !== '') {
+            $isNumericSearch = ctype_digit($search);
+            $like            = "%{$search}%";
+
+            $searchParts   = [];
+            $searchParts[] = 'n.Title LIKE :search_title';
+            $params[':search_title'] = $like;
+
+            $searchParts[] = 'n.Description LIKE :search_desc';
+            $params[':search_desc'] = $like;
+
+            $searchParts[] = 'n.Content LIKE :search_content';
+            $params[':search_content'] = $like;
+
+            $searchParts[] = 'CONCAT(a.Fname, " ", a.Lname) LIKE :search_author';
+            $params[':search_author'] = $like;
+
+            if ($isNumericSearch) {
+                $searchParts[]        = 'n.NewsID = :search_id';
+                $params[':search_id'] = (int)$search;
             }
+
+            $conditions[] = '(' . implode(' OR ', $searchParts) . ')';
         }
 
-        // Bộ lọc tìm kiếm
-        if (!empty($search)) {
-            $conditions[] = "(n.Title LIKE :search_title OR n.Description LIKE :search_desc OR n.Content LIKE :search_content)";
-            $params[':search_title'] = "%$search%";
-            $params[':search_desc'] = "%$search%";
-            $params[':search_content'] = "%$search%";
+        if ($status === 'pending') {
+            $conditions[] = "
+            EXISTS (
+                SELECT 1
+                FROM news_promotion np
+                JOIN promotion p ON p.PromotionID = np.PromotionID
+                WHERE np.NewsID = n.NewsID
+                  AND p.StartDate > NOW()
+            )
+        ";
+        } elseif ($status === 'active') {
+            $conditions[] = "
+            EXISTS (
+                SELECT 1
+                FROM news_promotion np
+                JOIN promotion p ON p.PromotionID = np.PromotionID
+                WHERE np.NewsID = n.NewsID
+                  AND p.StartDate <= NOW()
+                  AND p.EndDate   >= NOW()
+            )
+        ";
+        } elseif ($status === 'expired') {
+            $conditions[] = "
+            EXISTS (
+                SELECT 1
+                FROM news_promotion np
+                JOIN promotion p ON p.PromotionID = np.PromotionID
+                WHERE np.NewsID = n.NewsID
+                  AND p.EndDate < NOW()
+            )
+        ";
         }
 
-        // Thêm điều kiện vào truy vấn
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(" AND ", $conditions);
         }
 
-        $query .= " LIMIT :limit OFFSET :offset";
+        $orderBy = $this->getNewsWithAdminSort($sort);
+        $query  .= $orderBy . " LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($query);
 
-        if (!empty($search)) {
-            $stmt->bindValue(':search_title', "%$search%", PDO::PARAM_STR);
-            $stmt->bindValue(':search_desc', "%$search%", PDO::PARAM_STR);
-            $stmt->bindValue(':search_content', "%$search%", PDO::PARAM_STR);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue(
+                $key,
+                $value,
+                is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR
+            );
         }
 
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
@@ -201,53 +327,116 @@ class NewsModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getNewsCount($search = '', $status = 'all') {
-        $query = "SELECT COUNT(*) 
-                  FROM news 
-                  JOIN admin ON news.AdminID = admin.AdminID 
-                  LEFT JOIN promotions p ON news.promotion_id = p.promotion_id";
-        $params = [];
+
+    private function getNewsWithAdminSort($sort)
+    {
+        switch ($sort) {
+            case 'oldest':
+                return " ORDER BY n.CreatedAt ASC";
+
+            case 'views_desc':
+                return " ORDER BY ClickCount DESC, n.CreatedAt DESC";
+            case 'views_asc':
+                return " ORDER BY ClickCount ASC, n.CreatedAt DESC";
+
+            case 'author_asc':
+                return " ORDER BY AdminName ASC, n.CreatedAt DESC";
+            case 'author_desc':
+                return " ORDER BY AdminName DESC, n.CreatedAt DESC";
+
+            case 'title_asc':
+                return " ORDER BY n.Title ASC, n.CreatedAt DESC";
+            case 'title_desc':
+                return " ORDER BY n.Title DESC, n.CreatedAt DESC";
+
+            case 'id_desc':
+                return " ORDER BY n.NewsID DESC";
+            case 'id_asc':
+                return " ORDER BY n.NewsID ASC";
+
+            case 'newest':
+            default:
+                return " ORDER BY n.CreatedAt DESC";
+        }
+    }
+
+
+    public function getNewsCount($search = '', $status = 'all')
+    {
+        $query = "
+        SELECT COUNT(*) 
+        FROM news n
+        JOIN admin ON n.CreatedBy = admin.AdminID
+    ";
 
         $conditions = [];
+        $params = [];
 
-        // Bộ lọc trạng thái
-        if ($status !== 'all') {
-            if ($status === 'pending') {
-                $conditions[] = "news.promotion_id IS NOT NULL AND p.start_date > NOW()";
-            } elseif ($status === 'active') {
-                $conditions[] = "news.promotion_id IS NOT NULL AND p.start_date <= NOW() AND p.end_date >= NOW()";
-            } elseif ($status === 'expired') {
-                $conditions[] = "news.promotion_id IS NOT NULL AND p.end_date < NOW()";
-            }
-        }
-
-        // Bộ lọc tìm kiếm
         if (!empty($search)) {
-            $conditions[] = "(news.Title LIKE :search_title OR news.Description LIKE :search_desc OR news.Content LIKE :search_content)";
-            $params[':search_title'] = "%$search%";
-            $params[':search_desc'] = "%$search%";
-            $params[':search_content'] = "%$search%";
+            $conditions[] = "(n.Title LIKE :search_title OR n.Description LIKE :search_desc OR n.Content LIKE :search_content) OR CONCAT(admin.Fname, ' ', admin.Lname) LIKE :search_author";
+            $params[':search_title'] = "%{$search}%";
+            $params[':search_desc'] = "%{$search}%";
+            $params[':search_content'] = "%{$search}%";
+            $params[':search_author'] = "%{$search}%";
         }
 
-        // Thêm điều kiện vào truy vấn
+        if ($status === 'pending') {
+            $conditions[] = "
+            EXISTS (
+                SELECT 1
+                FROM news_promotion np
+                JOIN promotion p ON p.PromotionID = np.PromotionID
+                WHERE np.NewsID = n.NewsID
+                  AND p.StartDate > NOW()
+            )
+        ";
+        } elseif ($status === 'active') {
+            $conditions[] = "
+            EXISTS (
+                SELECT 1
+                FROM news_promotion np
+                JOIN promotion p ON p.PromotionID = np.PromotionID
+                WHERE np.NewsID = n.NewsID
+                  AND p.StartDate <= NOW()
+                  AND p.EndDate   >= NOW()
+            )
+        ";
+        } elseif ($status === 'expired') {
+            $conditions[] = "
+            EXISTS (
+                SELECT 1
+                FROM news_promotion np
+                JOIN promotion p ON p.PromotionID = np.PromotionID
+                WHERE np.NewsID = n.NewsID
+                  AND p.EndDate < NOW()
+            )
+        ";
+        }
+
         if (!empty($conditions)) {
             $query .= " WHERE " . implode(" AND ", $conditions);
         }
 
         $stmt = $this->db->prepare($query);
+
         if (!empty($search)) {
-            $stmt->bindValue(':search_title', "%$search%", PDO::PARAM_STR);
-            $stmt->bindValue(':search_desc', "%$search%", PDO::PARAM_STR);
-            $stmt->bindValue(':search_content', "%$search%", PDO::PARAM_STR);
+            $stmt->bindValue(':search_title', "%{$search}%", PDO::PARAM_STR);
+            $stmt->bindValue(':search_desc', "%{$search}%", PDO::PARAM_STR);
+            $stmt->bindValue(':search_content', "%{$search}%", PDO::PARAM_STR);
+            $stmt->bindValue(':search_author', "%{$search}%", PDO::PARAM_STR);
         }
+
         $stmt->execute();
-        return $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
 
-    public function getPublicNewsCount($search = '') {
+
+    public function getPublicNewsCount($search = '')
+    {
         $query = "SELECT COUNT(*) FROM news n 
-                  LEFT JOIN promotions p ON n.promotion_id = p.promotion_id 
-                  WHERE (n.promotion_id IS NULL OR (p.start_date <= NOW() AND p.end_date >= NOW()))";
+                --   LEFT JOIN promotions p ON n.promotion_id = p.promotion_id 
+                --   WHERE (n.promotion_id IS NULL OR (p.start_date <= NOW() AND p.end_date >= NOW()))
+                  ";
         $params = [];
 
         if (!empty($search)) {

@@ -69,10 +69,10 @@
                     <i class="ti ti-device-floppy me-1"></i>
                     Save Content
                 </button>
-                <a href="/index.php?controller=adminDashboard&action=dashboard" class="btn">
+                <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
                     <i class="ti ti-x me-1"></i>
                     Cancel
-                </a>
+                </button>
             </div>
         </form>
     </div>

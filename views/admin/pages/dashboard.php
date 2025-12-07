@@ -10,6 +10,14 @@
     </div>
 </div>
 
+<?php
+$totalOrders = $totalOrders ?? 0;
+$monthlyRevenue = $monthlyRevenue ?? 0.0;
+$totalCustomers = $totalCustomers ?? 0;
+$totalProducts = $totalProducts ?? 0;
+$recentOrders = $recentOrders ?? [];
+?>
+
 <div class="row row-cards mb-4">
     <div class="col-sm-6 col-lg-3">
         <div class="card">
@@ -17,7 +25,7 @@
                 <div class="d-flex align-items-center">
                     <div class="subheader">Total Orders</div>
                 </div>
-                <div class="h1 mb-3"><?php echo number_format($totalOrders); ?></div>
+                <div class="h1 mb-3"><?php echo number_format((int)$totalOrders); ?></div>
                 <div class="d-flex mb-2">
                     <div class="text-secondary">All time orders</div>
                 </div>
@@ -30,7 +38,7 @@
                 <div class="d-flex align-items-center">
                     <div class="subheader">Monthly Revenue</div>
                 </div>
-                <div class="h1 mb-3">$<?php echo number_format($monthlyRevenue, 2); ?></div>
+                <div class="h1 mb-3">$<?php echo number_format((float)$monthlyRevenue, 2); ?></div>
                 <div class="d-flex mb-2">
                     <div class="text-secondary">Current month</div>
                 </div>
@@ -43,7 +51,7 @@
                 <div class="d-flex align-items-center">
                     <div class="subheader">Total Customers</div>
                 </div>
-                <div class="h1 mb-3"><?php echo number_format($totalCustomers); ?></div>
+                <div class="h1 mb-3"><?php echo number_format((int)$totalCustomers); ?></div>
                 <div class="d-flex mb-2">
                     <div class="text-secondary">Registered members</div>
                 </div>
@@ -56,7 +64,7 @@
                 <div class="d-flex align-items-center">
                     <div class="subheader">Total Products</div>
                 </div>
-                <div class="h1 mb-3"><?php echo number_format($totalProducts); ?></div>
+                <div class="h1 mb-3"><?php echo number_format((int)$totalProducts); ?></div>
                 <div class="d-flex mb-2">
                     <div class="text-secondary">Available products</div>
                 </div>

@@ -1,5 +1,5 @@
 -- Seeder 017: Customer Case Study
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Customer Case Study: Running Club Elevates Membership with ShoeStore',
     'Comprehensive analysis of how the Midtown Dashers running club transformed their community through strategic ShoeStore partnership, including implementation details, measurable outcomes, and future expansion plans.',
@@ -40,6 +40,5 @@ VALUES (
      <p>Adding NFC badges to race bibs represents <em>innovative approach</em> to race participation and member engagement that leverages technology to enhance both individual experience and community connection. The NFC badges will contain embedded chips that can be scanned with smartphones to access personalized race information, training data, and social sharing features that allow members to celebrate achievements and connect with each other. The badges will also integrate with ShoeStore app, automatically logging race participation and connecting race performance data with training history and footwear usage patterns. <strong>Data integration</strong> will provide insights about how different training approaches and footwear choices correlate with race performance, creating feedback loops that help members optimize their preparation and equipment selection. The NFC system will also enable real-time tracking during races, allowing family members and friends to follow participant progress and send encouragement messages. The badges will include custom club branding and member identification, creating sense of unity and pride during race events. The technology integration extends beyond race bibs to include potential future features like smart insoles that track running metrics in real-time, or augmented reality experiences that provide training guidance and motivation. The NFC badge system represents beginning of broader technology integration that will continue evolving as new capabilities become available and member needs are identified. The approach will be tested with pilot group before full implementation, ensuring that technology enhances rather than complicates member experience. The technology integration reflects partnership commitment to innovation and continuous improvement, recognizing that running community benefits from tools that make training more effective, enjoyable, and connected.</p>',
     6,
     'case-study',
-    NULL,
     'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80'
 );

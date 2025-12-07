@@ -1,5 +1,5 @@
 -- Seeder 013: Training Program
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Retail Athlete Program: 6-Week Curriculum Breakdown',
     'Detailed curriculum for training associates to become footwear fit experts, complete with rituals, data checkpoints, and community deliverables.',
@@ -47,7 +47,6 @@ VALUES (
      <p>Graduates present portfolios containing journals, metrics, testimonials, and a personal manifesto on retail leadership. Panels ask probing questions (\"How will you handle burnout?\" \"What does equity look like in allocation?\"). <u>Badges encode</u> RFID chips unlocking ongoing education modules and exclusive product allocations. Celebration includes family invites, catered snacks, and a DJ spinning tracks chosen by the cohort. Graduates earn more than certificates; they gain a lifelong network.</p>',
     10,
     'training',
-    NULL,
     'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80'
 );
 

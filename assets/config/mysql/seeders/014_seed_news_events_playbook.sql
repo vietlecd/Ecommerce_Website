@@ -1,5 +1,5 @@
 -- Seeder 014: Events Playbook
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Events Playbook: Hosting Pop-Up Labs in 5 Cities',
     'Framework for planning immersive pop-up experiences blending retail, education, and entertainment, with step-by-step rituals and metrics.',
@@ -40,7 +40,6 @@ VALUES (
      <p>Download the toolkit for vendor lists, budget templates, signage layouts, and sample contracts. We release source files so indie retailers can remix. Transparency multiplies impact.</p>',
     2,
     'event',
-    NULL,
     'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80'
 );
 

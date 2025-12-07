@@ -1,5 +1,5 @@
 -- Seeder 019: Collaboration Drop Story
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Collaboration Drop: ShoeStore x Atelier Solstice',
     'Comprehensive storytelling piece exploring the creative inspiration, material innovation, packaging design, launch strategy, and cultural impact of the limited-edition collaboration between ShoeStore and Atelier Solstice.',
@@ -40,6 +40,5 @@ VALUES (
      <p>The collaboration creates <u>long-term cultural impact</u> that extends beyond initial release period, influencing future design approaches and brand strategies. The success demonstrates that collaborations can achieve both commercial success and cultural significance when executed with care and authenticity. <strong>Legacy building</strong> includes documentation of the collaboration process, outcomes, and lessons learned that can inform future projects. The cultural impact is reflected in how the collaboration is remembered and referenced in discussions about successful brand partnerships and design innovation. The legacy includes influence on future collaborations, as other brands study the approach and outcomes to inform their own partnership strategies. The cultural impact extends to how customers think about products and brands, potentially shifting expectations about what collaborations can achieve. The legacy is preserved through products that become collectibles, documentation that tells the story, and community that maintains appreciation over time. The long-term impact reflects understanding that successful collaborations create value that extends beyond immediate commercial outcomes, contributing to broader cultural conversations and design evolution. The collaboration becomes part of brand histories for both partners, representing significant achievement that informs future direction. The cultural impact is measured not just in sales or media coverage, but in how the collaboration influences thinking about design, collaboration, and the relationship between brands and culture. The legacy ensures that the collaboration continues to provide value and inspiration long after initial release period has ended.</p>',
     8,
     'collaboration',
-    3,
     'https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1200&q=80'
 );

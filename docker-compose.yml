@@ -39,7 +39,6 @@ services:
     volumes:
       - .:/var/www/html
     user: "www-data"
-    entrypoint: ["/bin/bash", "/var/www/html/bin/docker-entrypoint.sh"]
     environment:
       - DB_HOST=mysql
       - DB_NAME=shoe
@@ -78,7 +77,7 @@ services:
     ports:
       - "4040:4040"
     environment:
-      - NGROK_AUTHTOKEN=35EwNeajg2LR3WrXmjcVS1Dmpol_7i9UrC3SQn65CX1rGtCEn
+      - NGROK_AUTHTOKEN=36Nm2x2eELkoCESmdEmov817QMB_6iEJw64ug78FMwuKo3et2
     command:
       - http
       - web:80

@@ -48,6 +48,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   }
+  const paymentMethodInputs = document.querySelectorAll('input[name="payment_method"]')
+  const cardDetails = document.querySelector("#card-details")
+
+  const applyPaymentVisibility = () => {
+    if (!paymentMethodInputs.length || !cardDetails) {
+      return
+    }
+    let currentMethod = "card"
+    paymentMethodInputs.forEach((input) => {
+      if (input.checked) {
+        currentMethod = input.value
+      }
+    })
+    const isCard = currentMethod === "card"
+    cardDetails.style.display = isCard ? "" : "none"
+  }
+
+  if (paymentMethodInputs.length && cardDetails) {
+    paymentMethodInputs.forEach((input) => {
+      input.addEventListener("change", applyPaymentVisibility)
+    })
+    applyPaymentVisibility()
+  }
   const initChatWidget = () => {
     if (window.__chatWidgetBootstrapped) {
       return

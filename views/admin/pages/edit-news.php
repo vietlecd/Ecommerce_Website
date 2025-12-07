@@ -75,8 +75,8 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
         <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                 <div>
-                    <h1 class="h4 mb-1">Edit Article</h1>
-                    <p class="text-muted small mb-0">Chỉnh sửa nội dung bài viết. Save chỉ bật khi có thay đổi.</p>
+                    <h1 class="mb-1">Edit News</h1>
+                    <p class="text-muted small mb-0">Edit the content of the article.</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
                     <span id="dirtyTag" class="dirty-indicator">
@@ -209,7 +209,7 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
                                         </select>
                                     </div>
                                     <div id="promoHelp" class="form-text">
-                                        Hold <kbd>Ctrl</kbd>/<kbd>⌘</kbd> để chọn nhiều promotions.
+                                        Hold <kbd>Ctrl</kbd>/<kbd>⌘</kbd> to select multiple promotions.
                                     </div>
                                 </div>
 
@@ -246,7 +246,7 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
                                     <button id="cancelBtn" type="button" class="btn btn-outline-secondary">Cancel</button>
                                 </div>
                                 <div class="form-text mt-2">
-                                    Cancel sẽ khôi phục lại toàn bộ giá trị ban đầu (và hủy ảnh tạm của phiên edit).
+                                    Cancel will restore all original values (and discard the temporary image of the edit session).
                                 </div>
                             </div>
                         </div>
@@ -493,7 +493,7 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
         });
 
         cancelBtn.addEventListener('click', () => {
-            if (!confirm('Hủy các thay đổi và khôi phục lại trạng thái ban đầu?')) return;
+            if (!confirm('Discard changes and restore to the original state?')) return;
 
             titleInput.value = initialState.title || '';
             descInput.value = initialState.desc || '';
@@ -526,11 +526,11 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
             setBaselineFromDOM();
             markDirtyIfChanged();
 
-            showToast('info', 'Đã khôi phục nội dung ban đầu.', 'Khôi phục');
+            showToast('info', 'Restored to the original content.', 'Restore');
         });
 
         backBtn.addEventListener('click', () => {
-            if (markDirtyIfChanged() && !confirm('Bạn có thay đổi chưa lưu. Rời trang?')) return;
+            if (markDirtyIfChanged() && !confirm('You have unsaved changes. Leave the page?')) return;
             if (window.history.length > 1) window.history.back();
             else window.location.href = '/index.php?controller=adminNews&action=manage';
         });

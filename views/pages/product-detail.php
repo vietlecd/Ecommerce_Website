@@ -498,7 +498,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const quantityPlus = document.querySelector('.quantity-plus');
     let maxQuantity = quantityInput ? parseInt(quantityInput.getAttribute('max')) || 999 : 999;
 
-    if (quantityMinus) {
+    // Tránh gắn sự kiện trùng với script.js
+    if (quantityMinus && !quantityMinus.dataset.bound) {
+        quantityMinus.dataset.bound = '1';
         quantityMinus.addEventListener('click', function() {
             let value = parseInt(quantityInput.value);
             if (value > 1) {
@@ -507,7 +509,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    if (quantityPlus) {
+    if (quantityPlus && !quantityPlus.dataset.bound) {
+        quantityPlus.dataset.bound = '1';
         quantityPlus.addEventListener('click', function() {
             let value = parseInt(quantityInput.value);
             if (value < maxQuantity) {
@@ -516,7 +519,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    if (quantityInput) {
+    if (quantityInput && !quantityInput.dataset.bound) {
+        quantityInput.dataset.bound = '1';
         quantityInput.addEventListener('change', function() {
             let value = parseInt(this.value);
             if (value < 1) {

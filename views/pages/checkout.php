@@ -32,45 +32,92 @@ $formatCurrency = function ($value) {
                     </div>
                     <div class="checkout-field">
                         <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>" required>
+                        <input type="text" id="name" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : htmlspecialchars($prefillName); ?>" required>
                     </div>
                     <div class="checkout-field">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
+                        <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : htmlspecialchars($prefillEmail); ?>" required>
                     </div>
                     <div class="checkout-field">
                         <label for="address">Address</label>
-                        <input type="text" id="address" name="address" value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?>" required>
+                        <input type="text" id="address" name="address" value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : htmlspecialchars($prefillAddress); ?>" required>
                     </div>
                     <div class="checkout-row">
                         <div class="checkout-field">
                             <label for="city">City</label>
-                            <input type="text" id="city" name="city" value="<?php echo isset($_POST['city']) ? htmlspecialchars($_POST['city']) : ''; ?>" required>
+                            <input type="text" id="city" name="city" value="<?php echo isset($_POST['city']) ? htmlspecialchars($_POST['city']) : htmlspecialchars($prefillCity); ?>" required>
                         </div>
                         <div class="checkout-field">
                             <label for="zip">ZIP</label>
-                            <input type="text" id="zip" name="zip" value="<?php echo isset($_POST['zip']) ? htmlspecialchars($_POST['zip']) : ''; ?>" required>
+                            <input type="text" id="zip" name="zip" value="<?php echo isset($_POST['zip']) ? htmlspecialchars($_POST['zip']) : htmlspecialchars($prefillZip); ?>" required>
                         </div>
                     </div>
+                    <?php if (!empty($savedAddresses)): ?>
+                        <div class="checkout-saved-addresses">
+                            <div class="saved-addresses-header">
+                                <strong>Saved addresses</strong>
+                                <span class="text-muted">Choose to auto fill</span>
+                            </div>
+                            <div class="saved-addresses-grid">
+                                <?php foreach ($savedAddresses as $addr): ?>
+                                    <div class="saved-address-card" data-address-json='<?php echo json_encode($addr, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>'>
+                                        <div class="saved-address-body">
+                                            <div class="saved-address-name"><?php echo htmlspecialchars($addr['name']); ?></div>
+                                            <div class="saved-address-line"><?php echo htmlspecialchars($addr['email']); ?></div>
+                                            <div class="saved-address-line"><?php echo htmlspecialchars($addr['address']); ?></div>
+                                            <div class="saved-address-line"><?php echo htmlspecialchars($addr['city']); ?>, <?php echo htmlspecialchars($addr['zip']); ?></div>
+                                        </div>
+                                        <div class="saved-address-actions">
+                                            <button type="submit"
+                                                    name="delete_address"
+                                                    value="<?php echo htmlspecialchars($addr['id']); ?>"
+                                                    class="address-delete-btn"
+                                                    aria-label="Delete address">&times;</button>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($addressNotice)): ?>
+                        <div class="checkout-alert checkout-alert-success"><?php echo htmlspecialchars($addressNotice); ?></div>
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <button type="submit" name="save_address" class="btn btn-outline" value="1">Save this address</button>
+                    <?php endif; ?>
                 </article>
 
                 <article class="checkout-card">
                     <div class="checkout-card-header">
                         <p class="section-eyebrow">Payment</p>
-                        <h3>Card details</h3>
+                        <h3>Payment method</h3>
                     </div>
                     <div class="checkout-field">
-                        <label for="card_number">Card Number</label>
-                        <input type="text" id="card_number" name="card_number" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>" required>
+                        <label class="payment-option">
+                            <input type="radio" name="payment_method" value="cod" <?php echo (!isset($_POST['payment_method']) || $_POST['payment_method'] === 'cod') ? 'checked' : ''; ?> data-payment-toggle>
+                            <span>Cash on Delivery (COD)</span>
+                        </label>
+                        <p class="form-hint">Pay with cash when the courier hands you the package.</p>
                     </div>
-                    <div class="checkout-row">
+                    <div class="checkout-field">
+                        <label class="payment-option">
+                            <input type="radio" name="payment_method" value="card" <?php echo (isset($_POST['payment_method']) && $_POST['payment_method'] === 'card') ? 'checked' : ''; ?> data-payment-toggle>
+                            <span>Credit / Debit card</span>
+                        </label>
+                        <p class="form-hint text-muted">Not implement – will have private sandbox.</p>
+                    </div>
+                    <div class="checkout-field payment-card-fields" data-card-fields>
+                        <label for="card_number">Card Number</label>
+                        <input type="text" id="card_number" name="card_number" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>" placeholder="Not available yet" disabled>
+                    </div>
+                    <div class="checkout-row payment-card-fields" data-card-fields>
                         <div class="checkout-field">
                             <label for="expiry">Expiry</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>" required>
+                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>" disabled>
                         </div>
                         <div class="checkout-field">
                             <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>" required>
+                            <input type="text" id="cvv" name="cvv" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>" disabled>
                         </div>
                     </div>
                 </article>
@@ -113,6 +160,9 @@ $formatCurrency = function ($value) {
                         </select>
                         <button type="submit" name="apply_coupon" class="btn btn-outline coupon-apply-btn">Apply</button>
                     </div>
+                    <?php if (!empty($couponNotice)): ?>
+                        <p class="coupon-note"><?php echo htmlspecialchars($couponNotice); ?></p>
+                    <?php endif; ?>
                     <?php if ($appliedCoupon): ?>
                         <div class="checkout-coupon-active">
                             <strong><?php echo htmlspecialchars($appliedCoupon['CodeTitle']); ?></strong>
@@ -142,7 +192,7 @@ $formatCurrency = function ($value) {
                         <strong><?php echo $formatCurrency($total); ?></strong>
                     </li>
                 </ul>
-                <p class="checkout-summary-note">We pre-authorize your card but only capture funds when the order ships.</p>
+                <p class="checkout-summary-note">Thanh toán COD: bạn trả tiền mặt khi nhận hàng. Thanh toán thẻ chưa hỗ trợ.</p>
                 <button type="submit" name="place_order" class="btn btn-full">Place Order</button>
             </aside>
         </form>
@@ -150,3 +200,151 @@ $formatCurrency = function ($value) {
 </section>
 
 <?php require_once 'views/components/footer.php'; ?>
+
+<style>
+.checkout-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 32px;
+    align-items: flex-start;
+}
+
+.checkout-summary {
+    position: sticky;
+    top: 120px;
+}
+
+@media (max-width: 900px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+    .checkout-summary {
+        position: static;
+    }
+}
+
+.saved-addresses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.saved-address-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    border-radius: 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    border: 1px solid rgba(15, 23, 42, 0.18);
+    background: #fff;
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.saved-address-card:hover {
+    border-color: rgba(239, 68, 68, 0.45);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    transform: translateY(-2px);
+}
+
+.saved-address-body {
+    flex: 1;
+}
+
+.saved-address-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.saved-address-actions {
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+}
+
+.address-delete-btn {
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.08);
+    color: #b91c1c;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.address-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.18);
+    color: #991b1b;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const paymentRadios = document.querySelectorAll('[data-payment-toggle]');
+    const cardBlocks = document.querySelectorAll('[data-card-fields]');
+    const disableCard = () => {
+        cardBlocks.forEach(el => {
+            el.style.display = 'none';
+            el.querySelectorAll('input').forEach(input => {
+                input.disabled = true;
+            });
+        });
+    };
+    const enableCard = () => {
+        cardBlocks.forEach(el => {
+            el.style.display = '';
+            el.querySelectorAll('input').forEach(input => {
+                input.disabled = false;
+            });
+        });
+    };
+
+    const updatePaymentUI = () => {
+        const selected = document.querySelector('[data-payment-toggle]:checked');
+        if (!selected) {
+            disableCard();
+            return;
+        }
+        if (selected.value === 'card') {
+            enableCard();
+        } else {
+            disableCard();
+        }
+    };
+
+    paymentRadios.forEach(radio => radio.addEventListener('change', updatePaymentUI));
+    updatePaymentUI();
+
+    // Saved addresses picker
+    const addressButtons = document.querySelectorAll('[data-address-json]');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const addressInput = document.getElementById('address');
+    const cityInput = document.getElementById('city');
+    const zipInput = document.getElementById('zip');
+
+    addressButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            try {
+                const data = JSON.parse(btn.getAttribute('data-address-json'));
+                if (nameInput && data.name) nameInput.value = data.name;
+                if (emailInput && data.email) emailInput.value = data.email;
+                if (addressInput && data.address) addressInput.value = data.address;
+                if (cityInput && data.city) cityInput.value = data.city;
+                if (zipInput && data.zip) zipInput.value = data.zip;
+            } catch (e) {
+                console.error('Failed to parse address', e);
+            }
+        });
+        const deleteBtn = btn.querySelector('.address-delete-btn');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+    });
+});
+</script>

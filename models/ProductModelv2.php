@@ -171,6 +171,17 @@ class ProductModel
         return count($products);
     }
 
+    public function getTotalProductsCount(): int
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT COUNT(*) AS total FROM shoes");
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)($row['total'] ?? 0);
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
+
     public function getAvailableSizes()
     {
         $stmt = $this->pdo->prepare("SELECT DISTINCT CAST(Size AS DECIMAL(10,2)) AS size FROM shoe_sizes ORDER BY size ASC");

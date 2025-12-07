@@ -23,7 +23,9 @@ class OrderModel
     public function getOrders(int $limit = 0, int $offset = 0)
     {
         $sql = "
-            SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status, m.Name AS customer_name, m.Email
+            SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status, 
+                   m.Name AS customer_name, 
+                   m.Email
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
             ORDER BY o.Date DESC
@@ -47,6 +49,19 @@ class OrderModel
         $stmt = $this->pdo->query("SELECT COUNT(*) AS total FROM `order`");
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return (int)($row['total'] ?? 0);
+    }
+
+    public function getMonthlyRevenue(): float
+    {
+        $stmt = $this->pdo->query("
+            SELECT COALESCE(SUM(Total_price), 0) AS revenue 
+            FROM `order` 
+            WHERE YEAR(Date) = YEAR(CURDATE()) 
+            AND MONTH(Date) = MONTH(CURDATE())
+            AND Status != 'Cancelled'
+        ");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (float)($row['revenue'] ?? 0);
     }
 
     // Lấy chi tiết đơn hàng theo ID
@@ -130,14 +145,14 @@ class OrderModel
     {
         $stmt = $this->pdo->prepare("
             SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status,
-                   COALESCE(m.Name, o.ShippingName) AS customer_name,
-                   COALESCE(m.Email, o.ShippingEmail) AS email
+                   m.Name AS customer_name,
+                   m.Email AS email
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
-            WHERE (m.Email = ? OR o.ShippingEmail = ?)
+            WHERE m.Email = ?
             ORDER BY o.Date DESC
         ");
-        $stmt->execute([$email, $email]);
+        $stmt->execute([$email]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

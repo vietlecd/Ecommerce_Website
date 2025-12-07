@@ -11,73 +11,73 @@
 </section>
 
 <?php if (!empty($recentNews) || !empty($popularNews)): ?>
-<section class="news-highlight-widgets">
-    <div class="news-widget-grid">
-        <?php if (!empty($recentNews)): ?>
-            <div class="news-widget-card" style="background-image: url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1000&q=80');">
-                <div class="news-widget-card-inner">
-                    <p class="news-widget-label">Recent</p>
-                    <h3>Fresh off the press</h3>
-                    <ul class="news-widget-items">
-                        <?php foreach ($recentNews as $item): ?>
-                            <?php
-                            $thumb = '/assets/images/placeholder.png';
-                            if (!empty($item['thumbnail'])) {
-                                if (filter_var($item['thumbnail'], FILTER_VALIDATE_URL)) {
-                                    $thumb = $item['thumbnail'];
-                                } elseif (file_exists($item['thumbnail'])) {
-                                    $thumb = '/' . ltrim($item['thumbnail'], '/');
+    <section class="news-highlight-widgets">
+        <div class="news-widget-grid">
+            <?php if (!empty($recentNews)): ?>
+                <div class="news-widget-card" style="background-image: url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1000&q=80');">
+                    <div class="news-widget-card-inner">
+                        <p class="news-widget-label">Recent</p>
+                        <h3>Fresh off the press</h3>
+                        <ul class="news-widget-items">
+                            <?php foreach ($recentNews as $item): ?>
+                                <?php
+                                $thumb = '/assets/images/placeholder.png';
+                                if (!empty($item['Thumbnail'])) {
+                                    if (filter_var($item['Thumbnail'], FILTER_VALIDATE_URL)) {
+                                        $thumb = $item['Thumbnail'];
+                                    } elseif (file_exists($item['Thumbnail'])) {
+                                        $thumb = '/' . ltrim($item['Thumbnail'], '/');
+                                    }
                                 }
-                            }
-                            ?>
-                            <li>
-                                <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
-                                    <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
-                                    <div>
-                                        <span><?php echo date('M d, Y', strtotime($item['DateCreated'])); ?></span>
-                                        <p><?php echo htmlspecialchars($item['Title']); ?></p>
-                                    </div>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                                ?>
+                                <li>
+                                    <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
+                                        <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
+                                        <div>
+                                            <span><?php echo date('M d, Y', strtotime($item['CreatedAt'])); ?></span>
+                                            <p><?php echo htmlspecialchars($item['Title']); ?></p>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
 
-        <?php if (!empty($popularNews)): ?>
-            <div class="news-widget-card" style="background-image: url('https://images.unsplash.com/photo-1520970014086-2208d157c9e2?auto=format&fit=crop&w=1000&q=80');">
-                <div class="news-widget-card-inner">
-                    <p class="news-widget-label">Popular</p>
-                    <h3>Most viewed stories</h3>
-                    <ul class="news-widget-items">
-                        <?php foreach ($popularNews as $item): ?>
-                            <?php
-                            $thumb = '/assets/images/placeholder.png';
-                            if (!empty($item['thumbnail'])) {
-                                if (filter_var($item['thumbnail'], FILTER_VALIDATE_URL)) {
-                                    $thumb = $item['thumbnail'];
-                                } elseif (file_exists($item['thumbnail'])) {
-                                    $thumb = '/' . ltrim($item['thumbnail'], '/');
+            <?php if (!empty($popularNews)): ?>
+                <div class="news-widget-card" style="background-image: url('https://images.unsplash.com/photo-1520970014086-2208d157c9e2?auto=format&fit=crop&w=1000&q=80');">
+                    <div class="news-widget-card-inner">
+                        <p class="news-widget-label">Popular</p>
+                        <h3>Most viewed stories</h3>
+                        <ul class="news-widget-items">
+                            <?php foreach ($popularNews as $item): ?>
+                                <?php
+                                $thumb = '/assets/images/placeholder.png';
+                                if (!empty($item['Thumbnail'])) {
+                                    if (filter_var($item['Thumbnail'], FILTER_VALIDATE_URL)) {
+                                        $thumb = $item['Thumbnail'];
+                                    } elseif (file_exists($item['Thumbnail'])) {
+                                        $thumb = '/' . ltrim($item['Thumbnail'], '/');
+                                    }
                                 }
-                            }
-                            ?>
-                            <li>
-                                <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
-                                    <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
-                                    <div>
-                                        <span><?php echo !empty($item['clicks']) ? number_format($item['clicks']) . ' views' : 'New'; ?></span>
-                                        <p><?php echo htmlspecialchars($item['Title']); ?></p>
-                                    </div>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                                ?>
+                                <li>
+                                    <a href="/index.php?controller=news&action=detail&id=<?php echo $item['NewsID']; ?>">
+                                        <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['Title']); ?>" loading="lazy">
+                                        <div>
+                                            <span><?php echo !empty($item['clicks']) ? number_format($item['clicks']) . ' views' : 'New'; ?></span>
+                                            <p><?php echo htmlspecialchars($item['Title']); ?></p>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        <?php endif; ?>
-    </div>
-</section>
+            <?php endif; ?>
+        </div>
+    </section>
 <?php endif; ?>
 
 <section class="news-search-panel">
@@ -86,11 +86,11 @@
         <input type="hidden" name="action" value="index">
         <label for="search" class="sr-only">Search news</label>
         <input type="text"
-               id="search"
-               name="search"
-               value="<?php echo htmlspecialchars($search); ?>"
-               placeholder="Search articles, promos, topics..."
-               class="news-search-input">
+            id="search"
+            name="search"
+            value="<?php echo htmlspecialchars($search); ?>"
+            placeholder="Search articles, promos, topics..."
+            class="news-search-input">
         <button type="submit" class="news-search-btn">
             <i class="fas fa-search"></i>
             <span>Search</span>
@@ -108,18 +108,18 @@
         <div class="news-grid">
             <?php foreach ($news as $item): ?>
                 <?php
-                    $thumbnailPath = '/assets/images/placeholder.png';
-                    if (!empty($item['thumbnail'])) {
-                        if (filter_var($item['thumbnail'], FILTER_VALIDATE_URL)) {
-                            $thumbnailPath = $item['thumbnail'];
-                        } elseif (file_exists($item['thumbnail'])) {
-                            $thumbnailPath = '/' . ltrim($item['thumbnail'], '/');
-                        }
+                $thumbnailPath = '/assets/images/placeholder.png';
+                if (!empty($item['Thumbnail'])) {
+                    if (filter_var($item['Thumbnail'], FILTER_VALIDATE_URL)) {
+                        $thumbnailPath = $item['Thumbnail'];
+                    } elseif (file_exists($item['Thumbnail'])) {
+                        $thumbnailPath = '/' . ltrim($item['Thumbnail'], '/');
                     }
-                    $typeLabel = !empty($item['news_type']) ? str_replace('_', ' ', $item['news_type']) : 'Update';
-                    $descriptionSnippet = !empty($item['Description'])
-                        ? mb_strimwidth(strip_tags($item['Description']), 0, 140, '...')
-                        : 'Tap to read the full story.';
+                }
+                $typeLabel = !empty($item['news_type']) ? str_replace('_', ' ', $item['news_type']) : 'Update';
+                $descriptionSnippet = !empty($item['Description'])
+                    ? mb_strimwidth(strip_tags($item['Description']), 0, 140, '...')
+                    : 'Tap to read the full story.';
                 ?>
                 <article class="news-card">
                     <a class="news-card-image" href="/index.php?controller=news&action=trackClick&id=<?php echo $item['NewsID']; ?>">
@@ -134,9 +134,9 @@
                     </a>
                     <div class="news-card-content">
                         <p class="news-card-meta">
-                            <span><?php echo date('M d, Y', strtotime($item['DateCreated'])); ?></span>
-                            <?php if (!empty($item['promotion_name'])): ?>
-                                · <span><?php echo htmlspecialchars($item['promotion_name']); ?></span>
+                            <span><?php echo date('M d, Y', strtotime($item['CreatedAt'])); ?></span>
+                            <?php if (!empty($item['PromotionName'])): ?>
+                                · <span><?php echo htmlspecialchars($item['PromotionName']); ?></span>
                             <?php endif; ?>
                         </p>
                         <h3><?php echo htmlspecialchars($item['Title']); ?></h3>
@@ -166,7 +166,7 @@
 
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
             <a class="news-pagination-link <?php echo $i === $page ? 'active' : ''; ?>"
-               href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $i; ?>">
+                href="/index.php?controller=news&action=index&search=<?php echo urlencode($search); ?>&page=<?php echo $i; ?>">
                 <?php echo $i; ?>
             </a>
         <?php endfor; ?>
@@ -180,37 +180,37 @@
 <?php endif; ?>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const countdownElements = document.querySelectorAll('.news-card-countdown');
+    document.addEventListener('DOMContentLoaded', function() {
+        const countdownElements = document.querySelectorAll('.news-card-countdown');
 
-    countdownElements.forEach(function(element) {
-        const endDate = new Date(element.getAttribute('data-end-date')).getTime();
-        const timerElement = element.querySelector('.timer');
+        countdownElements.forEach(function(element) {
+            const endDate = new Date(element.getAttribute('data-end-date')).getTime();
+            const timerElement = element.querySelector('.timer');
 
-        if (!timerElement) {
-            return;
-        }
-
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = endDate - now;
-
-            if (distance < 0) {
-                timerElement.innerHTML = 'Expired';
-                element.classList.add('expired');
+            if (!timerElement) {
                 return;
             }
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endDate - now;
 
-            timerElement.innerHTML = `${days}d ${hours}h left`;
-        }
+                if (distance < 0) {
+                    timerElement.innerHTML = 'Expired';
+                    element.classList.add('expired');
+                    return;
+                }
 
-        updateCountdown();
-        setInterval(updateCountdown, 60000);
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+                timerElement.innerHTML = `${days}d ${hours}h left`;
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 60000);
+        });
     });
-});
 </script>
 
 <?php require_once 'views/components/footer.php'; ?>

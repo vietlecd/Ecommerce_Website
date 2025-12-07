@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const plusBtn = document.querySelector(".quantity-plus")
   const quantityInput = document.querySelector(".quantity-input")
 
-  if (minusBtn && plusBtn && quantityInput) {
+  if (minusBtn && plusBtn && quantityInput && !minusBtn.dataset.bound && !plusBtn.dataset.bound) {
+    minusBtn.dataset.bound = "1"
+    plusBtn.dataset.bound = "1"
+
     minusBtn.addEventListener("click", () => {
       const currentValue = Number.parseInt(quantityInput.value)
       if (currentValue > 1) {

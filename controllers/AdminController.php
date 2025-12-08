@@ -253,16 +253,6 @@ class AdminController {
         require_once 'views/admin/pages/order-detail.php';
     }
 
-    public function customers() {
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            header('Location: index.php?controller=auth&action=login');
-            exit;
-        }
-
-        require_once 'views/admin/components/header.php';
-        require_once 'views/admin/pages/customers.php';
-    }
-
     private function collectSizeInputs(): array {
         $sizes = $_POST['sizes'] ?? [];
         $quantities = $_POST['size_quantities'] ?? [];

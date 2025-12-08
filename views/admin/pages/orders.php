@@ -146,8 +146,8 @@ $buildPageUrl = function (int $page) use ($baseQuery): string {
                 <tr>
                   <td class="fw-semibold">#<?php echo htmlspecialchars($order['OrderID']); ?></td>
                   <td>
-                    <div class="fw-semibold"><?php echo htmlspecialchars($order['customer_name']); ?></div>
-                    <div class="text-secondary small"><?php echo htmlspecialchars($order['Email']); ?></div>
+                    <div class="fw-semibold"><?php echo htmlspecialchars($order['customer_name'] ?? 'Guest'); ?></div>
+                    <div class="text-secondary small"><?php echo htmlspecialchars($order['Email'] ?? 'N/A'); ?></div>
                   </td>
                   <td><?php echo date('d/m/Y', strtotime($order['Date'])); ?></td>
                   <td class="text-center"><?php echo (int)($order['Quantity'] ?? 0); ?></td>

@@ -41,8 +41,8 @@ class OrderModel
                 o.Quantity,
                 o.Date,
                 o.Status,
-                m.Name AS customer_name,
-                m.Email
+                COALESCE(m.Name, o.ShippingName) AS customer_name,
+                COALESCE(m.Email, o.ShippingEmail) AS Email
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
         ";
@@ -143,7 +143,10 @@ class OrderModel
     public function getOrderById($orderId)
     {
         $stmt = $this->pdo->prepare("
-            SELECT o.*, m.Name AS customer_name, m.Email, m.Phone
+            SELECT o.*,
+                COALESCE(m.Name, o.ShippingName) AS customer_name,
+                COALESCE(m.Email, o.ShippingEmail) AS Email,
+                m.Phone
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
             WHERE o.OrderID = ?
@@ -250,6 +253,19 @@ class OrderModel
 
         $stmt = $this->pdo->prepare("UPDATE `order` SET Status = ? WHERE OrderID = ?");
         return $stmt->execute([$status, $orderId]);
+    }
+
+    public function getMonthlyRevenue(): float
+    {
+        $stmt = $this->pdo->query("
+            SELECT COALESCE(SUM(Total_price), 0) AS revenue 
+            FROM `order` 
+            WHERE YEAR(Date) = YEAR(CURDATE()) 
+            AND MONTH(Date) = MONTH(CURDATE())
+            AND Status != 'Cancelled'
+        ");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (float)($row['revenue'] ?? 0);
     }
 
     public function addOrder($memberId, $totalPrice, $quantity, $shippingData)

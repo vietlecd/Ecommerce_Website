@@ -79,9 +79,10 @@ class AdminCommentsController
                 'message' => 'Comment has been deleted.'
             ];
         } catch (\Throwable $e) {
+            error_log("AdminCommentsController::delete() - Error deleting comment ID {$id}: " . $e->getMessage());
             $_SESSION['cm_flash'] = [
                 'type'    => 'danger',
-                'message' => 'Delete failed: ' . $e->getMessage()
+                'message' => 'Failed to delete comment. Please try again.'
             ];
         }
 
@@ -112,8 +113,9 @@ class AdminCommentsController
         try {
             $this->commentModel->bulkDelete($ids);
         } catch (\Throwable $e) {
+            error_log("AdminCommentsController::bulkUpdate() - Error bulk deleting comments: " . $e->getMessage());
             http_response_code(500);
-            echo json_encode(['ok' => false, 'error' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+            echo json_encode(['ok' => false, 'error' => 'Failed to delete comments. Please try again.'], JSON_UNESCAPED_UNICODE);
             return;
         }
 

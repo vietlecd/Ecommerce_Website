@@ -45,14 +45,6 @@ $navItems = [
     },
   ],
   [
-    'label' => 'Customers',
-    'icon' => 'ti ti-users',
-    'url' => '/index.php?controller=adminCustomer&action=customers',
-    'is_active' => function () use ($currentController) {
-      return $currentController === 'adminCustomer';
-    },
-  ],
-  [
     'label' => 'News',
     'icon' => 'ti ti-news',
     'url' => '/index.php?controller=adminNews&action=manage',

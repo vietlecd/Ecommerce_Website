@@ -32,13 +32,13 @@ if (!empty($order['items'])) {
       <div class="card-body">
         <dl class="row">
           <dt class="col-4 text-secondary">Customer</dt>
-          <dd class="col-8 fw-semibold"><?php echo htmlspecialchars($order['customer_name']); ?></dd>
+          <dd class="col-8 fw-semibold"><?php echo htmlspecialchars($order['customer_name'] ?? 'Guest'); ?></dd>
 
           <dt class="col-4 text-secondary">Email</dt>
-          <dd class="col-8"><?php echo htmlspecialchars($order['Email']); ?></dd>
+          <dd class="col-8"><?php echo htmlspecialchars($order['Email'] ?? 'N/A'); ?></dd>
 
           <dt class="col-4 text-secondary">Phone</dt>
-          <dd class="col-8"><?php echo htmlspecialchars($order['Phone'] ?? ''); ?></dd>
+          <dd class="col-8"><?php echo htmlspecialchars($order['Phone'] ?? 'N/A'); ?></dd>
 
           <dt class="col-4 text-secondary">Order date</dt>
           <dd class="col-8"><?php echo date('d/m/Y', strtotime($order['Date'])); ?></dd>

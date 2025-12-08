@@ -51,20 +51,19 @@ class CommentModel
 
             if (!$result) {
                 $errorInfo = $stmt->errorInfo();
-                error_log("CommentModel Execute Error: " . print_r($errorInfo, true));
-                return ['success' => false, 'error' => $errorInfo[2] ?? 'Unknown error'];
+                error_log("CommentModel::addComment() - Execute Error: " . print_r($errorInfo, true));
+                return ['success' => false, 'error' => 'Failed to save comment. Please try again.'];
             }
 
             return ['success' => true];
         } catch (PDOException $e) {
-            $errorMessage = $e->getMessage();
-            error_log("CommentModel PDOException: " . $errorMessage);
+            error_log("CommentModel::addComment() - PDOException: " . $e->getMessage());
 
-            if (strpos($errorMessage, 'Unknown column') !== false) {
-                return ['success' => false, 'error' => 'Database columns missing. Please run migration: 002_add_comment_content.sql'];
+            if (strpos($e->getMessage(), 'Unknown column') !== false) {
+                return ['success' => false, 'error' => 'Database schema error. Please contact administrator.'];
             }
 
-            return ['success' => false, 'error' => $errorMessage];
+            return ['success' => false, 'error' => 'Failed to save comment. Please try again.'];
         }
     }
 

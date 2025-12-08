@@ -298,11 +298,11 @@ class ProductsController {
                 ]
             ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         } catch (Exception $e) {
+            error_log("ProductsController - Error processing request: " . $e->getMessage());
             http_response_code(500);
             echo json_encode([
                 'success' => false,
-                'error' => 'Internal server error',
-                'message' => $e->getMessage()
+                'error' => 'Internal server error. Please try again.'
             ], JSON_UNESCAPED_UNICODE);
         }
         exit;

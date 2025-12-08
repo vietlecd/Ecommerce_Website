@@ -115,7 +115,8 @@ class AdminPromotionController
 
             $jsonSuccess("Promotion created successfully.");
         } catch (Exception $e) {
-            $jsonError("Error creating promotion: " . $e->getMessage());
+            error_log("AdminPromotionController::create() - Error creating promotion: " . $e->getMessage());
+            $jsonError("Failed to create promotion. Please try again.");
         }
     }
 
@@ -235,9 +236,10 @@ class AdminPromotionController
             header('Location: index.php?controller=adminPromotion&action=manage');
             exit;
         } catch (Exception $e) {
+            error_log("AdminPromotionController::edit() - Error updating promotion ID {$promotionId}: " . $e->getMessage());
             return $this->editRespondError(
                 $isAjax,
-                'Error updating promotion: ' . $e->getMessage(),
+                'Failed to update promotion. Please try again.',
                 $promotionId,
                 500
             );
@@ -344,7 +346,8 @@ class AdminPromotionController
             $this->promotionModel->deletePromotion($promotionId);
             $_SESSION['message'] = "Promotion deleted successfully.";
         } catch (Exception $e) {
-            $_SESSION['error'] = "Error deleting promotion: " . $e->getMessage();
+            error_log("AdminPromotionController::delete() - Error deleting promotion ID {$promotionId}: " . $e->getMessage());
+            $_SESSION['error'] = "Failed to delete promotion. Please try again.";
         }
 
         header('Location: index.php?controller=adminPromotion&action=manage');

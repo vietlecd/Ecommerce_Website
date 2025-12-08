@@ -5,9 +5,8 @@ class OrderModel
 
     public function __construct()
     {
-        // Use environment variables for Docker or fallback to defaults
-        $host = $_ENV['DB_HOST'] ?? 'mysql';
-        $dbname = $_ENV['DB_NAME'] ?? 'shoe';
+        $host     = $_ENV['DB_HOST'] ?? 'mysql';
+        $dbname   = $_ENV['DB_NAME'] ?? 'shoe';
         $username = $_ENV['DB_USER'] ?? 'shoes_user';
         $password = $_ENV['DB_PASS'] ?? 'shoes_pass';
 
@@ -19,52 +18,128 @@ class OrderModel
         }
     }
 
-    // Lấy danh sách đơn hàng
-    public function getOrders(int $limit = 0, int $offset = 0)
-    {
+    /**
+     * Get orders with optional search / status filter / sort.
+     *
+     * @param int    $limit
+     * @param int    $offset
+     * @param string $keyword       search by order id / name / email
+     * @param string $statusFilter  exact status
+     * @param string $sort          date_desc|date_asc|id_desc|id_asc
+     */
+    public function getOrders(
+        int $limit  = 0,
+        int $offset = 0,
+        string $keyword = '',
+        string $statusFilter = '',
+        string $sort = 'date_desc'
+    ) {
         $sql = "
-            SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status, 
-                   m.Name AS customer_name, 
-                   m.Email
+            SELECT
+                o.OrderID,
+                o.Total_price,
+                o.Quantity,
+                o.Date,
+                o.Status,
+                m.Name AS customer_name,
+                m.Email
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
-            ORDER BY o.Date DESC
         ";
 
-        if ($limit > 0) {
-            $sql .= " LIMIT :limit OFFSET :offset";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', max(0, $offset), PDO::PARAM_INT);
-            $stmt->execute();
-        } else {
-            $stmt = $this->pdo->query($sql);
+        $where  = [];
+        $params = [];
+
+        if ($keyword !== '') {
+            $where[]       = '(o.OrderID LIKE :kw OR m.Name LIKE :kw OR m.Email LIKE :kw)';
+            $params[':kw'] = '%' . $keyword . '%';
         }
 
+        if ($statusFilter !== '') {
+            $where[]             = 'o.Status = :status';
+            $params[':status']   = $statusFilter;
+        }
+
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+
+        // Sort mapping
+        switch ($sort) {
+            case 'id_asc':
+                $orderBy = ' ORDER BY o.OrderID ASC';
+                break;
+            case 'id_desc':
+                $orderBy = ' ORDER BY o.OrderID DESC';
+                break;
+            case 'date_asc':
+                $orderBy = ' ORDER BY o.Date ASC, o.OrderID ASC';
+                break;
+            case 'date_desc':
+            default:
+                $orderBy = ' ORDER BY o.Date DESC, o.OrderID DESC';
+                break;
+        }
+
+        $sql .= $orderBy;
+
+        if ($limit > 0) {
+            $sql .= ' LIMIT :limit OFFSET :offset';
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        if ($limit > 0) {
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', max(0, $offset), PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getTotalOrders(): int
+    /**
+     * Count orders with same filter conditions.
+     */
+    public function getTotalOrders(string $keyword = '', string $statusFilter = ''): int
     {
-        $stmt = $this->pdo->query("SELECT COUNT(*) AS total FROM `order`");
+        $sql = "
+            SELECT COUNT(*) AS total
+            FROM `order` o
+            LEFT JOIN member m ON o.MemberID = m.MemberID
+        ";
+
+        $where  = [];
+        $params = [];
+
+        if ($keyword !== '') {
+            $where[]       = '(o.OrderID LIKE :kw OR m.Name LIKE :kw OR m.Email LIKE :kw)';
+            $params[':kw'] = '%' . $keyword . '%';
+        }
+
+        if ($statusFilter !== '') {
+            $where[]             = 'o.Status = :status';
+            $params[':status']   = $statusFilter;
+        }
+
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+        $stmt->execute();
+
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return (int)($row['total'] ?? 0);
     }
 
-    public function getMonthlyRevenue(): float
-    {
-        $stmt = $this->pdo->query("
-            SELECT COALESCE(SUM(Total_price), 0) AS revenue 
-            FROM `order` 
-            WHERE YEAR(Date) = YEAR(CURDATE()) 
-            AND MONTH(Date) = MONTH(CURDATE())
-            AND Status != 'Cancelled'
-        ");
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return (float)($row['revenue'] ?? 0);
-    }
-
-    // Lấy chi tiết đơn hàng theo ID
+    // Order detail
     public function getOrderById($orderId)
     {
         $stmt = $this->pdo->prepare("
@@ -78,7 +153,12 @@ class OrderModel
 
         if ($order) {
             $stmt = $this->pdo->prepare("
-                SELECT os.ShoesID, s.Name AS product_name, s.Price, s.Image AS product_image, os.OrderID
+                SELECT
+                    os.ShoesID,
+                    s.Name  AS product_name,
+                    s.Price,
+                    s.Image AS product_image,
+                    os.OrderID
                 FROM order_shoes os
                 JOIN shoes s ON os.ShoesID = s.ShoesID
                 WHERE os.OrderID = ?
@@ -96,17 +176,17 @@ class OrderModel
             return null;
         }
 
-        $items = $order['items'] ?? [];
+        $items        = $order['items'] ?? [];
         $groupedItems = [];
 
         foreach ($items as $item) {
             $key = $item['ShoesID'];
             if (!isset($groupedItems[$key])) {
                 $groupedItems[$key] = [
-                    'id' => $item['ShoesID'],
-                    'name' => $item['product_name'],
-                    'price' => (float)$item['Price'],
-                    'image' => $item['product_image'],
+                    'id'       => $item['ShoesID'],
+                    'name'     => $item['product_name'],
+                    'price'    => (float)$item['Price'],
+                    'image'    => $item['product_image'],
                     'quantity' => 0
                 ];
             }
@@ -114,15 +194,15 @@ class OrderModel
         }
 
         $summaryItems = [];
-        $subtotal = 0;
+        $subtotal     = 0;
 
         foreach ($groupedItems as $group) {
-            $lineTotal = $group['price'] * $group['quantity'];
+            $lineTotal    = $group['price'] * $group['quantity'];
             $summaryItems[] = [
-                'id' => $group['id'],
-                'name' => $group['name'],
-                'image' => $group['image'],
-                'price' => $group['price'],
+                'id'       => $group['id'],
+                'name'     => $group['name'],
+                'image'    => $group['image'],
+                'price'    => $group['price'],
                 'quantity' => $group['quantity'],
                 'subtotal' => $lineTotal
             ];
@@ -130,23 +210,28 @@ class OrderModel
         }
 
         $shipping = 10.00;
-        $total = (float)$order['Total_price'];
+        $total    = (float)$order['Total_price'];
 
         return [
-            'meta' => $order,
-            'items' => $summaryItems,
-            'subtotal' => $subtotal,
-            'shipping' => $shipping,
-            'total' => $total
+            'meta'      => $order,
+            'items'     => $summaryItems,
+            'subtotal'  => $subtotal,
+            'shipping'  => $shipping,
+            'total'     => $total
         ];
     }
 
     public function getOrdersByEmail($email)
     {
         $stmt = $this->pdo->prepare("
-            SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status,
-                   m.Name AS customer_name,
-                   m.Email AS email
+            SELECT
+                o.OrderID,
+                o.Total_price,
+                o.Quantity,
+                o.Date,
+                o.Status,
+                COALESCE(m.Name,  o.ShippingName)  AS customer_name,
+                COALESCE(m.Email, o.ShippingEmail) AS email
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
             WHERE m.Email = ?
@@ -156,7 +241,6 @@ class OrderModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Cập nhật trạng thái đơn hàng
     public function updateOrderStatus($orderId, $status)
     {
         $validStatuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
@@ -168,19 +252,24 @@ class OrderModel
         return $stmt->execute([$status, $orderId]);
     }
 
-    // Thêm đơn hàng mới
     public function addOrder($memberId, $totalPrice, $quantity, $shippingData)
     {
-        $shippingName = $shippingData['name'] ?? null;
-        $shippingEmail = $shippingData['email'] ?? null;
+        $shippingName    = $shippingData['name'] ?? null;
+        $shippingEmail   = $shippingData['email'] ?? null;
         $shippingAddress = $shippingData['address'] ?? null;
-        $shippingCity = $shippingData['city'] ?? null;
-        $shippingZip = $shippingData['zip'] ?? null;
-        $paymentMethod = $shippingData['payment_method'] ?? null;
+        $shippingCity    = $shippingData['city'] ?? null;
+        $shippingZip     = $shippingData['zip'] ?? null;
+        $paymentMethod   = $shippingData['payment_method'] ?? null;
 
         try {
-            $stmt = $this->pdo->prepare("INSERT INTO `order` (MemberID, Total_price, Quantity, Date, Earned_VIP, Status, ShippingName, ShippingEmail, ShippingAddress, ShippingCity, ShippingZip, PaymentMethod) 
-                                         VALUES (?, ?, ?, NOW(), 0, 'Pending', ?, ?, ?, ?, ?, ?)");
+            $stmt = $this->pdo->prepare("
+                INSERT INTO `order`
+                    (MemberID, Total_price, Quantity, Date, Earned_VIP, Status,
+                     ShippingName, ShippingEmail, ShippingAddress, ShippingCity, ShippingZip, PaymentMethod)
+                VALUES
+                    (?, ?, ?, NOW(), 0, 'Pending',
+                     ?, ?, ?, ?, ?, ?)
+            ");
             $stmt->execute([
                 $memberId,
                 $totalPrice,
@@ -195,11 +284,10 @@ class OrderModel
             return $this->pdo->lastInsertId();
         } catch (PDOException $e) {
             echo 'Order insert error: ' . $e->getMessage();
-            exit; // hoặc die();
+            exit;
         }
     }
 
-    // Thêm chi tiết đơn hàng vào bảng order_shoes
     public function addOrderShoes($orderId, $shoesId)
     {
         try {

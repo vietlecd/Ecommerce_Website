@@ -8,31 +8,48 @@ class AdminOrderController {
         $this->orderModel = new OrderModel();
     }
 
-    // Hiển thị danh sách đơn hàng
+    // Orders list with filter + sort
     public function orders() {
         if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             header('Location: /views/admin/index.php?controller=auth&action=login');
             exit;
         }
 
-        $perPage = 10;
-        $currentPage = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
-        $offset = ($currentPage - 1) * $perPage;
+        // Filters
+        $keyword      = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $statusFilter = isset($_GET['status']) ? trim($_GET['status']) : '';
+        $sort         = isset($_GET['sort']) ? trim($_GET['sort']) : 'date_desc';
 
-        $totalOrders = $this->orderModel->getTotalOrders();
-        $totalPages = $totalOrders > 0 ? (int)ceil($totalOrders / $perPage) : 1;
+        $perPage     = 10;
+        $currentPage = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0
+            ? (int)$_GET['page']
+            : 1;
+        $offset      = ($currentPage - 1) * $perPage;
+
+        $totalOrders = $this->orderModel->getTotalOrders($keyword, $statusFilter);
+        $totalPages  = $totalOrders > 0 ? (int)ceil($totalOrders / $perPage) : 1;
+
         if ($currentPage > $totalPages) {
             $currentPage = $totalPages;
-            $offset = ($currentPage - 1) * $perPage;
+            $offset      = ($currentPage - 1) * $perPage;
         }
 
-        $orders = $this->orderModel->getOrders($perPage, $offset);
-        $pageTitle = 'Quản lý đơn hàng';
+        $orders = $this->orderModel->getOrders(
+            $perPage,
+            $offset,
+            $keyword,
+            $statusFilter,
+            $sort
+        );
+
+        $pageTitle = 'Order management';
+
+        // truyền filter xuống view
         require_once __DIR__ . '/../views/admin/components/header.php';
         require_once __DIR__ . '/../views/admin/pages/orders.php';
     }
 
-    // Hiển thị chi tiết đơn hàng
+    // Order detail
     public function orderDetail() {
         if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             header('Location: /views/admin/index.php?controller=auth&action=login');
@@ -45,19 +62,19 @@ class AdminOrderController {
         }
 
         $orderId = intval($_GET['id']);
-        $order = $this->orderModel->getOrderById($orderId);
+        $order   = $this->orderModel->getOrderById($orderId);
 
         if (!$order) {
             header('Location: /views/admin/index.php?controller=adminOrder&action=orders');
             exit;
         }
 
-        $pageTitle = 'Chi tiết đơn hàng #' . $orderId;
+        $pageTitle = 'Order #' . $orderId;
         require_once __DIR__ . '/../views/admin/components/header.php';
         require_once __DIR__ . '/../views/admin/pages/order-detail.php';
     }
 
-    // Cập nhật trạng thái đơn hàng
+    // Update order status
     public function updateOrderStatus() {
         if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             header('Location: /views/admin/index.php?controller=auth&action=login');
@@ -70,13 +87,12 @@ class AdminOrderController {
         }
 
         $orderId = intval($_GET['id']);
-        $status = $_GET['status'];
+        $status  = $_GET['status'];
 
-        if ($this->orderModel->updateOrderStatus($orderId, $status)) {
-            header('Location: /views/admin/index.php?controller=adminOrder&action=orders');
-        } else {
-            header('Location: /views/admin/index.php?controller=adminOrder&action=orders');
-        }
+        $this->orderModel->updateOrderStatus($orderId, $status);
+
+        // Giữ nguyên filter khi reload nếu muốn thì có thể build query, tạm thời quay lại list đơn
+        header('Location: /views/admin/index.php?controller=adminOrder&action=orders');
         exit;
     }
 }

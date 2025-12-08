@@ -77,6 +77,14 @@ $navItems = [
     },
   ],
   [
+    'label' => 'About',
+    'icon' => 'ti ti-info-circle',
+    'url' => '/index.php?controller=adminContent&action=edit&key=about',
+    'is_active' => function () use ($currentController, $contentKey) {
+      return $currentController === 'adminContent' && $contentKey === 'about';
+    },
+  ],
+  [
     'label' => 'Q&A',
     'icon' => 'ti ti-help-hexagon',
     'url' => '/index.php?controller=adminContent&action=edit&key=qna',

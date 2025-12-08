@@ -31,7 +31,6 @@ class CommentModel
 
     public function addComment($shoesId, $memId, $rating, $content, $guestName = null)
     {
-        // Input validation
         if ($content !== null && mb_strlen($content) > 65535) {
             return ['success' => false, 'error' => 'Content exceeds maximum length of 65535 characters.'];
         }

@@ -75,7 +75,6 @@ class AdminPromotionController
         $discountPercentage = null;
         $fixedPrice         = null;
 
-        // Input length validation
         if (mb_strlen($promotionName) > 100) {
             $jsonError("Promotion name must not exceed 100 characters.");
         }
@@ -115,7 +114,6 @@ class AdminPromotionController
                 $jsonError("Discount percentage must be between 0 and 100.");
             }
 
-            // Validate decimal precision (5,2) - max 999.99
             if ($discountPercentage >= 1000) {
                 $jsonError("Discount percentage must be less than 1000.");
             }
@@ -128,7 +126,6 @@ class AdminPromotionController
                 $jsonError("Fixed price must be greater than 0.");
             }
 
-            // Validate decimal precision (10,2) - max 99999999.99
             if ($fixedPrice >= 100000000) {
                 $jsonError("Fixed price must be less than 100,000,000.");
             }
@@ -214,7 +211,6 @@ class AdminPromotionController
         $discountPercentage = null;
         $fixedPrice         = null;
 
-        // Input length validation
         if (mb_strlen($promotionName) > 100) {
             return $this->editRespondError($isAjax, 'Promotion name must not exceed 100 characters.', $promotionId);
         }
@@ -253,7 +249,6 @@ class AdminPromotionController
                 return $this->editRespondError($isAjax, 'Discount percentage must be between 0 and 100.', $promotionId);
             }
 
-            // Validate decimal precision (5,2) - max 999.99
             if ($discountPercentage >= 1000) {
                 return $this->editRespondError($isAjax, 'Discount percentage must be less than 1000.', $promotionId);
             }
@@ -266,7 +261,6 @@ class AdminPromotionController
                 return $this->editRespondError($isAjax, 'Fixed price must be greater than 0.', $promotionId);
             }
 
-            // Validate decimal precision (10,2) - max 99999999.99
             if ($fixedPrice >= 100000000) {
                 return $this->editRespondError($isAjax, 'Fixed price must be less than 100,000,000.', $promotionId);
             }

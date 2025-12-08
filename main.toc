@@ -25,8 +25,16 @@
 \contentsline {subsection}{\numberline {3.5}Cơ sở dữ liệu}{12}{subsection.3.5}%
 \contentsline {section}{\numberline {4}Giới thiệu trang web}{13}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Về phía khách hàng}{13}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Về phía quản lý cửa hàng}{17}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Cách cài đặt ứng dụng}{22}{section.5}%
-\contentsline {section}{\numberline {6}Nhiệm Vụ Từng Thành Viên}{25}{section.6}%
-\contentsline {section}{\numberline {7}Source code BTL}{26}{section.7}%
-\contentsline {section}{\numberline {8}Tài liệu tham khảo}{26}{section.8}%
+\contentsline {subsection}{\numberline {4.2}Về phía quản lý cửa hàng}{18}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Hướng dẫn triển khai ứng dụng}{24}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Yêu cầu hệ thống}{24}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Quy trình triển khai}{24}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Bước 1: Cài đặt Docker Desktop}{24}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Bước 2: Clone repository từ GitHub}{24}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Bước 3: Cấu hình và khởi động containers}{25}{subsubsection.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.2.4}Bước 4: Kiểm tra trạng thái deployment}{25}{subsubsection.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.2.5}Bước 5: Truy cập ứng dụng}{25}{subsubsection.5.2.5}%
+\contentsline {subsection}{\numberline {5.3}Các lệnh quản lý thường dùng}{25}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Nhiệm Vụ Từng Thành Viên}{26}{section.6}%
+\contentsline {section}{\numberline {7}Source code BTL}{27}{section.7}%
+\contentsline {section}{\numberline {8}Tài liệu tham khảo}{27}{section.8}%

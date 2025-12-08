@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.11.19)  7 DEC 2025 17:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.11.19)  8 DEC 2025 23:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1128,20 +1128,7 @@ LaTeX Warning: Label `fig:my_label' multiply defined.
 
 LaTeX Warning: Label `fig:my_label' multiply defined.
 
-) (./CONTENT/4-GIOITHIEUTRANGWEB.aux) (./CONTENT/5-CAIDATUNGDUNG.aux
-
-LaTeX Warning: Label `fig:my_label' multiply defined.
-
-
-LaTeX Warning: Label `fig:my_label' multiply defined.
-
-
-LaTeX Warning: Label `fig:my_label' multiply defined.
-
-
-LaTeX Warning: Label `fig:my_label' multiply defined.
-
-) (./CONTENT/6-NHIEMVUVAITRO.aux) (./CONTENT/7-SOURCECODE.aux))
+) (./CONTENT/4-GIOITHIEUTRANGWEB.aux) (./CONTENT/5-CAIDATUNGDUNG.aux) (./CONTENT/6-NHIEMVUVAITRO.aux) (./CONTENT/7-SOURCECODE.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 126.
@@ -1229,7 +1216,7 @@ Package hyperref Info: Link coloring ON on input line 126.
 \openout4 = `main.out'.
 
 \c@lstlisting=\count387
-<hcmut.png, id=135, 272.01625pt x 277.035pt>
+<hcmut.png, id=167, 272.01625pt x 277.035pt>
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
 Package pdftex.def Info: hcmut.png  used on input line 139.
@@ -1267,19 +1254,19 @@ Non-PDF special ignored!
 
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 185.
+Package pdftex.def Info: hcmut.png  used on input line 186.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
-LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 185.
+LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 186.
  (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmtt.fd
 File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `T5/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T5/cmtt/m/n' tried instead on input line 185.
+(Font)              Font shape `T5/cmtt/m/n' tried instead on input line 186.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.185 \newpage
+l.186 \newpage
                [1]
 \openout2 = `CONTENT/1-GIOITHIEUDETAI.aux'.
 
@@ -1302,13 +1289,13 @@ Package pdftex.def Info: hcmut.png  used on input line 29.
 ])
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 187.
+Package pdftex.def Info: hcmut.png  used on input line 188.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [3]
 \openout2 = `CONTENT/2-COSOLYTHUYET.aux'.
 
  (./CONTENT/2-COSOLYTHUYET.tex
-<IMG/Html-Css-Js.jpg, id=205, 682.80093pt x 342.5297pt>
+<IMG/Html-Css-Js.jpg, id=245, 682.80093pt x 342.5297pt>
 File: IMG/Html-Css-Js.jpg Graphic file (type jpg)
 <use IMG/Html-Css-Js.jpg>
 Package pdftex.def Info: IMG/Html-Css-Js.jpg  used on input line 4.
@@ -1341,7 +1328,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 31--32
 
  []
 
-<IMG/php-mysql.jpg, id=213, 602.25pt x 339.51843pt>
+<IMG/php-mysql.jpg, id=253, 602.25pt x 339.51843pt>
 File: IMG/php-mysql.jpg Graphic file (type jpg)
 <use IMG/php-mysql.jpg>
 Package pdftex.def Info: IMG/php-mysql.jpg  used on input line 47.
@@ -1364,7 +1351,7 @@ File: hcmut.png Graphic file (type png)
 Package pdftex.def Info: hcmut.png  used on input line 71.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [6 <./IMG/php-mysql.jpg>]
-<IMG/boostrap.png, id=228, 259.97125pt x 194.7275pt>
+<IMG/boostrap.png, id=268, 259.97125pt x 194.7275pt>
 File: IMG/boostrap.png Graphic file (type png)
 <use IMG/boostrap.png>
 Package pdftex.def Info: IMG/boostrap.png  used on input line 92.
@@ -1385,7 +1372,7 @@ Package pdftex.def Info: hcmut.png  used on input line 106.
 [8 <./IMG/boostrap.png>])
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 188.
+Package pdftex.def Info: hcmut.png  used on input line 189.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [9]
 \openout2 = `CONTENT/3-THIETKEUNGDUNG.aux'.
@@ -1405,7 +1392,7 @@ File: hcmut.png Graphic file (type png)
 Package pdftex.def Info: hcmut.png  used on input line 93.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [11]
-<IMG/showimages/ERD.jpg, id=261, 1245.65375pt x 835.12pt>
+<IMG/showimages/ERD.jpg, id=302, 1245.65375pt x 835.12pt>
 File: IMG/showimages/ERD.jpg Graphic file (type jpg)
 <use IMG/showimages/ERD.jpg>
 Package pdftex.def Info: IMG/showimages/ERD.jpg  used on input line 105.
@@ -1413,55 +1400,65 @@ Package pdftex.def Info: IMG/showimages/ERD.jpg  used on input line 105.
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 189.
+Package pdftex.def Info: hcmut.png  used on input line 190.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [12 <./IMG/showimages/ERD.jpg>]
 \openout2 = `CONTENT/4-GIOITHIEUTRANGWEB.aux'.
 
  (./CONTENT/4-GIOITHIEUTRANGWEB.tex
-<IMG/showimages/webpro1.jpg, id=275, 1870.99pt x 918.43124pt>
+<IMG/showimages/webpro1.jpg, id=316, 1870.99pt x 918.43124pt>
 File: IMG/showimages/webpro1.jpg Graphic file (type jpg)
 <use IMG/showimages/webpro1.jpg>
 Package pdftex.def Info: IMG/showimages/webpro1.jpg  used on input line 5.
 (pdftex.def)             Requested size: 418.25368pt x 205.30676pt.
-<IMG/showimages/repro.png, id=276, 1893.0725pt x 924.45375pt>
+<IMG/showimages/repro.png, id=317, 1893.0725pt x 924.45375pt>
 File: IMG/showimages/repro.png Graphic file (type png)
 <use IMG/showimages/repro.png>
 Package pdftex.def Info: IMG/showimages/repro.png  used on input line 11.
 (pdftex.def)             Requested size: 418.25368pt x 204.24092pt.
-<IMG/showimages/spkm.jpg, id=277, 1897.0875pt x 921.4425pt>
+<IMG/showimages/spkm.jpg, id=318, 1897.0875pt x 921.4425pt>
 File: IMG/showimages/spkm.jpg Graphic file (type jpg)
 <use IMG/showimages/spkm.jpg>
 Package pdftex.def Info: IMG/showimages/spkm.jpg  used on input line 17.
 (pdftex.def)             Requested size: 418.25368pt x 203.15384pt.
-<IMG/showimages/Webnews.jpg, id=278, 1888.05376pt x 921.4425pt>
+<IMG/showimages/Webnews.jpg, id=319, 1888.05376pt x 921.4425pt>
 File: IMG/showimages/Webnews.jpg Graphic file (type jpg)
 <use IMG/showimages/Webnews.jpg>
 Package pdftex.def Info: IMG/showimages/Webnews.jpg  used on input line 23.
 (pdftex.def)             Requested size: 418.25368pt x 204.12398pt.
-<IMG/showimages/Webcart.jpg, id=279, 1895.08pt x 916.42375pt>
+<IMG/showimages/Webcart.jpg, id=320, 1895.08pt x 916.42375pt>
 File: IMG/showimages/Webcart.jpg Graphic file (type jpg)
 <use IMG/showimages/Webcart.jpg>
 Package pdftex.def Info: IMG/showimages/Webcart.jpg  used on input line 29.
 (pdftex.def)             Requested size: 418.25368pt x 202.25708pt.
-<IMG/showimages/update.jpg, id=280, 1888.05376pt x 917.4275pt>
+<IMG/showimages/update.jpg, id=321, 1888.05376pt x 917.4275pt>
 File: IMG/showimages/update.jpg Graphic file (type jpg)
 <use IMG/showimages/update.jpg>
 Package pdftex.def Info: IMG/showimages/update.jpg  used on input line 35.
 (pdftex.def)             Requested size: 418.25368pt x 203.23456pt.
-<IMG/showimages/Weblogin.jpg, id=281, 1897.0875pt x 927.465pt>
+<IMG/showimages/Weblogin.jpg, id=322, 1897.0875pt x 927.465pt>
 File: IMG/showimages/Weblogin.jpg Graphic file (type jpg)
 <use IMG/showimages/Weblogin.jpg>
 Package pdftex.def Info: IMG/showimages/Weblogin.jpg  used on input line 41.
 (pdftex.def)             Requested size: 418.25368pt x 204.48164pt.
-<IMG/showimages/Webregister.jpg, id=282, 1896.08376pt x 921.4425pt>
+<IMG/showimages/Webregister.jpg, id=323, 1896.08376pt x 921.4425pt>
 File: IMG/showimages/Webregister.jpg Graphic file (type jpg)
 <use IMG/showimages/Webregister.jpg>
 Package pdftex.def Info: IMG/showimages/Webregister.jpg  used on input line 47.
 (pdftex.def)             Requested size: 418.25368pt x 203.25226pt.
+<IMG/showimages/about.png, id=324, 3083.52pt x 1734.48pt>
+File: IMG/showimages/about.png Graphic file (type png)
+<use IMG/showimages/about.png>
+Package pdftex.def Info: IMG/showimages/about.png  used on input line 53.
+(pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
+<IMG/showimages/qna.png, id=325, 3083.52pt x 1734.48pt>
+File: IMG/showimages/qna.png Graphic file (type png)
+<use IMG/showimages/qna.png>
+Package pdftex.def Info: IMG/showimages/qna.png  used on input line 59.
+(pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 52.
+Package pdftex.def Info: hcmut.png  used on input line 64.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [13
 
@@ -1470,155 +1467,147 @@ Package pdftex.def Info: hcmut.png  used on input line 52.
  <./IMG/showimages/webpro1.jpg> <./IMG/showimages/repro.png>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 52.
+Package pdftex.def Info: hcmut.png  used on input line 64.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [14 <./IMG/showimages/spkm.jpg> <./IMG/showimages/Webnews.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 52.
+Package pdftex.def Info: hcmut.png  used on input line 64.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [15 <./IMG/showimages/Webcart.jpg> <./IMG/showimages/update.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 52.
+Package pdftex.def Info: hcmut.png  used on input line 64.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [16 <./IMG/showimages/Weblogin.jpg> <./IMG/showimages/Webregister.jpg>]
-<IMG/showimages/Adminproduct.jpg, id=312, 1893.0725pt x 918.43124pt>
+File: hcmut.png Graphic file (type png)
+<use hcmut.png>
+Package pdftex.def Info: hcmut.png  used on input line 64.
+(pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
+ [17 <./IMG/showimages/about.png> <./IMG/showimages/qna.png>]
+<IMG/showimages/Adminproduct.jpg, id=363, 1893.0725pt x 918.43124pt>
 File: IMG/showimages/Adminproduct.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminproduct.jpg>
-Package pdftex.def Info: IMG/showimages/Adminproduct.jpg  used on input line 56.
+Package pdftex.def Info: IMG/showimages/Adminproduct.jpg  used on input line 68.
 (pdftex.def)             Requested size: 418.25368pt x 202.91035pt.
-<IMG/showimages/them sp.jpg, id=313, 1819.79875pt x 918.43124pt>
+<IMG/showimages/them sp.jpg, id=364, 1819.79875pt x 918.43124pt>
 File: IMG/showimages/them sp.jpg Graphic file (type jpg)
 <use IMG/showimages/them sp.jpg>
-Package pdftex.def Info: IMG/showimages/them sp.jpg  used on input line 62.
+Package pdftex.def Info: IMG/showimages/them sp.jpg  used on input line 74.
 (pdftex.def)             Requested size: 418.25368pt x 211.08058pt.
-<IMG/showimages/Adminproductupdate.jpg, id=314, 1890.06125pt x 912.40875pt>
+<IMG/showimages/Adminproductupdate.jpg, id=365, 1890.06125pt x 912.40875pt>
 File: IMG/showimages/Adminproductupdate.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminproductupdate.jpg>
-Package pdftex.def Info: IMG/showimages/Adminproductupdate.jpg  used on input line 68.
+Package pdftex.def Info: IMG/showimages/Adminproductupdate.jpg  used on input line 80.
 (pdftex.def)             Requested size: 418.25368pt x 201.90001pt.
-<IMG/showimages/Adminorder.jpg, id=315, 1897.0875pt x 922.44624pt>
+<IMG/showimages/Adminorder.jpg, id=366, 1897.0875pt x 922.44624pt>
 File: IMG/showimages/Adminorder.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminorder.jpg>
-Package pdftex.def Info: IMG/showimages/Adminorder.jpg  used on input line 74.
+Package pdftex.def Info: IMG/showimages/Adminorder.jpg  used on input line 86.
 (pdftex.def)             Requested size: 418.25368pt x 203.37514pt.
-<IMG/showimages/giao dien khach hang.png, id=316, 1903.11pt x 919.435pt>
+<IMG/showimages/giao dien khach hang.png, id=367, 1903.11pt x 919.435pt>
 File: IMG/showimages/giao dien khach hang.png Graphic file (type png)
 <use IMG/showimages/giao dien khach hang.png>
-Package pdftex.def Info: IMG/showimages/giao dien khach hang.png  used on input line 80.
+Package pdftex.def Info: IMG/showimages/giao dien khach hang.png  used on input line 92.
 (pdftex.def)             Requested size: 418.25368pt x 202.06587pt.
-<IMG/showimages/thong tin.jpg, id=317, 1911.14pt x 920.43875pt>
+<IMG/showimages/thong tin.jpg, id=368, 1911.14pt x 920.43875pt>
 File: IMG/showimages/thong tin.jpg Graphic file (type jpg)
 <use IMG/showimages/thong tin.jpg>
-Package pdftex.def Info: IMG/showimages/thong tin.jpg  used on input line 86.
+Package pdftex.def Info: IMG/showimages/thong tin.jpg  used on input line 98.
 (pdftex.def)             Requested size: 418.25368pt x 201.42975pt.
-<IMG/showimages/Adminnews.jpg, id=318, 1896.08376pt x 921.4425pt>
+<IMG/showimages/Adminnews.jpg, id=369, 1896.08376pt x 921.4425pt>
 File: IMG/showimages/Adminnews.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminnews.jpg>
-Package pdftex.def Info: IMG/showimages/Adminnews.jpg  used on input line 92.
+Package pdftex.def Info: IMG/showimages/Adminnews.jpg  used on input line 104.
 (pdftex.def)             Requested size: 418.25368pt x 203.25226pt.
-<IMG/showimages/Adminnewsupdate.jpg, id=319, 1891.065pt x 918.43124pt>
+<IMG/showimages/Adminnewsupdate.jpg, id=370, 1891.065pt x 918.43124pt>
 File: IMG/showimages/Adminnewsupdate.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminnewsupdate.jpg>
-Package pdftex.def Info: IMG/showimages/Adminnewsupdate.jpg  used on input line 98.
+Package pdftex.def Info: IMG/showimages/Adminnewsupdate.jpg  used on input line 110.
 (pdftex.def)             Requested size: 418.25368pt x 203.13458pt.
-<IMG/showimages/Adminnewsupdate1.jpg, id=320, 1890.06125pt x 919.435pt>
+<IMG/showimages/Adminnewsupdate1.jpg, id=371, 1890.06125pt x 919.435pt>
 File: IMG/showimages/Adminnewsupdate1.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminnewsupdate1.jpg>
-Package pdftex.def Info: IMG/showimages/Adminnewsupdate1.jpg  used on input line 104.
+Package pdftex.def Info: IMG/showimages/Adminnewsupdate1.jpg  used on input line 116.
 (pdftex.def)             Requested size: 418.25368pt x 203.45479pt.
+<IMG/showimages/about_admin.png, id=372, 3083.52pt x 1734.48pt>
+File: IMG/showimages/about_admin.png Graphic file (type png)
+<use IMG/showimages/about_admin.png>
+Package pdftex.def Info: IMG/showimages/about_admin.png  used on input line 122.
+(pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
+<IMG/showimages/qna_admin.png, id=373, 3083.52pt x 1734.48pt>
+File: IMG/showimages/qna_admin.png Graphic file (type png)
+<use IMG/showimages/qna_admin.png>
+Package pdftex.def Info: IMG/showimages/qna_admin.png  used on input line 128.
+(pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 190.
+Package pdftex.def Info: hcmut.png  used on input line 191.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [17
+ [18
 
  <./IMG/showimages/Adminproduct.jpg> <./IMG/showimages/them sp.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 190.
+Package pdftex.def Info: hcmut.png  used on input line 191.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [18 <./IMG/showimages/Adminproductupdate.jpg> <./IMG/showimages/Adminorder.jpg>]
+ [19 <./IMG/showimages/Adminproductupdate.jpg> <./IMG/showimages/Adminorder.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 190.
+Package pdftex.def Info: hcmut.png  used on input line 191.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [19 <./IMG/showimages/giao dien khach hang.png> <./IMG/showimages/thong tin.jpg>]
+ [20 <./IMG/showimages/giao dien khach hang.png> <./IMG/showimages/thong tin.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 190.
+Package pdftex.def Info: hcmut.png  used on input line 191.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [20 <./IMG/showimages/Adminnews.jpg> <./IMG/showimages/Adminnewsupdate.jpg>]
+ [21 <./IMG/showimages/Adminnews.jpg> <./IMG/showimages/Adminnewsupdate.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 190.
+Package pdftex.def Info: hcmut.png  used on input line 191.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [21 <./IMG/showimages/Adminnewsupdate1.jpg>]
+ [22 <./IMG/showimages/Adminnewsupdate1.jpg> <./IMG/showimages/about_admin.png>]
+File: hcmut.png Graphic file (type png)
+<use hcmut.png>
+Package pdftex.def Info: hcmut.png  used on input line 191.
+(pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
+ [23 <./IMG/showimages/qna_admin.png>]
 \openout2 = `CONTENT/5-CAIDATUNGDUNG.aux'.
 
  (./CONTENT/5-CAIDATUNGDUNG.tex
-<IMG/b1.png, id=356, 1682.53593pt x 813.79031pt>
-File: IMG/b1.png Graphic file (type png)
-<use IMG/b1.png>
-Package pdftex.def Info: IMG/b1.png  used on input line 6.
-(pdftex.def)             Requested size: 418.25368pt x 202.29225pt.
-
-Overfull \hbox (26.11507pt too wide) in paragraph at lines 3--10
-[]\T5/cmr/m/n/10 B÷îc 1: C i ^^_«t ùng döng XAMPP t¤i ^^_÷íng d¨n: https://www.apachefriends.org/download.html
- []
-
-<IMG/showimages/git.png, id=357, 1352.05125pt x 621.07031pt>
+<IMG/showimages/git.png, id=418, 3083.52pt x 1734.48pt>
 File: IMG/showimages/git.png Graphic file (type png)
 <use IMG/showimages/git.png>
-Package pdftex.def Info: IMG/showimages/git.png  used on input line 13.
-(pdftex.def)             Requested size: 418.25368pt x 192.1223pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
+Package pdftex.def Info: IMG/showimages/git.png  used on input line 39.
+(pdftex.def)             Requested size: 376.42575pt x 211.728pt.
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 17.
+Package pdftex.def Info: hcmut.png  used on input line 48.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
-[22
+ [24
 
 
 
- <./IMG/b1.png>]
-<IMG/b3.png, id=365, 788.9475pt x 215.30438pt>
-File: IMG/b3.png Graphic file (type png)
-<use IMG/b3.png>
-Package pdftex.def Info: IMG/b3.png  used on input line 21.
-(pdftex.def)             Requested size: 418.25368pt x 114.14034pt.
-<IMG/b4.png, id=366, 747.54282pt x 491.58656pt>
-File: IMG/b4.png Graphic file (type png)
-<use IMG/b4.png>
-Package pdftex.def Info: IMG/b4.png  used on input line 28.
-(pdftex.def)             Requested size: 418.25368pt x 275.04655pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
+ <./IMG/showimages/git.png>]
+Overfull \hbox (35.30281pt too wide) in paragraph at lines 88--89
+[]\T5/cmr/bx/n/10 Import database: \T5/cmtt/m/n/10 docker-compose exec db mysql -u root -p shoesstore < database.sql 
+ []
 
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
+Package pdftex.def Info: hcmut.png  used on input line 192.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [23 <./IMG/showimages/git.png> <./IMG/b3.png>]
-File: hcmut.png Graphic file (type png)
-<use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
-(pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [24 <./IMG/b4.png>]
+ [25]
 \openout2 = `CONTENT/6-NHIEMVUVAITRO.aux'.
 
  (./CONTENT/6-NHIEMVUVAITRO.tex)
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 192.
+Package pdftex.def Info: hcmut.png  used on input line 193.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [25
+ [26
 
 
 
@@ -1638,9 +1627,9 @@ Overfull \hbox (16.18pt too wide) in paragraph at lines 9--10
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 193.
+Package pdftex.def Info: hcmut.png  used on input line 194.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [26
+ [27
 
 
 
@@ -1656,21 +1645,21 @@ L3 programming layer <2024-01-22>
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: ABBBBCA1D9D84311B1E1FFBC7CD4FD2B;5024.
+(rerunfilecheck)             Checksum: 49021B8070168D9516B84C84BB5D71F0;6970.
  ) 
 Here is how much of TeX's memory you used:
- 32854 strings out of 474222
- 631875 string characters out of 5748732
- 1939975 words of memory out of 5000000
- 54357 multiletter control sequences out of 15000+600000
+ 32886 strings out of 474222
+ 632894 string characters out of 5748732
+ 1942975 words of memory out of 5000000
+ 54379 multiletter control sequences out of 15000+600000
  572610 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,25n,97p,1594b,618s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt8.pfb>
-Output written on main.pdf (27 pages, 3234248 bytes).
+Output written on main.pdf (28 pages, 6959788 bytes).
 PDF statistics:
- 462 PDF objects out of 1000 (max. 8388607)
- 381 compressed objects within 4 object streams
- 109 named destinations out of 1000 (max. 500000)
- 399 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 512 PDF objects out of 1000 (max. 8388607)
+ 427 compressed objects within 5 object streams
+ 119 named destinations out of 1000 (max. 500000)
+ 468 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,32 +1,90 @@
-\section{Cách cài đặt ứng dụng}
+\section{Hướng dẫn triển khai ứng dụng}
+
+\subsection{Yêu cầu hệ thống}
+Trước khi bắt đầu triển khai, đảm bảo hệ thống đã cài đặt đầy đủ các công cụ sau:
+
 \begin{itemize}
-\item {Bước 1: Cài đăt ứng dụng XAMPP tại đường dẫn: https://www.apachefriends.org/download.html}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{IMG/b1.png} 
-    \caption{Giao diện trang web cài đặt XAMPP.}
-    \label{fig:my_label}
+  \item Docker Desktop (phiên bản 20.10 trở lên)
+  \item Docker Compose (phiên bản 2.0 trở lên)
+  \item Git (để clone source code từ repository)
+\end{itemize}
+
+\subsection{Quy trình triển khai}
+
+\subsubsection{Bước 1: Cài đặt Docker Desktop}
+
+Tải và cài đặt Docker Desktop phù hợp với hệ điều hành của bạn tại đường dẫn: 
+
+\texttt{https://www.docker.com/products/docker-desktop}
+
+Docker Desktop là một nền tảng tích hợp bao gồm Docker Engine, Docker CLI, Docker 
+
+Compose và Kubernetes, giúp đơn giản hóa quá trình quản lý và vận hành containers trong 
+
+môi trường development.
+
+\subsubsection{Bước 2: Clone repository từ GitHub}
+
+Mở terminal (Linux/macOS) hoặc Command Prompt/PowerShell (Windows) và thực hiện 
+
+lệnh sau:
+
+\begin{verbatim}
+  git clone https://github.com/vietlecd/Ecommerce_Website
+  cd Ecommerce_Website
+\end{verbatim}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.9\textwidth]{IMG/showimages/git.png} 
+  \caption{Repository GitHub chứa source code của dự án}
+  \label{fig:github_repo}
 \end{figure}
-\item {Bước 2: Tải toàn bộ phần code của nhóm thông qua đường dẫn Github }
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{IMG/showimages/git.png} 
-    \caption{Giao diện Github chứa đoạn code của nhóm}
-    \label{fig:my_label}
-\end{figure}
-\newpage
-\item {Bước 3: Đưa tập tin vừa tải về vào thư mục htdocs của XAMPP và giải nén tập tin}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{IMG/b3.png} 
-    \caption{Thư mục htdocs chứa tập tin vừa tải về}
-    \label{fig:my_label}
-\end{figure}
-\item {Bước 4: Mở XAMPP Control Panel, chọn Start 2 mục Apache và MySQL}
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{IMG/b4.png} 
-    \caption{Giao diện XAMPP Control Panel sau khi mở Âpche và MySQL}
-    \label{fig:my_label}
-\end{figure}
+
+\subsubsection{Bước 3: Cấu hình và khởi động containers}
+
+Di chuyển vào thư mục gốc của project và khởi động các services bằng Docker Compose:
+
+\begin{verbatim}
+  docker-compose up -d
+\end{verbatim}
+
+Tham số \texttt{-d} (detached mode) sẽ chạy containers ở background. Lệnh này thực hiện các tác 
+
+vụ sau:
+
+\begin{itemize}
+  \item Build và khởi động containers cho Web Server (Apache/Nginx) và Database (MySQL)
+  \item Cấu hình network cho phép các services giao tiếp với nhau
+  \item Mount volumes để đồng bộ source code giữa host và container
+  \item Expose ports để truy cập ứng dụng từ host machine
+\end{itemize}
+
+\subsubsection{Bước 4: Kiểm tra trạng thái deployment}
+
+Xác nhận tất cả các containers đang chạy ổn định:
+
+\begin{verbatim}
+  docker-compose ps
+\end{verbatim}
+
+Output mong đợi sẽ hiển thị các services (\texttt{web}, \texttt{db}) với status là \texttt{Up} và port mappings tương 
+
+ứng.
+
+\subsubsection{Bước 5: Truy cập ứng dụng}
+
+Mở trình duyệt web và truy cập địa chỉ sau để sử dụng ứng dụng:
+
+\texttt{http://localhost:8080}
+
+\subsection{Các lệnh quản lý thường dùng}
+
+\begin{itemize}
+  \item \textbf{Dừng toàn bộ services:} \texttt{docker-compose down}
+  \item \textbf{Xem logs realtime:} \texttt{docker-compose logs -f [service\_name]}
+  \item \textbf{Restart services:} \texttt{docker-compose restart [service\_name]}
+  \item \textbf{Rebuild containers:} \texttt{docker-compose up -d --build}
+  \item \textbf{Import database:} \texttt{docker-compose exec db mysql -u root -p shoesstore < database.sql}
+  \item \textbf{Xem resource usage:} \texttt{docker stats}
 \end{itemize}

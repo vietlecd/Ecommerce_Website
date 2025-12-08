@@ -199,7 +199,10 @@ $formatCurrency = function ($value) {
                         <strong><?php echo $formatCurrency($total); ?></strong>
                     </li>
                 </ul>
-                <p class="checkout-summary-note">Thanh toán COD: bạn trả tiền mặt khi nhận hàng. Thanh toán thẻ chưa hỗ trợ.</p>
+                <p class="checkout-summary-note">
+                    Cash on Delivery: you pay in cash when your order arrives. Card payments are not supported yet.
+                </p>
+
                 <button type="submit" name="place_order" class="btn btn-full">Place Order</button>
             </aside>
         </form>

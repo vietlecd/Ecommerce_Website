@@ -89,7 +89,7 @@ class CheckoutController {
 
         if (isset($_POST['apply_coupon']) && array_key_exists('selected_coupon', $_POST)) {
             $couponId = (int) $_POST['selected_coupon'];
-            // Lưu form shipping để giữ lại khi refresh sau apply coupon
+            // Persist shipping form so it stays after applying coupon
             $_SESSION['checkout_prefill'] = [
                 'name' => trim($_POST['name'] ?? ''),
                 'email' => trim($_POST['email'] ?? ''),
@@ -102,14 +102,14 @@ class CheckoutController {
                 $coupon = $this->couponModel->getCouponById($couponId);
                 if ($coupon) {
                     $_SESSION['cart_coupon'] = $couponId;
-                    $_SESSION['coupon_notice'] = 'Coupon đã được áp dụng.';
+                    $_SESSION['coupon_notice'] = 'Coupon has been applied.';
                 } else {
                     unset($_SESSION['cart_coupon']);
-                    $_SESSION['coupon_notice'] = 'Coupon không hợp lệ hoặc đã hết hạn.';
+                    $_SESSION['coupon_notice'] = 'Coupon is invalid or has expired.';
                 }
             } else {
                 unset($_SESSION['cart_coupon']);
-                $_SESSION['coupon_notice'] = 'Đã bỏ áp dụng coupon.';
+                $_SESSION['coupon_notice'] = 'Coupon has been removed.';
             }
             header('Location: /index.php?controller=checkout&action=index');
             exit;
@@ -153,14 +153,14 @@ class CheckoutController {
                     'zip' => $saveZip,
                     'phone' => $savePhone
                 ];
-                // Giữ tối đa 5 địa chỉ gần nhất
+                // Keep max 5 latest addresses
                 $savedAddresses = array_slice($savedAddresses, -5);
                 $_SESSION[$this->addressSessionKey] = $savedAddresses;
-                $_SESSION['address_notice'] = 'Đã lưu địa chỉ vào sổ địa chỉ của bạn.';
+                $_SESSION['address_notice'] = 'Address has been saved to your address book.';
                 header('Location: /index.php?controller=checkout&action=index');
                 exit;
             } else {
-                $error = 'Vui lòng điền đầy đủ thông tin trước khi lưu địa chỉ.';
+                $error = 'Please fill in all required fields before saving the address.';
             }
         }
 
@@ -170,7 +170,7 @@ class CheckoutController {
                 return isset($addr['id']) && $addr['id'] !== $deleteId;
             }));
             $_SESSION[$this->addressSessionKey] = $savedAddresses;
-            $_SESSION['address_notice'] = 'Đã xóa địa chỉ đã lưu.';
+            $_SESSION['address_notice'] = 'Saved address has been deleted.';
             header('Location: /index.php?controller=checkout&action=index');
             exit;
         }
@@ -192,26 +192,44 @@ class CheckoutController {
             } elseif ($paymentMethod === 'card' && (empty($card_number) || empty($expiry) || empty($cvv))) {
                 $error = 'Card payment is not available yet. Please choose Cash on Delivery.';
             } else {
-                if (isset($_SESSION['user_id'])) {
-                    $memberId = $_SESSION['user_id'];
-                    $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity);
-
-                    if ($orderId) {
-                        foreach ($_SESSION['cart'] as $item) {
-                            for ($i = 0; $i < $item['quantity']; $i++) {
-                                $this->orderModel->addOrderShoes($orderId, $item['id']);
-                            }
-                        }
-
-                        unset($_SESSION['cart'], $_SESSION['cart_coupon'], $_SESSION['checkout_prefill']);
-                        $_SESSION['earned_vip'] = $earnedVip;
-                        $success = "Order placed successfully! Your order ID is #$orderId.";
-                        header('Refresh: 3; URL=/index.php?controller=home&action=index');
-                    } else {
-                        $error = 'Failed to place the order. Please try again.';
-                    }
+                // Allow guest checkout: if not logged in, use 0 as MemberID
+                if (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) && (int)$_SESSION['user_id'] > 0) {
+                    // user đã login, dùng MemberID thật
+                    $memberId = (int)$_SESSION['user_id'];
                 } else {
-                    $error = 'Please log in to place an order.';
+                    // guest checkout -> để NULL để không vi phạm foreign key
+                    $memberId = null;
+                }
+
+                // Shipping data passed to OrderModel
+                $shippingData = [
+                    'name'           => $name,
+                    'email'          => $email,
+                    'address'        => $address,
+                    'city'           => $city,
+                    'zip'            => $zip,
+                    // phone hiện chưa được lưu vào DB, nhưng vẫn để đây nếu sau này bạn thêm cột
+                    'phone'          => $phone,
+                    'payment_method' => $paymentMethod,
+                ];
+
+                // OrderModel::addOrder expects 4 arguments
+                $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity, $shippingData);
+
+                if ($orderId) {
+                    foreach ($_SESSION['cart'] as $item) {
+                        for ($i = 0; $i < $item['quantity']; $i++) {
+                            $this->orderModel->addOrderShoes($orderId, $item['id']);
+                        }
+                    }
+
+                    unset($_SESSION['cart'], $_SESSION['cart_coupon'], $_SESSION['checkout_prefill']);
+                    $_SESSION['earned_vip'] = $earnedVip;
+
+                    $success = "Order placed successfully! Your order ID is #$orderId.";
+                    header('Refresh: 3; URL=/index.php?controller=home&action=index');
+                } else {
+                    $error = 'Failed to place the order. Please try again.';
                 }
             }
         }

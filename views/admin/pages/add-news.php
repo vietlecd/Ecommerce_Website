@@ -27,7 +27,6 @@ if (!empty($old['promotion_ids']) && is_array($old['promotion_ids'])) {
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <!-- Header -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
                 <div>
                     <h1 class="mb-1">Add New Article</h1>
@@ -42,10 +41,8 @@ if (!empty($old['promotion_ids']) && is_array($old['promotion_ids'])) {
                 </div>
             </div>
 
-            <!-- Form -->
             <form id="newsForm" method="POST" action="/index.php?controller=adminNews&action=addNews" enctype="multipart/form-data">
                 <div class="row g-4">
-                    <!-- LEFT: content -->
                     <div class="col-lg-8">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
@@ -100,7 +97,6 @@ if (!empty($old['promotion_ids']) && is_array($old['promotion_ids'])) {
                         </div>
                     </div>
 
-                    <!-- RIGHT: meta + thumbnail -->
                     <div class="col-lg-4">
                         <div class="card border-0 bg-body-tertiary">
                             <div class="card-body">
@@ -131,7 +127,6 @@ if (!empty($old['promotion_ids']) && is_array($old['promotion_ids'])) {
                                     <?php endif; ?>
                                 </div>
 
-                                <!-- Promotions -->
                                 <div class="mb-3">
                                     <label class="form-label" for="promotion_ids">Promotions</label>
                                     <div class="d-flex gap-2">
@@ -156,7 +151,9 @@ if (!empty($old['promotion_ids']) && is_array($old['promotion_ids'])) {
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
-                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#promotionModal">
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                            data-action="create"
+                                            data-bs-target="#promotionModal">
                                             + New
                                         </button>
                                     </div>
@@ -183,7 +180,6 @@ if (!empty($old['promotion_ids']) && is_array($old['promotion_ids'])) {
                                     <?php endif; ?>
                                 </div>
 
-                                <!-- 16:9 Preview -->
                                 <div id="thumbPreviewWrap" class="ratio ratio-16x9 bg-light rounded overflow-hidden d-none mb-3">
                                     <img id="thumbPreview" class="w-100 h-100 object-fit-cover" alt="Preview thumbnail">
                                 </div>
@@ -311,97 +307,99 @@ if (!empty($old['promotion_ids']) && is_array($old['promotion_ids'])) {
         <?php if (!empty($toastSuccess)): ?>
             showToast('success', <?= json_encode($toastSuccess, JSON_UNESCAPED_UNICODE) ?>, 'Success');
         <?php endif; ?>
-    });
 
-    function getEditorHtml() {
-        if (window.tinymce && typeof tinymce.get === 'function') {
-            const ed = tinymce.get('content');
-            if (ed) return ed.getContent();
+
+        function getEditorHtml() {
+            if (window.tinymce && typeof tinymce.get === 'function') {
+                const ed = tinymce.get('content');
+                if (ed) return ed.getContent();
+            }
+            const ta = document.getElementById('content');
+            return ta ? ta.value : '';
         }
-        const ta = document.getElementById('content');
-        return ta ? ta.value : '';
-    }
 
-    backBtn.addEventListener('click', () => {
-        if (window.history.length > 1) window.history.back();
-        else window.location.href = '/index.php?controller=adminNews&action=manage';
-    });
+        backBtn.addEventListener('click', () => {
+            if (window.history.length > 1) window.history.back();
+            else window.location.href = '/index.php?controller=adminNews&action=manage';
+        });
 
-    // ========== THUMBNAIL PREVIEW ==========
-    thumbInput.addEventListener('change', (e) => {
-        const file = e.target.files && e.target.files[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            thumbPreview.src = url;
-            thumbWrap.classList.remove('d-none');
-        } else {
-            thumbPreview.src = '';
-            thumbWrap.classList.add('d-none');
-        }
-    });
-
-    // ========== SUBMIT ==========
-    form.addEventListener('submit', () => {
-        if (window.tinymce && typeof tinymce.triggerSave === 'function') {
-            tinymce.triggerSave();
-        }
-    });
-
-    // ========== PREVIEW ==========
-    const pvThumbWrap = document.getElementById('pvThumbWrap');
-    const pvThumb = document.getElementById('pvThumb');
-    const pvTitle = document.getElementById('pvTitle');
-    const pvAuthor = document.getElementById('pvAuthor');
-    const pvDate = document.getElementById('pvDate');
-    const pvDescBlock = document.getElementById('pvDescBlock');
-    const pvDesc = document.getElementById('pvDesc');
-    const pvContent = document.getElementById('pvContent');
-
-    function normalizeLinksInEl(root) {
-        root.querySelectorAll('a[href]').forEach(a => {
-            const href = (a.getAttribute('href') || '').trim().toLowerCase();
-            if (!href.startsWith('javascript:')) {
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
+        thumbInput.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                thumbPreview.src = url;
+                thumbWrap.classList.remove('d-none');
+            } else {
+                thumbPreview.src = '';
+                thumbWrap.classList.add('d-none');
             }
         });
-    }
 
-    previewBtn.addEventListener('click', () => {
-        const title = (titleInput.value || '').trim();
-        pvTitle.textContent = title || 'Untitled';
+        form.addEventListener('submit', () => {
+            if (window.tinymce && typeof tinymce.triggerSave === 'function') {
+                tinymce.triggerSave();
+            }
+        });
 
-        const defaultAuthor = previewBtn.getAttribute('data-author-default') || 'Admin';
-        pvAuthor.textContent = defaultAuthor;
+        const pvThumbWrap = document.getElementById('pvThumbWrap');
+        const pvThumb = document.getElementById('pvThumb');
+        const pvTitle = document.getElementById('pvTitle');
+        const pvAuthor = document.getElementById('pvAuthor');
+        const pvDate = document.getElementById('pvDate');
+        const pvDescBlock = document.getElementById('pvDescBlock');
+        const pvDesc = document.getElementById('pvDesc');
+        const pvContent = document.getElementById('pvContent');
 
-        const d = new Date();
-        const dd = String(d.getDate()).padStart(2, '0');
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const yyyy = d.getFullYear();
-        pvDate.textContent = `${dd}/${mm}/${yyyy}`;
-
-        if (thumbPreview && thumbPreview.src) {
-            pvThumb.src = thumbPreview.src;
-            pvThumbWrap.style.display = '';
-        } else {
-            pvThumb.src = '/assets/images/placeholder.png';
-            pvThumbWrap.style.display = '';
+        function normalizeLinksInEl(root) {
+            root.querySelectorAll('a[href]').forEach(a => {
+                const href = (a.getAttribute('href') || '').trim().toLowerCase();
+                if (!href.startsWith('javascript:')) {
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                }
+            });
         }
 
-        const desc = (descInput.value || '').trim();
-        if (desc) {
-            pvDesc.textContent = desc;
-            pvDescBlock.style.display = '';
-        } else {
-            pvDescBlock.style.display = 'none';
-            pvDesc.textContent = '';
-        }
+        previewBtn.addEventListener('click', () => {
+            const title = (titleInput.value || '').trim();
+            pvTitle.textContent = title || 'Untitled';
 
-        const html = getEditorHtml();
-        pvContent.innerHTML = html;
-        normalizeLinksInEl(pvContent);
+            const defaultAuthor = previewBtn.getAttribute('data-author-default') || 'Admin';
+            pvAuthor.textContent = defaultAuthor;
 
-        const modal = new tabler.Modal(document.getElementById('previewModal'));
-        modal.show();
+            const d = new Date();
+            const dd = String(d.getDate()).padStart(2, '0');
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            pvDate.textContent = `${dd}/${mm}/${yyyy}`;
+
+            if (thumbPreview && thumbPreview.src) {
+                pvThumb.src = thumbPreview.src;
+                pvThumbWrap.style.display = '';
+            } else {
+                pvThumb.src = '/assets/images/placeholder.png';
+                pvThumbWrap.style.display = '';
+            }
+
+            const desc = (descInput.value || '').trim();
+            if (desc) {
+                pvDesc.textContent = desc;
+                pvDescBlock.style.display = '';
+            } else {
+                pvDescBlock.style.display = 'none';
+                pvDesc.textContent = '';
+            }
+
+            const html = getEditorHtml();
+            pvContent.innerHTML = html;
+            normalizeLinksInEl(pvContent);
+
+            const modal = new tabler.Modal(document.getElementById('previewModal'));
+            modal.show();
+        });
     });
+
+    window.addEventListener('hide.bs.modal', event => {
+        document.activeElement.blur()
+    })
 </script>

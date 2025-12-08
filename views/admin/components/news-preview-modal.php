@@ -1,39 +1,8 @@
-<div class="modal fade" id="promotionModal" tabindex="-1" aria-labelledby="promotionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form id="promotionCreateForm" class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="promotionModalLabel">New Promotion</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input name="name" type="text" class="form-control" required placeholder="Promotion name">
-                </div>
-                <div class="row g-2">
-                    <div class="col">
-                        <label class="form-label">Start date</label>
-                        <input name="start_date" type="date" class="form-control">
-                    </div>
-                    <div class="col">
-                        <label class="form-label">End date</label>
-                        <input name="end_date" type="date" class="form-control">
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <label class="form-label">Description (optional)</label>
-                    <textarea name="description" class="form-control" rows="2" placeholder="Short note"></textarea>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Create Promotion</button>
-            </div>
-        </form>
-    </div>
-</div>
+<?php
+$modalId   = 'promotionModal';
+$actionUrl = '/index.php?controller=adminPromotion&action=create';
+require 'views/admin/components/promotion-modal.php';
+?>
 
 <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable">

@@ -9,7 +9,7 @@ $toRecord = $totalProducts > 0 ? min($offset + count($products), $totalProducts)
 
 $baseQuery = [
     'controller' => 'adminProduct',
-    'action' => 'products',
+    'action'     => 'products',
 ];
 if ($keyword !== '') {
     $baseQuery['keyword'] = $keyword;
@@ -49,12 +49,12 @@ $resolveProductImage = function (?string $imageValue): string {
     <div class="card card-stacked">
       <div class="card-header">
         <div>
-          <div class="card-title">Quản lý sản phẩm</div>
-          <div class="text-secondary">Theo dõi tồn kho, tìm kiếm và cập nhật nhanh từng mặt hàng.</div>
+          <div class="card-title">Product management</div>
+          <div class="text-secondary">Monitor stock, search, and quickly update each item.</div>
         </div>
         <div class="ms-auto">
           <a href="/views/admin/index.php?controller=adminProduct&action=addProduct" class="btn btn-primary">
-            <i class="ti ti-plus me-1"></i> Thêm sản phẩm
+            <i class="ti ti-plus me-1"></i> Add product
           </a>
         </div>
       </div>
@@ -63,15 +63,24 @@ $resolveProductImage = function (?string $imageValue): string {
           <input type="hidden" name="controller" value="adminProduct">
           <input type="hidden" name="action" value="products">
           <div class="col-12 col-md-5 col-lg-4">
-            <label class="form-label">Từ khóa</label>
-            <input type="text" name="keyword" class="form-control" placeholder="Tên, mô tả sản phẩm" value="<?php echo htmlspecialchars($keyword); ?>">
+            <label class="form-label">Keyword</label>
+            <input
+              type="text"
+              name="keyword"
+              class="form-control"
+              placeholder="Product name or description"
+              value="<?php echo htmlspecialchars($keyword); ?>"
+            >
           </div>
           <div class="col-12 col-md-4 col-lg-3">
-            <label class="form-label">Danh mục</label>
+            <label class="form-label">Category</label>
             <select name="category" class="form-select">
-              <option value="">Tất cả danh mục</option>
+              <option value="">All categories</option>
               <?php foreach ($categories as $categoryRow): ?>
-                <option value="<?php echo htmlspecialchars($categoryRow['id']); ?>" <?php echo (string)$categoryRow['id'] === (string)$category ? 'selected' : ''; ?>>
+                <option
+                  value="<?php echo htmlspecialchars($categoryRow['id']); ?>"
+                  <?php echo (string)$categoryRow['id'] === (string)$category ? 'selected' : ''; ?>
+                >
                   <?php echo htmlspecialchars($categoryRow['name']); ?>
                 </option>
               <?php endforeach; ?>
@@ -80,7 +89,7 @@ $resolveProductImage = function (?string $imageValue): string {
           <div class="col-12 col-md-3 col-lg-2">
             <label class="form-label d-none d-md-block">&nbsp;</label>
             <button type="submit" class="btn btn-outline-primary w-100">
-              <i class="ti ti-search me-1"></i> Tìm kiếm
+              <i class="ti ti-search me-1"></i> Search
             </button>
           </div>
         </form>
@@ -89,11 +98,13 @@ $resolveProductImage = function (?string $imageValue): string {
       <?php if (empty($products)): ?>
         <div class="card-body">
           <div class="empty">
-            <div class="empty-header">Không có dữ liệu</div>
-            <p class="empty-subtitle text-secondary">Chưa tìm thấy sản phẩm trùng khớp tiêu chí. Hãy thử từ khóa khác hoặc thêm sản phẩm mới.</p>
+            <div class="empty-header">No data</div>
+            <p class="empty-subtitle text-secondary">
+              No products match your filters. Try another keyword or add a new product.
+            </p>
             <div class="empty-action">
               <a class="btn btn-primary" href="/views/admin/index.php?controller=adminProduct&action=addProduct">
-                <i class="ti ti-plus me-1"></i> Thêm sản phẩm đầu tiên
+                <i class="ti ti-plus me-1"></i> Add first product
               </a>
             </div>
           </div>
@@ -103,21 +114,21 @@ $resolveProductImage = function (?string $imageValue): string {
           <table class="table table-vcenter">
             <thead>
               <tr>
-                <th>Sản phẩm</th>
-                <th>Danh mục</th>
-                <th class="text-center">Tồn kho</th>
-                <th>Giá bán</th>
-                <th class="w-1">Thao tác</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th class="text-center">Stock</th>
+                <th>Price</th>
+                <th class="w-1">Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($products as $product): ?>
                 <?php
-                $imagePath = $resolveProductImage($product['image'] ?? null);
+                $imagePath  = $resolveProductImage($product['image'] ?? null);
                 $stockValue = isset($product['Stock']) ? (int)$product['Stock'] : (int)($product['stock'] ?? 0);
                 $sizeSummary = $product['size_summary'] ?? '';
-                $finalPrice = isset($product['final_price']) ? (float)$product['final_price'] : null;
-                $basePrice = isset($product['price']) ? (float)$product['price'] : 0;
+                $finalPrice  = isset($product['final_price']) ? (float)$product['final_price'] : null;
+                $basePrice   = isset($product['price']) ? (float)$product['price'] : 0;
                 $displayFinalPrice = $finalPrice !== null && $finalPrice > 0 && $finalPrice < $basePrice;
                 ?>
                 <tr>
@@ -130,41 +141,52 @@ $resolveProductImage = function (?string $imageValue): string {
                           <?php if ($sizeSummary): ?>
                             Size: <?php echo htmlspecialchars($sizeSummary); ?>
                           <?php else: ?>
-                            Chưa cấu hình size
+                            Sizes not configured
                           <?php endif; ?>
                         </div>
                       </div>
                     </div>
                   </td>
                   <td class="text-secondary">
-                    <?php echo htmlspecialchars($product['category'] ?? 'Không xác định'); ?>
+                    <?php echo htmlspecialchars($product['category'] ?? 'Unknown'); ?>
                   </td>
                   <td class="text-center">
                     <?php if ($stockValue <= 0): ?>
-                      <span class="badge bg-red-lt">Hết hàng</span>
+                      <span class="badge bg-red-lt">Out of stock</span>
                     <?php elseif ($stockValue < 10): ?>
-                      <span class="badge bg-orange-lt">Chỉ còn <?php echo $stockValue; ?></span>
+                      <span class="badge bg-orange-lt">Only <?php echo $stockValue; ?> left</span>
                     <?php else: ?>
-                      <span class="badge bg-green-lt"><?php echo $stockValue; ?> sẵn có</span>
+                      <span class="badge bg-green-lt"><?php echo $stockValue; ?> in stock</span>
                     <?php endif; ?>
                   </td>
                   <td>
                     <?php if ($displayFinalPrice): ?>
-                      <div class="fw-semibold text-danger"><?php echo number_format($finalPrice, 2); ?> VND</div>
-                      <div class="text-secondary text-decoration-line-through small"><?php echo number_format($basePrice, 2); ?> VND</div>
+                      <div class="fw-semibold text-danger">
+                        <?php echo '$' . number_format($finalPrice, 2); ?>
+                      </div>
+                      <div class="text-secondary text-decoration-line-through small">
+                        <?php echo '$' . number_format($basePrice, 2); ?>
+                      </div>
                     <?php else: ?>
-                      <div class="fw-semibold"><?php echo number_format($basePrice, 2); ?> VND</div>
+                      <div class="fw-semibold">
+                        <?php echo '$' . number_format($basePrice, 2); ?>
+                      </div>
                     <?php endif; ?>
                   </td>
                   <td class="text-nowrap">
                     <div class="btn-list flex-nowrap mb-0">
-                      <a href="/views/admin/index.php?controller=adminProduct&action=editProduct&id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-primary">
-                        <i class="ti ti-pencil me-1"></i> Sửa
+                      <a
+                        href="/views/admin/index.php?controller=adminProduct&action=editProduct&id=<?php echo $product['id']; ?>"
+                        class="btn btn-sm btn-outline-primary"
+                      >
+                        <i class="ti ti-pencil me-1"></i> Edit
                       </a>
-                      <a href="/views/admin/index.php?controller=adminProduct&action=deleteProduct&id=<?php echo $product['id']; ?>"
-                         class="btn btn-sm btn-outline-danger"
-                         onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
-                        <i class="ti ti-trash me-1"></i> Xóa
+                      <a
+                        href="/views/admin/index.php?controller=adminProduct&action=deleteProduct&id=<?php echo $product['id']; ?>"
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="return confirm('Are you sure you want to delete this product?');"
+                      >
+                        <i class="ti ti-trash me-1"></i> Delete
                       </a>
                     </div>
                   </td>
@@ -175,13 +197,18 @@ $resolveProductImage = function (?string $imageValue): string {
         </div>
         <div class="card-footer d-flex align-items-center">
           <p class="m-0 text-secondary">
-            Hiển thị <?php echo $fromRecord; ?>–<?php echo $toRecord; ?> / <?php echo $totalProducts; ?> sản phẩm
+            Showing <?php echo $fromRecord; ?>–<?php echo $toRecord; ?> of <?php echo $totalProducts; ?> products
           </p>
           <?php if ($totalPages > 1): ?>
             <ul class="pagination m-0 ms-auto">
               <li class="page-item <?php echo $currentPage <= 1 ? 'disabled' : ''; ?>">
-                <a class="page-link" href="<?php echo $buildPageUrl(max(1, $currentPage - 1)); ?>" tabindex="-1" aria-disabled="<?php echo $currentPage <= 1 ? 'true' : 'false'; ?>">
-                  <i class="ti ti-chevron-left"></i> Trước
+                <a
+                  class="page-link"
+                  href="<?php echo $buildPageUrl(max(1, $currentPage - 1)); ?>"
+                  tabindex="-1"
+                  aria-disabled="<?php echo $currentPage <= 1 ? 'true' : 'false'; ?>"
+                >
+                  <i class="ti ti-chevron-left"></i> Previous
                 </a>
               </li>
               <?php for ($i = 1; $i <= $totalPages; $i++): ?>
@@ -191,7 +218,7 @@ $resolveProductImage = function (?string $imageValue): string {
               <?php endfor; ?>
               <li class="page-item <?php echo $currentPage >= $totalPages ? 'disabled' : ''; ?>">
                 <a class="page-link" href="<?php echo $buildPageUrl(min($totalPages, $currentPage + 1)); ?>">
-                  Sau <i class="ti ti-chevron-right"></i>
+                  Next <i class="ti ti-chevron-right"></i>
                 </a>
               </li>
             </ul>

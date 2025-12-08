@@ -75,6 +75,15 @@ class AdminPromotionController
         $discountPercentage = null;
         $fixedPrice         = null;
 
+        // Input length validation
+        if (mb_strlen($promotionName) > 100) {
+            $jsonError("Promotion name must not exceed 100 characters.");
+        }
+
+        if (mb_strlen($promotionType) > 50) {
+            $jsonError("Promotion type must not exceed 50 characters.");
+        }
+
         if (!in_array($promotionType, ['discount', 'fixed'], true)) {
             $jsonError("Invalid promotion type.");
         }
@@ -105,6 +114,11 @@ class AdminPromotionController
             if ($discountPercentage <= 0 || $discountPercentage > 100) {
                 $jsonError("Discount percentage must be between 0 and 100.");
             }
+
+            // Validate decimal precision (5,2) - max 999.99
+            if ($discountPercentage >= 1000) {
+                $jsonError("Discount percentage must be less than 1000.");
+            }
         } elseif ($promotionType === 'fixed') {
             $fixedPrice = isset($_POST['fixed_price'])
                 ? (float)$_POST['fixed_price']
@@ -112,6 +126,11 @@ class AdminPromotionController
 
             if ($fixedPrice <= 0) {
                 $jsonError("Fixed price must be greater than 0.");
+            }
+
+            // Validate decimal precision (10,2) - max 99999999.99
+            if ($fixedPrice >= 100000000) {
+                $jsonError("Fixed price must be less than 100,000,000.");
             }
         }
 
@@ -195,6 +214,15 @@ class AdminPromotionController
         $discountPercentage = null;
         $fixedPrice         = null;
 
+        // Input length validation
+        if (mb_strlen($promotionName) > 100) {
+            return $this->editRespondError($isAjax, 'Promotion name must not exceed 100 characters.', $promotionId);
+        }
+
+        if (mb_strlen($promotionType) > 50) {
+            return $this->editRespondError($isAjax, 'Promotion type must not exceed 50 characters.', $promotionId);
+        }
+
         if (!in_array($promotionType, ['discount', 'fixed'], true)) {
             return $this->editRespondError($isAjax, 'Invalid promotion type.', $promotionId);
         }
@@ -224,6 +252,11 @@ class AdminPromotionController
             if ($discountPercentage <= 0 || $discountPercentage > 100) {
                 return $this->editRespondError($isAjax, 'Discount percentage must be between 0 and 100.', $promotionId);
             }
+
+            // Validate decimal precision (5,2) - max 999.99
+            if ($discountPercentage >= 1000) {
+                return $this->editRespondError($isAjax, 'Discount percentage must be less than 1000.', $promotionId);
+            }
         } elseif ($promotionType === 'fixed') {
             $fixedPrice = isset($_POST['fixed_price'])
                 ? (float) $_POST['fixed_price']
@@ -231,6 +264,11 @@ class AdminPromotionController
 
             if ($fixedPrice <= 0) {
                 return $this->editRespondError($isAjax, 'Fixed price must be greater than 0.', $promotionId);
+            }
+
+            // Validate decimal precision (10,2) - max 99999999.99
+            if ($fixedPrice >= 100000000) {
+                return $this->editRespondError($isAjax, 'Fixed price must be less than 100,000,000.', $promotionId);
             }
         }
 

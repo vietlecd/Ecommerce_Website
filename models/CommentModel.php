@@ -31,6 +31,19 @@ class CommentModel
 
     public function addComment($shoesId, $memId, $rating, $content, $guestName = null)
     {
+        // Input validation
+        if ($content !== null && mb_strlen($content) > 65535) {
+            return ['success' => false, 'error' => 'Content exceeds maximum length of 65535 characters.'];
+        }
+
+        if ($guestName !== null && mb_strlen($guestName) > 100) {
+            return ['success' => false, 'error' => 'Guest name exceeds maximum length of 100 characters.'];
+        }
+
+        if ($rating < 1 || $rating > 5) {
+            return ['success' => false, 'error' => 'Rating must be between 1 and 5.'];
+        }
+
         try {
             $sql = "INSERT INTO comment (ShoesID, Mem_ID, Rating, Content, GuestName, Date) 
                     VALUES (?, ?, ?, ?, ?, CURDATE())";

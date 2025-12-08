@@ -128,6 +128,8 @@ class ProductsController {
                 $_SESSION['comment_error'] = 'Vui lòng chọn đánh giá từ 1 đến 5 sao.';
             } elseif (empty($content)) {
                 $_SESSION['comment_error'] = 'Vui lòng nhập nội dung comment.';
+            } elseif (mb_strlen($content) > 65535) {
+                $_SESSION['comment_error'] = 'Nội dung comment quá dài (tối đa 65535 ký tự).';
             } else {
                 $memId = isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'member' 
                     ? (int)$_SESSION['user_id'] 
@@ -136,6 +138,8 @@ class ProductsController {
                 
                 if (!$memId && empty($guestName)) {
                     $_SESSION['comment_error'] = 'Vui lòng nhập tên của bạn.';
+                } elseif ($guestName !== null && mb_strlen($guestName) > 100) {
+                    $_SESSION['comment_error'] = 'Tên của bạn quá dài (tối đa 100 ký tự).';
                 } else {
                     $result = $this->commentModel->addComment($id, $memId, $rating, $content, $guestName);
                     

@@ -25,7 +25,7 @@ class OrderModel
         $sql = "
             SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status, m.Name AS customer_name, m.Email
             FROM `order` o
-            JOIN member m ON o.MemberID = m.MemberID
+            LEFT JOIN member m ON o.MemberID = m.MemberID
             ORDER BY o.Date DESC
         ";
 
@@ -55,7 +55,7 @@ class OrderModel
         $stmt = $this->pdo->prepare("
             SELECT o.*, m.Name AS customer_name, m.Email, m.Phone
             FROM `order` o
-            JOIN member m ON o.MemberID = m.MemberID
+            LEFT JOIN member m ON o.MemberID = m.MemberID
             WHERE o.OrderID = ?
         ");
         $stmt->execute([$orderId]);
@@ -63,7 +63,7 @@ class OrderModel
 
         if ($order) {
             $stmt = $this->pdo->prepare("
-                SELECT os.ShoesID, s.Name AS product_name, s.Price, os.OrderID
+                SELECT os.ShoesID, s.Name AS product_name, s.Price, s.Image AS product_image, os.OrderID
                 FROM order_shoes os
                 JOIN shoes s ON os.ShoesID = s.ShoesID
                 WHERE os.OrderID = ?
@@ -72,6 +72,73 @@ class OrderModel
             $order['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         return $order;
+    }
+
+    public function getOrderSummaryById($orderId)
+    {
+        $order = $this->getOrderById($orderId);
+        if (!$order) {
+            return null;
+        }
+
+        $items = $order['items'] ?? [];
+        $groupedItems = [];
+
+        foreach ($items as $item) {
+            $key = $item['ShoesID'];
+            if (!isset($groupedItems[$key])) {
+                $groupedItems[$key] = [
+                    'id' => $item['ShoesID'],
+                    'name' => $item['product_name'],
+                    'price' => (float)$item['Price'],
+                    'image' => $item['product_image'],
+                    'quantity' => 0
+                ];
+            }
+            $groupedItems[$key]['quantity']++;
+        }
+
+        $summaryItems = [];
+        $subtotal = 0;
+
+        foreach ($groupedItems as $group) {
+            $lineTotal = $group['price'] * $group['quantity'];
+            $summaryItems[] = [
+                'id' => $group['id'],
+                'name' => $group['name'],
+                'image' => $group['image'],
+                'price' => $group['price'],
+                'quantity' => $group['quantity'],
+                'subtotal' => $lineTotal
+            ];
+            $subtotal += $lineTotal;
+        }
+
+        $shipping = 10.00;
+        $total = (float)$order['Total_price'];
+
+        return [
+            'meta' => $order,
+            'items' => $summaryItems,
+            'subtotal' => $subtotal,
+            'shipping' => $shipping,
+            'total' => $total
+        ];
+    }
+
+    public function getOrdersByEmail($email)
+    {
+        $stmt = $this->pdo->prepare("
+            SELECT o.OrderID, o.Total_price, o.Quantity, o.Date, o.Status,
+                   COALESCE(m.Name, o.ShippingName) AS customer_name,
+                   COALESCE(m.Email, o.ShippingEmail) AS email
+            FROM `order` o
+            LEFT JOIN member m ON o.MemberID = m.MemberID
+            WHERE (m.Email = ? OR o.ShippingEmail = ?)
+            ORDER BY o.Date DESC
+        ");
+        $stmt->execute([$email, $email]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Cập nhật trạng thái đơn hàng
@@ -87,13 +154,30 @@ class OrderModel
     }
 
     // Thêm đơn hàng mới
-    public function addOrder($memberId, $totalPrice, $quantity)
+    public function addOrder($memberId, $totalPrice, $quantity, $shippingData)
     {
+        $shippingName = $shippingData['name'] ?? null;
+        $shippingEmail = $shippingData['email'] ?? null;
+        $shippingAddress = $shippingData['address'] ?? null;
+        $shippingCity = $shippingData['city'] ?? null;
+        $shippingZip = $shippingData['zip'] ?? null;
+        $paymentMethod = $shippingData['payment_method'] ?? null;
+
         try {
-            $stmt = $this->pdo->prepare("INSERT INTO `order` (MemberID, Total_price, Quantity, Date, Status) 
-                                         VALUES (?, ?, ?, NOW(), 'Pending')");
-            $stmt->execute([$memberId, $totalPrice, $quantity]);
-            return $this->pdo->lastInsertId(); // Trả về OrderID
+            $stmt = $this->pdo->prepare("INSERT INTO `order` (MemberID, Total_price, Quantity, Date, Earned_VIP, Status, ShippingName, ShippingEmail, ShippingAddress, ShippingCity, ShippingZip, PaymentMethod) 
+                                         VALUES (?, ?, ?, NOW(), 0, 'Pending', ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([
+                $memberId,
+                $totalPrice,
+                $quantity,
+                $shippingName,
+                $shippingEmail,
+                $shippingAddress,
+                $shippingCity,
+                $shippingZip,
+                $paymentMethod
+            ]);
+            return $this->pdo->lastInsertId();
         } catch (PDOException $e) {
             return false;
         }

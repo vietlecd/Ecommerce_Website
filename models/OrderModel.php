@@ -179,7 +179,8 @@ class OrderModel
             ]);
             return $this->pdo->lastInsertId();
         } catch (PDOException $e) {
-            return false;
+            echo 'Order insert error: ' . $e->getMessage();
+            exit; // hoặc die();
         }
     }
 

@@ -39,6 +39,10 @@ $formatCurrency = function ($value) {
                         <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : htmlspecialchars($prefillEmail); ?>" required>
                     </div>
                     <div class="checkout-field">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : htmlspecialchars($prefillPhone); ?>" required pattern="\\+?[0-9\\s\\-]{7,}">
+                    </div>
+                    <div class="checkout-field">
                         <label for="address">Address</label>
                         <input type="text" id="address" name="address" value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : htmlspecialchars($prefillAddress); ?>" required>
                     </div>
@@ -66,6 +70,9 @@ $formatCurrency = function ($value) {
                                             <div class="saved-address-line"><?php echo htmlspecialchars($addr['email']); ?></div>
                                             <div class="saved-address-line"><?php echo htmlspecialchars($addr['address']); ?></div>
                                             <div class="saved-address-line"><?php echo htmlspecialchars($addr['city']); ?>, <?php echo htmlspecialchars($addr['zip']); ?></div>
+                                            <?php if (!empty($addr['phone'])): ?>
+                                                <div class="saved-address-line"><?php echo htmlspecialchars($addr['phone']); ?></div>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="saved-address-actions">
                                             <button type="submit"
@@ -322,6 +329,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const addressButtons = document.querySelectorAll('[data-address-json]');
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
     const addressInput = document.getElementById('address');
     const cityInput = document.getElementById('city');
     const zipInput = document.getElementById('zip');
@@ -332,6 +340,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = JSON.parse(btn.getAttribute('data-address-json'));
                 if (nameInput && data.name) nameInput.value = data.name;
                 if (emailInput && data.email) emailInput.value = data.email;
+                if (phoneInput && data.phone) phoneInput.value = data.phone;
                 if (addressInput && data.address) addressInput.value = data.address;
                 if (cityInput && data.city) cityInput.value = data.city;
                 if (zipInput && data.zip) zipInput.value = data.zip;

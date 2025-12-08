@@ -1,5 +1,5 @@
 -- Seeder 010: Repair Handbook Volume 02
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Repair Handbook Vol.02: Stitching, Gluing, and Finishing for Lifelong Wear',
     'An exhaustive manual covering every repair scenario from split seams to midsole separation, with rituals, diagnostics, and finishing lore for restorers at every level.',
@@ -47,7 +47,6 @@ VALUES (
      <p>Join repair forums, attend webinars, and host local meetups. Share breakthroughs, admit missteps, and celebrate others. Craft survives when communities stay curious. The appendix includes a calendar of upcoming workshops, grant opportunities, and recommended reading lists. Keep learning; shoes evolve, and so must we.</p>',
     8,
     'manual',
-    NULL,
     'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80'
 );
 

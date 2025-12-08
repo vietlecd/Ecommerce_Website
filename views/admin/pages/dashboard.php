@@ -1,83 +1,133 @@
-<div class="admin-header">
-    <h1>Dashboard</h1>
-    <div class="date"><?php echo date('F d, Y'); ?></div>
-</div>
-
-<div class="admin-stats">
-    <div class="stat-card">
-        <h3>42</h3>
-        <p>Tổng Số Đơn Hàng</p>
-    </div>
-    <div class="stat-card">
-        <h3>$3,240</h3>
-        <p>Doanh Thu Tháng</p>
-    </div>
-    <div class="stat-card">
-        <h3>128</h3>
-        <p>Tổng Số Khách Hàng</p>
-    </div>
-    <div class="stat-card">
-        <h3>24</h3>
-        <p>Tổng Số Sản Phẩm</p>
+<div class="page-header d-print-none mb-4">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle text-secondary">Overview</div>
+            <h2 class="page-title">Dashboard</h2>
+        </div>
+        <div class="col-auto ms-auto">
+            <div class="text-secondary small"><?php echo date('F d, Y'); ?></div>
+        </div>
     </div>
 </div>
 
-<div class="recent-orders">
-    <h2>Đơn Hàng Gần Đây</h2>
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>Mã Đơn Hàng</th>
-                <th>Khách Hàng</th>
-                <th>Ngày</th>
-                <th>Số Tiền</th>
-                <th>Trạng Thái</th>
-                <th>Hành Động</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>#1001</td>
-                <td>John Doe</td>
-                <td>Jun 12, 2023</td>
-                <td>$129.99</td>
-                <td><span class="status-delivered">Delivered</span></td>
-                <td><a href="/admin/index.php?controller=admin&action=orderDetail&id=1001" class="btn-view">Xem</a></td>
-            </tr>
-            <tr>
-                <td>#1002</td>
-                <td>Jane Smith</td>
-                <td>Jun 11, 2023</td>
-                <td>$89.99</td>
-                <td><span class="status-shipped">Shipped</span></td>
-                <td><a href="/admin/index.php?controller=admin&action=orderDetail&id=1002" class="btn-view">Xem</a></td>
-            </tr>
-            <tr>
-                <td>#1003</td>
-                <td>Robert Johnson</td>
-                <td>Jun 10, 2023</td>
-                <td>$199.99</td>
-                <td><span class="status-processing">Processing</span></td>
-                <td><a href="/admin/index.php?controller=admin&action=orderDetail&id=1003" class="btn-view">Xem</a></td>
-            </tr>
-            <tr>
-                <td>#1004</td>
-                <td>Emily Davis</td>
-                <td>Jun 9, 2023</td>
-                <td>$149.99</td>
-                <td><span class="status-delivered">Delivered</span></td>
-                <td><a href="/admin/index.php?controller=admin&action=orderDetail&id=1004" class="btn-view">Xem</a></td>
-            </tr>
-            <tr>
-                <td>#1005</td>
-                <td>Michael Wilson</td>
-                <td>Jun 8, 2023</td>
-                <td>$79.99</td>
-                <td><span class="status-cancelled">Cancelled</span></td>
-                <td><a href="/admin/index.php?controller=admin&action=orderDetail&id=1005" class="btn-view">Xem</a></td>
-            </tr>
-        </tbody>
-    </table>
+<?php
+$totalOrders = $totalOrders ?? 0;
+$monthlyRevenue = $monthlyRevenue ?? 0.0;
+$totalCustomers = $totalCustomers ?? 0;
+$totalProducts = $totalProducts ?? 0;
+$recentOrders = $recentOrders ?? [];
+?>
+
+<div class="row row-cards mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Total Orders</div>
+                </div>
+                <div class="h1 mb-3"><?php echo number_format((int)$totalOrders); ?></div>
+                <div class="d-flex mb-2">
+                    <div class="text-secondary">All time orders</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Monthly Revenue</div>
+                </div>
+                <div class="h1 mb-3">$<?php echo number_format((float)$monthlyRevenue, 2); ?></div>
+                <div class="d-flex mb-2">
+                    <div class="text-secondary">Current month</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Total Customers</div>
+                </div>
+                <div class="h1 mb-3"><?php echo number_format((int)$totalCustomers); ?></div>
+                <div class="d-flex mb-2">
+                    <div class="text-secondary">Registered members</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="subheader">Total Products</div>
+                </div>
+                <div class="h1 mb-3"><?php echo number_format((int)$totalProducts); ?></div>
+                <div class="d-flex mb-2">
+                    <div class="text-secondary">Available products</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Recent Orders</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th class="w-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($recentOrders)): ?>
+                    <tr>
+                        <td colspan="6" class="text-center text-secondary py-4">No orders found</td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($recentOrders as $order): ?>
+                        <tr>
+                            <td>#<?php echo htmlspecialchars($order['OrderID']); ?></td>
+                            <td>
+                                <div><?php echo htmlspecialchars($order['customer_name'] ?? 'Guest'); ?></div>
+                                <?php if (!empty($order['Email'])): ?>
+                                    <div class="text-secondary text-xs"><?php echo htmlspecialchars($order['Email']); ?></div>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo date('M d, Y', strtotime($order['Date'])); ?></td>
+                            <td>$<?php echo number_format((float)$order['Total_price'], 2); ?></td>
+                            <td>
+                                <?php
+                                $status = $order['Status'] ?? 'Pending';
+                                $statusClass = 'bg-secondary';
+                                if ($status === 'Delivered') $statusClass = 'bg-success';
+                                elseif ($status === 'Shipped') $statusClass = 'bg-info';
+                                elseif ($status === 'Processing') $statusClass = 'bg-warning';
+                                elseif ($status === 'Cancelled') $statusClass = 'bg-danger';
+                                ?>
+                                <span class="badge <?php echo $statusClass; ?>"><?php echo htmlspecialchars($status); ?></span>
+                            </td>
+                            <td>
+                                <a href="/index.php?controller=adminOrder&action=orderDetail&id=<?php echo $order['OrderID']; ?>" class="btn btn-sm btn-outline-primary">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?php require_once 'views/admin/components/admin_footer.php'; ?>

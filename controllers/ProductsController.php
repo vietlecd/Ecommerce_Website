@@ -128,6 +128,8 @@ class ProductsController {
                 $_SESSION['comment_error'] = 'Vui lòng chọn đánh giá từ 1 đến 5 sao.';
             } elseif (empty($content)) {
                 $_SESSION['comment_error'] = 'Vui lòng nhập nội dung comment.';
+            } elseif (strlen($content) > 65535) {
+                $_SESSION['comment_error'] = 'Nội dung comment quá dài (tối đa 65535 byte).';
             } else {
                 $memId = isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'member' 
                     ? (int)$_SESSION['user_id'] 
@@ -136,6 +138,8 @@ class ProductsController {
                 
                 if (!$memId && empty($guestName)) {
                     $_SESSION['comment_error'] = 'Vui lòng nhập tên của bạn.';
+                } elseif ($guestName !== null && mb_strlen($guestName) > 100) {
+                    $_SESSION['comment_error'] = 'Tên của bạn quá dài (tối đa 100 ký tự).';
                 } else {
                     $result = $this->commentModel->addComment($id, $memId, $rating, $content, $guestName);
                     
@@ -294,11 +298,11 @@ class ProductsController {
                 ]
             ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         } catch (Exception $e) {
+            error_log("ProductsController::api() - Error processing request: " . $e->getMessage());
             http_response_code(500);
             echo json_encode([
                 'success' => false,
-                'error' => 'Internal server error',
-                'message' => $e->getMessage()
+                'error' => 'Internal server error. Please try again.'
             ], JSON_UNESCAPED_UNICODE);
         }
         exit;

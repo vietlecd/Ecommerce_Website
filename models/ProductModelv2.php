@@ -58,11 +58,11 @@ class ProductModel
         if ($needsSizeJoin) {
             $sql .= " JOIN shoe_sizes sz ON sz.ShoeID = s.ShoesID";
         }
-        
+
         if ($saleOnly) {
             $sql .= " LEFT JOIN sales sl ON sl.ShoesID = s.ShoesID AND (sl.ExpiresAt IS NULL OR sl.ExpiresAt >= NOW())";
         }
-        
+
         $sql .= " WHERE 1=1";
         $params = [];
 
@@ -108,7 +108,7 @@ class ProductModel
         $products = $this->enrichProducts($products);
 
         if ($minPrice !== null || $maxPrice !== null) {
-            $products = array_filter($products, function($product) use ($minPrice, $maxPrice) {
+            $products = array_filter($products, function ($product) use ($minPrice, $maxPrice) {
                 $finalPrice = $product['final_price'];
                 if ($minPrice !== null && $finalPrice < $minPrice) {
                     return false;
@@ -120,7 +120,7 @@ class ProductModel
             });
             $products = array_values($products);
         }
-        
+
         return $products;
     }
 
@@ -171,6 +171,17 @@ class ProductModel
         return count($products);
     }
 
+    public function getTotalProductsCount(): int
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT COUNT(*) AS total FROM shoes");
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            return (int)($row['total'] ?? 0);
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
+
     public function getAvailableSizes()
     {
         $stmt = $this->pdo->prepare("SELECT DISTINCT CAST(Size AS DECIMAL(10,2)) AS size FROM shoe_sizes ORDER BY size ASC");
@@ -204,19 +215,36 @@ class ProductModel
     private function getPromotionForProduct($shoe_id)
     {
         $current_date = date('Y-m-d H:i:s');
-        $query = "SELECT p.* 
-                  FROM promotions p 
-                  JOIN promotion_shoes ps ON p.promotion_id = ps.promotion_id 
-                  WHERE ps.shoe_id = :shoe_id 
-                  AND p.start_date <= :current_date 
-                  AND p.end_date >= :current_date 
-                  ORDER BY COALESCE(p.discount_percentage, 0) DESC, COALESCE(p.fixed_price, 999999) ASC 
-                  LIMIT 1";
+
+        $query = "
+        SELECT
+            p.PromotionID        AS promotion_id,
+            p.PromotionType      AS promotion_type,
+            p.PromotionName      AS promotion_name,
+            p.DiscountPercentage AS discount_percentage,
+            p.FixedPrice         AS fixed_price,
+            p.StartDate          AS start_date,
+            p.EndDate            AS end_date
+        FROM promotion p
+        JOIN promotion_shoes ps 
+            ON p.PromotionID = ps.PromotionID 
+        WHERE ps.ShoesID   = :shoe_id 
+          AND p.StartDate <= :start_date 
+          AND p.EndDate   >= :end_date 
+        ORDER BY 
+            COALESCE(p.DiscountPercentage, 0) DESC,
+            COALESCE(p.FixedPrice, 999999) ASC 
+        LIMIT 1
+    ";
+
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':shoe_id', (int)$shoe_id, PDO::PARAM_INT);
-        $stmt->bindValue(':current_date', $current_date, PDO::PARAM_STR);
+        $stmt->bindValue(':start_date', $current_date, PDO::PARAM_STR);
+        $stmt->bindValue(':end_date', $current_date, PDO::PARAM_STR);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
     }
 
     private function getSaleForProduct($shoe_id)
@@ -579,4 +607,3 @@ class ProductModel
         return $stats;
     }
 }
-

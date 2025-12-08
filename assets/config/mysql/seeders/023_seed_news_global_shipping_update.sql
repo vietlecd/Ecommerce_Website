@@ -1,5 +1,5 @@
 -- Seeder 023: Global Shipping Update
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Global Shipping Update: Routes, Packaging, and Service Levels',
     'Operational memo outlining new shipping lanes, packaging upgrades, and SLAs with detailed breakdowns.',
@@ -36,7 +36,6 @@ VALUES (
      <p>Self-service portal now shows customs status, proof-of-delivery photos, and carbon footprint per order.</p>',
     2,
     'operations',
-    NULL,
     'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
 );
 

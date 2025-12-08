@@ -234,10 +234,10 @@ class OrderModel
                 COALESCE(m.Email, o.ShippingEmail) AS email
             FROM `order` o
             LEFT JOIN member m ON o.MemberID = m.MemberID
-            WHERE (m.Email = ? OR o.ShippingEmail = ?)
+            WHERE m.Email = ?
             ORDER BY o.Date DESC
         ");
-        $stmt->execute([$email, $email]);
+        $stmt->execute([$email]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

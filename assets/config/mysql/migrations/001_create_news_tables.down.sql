@@ -1,0 +1,9 @@
+-- Drop the news table
+
+DROP TABLE IF EXISTS `news_clicks`;
+
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS `news`;
+
+
+SET FOREIGN_KEY_CHECKS = 1;

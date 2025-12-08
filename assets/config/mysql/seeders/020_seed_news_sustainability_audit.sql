@@ -1,5 +1,5 @@
 -- Seeder 020: Sustainability Audit
-INSERT INTO `news` (`Title`, `Description`, `Content`, `AdminID`, `news_type`, `promotion_id`, `thumbnail`)
+INSERT INTO `news` (`Title`, `Description`, `Content`, `CreatedBy`, `NewsType`, `Thumbnail`)
 VALUES (
     'Sustainability Audit FY24: Transparency Report',
     'Audit summary covering emissions, materials, supply chain ethics, and pledges with detailed analysis.',
@@ -40,7 +40,6 @@ VALUES (
      <p>Portal submissions receive responses within 10 days. We log every suggestion, highlight accepted ideas, and publish implementation status.</p>',
     9,
     'report',
-    NULL,
     'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
 );
 

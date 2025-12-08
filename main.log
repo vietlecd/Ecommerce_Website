@@ -1,35 +1,35 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.11.19)  8 DEC 2025 23:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.12.9)  9 DEC 2025 02:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/vietlh/Documents/LTW/Assignment/ShoesStore/main.tex
-(/home/vietlh/Documents/LTW/Assignment/ShoesStore/main.tex
-LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-01-22>
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
-File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+**d:/Github/web_dev/main.tex
+(d:/Github/web_dev/main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-11-06>
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 )
-\c@part=\count187
-\c@section=\count188
-\c@subsection=\count189
-\c@subsubsection=\count190
-\c@paragraph=\count191
-\c@subparagraph=\count192
-\c@figure=\count193
-\c@table=\count194
-\abovecaptionskip=\skip48
-\belowcaptionskip=\skip49
-\bibindent=\dimen140
-) (/usr/share/texlive/texmf-dist/tex/latex/a4wide/a4wide.sty
+\c@part=\count275
+\c@section=\count276
+\c@subsection=\count277
+\c@subsubsection=\count278
+\c@paragraph=\count279
+\c@subparagraph=\count280
+\c@figure=\count281
+\c@table=\count282
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen148
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/a4wide\a4wide.sty
 Package: a4wide 1994/08/30
- (/usr/share/texlive/texmf-dist/tex/latex/ntgclass/a4.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/ntgclass\a4.sty
 Package: a4 2023/01/10 v1.2g A4 based page layout
-)) (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
- (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \@emptytoks=\toks17
 \symAMSa=\mathgroup4
@@ -37,60 +37,58 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (/usr/share/texlive/texmf-dist/tex/latex/graphics/epsfig.sty
-Package: epsfig 2017/06/25 v1.7b (e)psfig emulation (SPQR)
- (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
- (/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\epsfig.sty
+Package: epsfig 2024/01/14 v1.7b (e)psfig emulation (SPQR)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks18
-) (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
- (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
-) (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 107.
- (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+Package graphics Info: Driver file: pdftex.def on input line 106.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen141
-\Gin@req@width=\dimen142
+\Gin@req@height=\dimen149
+\Gin@req@width=\dimen150
 )
-\epsfxsize=\dimen143
-\epsfysize=\dimen144
-) (/usr/share/texlive/texmf-dist/tex/latex/base/latexsym.sty
+\epsfxsize=\dimen151
+\epsfysize=\dimen152
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/base\latexsym.sty
 Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
 \symlasy=\mathgroup6
 LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
 (Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
-) (/usr/share/texlive/texmf-dist/tex/latex/tools/multicol.sty
-Package: multicol 2023/03/30 v1.9f multicolumn formatting (FMi)
-\c@tracingmulticols=\count195
-\mult@box=\box51
-\multicol@leftmargin=\dimen145
-\c@unbalance=\count196
-\c@collectmore=\count197
-\doublecol@number=\count198
-\multicoltolerance=\count199
-\multicolpretolerance=\count266
-\full@width=\dimen146
-\page@free=\dimen147
-\premulticols=\dimen148
-\postmulticols=\dimen149
-\multicolsep=\skip50
-\multicolbaselineskip=\skip51
-\partial@page=\box52
-\last@line=\box53
-\mc@boxedresult=\box54
-\maxbalancingoverflow=\dimen150
-\mult@rightbox=\box55
-\mult@grightbox=\box56
-\mult@firstbox=\box57
-\mult@gfirstbox=\box58
-\@tempa=\box59
-\@tempa=\box60
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\multicol.sty
+Package: multicol 2025/10/21 v2.0b multicolumn formatting (FMi)
+\c@tracingmulticols=\count283
+\mult@box=\box53
+\multicol@leftmargin=\dimen153
+\c@unbalance=\count284
+\c@collectmore=\count285
+\doublecol@number=\count286
+\multicoltolerance=\count287
+\multicolpretolerance=\count288
+\full@width=\dimen154
+\page@free=\dimen155
+\premulticols=\dimen156
+\postmulticols=\dimen157
+\multicolsep=\skip51
+\multicolbaselineskip=\skip52
+\partial@page=\box54
+\last@line=\box55
+\mc@boxedresult=\box56
+\maxbalancingoverflow=\dimen158
+\mult@rightbox=\box57
+\mult@grightbox=\box58
+\mult@firstbox=\box59
+\mult@gfirstbox=\box60
 \@tempa=\box61
 \@tempa=\box62
 \@tempa=\box63
@@ -125,48 +123,57 @@ Package: multicol 2023/03/30 v1.9f multicolumn formatting (FMi)
 \@tempa=\box92
 \@tempa=\box93
 \@tempa=\box94
-\c@minrows=\count267
-\c@columnbadness=\count268
-\c@finalcolumnbadness=\count269
-\last@try=\dimen151
-\multicolovershoot=\dimen152
-\multicolundershoot=\dimen153
-\mult@nat@firstbox=\box95
-\colbreak@box=\box96
-\mc@col@check@num=\count270
-) (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
-Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
-\col@sep=\dimen154
-\ar@mcellbox=\box97
-\extrarowheight=\dimen155
+\@tempa=\box95
+\@tempa=\box96
+\c@minrows=\count289
+\c@columnbadness=\count290
+\c@finalcolumnbadness=\count291
+\last@try=\dimen159
+\multicolovershoot=\dimen160
+\multicolundershoot=\dimen161
+\mult@nat@firstbox=\box97
+\colbreak@box=\box98
+\mc@col@check@num=\count292
+\g__mc_curr_col_int=\count293
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
+\col@sep=\dimen162
+\ar@mcellbox=\box99
+\extrarowheight=\dimen163
 \NC@list=\toks19
-\extratabsurround=\skip52
-\backup@length=\skip53
-\ar@cellbox=\box98
-) (/usr/share/texlive/texmf-dist/tex/latex/tools/hhline.sty
+\extratabsurround=\skip53
+\backup@length=\skip54
+\ar@cellbox=\box100
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\hhline.sty
 Package: hhline 2020/01/04 v2.04 Table rule package (DPC)
-) (/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-Package: fancyhdr 2022/11/09 v4.1 Extensive control of page headers and footers
-\f@nch@headwidth=\skip54
-\f@nch@O@elh=\skip55
-\f@nch@O@erh=\skip56
-\f@nch@O@olh=\skip57
-\f@nch@O@orh=\skip58
-\f@nch@O@elf=\skip59
-\f@nch@O@erf=\skip60
-\f@nch@O@olf=\skip61
-\f@nch@O@orf=\skip62
-) (/usr/share/texlive/texmf-dist/tex/latex/vntex/vntex.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+\f@nch@headwidth=\skip55
+\f@nch@offset@elh=\skip56
+\f@nch@offset@erh=\skip57
+\f@nch@offset@olh=\skip58
+\f@nch@offset@orh=\skip59
+\f@nch@offset@elf=\skip60
+\f@nch@offset@erf=\skip61
+\f@nch@offset@olf=\skip62
+\f@nch@offset@orf=\skip63
+\f@nch@height=\skip64
+\f@nch@footalignment=\skip65
+\f@nch@widthL=\skip66
+\f@nch@widthC=\skip67
+\f@nch@widthR=\skip68
+\@temptokenb=\toks20
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/vntex\vntex.sty
 Package: vntex 2009/07/12 v1.1 support for Vietnamese
- (/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
-) (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
-Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
- (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.def
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.def
 File: t5enc.def 2006/11/21 v1.4 Vietnamese T5 encoding
 Now handling font encoding T5 ...
 ... processing UTF-8 mapping file for font encoding T5
- (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5enc.dfu
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5enc.dfu
 File: t5enc.dfu 2006/08/19 v1.1 UTF8 support for Vietnamese
    defining Unicode char U+00AB (decimal 171)
    defining Unicode char U+00BB (decimal 187)
@@ -320,543 +327,541 @@ File: t5enc.dfu 2006/08/19 v1.1 UTF8 support for Vietnamese
    defining Unicode char U+203A (decimal 8250)
    defining Unicode char U+2423 (decimal 9251)
 ))
-LaTeX Font Info:    Trying to load font information for T5+cmr on input line 112.
- (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmr.fd
+LaTeX Font Info:    Trying to load font information for T5+cmr on input line 116.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5cmr.fd
 File: t5cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 ))
 
 Package vntex Warning: No input encoding specified, using UTF-8 as default on input line 88.
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty
-Package: inputenc 2021/02/14 v1.3d Input encoding file
-\inpenc@prehook=\toks20
-\inpenc@posthook=\toks21
-) (/usr/share/texlive/texmf-dist/tex/latex/vntex/vncaps.tex
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks21
+\inpenc@posthook=\toks22
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/vntex\vncaps.tex
 File: vncaps.tex 2006/06/07 v1.1 Captions in Vietnamese
-)) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2023/05/13 v2.17o AMS math features
-\@mathmargin=\skip63
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2025/07/09 v2.17z AMS math features
+\@mathmargin=\skip69
 
 For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-Package: amstext 2021/08/26 v2.01 AMS text
- (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks22
-\ex@=\dimen156
-)) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+\@emptytoks=\toks23
+\ex@=\dimen164
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen157
-) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+\pmbraise@=\dimen165
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
 Package: amsopn 2022/04/08 v2.04 operator names
 )
-\inf@bad=\count271
-LaTeX Info: Redefining \frac on input line 234.
-\uproot@=\count272
-\leftroot@=\count273
-LaTeX Info: Redefining \overline on input line 399.
-LaTeX Info: Redefining \colon on input line 410.
-\classnum@=\count274
-\DOTSCASE@=\count275
-LaTeX Info: Redefining \ldots on input line 496.
-LaTeX Info: Redefining \dots on input line 499.
-LaTeX Info: Redefining \cdots on input line 620.
-\Mathstrutbox@=\box99
-\strutbox@=\box100
-LaTeX Info: Redefining \big on input line 722.
-LaTeX Info: Redefining \Big on input line 723.
-LaTeX Info: Redefining \bigg on input line 724.
-LaTeX Info: Redefining \Bigg on input line 725.
-\big@size=\dimen158
-LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
-\macc@depth=\count276
-LaTeX Info: Redefining \bmod on input line 905.
-LaTeX Info: Redefining \pmod on input line 910.
-LaTeX Info: Redefining \smash on input line 940.
-LaTeX Info: Redefining \relbar on input line 970.
-LaTeX Info: Redefining \Relbar on input line 971.
-\c@MaxMatrixCols=\count277
-\dotsspace@=\muskip16
-\c@parentequation=\count278
-\dspbrk@lvl=\count279
-\tag@help=\toks23
-\row@=\count280
-\column@=\count281
-\maxfields@=\count282
-\andhelp@=\toks24
-\eqnshift@=\dimen159
-\alignsep@=\dimen160
-\tagshift@=\dimen161
-\tagwidth@=\dimen162
-\totwidth@=\dimen163
-\lineht@=\dimen164
-\@envbody=\toks25
-\multlinegap=\skip64
-\multlinetaggap=\skip65
-\mathdisplay@stack=\toks26
-LaTeX Info: Redefining \[ on input line 2953.
-LaTeX Info: Redefining \] on input line 2954.
-) (/usr/share/texlive/texmf-dist/tex/latex/lastpage/lastpage.sty
-Package: lastpage 2023/10/14 v2.0e lastpage: 2.09 or 2e? (HMM)
- (/usr/share/texlive/texmf-dist/tex/latex/lastpage/lastpage2e.sty
-Package: lastpage2e 2023/10/14 v2.0e Decide which 2e lastpage version to use (HMM)
- (/usr/share/texlive/texmf-dist/tex/latex/lastpage/lastpagemodern.sty
-Package: lastpagemodern 2023-10-14 v2.0e Refers to last page's name (HMM; JPG)
-\c@lastpagecount=\count283
+\inf@bad=\count294
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count295
+\leftroot@=\count296
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count297
+\DOTSCASE@=\count298
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box101
+\strutbox@=\box102
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen166
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count299
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count300
+\dotsspace@=\muskip17
+\c@parentequation=\count301
+\dspbrk@lvl=\count302
+\tag@help=\toks24
+\row@=\count303
+\column@=\count304
+\maxfields@=\count305
+\andhelp@=\toks25
+\eqnshift@=\dimen167
+\alignsep@=\dimen168
+\tagshift@=\dimen169
+\tagwidth@=\dimen170
+\totwidth@=\dimen171
+\lineht@=\dimen172
+\@envbody=\toks26
+\multlinegap=\skip70
+\multlinetaggap=\skip71
+\mathdisplay@stack=\toks27
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/lastpage\lastpage.sty
+Package: lastpage 2025/08/14 v2.1h lastpage: 2.09 or 2e? (HMM)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/lastpage\lastpage2e.sty
+Package: lastpage2e 2025/08/14 v2.1h Decide which 2e lastpage version to use (HMM)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/lastpage\lastpagemodern.sty
+Package: lastpagemodern 2025-08-14 v2.1h Refers to last page's name (HMM; JPG)
+\c@lastpagecount=\count306
 ) 
-)) (/usr/share/texlive/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/algorithm2e\algorithm2e.sty
 Package: algorithm2e 2017/07/18 v5.2 algorithms environments
-\c@AlgoLine=\count284
-\algocf@hangindent=\skip66
- (/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+\c@AlgoLine=\count307
+\algocf@hangindent=\skip72
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/ifoddpage\ifoddpage.sty
 Package: ifoddpage 2022/10/18 v1.2 Conditionals for odd/even page detection
-\c@checkoddpage=\count285
-) (/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
+\c@checkoddpage=\count308
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
-) (/usr/share/texlive/texmf-dist/tex/latex/relsize/relsize.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/relsize\relsize.sty
 Package: relsize 2013/03/29 ver 4.1
 )
-\skiptotal=\skip67
-\skiplinenumber=\skip68
-\skiprule=\skip69
-\skiphlne=\skip70
-\skiptext=\skip71
-\skiplength=\skip72
-\algomargin=\skip73
-\skipalgocfslide=\skip74
-\algowidth=\dimen165
-\inoutsize=\dimen166
-\inoutindent=\dimen167
-\interspacetitleruled=\dimen168
-\interspacealgoruled=\dimen169
-\interspacetitleboxruled=\dimen170
-\algocf@ruledwidth=\skip75
-\algocf@inoutbox=\box101
-\algocf@inputbox=\box102
-\AlCapSkip=\skip76
-\AlCapHSkip=\skip77
-\algoskipindent=\skip78
-\algocf@nlbox=\box103
-\algocf@hangingbox=\box104
-\algocf@untilbox=\box105
-\algocf@skipuntil=\skip79
-\algocf@capbox=\box106
-\algocf@lcaptionbox=\skip80
-\algoheightruledefault=\skip81
-\algoheightrule=\skip82
-\algotitleheightruledefault=\skip83
-\algotitleheightrule=\skip84
-\c@algocfline=\count286
-\c@algocfproc=\count287
-\c@algocf=\count288
-\algocf@algoframe=\box107
-\algocf@algobox=\box108
-) (/usr/share/texlive/texmf-dist/tex/latex/tools/enumerate.sty
+\skiptotal=\skip73
+\skiplinenumber=\skip74
+\skiprule=\skip75
+\skiphlne=\skip76
+\skiptext=\skip77
+\skiplength=\skip78
+\algomargin=\skip79
+\skipalgocfslide=\skip80
+\algowidth=\dimen173
+\inoutsize=\dimen174
+\inoutindent=\dimen175
+\interspacetitleruled=\dimen176
+\interspacealgoruled=\dimen177
+\interspacetitleboxruled=\dimen178
+\algocf@ruledwidth=\skip81
+\algocf@inoutbox=\box103
+\algocf@inputbox=\box104
+\AlCapSkip=\skip82
+\AlCapHSkip=\skip83
+\algoskipindent=\skip84
+\algocf@nlbox=\box105
+\algocf@hangingbox=\box106
+\algocf@untilbox=\box107
+\algocf@skipuntil=\skip85
+\algocf@capbox=\box108
+\algocf@lcaptionbox=\skip86
+\algoheightruledefault=\skip87
+\algoheightrule=\skip88
+\algotitleheightruledefault=\skip89
+\algotitleheightrule=\skip90
+\c@algocfline=\count309
+\c@algocfproc=\count310
+\c@algocf=\count311
+\algocf@algoframe=\box109
+\algocf@algobox=\box110
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\enumerate.sty
 Package: enumerate 2023/07/04 v3.00 enumerate extensions (DPC)
-\@enLab=\toks27
-) (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
-Package: color 2022/01/06 v1.3d Standard LaTeX Color (DPC)
- (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+\@enLab=\toks28
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\color.sty
+Package: color 2025/01/14 v1.3e Standard LaTeX Color (DPC)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 149.
- (/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
-Package: tabularx 2023/07/08 v2.11c `tabularx' package (DPC)
-\TX@col@width=\dimen171
-\TX@old@table=\dimen172
-\TX@old@col=\dimen173
-\TX@target=\dimen174
-\TX@delta=\dimen175
-\TX@cols=\count289
-\TX@ftn=\toks28
-) (/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\tabularx.sty
+Package: tabularx 2023/12/11 v2.12a `tabularx' package (DPC)
+\TX@col@width=\dimen179
+\TX@old@table=\dimen180
+\TX@old@col=\dimen181
+\TX@target=\dimen182
+\TX@delta=\dimen183
+\TX@cols=\count312
+\TX@ftn=\toks29
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
 Package: caption 2023/08/05 v3.6o Customizing captions (AR)
- (/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
 Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
-\caption@tempdima=\dimen176
-\captionmargin=\dimen177
-\caption@leftmargin=\dimen178
-\caption@rightmargin=\dimen179
-\caption@width=\dimen180
-\caption@indent=\dimen181
-\caption@parindent=\dimen182
-\caption@hangindent=\dimen183
+\caption@tempdima=\dimen184
+\captionmargin=\dimen185
+\caption@leftmargin=\dimen186
+\caption@rightmargin=\dimen187
+\caption@width=\dimen188
+\caption@indent=\dimen189
+\caption@parindent=\dimen190
+\caption@hangindent=\dimen191
 Package caption Info: Standard document class detected.
 )
-\c@caption@flags=\count290
-\c@continuedfloat=\count291
-) (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
-Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
-\multirow@colwidth=\skip85
-\multirow@cntb=\count292
-\multirow@dima=\skip86
-\bigstrutjot=\dimen184
-) (/usr/share/texlive/texmf-dist/tex/latex/graphics/rotating.sty
-Package: rotating 2016/08/11 v2.16d rotated objects in LaTeX
-\c@r@tfl@t=\count293
-\rotFPtop=\skip87
-\rotFPbot=\skip88
-\rot@float@box=\box109
-\rot@mess@toks=\toks29
-) (/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+\c@caption@flags=\count313
+\c@continuedfloat=\count314
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip91
+\multirow@cntb=\count315
+\multirow@dima=\skip92
+\bigstrutjot=\dimen192
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\rotating.sty
+Package: rotating 2025/01/14 v2.16e rotated objects in LaTeX
+\c@r@tfl@t=\count316
+\rotFPtop=\skip93
+\rotFPbot=\skip94
+\rot@float@box=\box111
+\rot@mess@toks=\toks30
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
- (/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
- (/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
-Package: iftex 2022/02/03 v1.0f TeX engine tests
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
 ))
-\Gm@cnth=\count294
-\Gm@cntv=\count295
-\c@Gm@tempcnt=\count296
-\Gm@bindingoffset=\dimen185
-\Gm@wd@mp=\dimen186
-\Gm@odd@mp=\dimen187
-\Gm@even@mp=\dimen188
-\Gm@layoutwidth=\dimen189
-\Gm@layoutheight=\dimen190
-\Gm@layouthoffset=\dimen191
-\Gm@layoutvoffset=\dimen192
-\Gm@dimlist=\toks30
-) (/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
+\Gm@cnth=\count317
+\Gm@cntv=\count318
+\c@Gm@tempcnt=\count319
+\Gm@bindingoffset=\dimen193
+\Gm@wd@mp=\dimen194
+\Gm@odd@mp=\dimen195
+\Gm@even@mp=\dimen196
+\Gm@layoutwidth=\dimen197
+\Gm@layoutheight=\dimen198
+\Gm@layouthoffset=\dimen199
+\Gm@layoutvoffset=\dimen256
+\Gm@dimlist=\toks31
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/setspace\setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
-) (/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
-\pgfutil@everybye=\toks31
-\pgfutil@tempdima=\dimen193
-\pgfutil@tempdimb=\dimen194
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
-\pgfutil@abb=\box110
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)
-Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-common.tex
+\pgfutil@everybye=\toks32
+\pgfutil@tempdima=\dimen257
+\pgfutil@tempdimb=\dimen258
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-latex.def
+\pgfutil@abb=\box112
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.code.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
+Package: pgfrcs 2025-08-29 v3.1.11a (3.1.11a)
 ))
-Package: pgf 2023-01-15 v3.1.10 (3.1.10)
- (/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
-Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
-\pgfkeys@pathtoks=\toks32
-\pgfkeys@temptoks=\toks33
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeyslibraryfiltered.code.tex
-\pgfkeys@tmptoks=\toks34
+Package: pgf 2025-08-29 v3.1.11a (3.1.11a)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys.code.tex
+Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks33
+\pgfkeys@temptoks=\toks34
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeyslibraryfiltered.code.tex
+\pgfkeys@tmptoks=\toks35
 ))
-\pgf@x=\dimen195
-\pgf@y=\dimen196
-\pgf@xa=\dimen197
-\pgf@ya=\dimen198
-\pgf@xb=\dimen199
-\pgf@yb=\dimen256
-\pgf@xc=\dimen257
-\pgf@yc=\dimen258
-\pgf@xd=\dimen259
-\pgf@yd=\dimen260
+\pgf@x=\dimen259
+\pgf@y=\dimen260
+\pgf@xa=\dimen261
+\pgf@ya=\dimen262
+\pgf@xb=\dimen263
+\pgf@yb=\dimen264
+\pgf@xc=\dimen265
+\pgf@yc=\dimen266
+\pgf@xd=\dimen267
+\pgf@yd=\dimen268
 \w@pgf@writea=\write3
 \r@pgf@reada=\read2
-\c@pgf@counta=\count297
-\c@pgf@countb=\count298
-\c@pgf@countc=\count299
-\c@pgf@countd=\count300
-\t@pgf@toka=\toks35
-\t@pgf@tokb=\toks36
-\t@pgf@tokc=\toks37
-\pgf@sys@id@count=\count301
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
-File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+\c@pgf@counta=\count320
+\c@pgf@countb=\count321
+\c@pgf@countc=\count322
+\c@pgf@countd=\count323
+\t@pgf@toka=\toks36
+\t@pgf@tokb=\toks37
+\t@pgf@tokc=\toks38
+\pgf@sys@id@count=\count324
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.cfg
+File: pgf.cfg 2025-08-29 v3.1.11a (3.1.11a)
 )
 Driver file for pgf: pgfsys-pdftex.def
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
-File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
-File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
-))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
-File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfsyssoftpath@smallbuffer@items=\count302
-\pgfsyssoftpath@bigbuffer@items=\count303
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
-File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
-)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
-Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
- (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2025-08-29 v3.1.11a (3.1.11a)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2025-08-29 v3.1.11a (3.1.11a)
+))) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfsyssoftpath@smallbuffer@items=\count325
+\pgfsyssoftpath@bigbuffer@items=\count326
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package xcolor Info: Driver file: pdftex.def on input line 274.
-LaTeX Info: Redefining \color on input line 758.
- (/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx)
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
-Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
-Package xcolor Info: Model `RGB' extended on input line 1366.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
-Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
-\pgfmath@dimen=\dimen261
-\pgfmath@count=\count304
-\pgfmath@box=\box111
-\pgfmath@toks=\toks38
-\pgfmath@stack@operand=\toks39
-\pgfmath@stack@operation=\toks40
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerarithmetics.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count305
-)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
-File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@picminx=\dimen262
-\pgf@picmaxx=\dimen263
-\pgf@picminy=\dimen264
-\pgf@picmaxy=\dimen265
-\pgf@pathminx=\dimen266
-\pgf@pathmaxx=\dimen267
-\pgf@pathminy=\dimen268
-\pgf@pathmaxy=\dimen269
-\pgf@xx=\dimen270
-\pgf@xy=\dimen271
-\pgf@yx=\dimen272
-\pgf@yy=\dimen273
-\pgf@zx=\dimen274
-\pgf@zy=\dimen275
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
-File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@path@lastx=\dimen276
-\pgf@path@lasty=\dimen277
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
-File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@shorten@end@additional=\dimen278
-\pgf@shorten@start@additional=\dimen279
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
-File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfpic=\box112
-\pgf@hbox=\box113
-\pgf@layerbox@main=\box114
-\pgf@picture@serial@count=\count306
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
-File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgflinewidth=\dimen280
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
-File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@pt@x=\dimen281
-\pgf@pt@y=\dimen282
-\pgf@pt@temp=\dimen283
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
-File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
-File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
-File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
-File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfarrowsep=\dimen284
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
-File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@max=\dimen285
-\pgf@sys@shading@range@num=\count307
-\pgf@shadingcount=\count308
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
-File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
-File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfexternal@startupbox=\box115
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
-File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
-File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
-File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex
-File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
-File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfnodeparttextbox=\box116
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.tex
-File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
-) (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
-Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
-\pgf@nodesepstart=\dimen286
-\pgf@nodesepend=\dimen287
-) (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
-Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
-)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgffor.sty (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)) (/usr/share/texlive/texmf-dist/tex/latex/pgf/math/pgfmath.sty (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
-Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
-\pgffor@iter=\dimen288
-\pgffor@skip=\dimen289
-\pgffor@stack=\toks41
-\pgffor@toks=\toks42
-)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
-Package: tikz 2023-01-15 v3.1.10 (3.1.10)
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
-File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@plot@mark@count=\count309
-\pgfplotmarksize=\dimen290
+LaTeX Info: Redefining \color on input line 762.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcore.code.tex
+Package: pgfcore 2025-08-29 v3.1.11a (3.1.11a)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparser.code.tex
+\pgfmath@dimen=\dimen269
+\pgfmath@count=\count327
+\pgfmath@box=\box113
+\pgfmath@toks=\toks39
+\pgfmath@stack@operand=\toks40
+\pgfmath@stack@operation=\toks41
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.basic.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.trigonometric.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.random.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.comparison.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.base.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.round.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.misc.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.integerarithmetics.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count328
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@picminx=\dimen270
+\pgf@picmaxx=\dimen271
+\pgf@picminy=\dimen272
+\pgf@picmaxy=\dimen273
+\pgf@pathminx=\dimen274
+\pgf@pathmaxx=\dimen275
+\pgf@pathminy=\dimen276
+\pgf@pathmaxy=\dimen277
+\pgf@xx=\dimen278
+\pgf@xy=\dimen279
+\pgf@yx=\dimen280
+\pgf@yy=\dimen281
+\pgf@zx=\dimen282
+\pgf@zy=\dimen283
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@path@lastx=\dimen284
+\pgf@path@lasty=\dimen285
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@shorten@end@additional=\dimen286
+\pgf@shorten@start@additional=\dimen287
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfpic=\box114
+\pgf@hbox=\box115
+\pgf@layerbox@main=\box116
+\pgf@picture@serial@count=\count329
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgflinewidth=\dimen288
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@pt@x=\dimen289
+\pgf@pt@y=\dimen290
+\pgf@pt@temp=\dimen291
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfarrowsep=\dimen292
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@max=\dimen293
+\pgf@sys@shading@range@num=\count330
+\pgf@shadingcount=\count331
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfexternal@startupbox=\box117
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorerdf.code.tex
+File: pgfcorerdf.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+))) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfnodeparttextbox=\box118
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@nodesepstart=\dimen294
+\pgf@nodesepend=\dimen295
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2025-08-29 v3.1.11a (3.1.11a)
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.code.tex
+Package: pgffor 2025-08-29 v3.1.11a (3.1.11a)
+\pgffor@iter=\dimen296
+\pgffor@skip=\dimen297
+\pgffor@stack=\toks42
+\pgffor@toks=\toks43
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz\tikz.code.tex
+Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@plot@mark@count=\count332
+\pgfplotmarksize=\dimen298
 )
-\tikz@lastx=\dimen291
-\tikz@lasty=\dimen292
-\tikz@lastxsaved=\dimen293
-\tikz@lastysaved=\dimen294
-\tikz@lastmovetox=\dimen295
-\tikz@lastmovetoy=\dimen296
-\tikzleveldistance=\dimen297
-\tikzsiblingdistance=\dimen298
-\tikz@figbox=\box117
-\tikz@figbox@bg=\box118
-\tikz@tempbox=\box119
-\tikz@tempbox@bg=\box120
-\tikztreelevel=\count310
-\tikznumberofchildren=\count311
-\tikznumberofcurrentchild=\count312
-\tikz@fig@count=\count313
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
-File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgfmatrixcurrentrow=\count314
-\pgfmatrixcurrentcolumn=\count315
-\pgf@matrix@numberofcolumns=\count316
+\tikz@lastx=\dimen299
+\tikz@lasty=\dimen300
+\tikz@lastxsaved=\dimen301
+\tikz@lastysaved=\dimen302
+\tikz@lastmovetox=\dimen303
+\tikz@lastmovetoy=\dimen304
+\tikzleveldistance=\dimen305
+\tikzsiblingdistance=\dimen306
+\tikz@figbox=\box119
+\tikz@figbox@bg=\box120
+\tikz@tempbox=\box121
+\tikz@tempbox@bg=\box122
+\tikztreelevel=\count333
+\tikznumberofchildren=\count334
+\tikznumberofcurrentchild=\count335
+\tikz@fig@count=\count336
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgfmatrixcurrentrow=\count337
+\pgfmatrixcurrentcolumn=\count338
+\pgf@matrix@numberofcolumns=\count339
 )
-\tikz@expandcount=\count317
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
-File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryarrows.code.tex
-File: tikzlibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
- (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
-File: pgflibraryarrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\arrowsize=\dimen299
-)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarysnakes.code.tex
-File: tikzlibrarysnakes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\tikz@expandcount=\count340
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+))) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibraryarrows.code.tex
+File: tikzlibraryarrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryarrows.code.tex
+File: pgflibraryarrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\arrowsize=\dimen307
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarysnakes.code.tex
+File: tikzlibrarysnakes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 
 
 Package pgf Warning: Snakes have been superseded by decorations. Please use the decoration libraries instead of the snakes library on input line 14.
 
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathmorphing.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.code.tex
-\pgfdecoratedcompleteddistance=\dimen300
-\pgfdecoratedremainingdistance=\dimen301
-\pgfdecoratedinputsegmentcompleteddistance=\dimen302
-\pgfdecoratedinputsegmentremainingdistance=\dimen303
-\pgf@decorate@distancetomove=\dimen304
-\pgf@decorate@repeatstate=\count318
-\pgfdecorationsegmentamplitude=\dimen305
-\pgfdecorationsegmentlength=\dimen306
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarydecorations.pathmorphing.code.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarydecorations.code.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduledecorations.code.tex
+\pgfdecoratedcompleteddistance=\dimen308
+\pgfdecoratedremainingdistance=\dimen309
+\pgfdecoratedinputsegmentcompleteddistance=\dimen310
+\pgfdecoratedinputsegmentremainingdistance=\dimen311
+\pgf@decorate@distancetomove=\dimen312
+\pgf@decorate@repeatstate=\count341
+\pgfdecorationsegmentamplitude=\dimen313
+\pgfdecorationsegmentlength=\dimen314
 )
-\tikz@lib@dec@box=\box121
-) (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathmorphing.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathreplacing.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathreplacing.code.tex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.shapes.code.tex (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.shapes.code.tex))) (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarybackgrounds.code.tex
-File: tikzlibrarybackgrounds.code.tex 2023-01-15 v3.1.10 (3.1.10)
-\pgf@layerbox@background=\box122
-\pgf@layerboxsaved@background=\box123
-) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2024-01-20 v7.01h Hypertext links for LaTeX
- (/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+\tikz@lib@dec@box=\box123
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/decorations\pgflibrarydecorations.pathmorphing.code.tex)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarydecorations.pathreplacing.code.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/decorations\pgflibrarydecorations.pathreplacing.code.tex)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarydecorations.shapes.code.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries/decorations\pgflibrarydecorations.shapes.code.tex))) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarybackgrounds.code.tex
+File: tikzlibrarybackgrounds.code.tex 2025-08-29 v3.1.11a (3.1.11a)
+\pgf@layerbox@background=\box124
+\pgf@layerboxsaved@background=\box125
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+Package: hyperref 2025-07-12 v7.01o Hypertext links for LaTeX
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
-) (/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.sty
 Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-) (/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.sty
 Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
 Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
-) (/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.sty
 Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
 )
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-)) (/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
 Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
-) (/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty
-Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
-) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
- (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+Package: nameref 2025-06-21 v2.57 Cross-referencing by name of section
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
-) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
- (/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 ))
-\c@section@level=\count319
-) (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count320
+\c@section@level=\count342
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count343
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
 )
-\@linkdim=\dimen307
-\Hy@linkcounter=\count321
-\Hy@pagecounter=\count322
- (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2024-01-20 v7.01h Hyperref: PDFDocEncoding definition (HO)
+\@linkdim=\dimen315
+\Hy@linkcounter=\count344
+\Hy@pagecounter=\count345
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
+File: pd1enc.def 2025-07-12 v7.01o Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
-) (/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count323
- (/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2024-01-20 v7.01h Hyperref: PDF Unicode definition (HO)
+\Hy@SavedSpaceFactor=\count346
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
+File: puenc.def 2025-07-12 v7.01o Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
-Package hyperref Info: Hyper figures OFF on input line 4179.
-Package hyperref Info: Link nesting OFF on input line 4184.
-Package hyperref Info: Hyper index ON on input line 4187.
-Package hyperref Info: Plain pages OFF on input line 4194.
-Package hyperref Info: Backreferencing OFF on input line 4199.
+Package hyperref Info: Hyper figures OFF on input line 4195.
+Package hyperref Info: Link nesting OFF on input line 4200.
+Package hyperref Info: Hyper index ON on input line 4203.
+Package hyperref Info: Plain pages OFF on input line 4210.
+Package hyperref Info: Backreferencing OFF on input line 4215.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4446.
-\c@Hy@tempcnt=\count324
- (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
-\Urlmuskip=\muskip17
+Package hyperref Info: Bookmarks ON on input line 4462.
+\c@Hy@tempcnt=\count347
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4784.
-\XeTeXLinkMargin=\dimen308
- (/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+LaTeX Info: Redefining \url on input line 4801.
+\XeTeXLinkMargin=\dimen316
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 ))
-\Fld@menulength=\count325
-\Field@Width=\dimen309
-\Fld@charsize=\dimen310
-Package hyperref Info: Hyper figures OFF on input line 6063.
-Package hyperref Info: Link nesting OFF on input line 6068.
-Package hyperref Info: Hyper index ON on input line 6071.
-Package hyperref Info: backreferencing OFF on input line 6078.
-Package hyperref Info: Link coloring OFF on input line 6083.
-Package hyperref Info: Link coloring with OCG OFF on input line 6088.
-Package hyperref Info: PDF/A mode OFF on input line 6093.
- (/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty
-Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
-package with kernel methods
-)
-\Hy@abspage=\count326
-\c@Item=\count327
-\c@Hfootnote=\count328
+\Fld@menulength=\count348
+\Field@Width=\dimen317
+\Fld@charsize=\dimen318
+Package hyperref Info: Hyper figures OFF on input line 6078.
+Package hyperref Info: Link nesting OFF on input line 6083.
+Package hyperref Info: Hyper index ON on input line 6086.
+Package hyperref Info: backreferencing OFF on input line 6093.
+Package hyperref Info: Link coloring OFF on input line 6098.
+Package hyperref Info: Link coloring with OCG OFF on input line 6103.
+Package hyperref Info: PDF/A mode OFF on input line 6108.
+\Hy@abspage=\count349
+\c@Item=\count350
+\c@Hfootnote=\count351
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
- (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2024-01-20 v7.01h Hyperref driver for pdfTeX
- (/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
-Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
-with kernel methods
-)
-\Fld@listcount=\count329
-\c@bookmark@seq@number=\count330
- (/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
-Package: rerunfilecheck 2022-07-10 v1.10 Rerun checks for auxiliary files (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
+File: hpdftex.def 2025-07-12 v7.01o Hyperref driver for pdfTeX
+\Fld@listcount=\count352
+\c@bookmark@seq@number=\count353
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.sty
+Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquecounter.sty
 Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 )
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 284.
 )
-\Hy@SectionHShift=\skip89
+\Hy@SectionHShift=\skip95
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 22.
-\c@theorem=\count331
-\c@property=\count332
-\c@proposition=\count333
-\c@subsubsubsection=\count334
- (/usr/share/texlive/texmf-dist/tex/latex/tools/indentfirst.sty
+\c@theorem=\count354
+\c@property=\count355
+\c@proposition=\count356
+\c@subsubsubsection=\count357
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\indentfirst.sty
 Package: indentfirst 2023/07/02 v1.03 Indent first paragraph (DPC)
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 92.
- (/usr/share/texlive/texmf-dist/tex/latex/pstricks/pstcol.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count358
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count359
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pstricks\pstcol.sty
 Package: pstcol 2007/04/11 v1.3 LaTeX wrapper for `PSTricks' (RN,HV)
 
 
@@ -866,309 +871,318 @@ Package pstcol Warning: ************************************
 (pstcol)                    \usepackage{pstricks}
 (pstcol)                ************************************.
 
-(/usr/share/texlive/texmf-dist/tex/latex/pstricks/pstricks.sty
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/pstricks\pstricks.sty
 Package: pstricks 2024/02/02 v0.75 LaTeX wrapper for `PSTricks' (RN,HV)
- (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/pst-xkey.tex
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\pst-xkey.tex
 File: pst-xkey.tex 2005/11/25 v1.6 PSTricks specialization of xkeyval (HA)
- (/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/xkeyval\xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
- (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks43
-\XKV@tempa@toks=\toks44
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkeyval.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/xkeyval\xkvutils.tex
+\XKV@toks=\toks44
+\XKV@tempa@toks=\toks45
 )
-\XKV@depth=\count335
+\XKV@depth=\count360
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
-))) (/usr/share/texlive/texmf-dist/tex/generic/pstricks/pstricks.tex (/usr/share/texlive/texmf-dist/tex/generic/pstricks/pst-fp.tex `pst-fp' v0.06, 2020/11/20 (hv)
-\pstFP@xs=\count336
-\pstFP@xia=\count337
-\pstFP@xib=\count338
-\pstFP@xfa=\count339
-\pstFP@xfb=\count340
-\pstFP@rega=\count341
-\pstFP@regb=\count342
-\pstFP@regs=\count343
-\pstFP@times=\count344
+))) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pstricks.tex (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-fp.tex `pst-fp' v0.06, 2020/11/20 (hv)
+\pstFP@xs=\count361
+\pstFP@xia=\count362
+\pstFP@xib=\count363
+\pstFP@xfa=\count364
+\pstFP@xfb=\count365
+\pstFP@rega=\count366
+\pstFP@regb=\count367
+\pstFP@regs=\count368
+\pstFP@times=\count369
 )
-\psLoopIndex=\count345
+\psLoopIndex=\count370
 
-`PSTricks' v3.19c  <2024/02/02> (tvz,hv)
-\pst@dima=\dimen311
-\pst@dimb=\dimen312
-\pst@dimc=\dimen313
-\pst@dimd=\dimen314
-\pst@dimg=\dimen315
-\pst@dimh=\dimen316
-\pst@dimm=\dimen317
-\pst@dimn=\dimen318
-\pst@dimo=\dimen319
-\pst@dimp=\dimen320
-\pst@hbox=\box124
-\pst@ibox=\box125
-\pst@boxg=\box126
-\pst@cnta=\count346
-\pst@cntb=\count347
-\pst@cntc=\count348
-\pst@cntd=\count349
-\pst@cntg=\count350
-\pst@cnth=\count351
-\pst@cntm=\count352
-\pst@cntn=\count353
-\pst@cnto=\count354
-\pst@cntp=\count355
-\@zero=\count356
-\pst@toks=\toks45
+`PSTricks' v3.22  <2025/06/11> (tvz,hv)
+\pst@dima=\dimen319
+\pst@dimb=\dimen320
+\pst@dimc=\dimen321
+\pst@dimd=\dimen322
+\pst@dimg=\dimen323
+\pst@dimh=\dimen324
+\pst@dimm=\dimen325
+\pst@dimn=\dimen326
+\pst@dimo=\dimen327
+\pst@dimp=\dimen328
+\pst@hbox=\box126
+\pst@ibox=\box127
+\pst@boxg=\box128
+\pst@cnta=\count371
+\pst@cntb=\count372
+\pst@cntc=\count373
+\pst@cntd=\count374
+\pst@cntg=\count375
+\pst@cnth=\count376
+\pst@cntm=\count377
+\pst@cntn=\count378
+\pst@cnto=\count379
+\pst@cntp=\count380
+\@zero=\count381
+\pst@toks=\toks46
 --- We are running latex or xelatex ---
-(/usr/share/texlive/texmf-dist/tex/generic/pstricks/pstricks.con) (/usr/share/texlive/texmf-dist/tex/generic/pstricks/pstricks-color.tex)
-\psunit=\dimen321
-\psxunit=\dimen322
-\psyunit=\dimen323
-\pst@C@@rType=\count357
-\pslinewidth=\dimen324
-\psk@startLW=\dimen325
-\psk@endLW=\dimen326
- (/usr/share/texlive/texmf-dist/tex/generic/pstricks/pstricks-arrows.tex
-\pshooklength=\dimen327
-\pshookwidth=\dimen328
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pstricks.con) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pstricks-color.tex)
+\psunit=\dimen329
+\psxunit=\dimen330
+\psyunit=\dimen331
+\pst@C@@rType=\count382
+\pslinewidth=\dimen332
+\psk@startLW=\dimen333
+\psk@endLW=\dimen334
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pstricks-arrows.tex
+\pshooklength=\dimen335
+\pshookwidth=\dimen336
 )
-\pst@customdefs=\toks46
- (/usr/share/texlive/texmf-dist/tex/generic/pstricks/pstricks-dots.tex)
-\pslinearc=\dimen329
-\pst@symbolStep=\dimen330
-\pst@symbolWidth=\dimen331
-\pst@symbolLinewidth=\dimen332
-\everypsbox=\toks47
-\psframesep=\dimen333
-\pslabelsep=\dimen334
-\sh@wgridXunit=\dimen335
-\sh@wgridYunit=\dimen336
-\pst@shift=\dimen337
-\ps@imagectr=\count358
- (/usr/share/texlive/texmf-dist/tex/generic/pstricks/pstricks.con))
-File: pstricks.tex 2024/02/02 v3.19c `PSTricks' (tvz,hv)
- (/usr/share/texlive/texmf-dist/tex/generic/pstricks/pst-fp.tex `pst-fp' v0.06, 2020/11/20 (hv))
+\pst@customdefs=\toks47
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pstricks-dots.tex)
+\pslinearc=\dimen337
+\pst@symbolStep=\dimen338
+\pst@symbolWidth=\dimen339
+\pst@symbolLinewidth=\dimen340
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-code-grid.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-code-box.tex
+\everypsbox=\toks48
+\psframesep=\dimen341
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-code-arc.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-code-circle_ellipse.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-code-ref_rot.tex) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-code-put.tex
+\pslabelsep=\dimen342
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-code-pspicture.tex
+\sh@wgridXunit=\dimen343
+\sh@wgridYunit=\dimen344
+\pst@shift=\dimen345
+\ps@imagectr=\count383
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pstricks.con))
+File: pstricks.tex 2025/06/11 v3.22 `PSTricks' (tvz,hv)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/pstricks\pst-fp.tex `pst-fp' v0.06, 2020/11/20 (hv))
 File: pst-fp.tex 2020/11/20 v0.06 `PST-fp' (hv)
-)) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count359
-\lst@gtempboxa=\box127
-\lst@token=\toks48
-\lst@length=\count360
-\lst@currlwidth=\dimen338
-\lst@column=\count361
-\lst@pos=\count362
-\lst@lostspace=\dimen339
-\lst@width=\dimen340
-\lst@newlines=\count363
-\lst@lineno=\count364
-\lst@maxwidth=\dimen341
- (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-\c@lstnumber=\count365
-\lst@skipnumbers=\count366
-\lst@framebox=\box128
-) (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
-File: listings.cfg 2023/02/27 1.9 listings configuration
+)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
+\lst@mode=\count384
+\lst@gtempboxa=\box129
+\lst@token=\toks49
+\lst@length=\count385
+\lst@currlwidth=\dimen346
+\lst@column=\count386
+\lst@pos=\count387
+\lst@lostspace=\dimen347
+\lst@width=\dimen348
+\lst@newlines=\count388
+\lst@lineno=\count389
+\lst@maxwidth=\dimen349
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count390
+\lst@skipnumbers=\count391
+\lst@framebox=\box130
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
 ))
-Package: listings 2023/02/27 1.9 (Carsten Heinz)
- (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2023/02/27 1.9 listings language file
-) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2023/02/27 1.9 listings language file
-) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-) (/usr/share/texlive/texmf-dist/tex/latex/mdframed/mdframed.sty
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+(C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2025/11/14 1.11b listings language file
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2025/11/14 1.11b listings language file
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/mdframed\mdframed.sty
 Package: mdframed 2013/07/01 1.9b: mdframed
- (/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty (/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2024-01-22 L3 programming layer (loader) 
- (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count367
-\l__pdf_internal_box=\box129
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xparse.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2025-11-06 L3 programming layer (loader) 
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count392
 ))
-Package: xparse 2023-10-10 L3 Experimental document command parser
-) (/usr/share/texlive/texmf-dist/tex/latex/zref/zref-abspage.sty
-Package: zref-abspage 2023-09-14 v2.35 Module abspage for zref (HO)
- (/usr/share/texlive/texmf-dist/tex/latex/zref/zref-base.sty
-Package: zref-base 2023-09-14 v2.35 Module base for zref (HO)
- (/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+Package: xparse 2025-10-09 L3 Experimental document command parser
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/zref\zref-abspage.sty
+Package: zref-abspage 2025-06-08 v2.36 Module abspage for zref (HO)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/zref\zref-base.sty
+Package: zref-base 2025-06-08 v2.36 Module base for zref (HO)
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/generic/etexcmds\etexcmds.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/auxhook\auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 )
 Package zref Info: New property list: main on input line 767.
 Package zref Info: New property: default on input line 768.
 Package zref Info: New property: page on input line 769.
 )
-\c@abspage=\count368
+\c@abspage=\count393
 Package zref Info: New property: abspage on input line 67.
-) (/usr/share/texlive/texmf-dist/tex/latex/needspace/needspace.sty
-Package: needspace 2010/09/12 v1.3d reserve vertical space
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/needspace\needspace.sty
+Package: needspace 2025/03/13 v1.3e reserve vertical space
 )
-\mdf@templength=\skip90
-\c@mdf@globalstyle@cnt=\count369
-\mdf@skipabove@length=\skip91
-\mdf@skipbelow@length=\skip92
-\mdf@leftmargin@length=\skip93
-\mdf@rightmargin@length=\skip94
-\mdf@innerleftmargin@length=\skip95
-\mdf@innerrightmargin@length=\skip96
-\mdf@innertopmargin@length=\skip97
-\mdf@innerbottommargin@length=\skip98
-\mdf@splittopskip@length=\skip99
-\mdf@splitbottomskip@length=\skip100
-\mdf@outermargin@length=\skip101
-\mdf@innermargin@length=\skip102
-\mdf@linewidth@length=\skip103
-\mdf@innerlinewidth@length=\skip104
-\mdf@middlelinewidth@length=\skip105
-\mdf@outerlinewidth@length=\skip106
-\mdf@roundcorner@length=\skip107
-\mdf@footenotedistance@length=\skip108
-\mdf@userdefinedwidth@length=\skip109
-\mdf@needspace@length=\skip110
-\mdf@frametitleaboveskip@length=\skip111
-\mdf@frametitlebelowskip@length=\skip112
-\mdf@frametitlerulewidth@length=\skip113
-\mdf@frametitleleftmargin@length=\skip114
-\mdf@frametitlerightmargin@length=\skip115
-\mdf@shadowsize@length=\skip116
-\mdf@extratopheight@length=\skip117
-\mdf@subtitleabovelinewidth@length=\skip118
-\mdf@subtitlebelowlinewidth@length=\skip119
-\mdf@subtitleaboveskip@length=\skip120
-\mdf@subtitlebelowskip@length=\skip121
-\mdf@subtitleinneraboveskip@length=\skip122
-\mdf@subtitleinnerbelowskip@length=\skip123
-\mdf@subsubtitleabovelinewidth@length=\skip124
-\mdf@subsubtitlebelowlinewidth@length=\skip125
-\mdf@subsubtitleaboveskip@length=\skip126
-\mdf@subsubtitlebelowskip@length=\skip127
-\mdf@subsubtitleinneraboveskip@length=\skip128
-\mdf@subsubtitleinnerbelowskip@length=\skip129
- (/usr/share/texlive/texmf-dist/tex/latex/mdframed/md-frame-0.mdf
+\mdf@templength=\skip96
+\c@mdf@globalstyle@cnt=\count394
+\mdf@skipabove@length=\skip97
+\mdf@skipbelow@length=\skip98
+\mdf@leftmargin@length=\skip99
+\mdf@rightmargin@length=\skip100
+\mdf@innerleftmargin@length=\skip101
+\mdf@innerrightmargin@length=\skip102
+\mdf@innertopmargin@length=\skip103
+\mdf@innerbottommargin@length=\skip104
+\mdf@splittopskip@length=\skip105
+\mdf@splitbottomskip@length=\skip106
+\mdf@outermargin@length=\skip107
+\mdf@innermargin@length=\skip108
+\mdf@linewidth@length=\skip109
+\mdf@innerlinewidth@length=\skip110
+\mdf@middlelinewidth@length=\skip111
+\mdf@outerlinewidth@length=\skip112
+\mdf@roundcorner@length=\skip113
+\mdf@footenotedistance@length=\skip114
+\mdf@userdefinedwidth@length=\skip115
+\mdf@needspace@length=\skip116
+\mdf@frametitleaboveskip@length=\skip117
+\mdf@frametitlebelowskip@length=\skip118
+\mdf@frametitlerulewidth@length=\skip119
+\mdf@frametitleleftmargin@length=\skip120
+\mdf@frametitlerightmargin@length=\skip121
+\mdf@shadowsize@length=\skip122
+\mdf@extratopheight@length=\skip123
+\mdf@subtitleabovelinewidth@length=\skip124
+\mdf@subtitlebelowlinewidth@length=\skip125
+\mdf@subtitleaboveskip@length=\skip126
+\mdf@subtitlebelowskip@length=\skip127
+\mdf@subtitleinneraboveskip@length=\skip128
+\mdf@subtitleinnerbelowskip@length=\skip129
+\mdf@subsubtitleabovelinewidth@length=\skip130
+\mdf@subsubtitlebelowlinewidth@length=\skip131
+\mdf@subsubtitleaboveskip@length=\skip132
+\mdf@subsubtitlebelowskip@length=\skip133
+\mdf@subsubtitleinneraboveskip@length=\skip134
+\mdf@subsubtitleinnerbelowskip@length=\skip135
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/mdframed\md-frame-0.mdf
 File: md-frame-0.mdf 2013/07/01\ 1.9b: md-frame-0
 )
-\mdf@frametitlebox=\box130
-\mdf@footnotebox=\box131
-\mdf@splitbox@one=\box132
-\mdf@splitbox@two=\box133
-\mdf@splitbox@save=\box134
-\mdfsplitboxwidth=\skip130
-\mdfsplitboxtotalwidth=\skip131
-\mdfsplitboxheight=\skip132
-\mdfsplitboxdepth=\skip133
-\mdfsplitboxtotalheight=\skip134
-\mdfframetitleboxwidth=\skip135
-\mdfframetitleboxtotalwidth=\skip136
-\mdfframetitleboxheight=\skip137
-\mdfframetitleboxdepth=\skip138
-\mdfframetitleboxtotalheight=\skip139
-\mdffootnoteboxwidth=\skip140
-\mdffootnoteboxtotalwidth=\skip141
-\mdffootnoteboxheight=\skip142
-\mdffootnoteboxdepth=\skip143
-\mdffootnoteboxtotalheight=\skip144
-\mdftotallinewidth=\skip145
-\mdfboundingboxwidth=\skip146
-\mdfboundingboxtotalwidth=\skip147
-\mdfboundingboxheight=\skip148
-\mdfboundingboxdepth=\skip149
-\mdfboundingboxtotalheight=\skip150
-\mdf@freevspace@length=\skip151
-\mdf@horizontalwidthofbox@length=\skip152
-\mdf@verticalmarginwhole@length=\skip153
-\mdf@horizontalspaceofbox=\skip154
-\mdfsubtitleheight=\skip155
-\mdfsubsubtitleheight=\skip156
-\c@mdfcountframes=\count370
+\mdf@frametitlebox=\box131
+\mdf@footnotebox=\box132
+\mdf@splitbox@one=\box133
+\mdf@splitbox@two=\box134
+\mdf@splitbox@save=\box135
+\mdfsplitboxwidth=\skip136
+\mdfsplitboxtotalwidth=\skip137
+\mdfsplitboxheight=\skip138
+\mdfsplitboxdepth=\skip139
+\mdfsplitboxtotalheight=\skip140
+\mdfframetitleboxwidth=\skip141
+\mdfframetitleboxtotalwidth=\skip142
+\mdfframetitleboxheight=\skip143
+\mdfframetitleboxdepth=\skip144
+\mdfframetitleboxtotalheight=\skip145
+\mdffootnoteboxwidth=\skip146
+\mdffootnoteboxtotalwidth=\skip147
+\mdffootnoteboxheight=\skip148
+\mdffootnoteboxdepth=\skip149
+\mdffootnoteboxtotalheight=\skip150
+\mdftotallinewidth=\skip151
+\mdfboundingboxwidth=\skip152
+\mdfboundingboxtotalwidth=\skip153
+\mdfboundingboxheight=\skip154
+\mdfboundingboxdepth=\skip155
+\mdfboundingboxtotalheight=\skip156
+\mdf@freevspace@length=\skip157
+\mdf@horizontalwidthofbox@length=\skip158
+\mdf@verticalmarginwhole@length=\skip159
+\mdf@horizontalspaceofbox=\skip160
+\mdfsubtitleheight=\skip161
+\mdfsubsubtitleheight=\skip162
+\c@mdfcountframes=\count395
 
 ****** mdframed patching \endmdf@trivlist
 
 ****** -- success******
 
-\mdf@envdepth=\count371
-\c@mdf@env@i=\count372
-\c@mdf@env@ii=\count373
-\c@mdf@zref@counter=\count374
+\mdf@envdepth=\count396
+\c@mdf@env@i=\count397
+\c@mdf@env@ii=\count398
+\c@mdf@zref@counter=\count399
 Package zref Info: New property: mdf@pagevalue on input line 895.
-) (/usr/share/texlive/texmf-dist/tex/latex/lipsum/lipsum.sty (/usr/share/texlive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
-Package: l3keys2e 2023-10-10 LaTeX2e option processing using LaTeX3 keys
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/lipsum\lipsum.sty (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/l3keys2e\l3keys2e.sty
+Package: l3keys2e 2025-10-09 LaTeX2e option processing using LaTeX3 keys
 )
 Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
-\g__lipsum_par_int=\count375
-\l__lipsum_a_int=\count376
-\l__lipsum_b_int=\count377
- (/usr/share/texlive/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex)) (/usr/share/texlive/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
-Package: tcolorbox 2024/01/10 version 6.2.0 text color boxes
- (/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty
-Package: verbatim 2023-11-06 v1.5v LaTeX2e package for verbatim enhancements
-\every@verbatim=\toks49
-\verbatim@line=\toks50
+\g__lipsum_par_int=\count400
+\l__lipsum_a_int=\count401
+\l__lipsum_b_int=\count402
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/lipsum\lipsum.ltd.tex)) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcolorbox.sty
+Package: tcolorbox 2025/09/09 version 6.8.0 text color boxes
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/tools\verbatim.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks50
+\verbatim@line=\toks51
 \verbatim@in@stream=\read3
-) (/usr/share/texlive/texmf-dist/tex/latex/environ/environ.sty
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/environ\environ.sty
 Package: environ 2014/05/04 v0.3 A new way to define environments
- (/usr/share/texlive/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.sty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
-\tcb@titlebox=\box135
-\tcb@upperbox=\box136
-\tcb@lowerbox=\box137
-\tcb@phantombox=\box138
-\c@tcbbreakpart=\count378
-\c@tcblayer=\count379
-\c@tcolorbox@number=\count380
-\l__tcobox_tmpa_box=\box139
-\l__tcobox_tmpa_dim=\dimen342
-\tcb@temp=\box140
+\tcb@titlebox=\box136
+\tcb@upperbox=\box137
+\tcb@lowerbox=\box138
+\tcb@phantombox=\box139
+\c@tcbbreakpart=\count403
+\c@tcblayer=\count404
+\c@tcolorbox@number=\count405
+\l__tcobox_tmpa_box=\box140
+\l__tcobox_tmpa_dim=\dimen350
 \tcb@temp=\box141
 \tcb@temp=\box142
 \tcb@temp=\box143
-) (./main.aux (./CONTENT/1-GIOITHIEUDETAI.aux) (./CONTENT/2-COSOLYTHUYET.aux
+\tcb@temp=\box144
+) (main.aux (CONTENT/1-GIOITHIEUDETAI.aux) (CONTENT/2-COSOLYTHUYET.aux
 
 LaTeX Warning: Label `fig:my_label' multiply defined.
 
-) (./CONTENT/3-THIETKEUNGDUNG.aux
-
-LaTeX Warning: Label `fig:my_label' multiply defined.
-
-) (./CONTENT/4-GIOITHIEUTRANGWEB.aux) (./CONTENT/5-CAIDATUNGDUNG.aux) (./CONTENT/6-NHIEMVUVAITRO.aux) (./CONTENT/7-SOURCECODE.aux))
+) (CONTENT/3-THIETKEUNGDUNG.aux) (CONTENT/4-GIOITHIEUTRANGWEB.aux) (CONTENT/5-CAIDATUNGDUNG.aux) (CONTENT/6-NHIEMVUVAITRO.aux) (CONTENT/7-SOURCECODE.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 126.
-LaTeX Font Info:    ... okay on input line 126.
- (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for T5/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count381
-\scratchdimen=\dimen343
-\scratchbox=\box144
-\nofMPsegments=\count382
-\nofMParguments=\count383
-\everyMPshowfont=\toks51
-\MPscratchCnt=\count384
-\MPscratchDim=\dimen344
-\MPnumerator=\count385
-\makeMPintoPDFobject=\count386
-\everyMPtoPDFconversion=\toks52
-) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+\scratchcounter=\count406
+\scratchdimen=\dimen351
+\scratchbox=\box145
+\nofMPsegments=\count407
+\nofMParguments=\count408
+\everyMPshowfont=\toks52
+\MPscratchCnt=\count409
+\MPscratchDim=\dimen352
+\MPnumerator=\count410
+\makeMPintoPDFobject=\count411
+\everyMPtoPDFconversion=\toks53
+) (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
- (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
@@ -1210,27 +1224,27 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 126.
-(./main.out) (./main.out)
+Package hyperref Info: Link coloring ON on input line 129.
+(main.out) (main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
-\c@lstlisting=\count387
-<hcmut.png, id=167, 272.01625pt x 277.035pt>
+\c@lstlisting=\count412
+<hcmut.png, id=166, 272.01625pt x 277.035pt>
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 139.
+Package pdftex.def Info: hcmut.png  used on input line 142.
 (pdftex.def)             Requested size: 85.35826pt x 86.93253pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 147.
- (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+LaTeX Font Info:    Trying to load font information for U+msa on input line 150.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 147.
- (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+LaTeX Font Info:    Trying to load font information for U+msb on input line 150.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 147.
- (/usr/share/texlive/texmf-dist/tex/latex/base/ulasy.fd
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 150.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/base\ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 ) [1
 Non-PDF special ignored!
@@ -1248,29 +1262,29 @@ Non-PDF special ignored!
 <special> ps:tx@Dict begin  gsave STV CP T /ps@rot 0 def grestore  end
 Non-PDF special ignored!
 <special> ps:tx@Dict begin  gsave STV CP T /ps@refangle 0.  def grestore  e...
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./hcmut.png>] (./main.toc)
+{C:/Users/ACER/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./hcmut.png>] (main.toc)
 \tf@toc=\write5
 \openout5 = `main.toc'.
 
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 186.
+Package pdftex.def Info: hcmut.png  used on input line 189.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
-LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 186.
- (/usr/share/texlive/texmf-dist/tex/latex/vntex/t5cmtt.fd
+LaTeX Font Info:    Trying to load font information for T5+cmtt on input line 189.
+ (C:\Users\ACER\AppData\Local\Programs\MiKTeX\tex/latex/vntex\t5cmtt.fd
 File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `T5/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T5/cmtt/m/n' tried instead on input line 186.
+(Font)              Font shape `T5/cmtt/m/n' tried instead on input line 189.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.186 \newpage
+l.189 \newpage
                [1]
 \openout2 = `CONTENT/1-GIOITHIEUDETAI.aux'.
 
- (./CONTENT/1-GIOITHIEUDETAI.tex
+ (CONTENT/1-GIOITHIEUDETAI.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
  []
@@ -1289,13 +1303,13 @@ Package pdftex.def Info: hcmut.png  used on input line 29.
 ])
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 188.
+Package pdftex.def Info: hcmut.png  used on input line 191.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [3]
 \openout2 = `CONTENT/2-COSOLYTHUYET.aux'.
 
- (./CONTENT/2-COSOLYTHUYET.tex
-<IMG/Html-Css-Js.jpg, id=245, 682.80093pt x 342.5297pt>
+ (CONTENT/2-COSOLYTHUYET.tex
+<IMG/Html-Css-Js.jpg, id=243, 682.80093pt x 342.5297pt>
 File: IMG/Html-Css-Js.jpg Graphic file (type jpg)
 <use IMG/Html-Css-Js.jpg>
 Package pdftex.def Info: IMG/Html-Css-Js.jpg  used on input line 4.
@@ -1323,12 +1337,12 @@ Package pdftex.def Info: hcmut.png  used on input line 24.
 
 
 
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc} <./IMG/Html-Css-Js.jpg>]
+ <./IMG/Html-Css-Js.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 31--32
 
  []
 
-<IMG/php-mysql.jpg, id=253, 602.25pt x 339.51843pt>
+<IMG/php-mysql.jpg, id=251, 602.25pt x 339.51843pt>
 File: IMG/php-mysql.jpg Graphic file (type jpg)
 <use IMG/php-mysql.jpg>
 Package pdftex.def Info: IMG/php-mysql.jpg  used on input line 47.
@@ -1351,7 +1365,7 @@ File: hcmut.png Graphic file (type png)
 Package pdftex.def Info: hcmut.png  used on input line 71.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [6 <./IMG/php-mysql.jpg>]
-<IMG/boostrap.png, id=268, 259.97125pt x 194.7275pt>
+<IMG/boostrap.png, id=266, 259.97125pt x 194.7275pt>
 File: IMG/boostrap.png Graphic file (type png)
 <use IMG/boostrap.png>
 Package pdftex.def Info: IMG/boostrap.png  used on input line 92.
@@ -1372,12 +1386,12 @@ Package pdftex.def Info: hcmut.png  used on input line 106.
 [8 <./IMG/boostrap.png>])
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 189.
+Package pdftex.def Info: hcmut.png  used on input line 192.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [9]
 \openout2 = `CONTENT/3-THIETKEUNGDUNG.aux'.
 
- (./CONTENT/3-THIETKEUNGDUNG.tex
+ (CONTENT/3-THIETKEUNGDUNG.tex
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
 Package pdftex.def Info: hcmut.png  used on input line 48.
@@ -1392,191 +1406,229 @@ File: hcmut.png Graphic file (type png)
 Package pdftex.def Info: hcmut.png  used on input line 93.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
  [11]
-<IMG/showimages/ERD.jpg, id=302, 1245.65375pt x 835.12pt>
-File: IMG/showimages/ERD.jpg Graphic file (type jpg)
-<use IMG/showimages/ERD.jpg>
-Package pdftex.def Info: IMG/showimages/ERD.jpg  used on input line 105.
-(pdftex.def)             Requested size: 418.25368pt x 280.40726pt.
+<IMG/showimages/erd.png, id=299, 2138.99126pt x 1173.38374pt>
+File: IMG/showimages/erd.png Graphic file (type png)
+<use IMG/showimages/erd.png>
+Package pdftex.def Info: IMG/showimages/erd.png  used on input line 105.
+(pdftex.def)             Requested size: 418.25368pt x 229.4266pt.
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 190.
+Package pdftex.def Info: hcmut.png  used on input line 193.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [12 <./IMG/showimages/ERD.jpg>]
+ [12 <./IMG/showimages/erd.png>]
 \openout2 = `CONTENT/4-GIOITHIEUTRANGWEB.aux'.
 
- (./CONTENT/4-GIOITHIEUTRANGWEB.tex
-<IMG/showimages/webpro1.jpg, id=316, 1870.99pt x 918.43124pt>
-File: IMG/showimages/webpro1.jpg Graphic file (type jpg)
-<use IMG/showimages/webpro1.jpg>
-Package pdftex.def Info: IMG/showimages/webpro1.jpg  used on input line 5.
-(pdftex.def)             Requested size: 418.25368pt x 205.30676pt.
-<IMG/showimages/repro.png, id=317, 1893.0725pt x 924.45375pt>
+ (CONTENT/4-GIOITHIEUTRANGWEB.tex
+<IMG/showimages/home.png, id=314, 1437.11906pt x 728.7225pt>
+File: IMG/showimages/home.png Graphic file (type png)
+<use IMG/showimages/home.png>
+Package pdftex.def Info: IMG/showimages/home.png  used on input line 5.
+(pdftex.def)             Requested size: 418.25368pt x 212.08023pt.
+<IMG/showimages/repro.png, id=315, 1893.0725pt x 924.45375pt>
 File: IMG/showimages/repro.png Graphic file (type png)
 <use IMG/showimages/repro.png>
 Package pdftex.def Info: IMG/showimages/repro.png  used on input line 11.
 (pdftex.def)             Requested size: 418.25368pt x 204.24092pt.
-<IMG/showimages/spkm.jpg, id=318, 1897.0875pt x 921.4425pt>
+<IMG/showimages/spkm.jpg, id=316, 1897.0875pt x 921.4425pt>
 File: IMG/showimages/spkm.jpg Graphic file (type jpg)
 <use IMG/showimages/spkm.jpg>
 Package pdftex.def Info: IMG/showimages/spkm.jpg  used on input line 17.
 (pdftex.def)             Requested size: 418.25368pt x 203.15384pt.
-<IMG/showimages/Webnews.jpg, id=319, 1888.05376pt x 921.4425pt>
-File: IMG/showimages/Webnews.jpg Graphic file (type jpg)
-<use IMG/showimages/Webnews.jpg>
-Package pdftex.def Info: IMG/showimages/Webnews.jpg  used on input line 23.
-(pdftex.def)             Requested size: 418.25368pt x 204.12398pt.
+<IMG/showimages/news-list-1.png, id=317, 1434.10782pt x 712.91344pt>
+File: IMG/showimages/news-list-1.png Graphic file (type png)
+<use IMG/showimages/news-list-1.png>
+Package pdftex.def Info: IMG/showimages/news-list-1.png  used on input line 25.
+(pdftex.def)             Requested size: 418.25368pt x 207.91444pt.
+<IMG/showimages/news-list-2.png, id=318, 1436.36626pt x 730.22812pt>
+File: IMG/showimages/news-list-2.png Graphic file (type png)
+<use IMG/showimages/news-list-2.png>
+Package pdftex.def Info: IMG/showimages/news-list-2.png  used on input line 32.
+(pdftex.def)             Requested size: 418.25368pt x 212.62984pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<IMG/showimages/news-detail.png, id=319, 1440.13031pt x 727.96968pt>
+File: IMG/showimages/news-detail.png Graphic file (type png)
+<use IMG/showimages/news-detail.png>
+Package pdftex.def Info: IMG/showimages/news-detail.png  used on input line 39.
+(pdftex.def)             Requested size: 418.25368pt x 211.41682pt.
 <IMG/showimages/Webcart.jpg, id=320, 1895.08pt x 916.42375pt>
 File: IMG/showimages/Webcart.jpg Graphic file (type jpg)
 <use IMG/showimages/Webcart.jpg>
-Package pdftex.def Info: IMG/showimages/Webcart.jpg  used on input line 29.
+Package pdftex.def Info: IMG/showimages/Webcart.jpg  used on input line 45.
 (pdftex.def)             Requested size: 418.25368pt x 202.25708pt.
 <IMG/showimages/update.jpg, id=321, 1888.05376pt x 917.4275pt>
 File: IMG/showimages/update.jpg Graphic file (type jpg)
 <use IMG/showimages/update.jpg>
-Package pdftex.def Info: IMG/showimages/update.jpg  used on input line 35.
+Package pdftex.def Info: IMG/showimages/update.jpg  used on input line 51.
 (pdftex.def)             Requested size: 418.25368pt x 203.23456pt.
 <IMG/showimages/Weblogin.jpg, id=322, 1897.0875pt x 927.465pt>
 File: IMG/showimages/Weblogin.jpg Graphic file (type jpg)
 <use IMG/showimages/Weblogin.jpg>
-Package pdftex.def Info: IMG/showimages/Weblogin.jpg  used on input line 41.
+Package pdftex.def Info: IMG/showimages/Weblogin.jpg  used on input line 57.
 (pdftex.def)             Requested size: 418.25368pt x 204.48164pt.
 <IMG/showimages/Webregister.jpg, id=323, 1896.08376pt x 921.4425pt>
 File: IMG/showimages/Webregister.jpg Graphic file (type jpg)
 <use IMG/showimages/Webregister.jpg>
-Package pdftex.def Info: IMG/showimages/Webregister.jpg  used on input line 47.
+Package pdftex.def Info: IMG/showimages/Webregister.jpg  used on input line 63.
 (pdftex.def)             Requested size: 418.25368pt x 203.25226pt.
 <IMG/showimages/about.png, id=324, 3083.52pt x 1734.48pt>
 File: IMG/showimages/about.png Graphic file (type png)
 <use IMG/showimages/about.png>
-Package pdftex.def Info: IMG/showimages/about.png  used on input line 53.
+Package pdftex.def Info: IMG/showimages/about.png  used on input line 69.
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
 <IMG/showimages/qna.png, id=325, 3083.52pt x 1734.48pt>
 File: IMG/showimages/qna.png Graphic file (type png)
 <use IMG/showimages/qna.png>
-Package pdftex.def Info: IMG/showimages/qna.png  used on input line 59.
+Package pdftex.def Info: IMG/showimages/qna.png  used on input line 75.
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 64.
+Package pdftex.def Info: hcmut.png  used on input line 80.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [13
+[13
 
 
 
- <./IMG/showimages/webpro1.jpg> <./IMG/showimages/repro.png>]
+ <./IMG/showimages/home.png> <./IMG/showimages/repro.png>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 64.
+Package pdftex.def Info: hcmut.png  used on input line 80.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [14 <./IMG/showimages/spkm.jpg> <./IMG/showimages/Webnews.jpg>]
+ [14 <./IMG/showimages/spkm.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 64.
+Package pdftex.def Info: hcmut.png  used on input line 80.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [15 <./IMG/showimages/Webcart.jpg> <./IMG/showimages/update.jpg>]
+ [15 <./IMG/showimages/news-list-1.png> <./IMG/showimages/news-list-2.png>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 64.
+Package pdftex.def Info: hcmut.png  used on input line 80.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [16 <./IMG/showimages/Weblogin.jpg> <./IMG/showimages/Webregister.jpg>]
+ [16 <./IMG/showimages/news-detail.png> <./IMG/showimages/Webcart.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 64.
+Package pdftex.def Info: hcmut.png  used on input line 80.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [17 <./IMG/showimages/about.png> <./IMG/showimages/qna.png>]
-<IMG/showimages/Adminproduct.jpg, id=363, 1893.0725pt x 918.43124pt>
+ [17 <./IMG/showimages/update.jpg> <./IMG/showimages/Weblogin.jpg>]
+File: hcmut.png Graphic file (type png)
+<use hcmut.png>
+Package pdftex.def Info: hcmut.png  used on input line 80.
+(pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
+ [18 <./IMG/showimages/Webregister.jpg> <./IMG/showimages/about.png>]
+File: hcmut.png Graphic file (type png)
+<use hcmut.png>
+Package pdftex.def Info: hcmut.png  used on input line 80.
+(pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
+ [19 <./IMG/showimages/qna.png>]
+<IMG/showimages/Adminproduct.jpg, id=379, 1893.0725pt x 918.43124pt>
 File: IMG/showimages/Adminproduct.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminproduct.jpg>
-Package pdftex.def Info: IMG/showimages/Adminproduct.jpg  used on input line 68.
+Package pdftex.def Info: IMG/showimages/Adminproduct.jpg  used on input line 84.
 (pdftex.def)             Requested size: 418.25368pt x 202.91035pt.
-<IMG/showimages/them sp.jpg, id=364, 1819.79875pt x 918.43124pt>
+<IMG/showimages/them sp.jpg, id=380, 1819.79875pt x 918.43124pt>
 File: IMG/showimages/them sp.jpg Graphic file (type jpg)
 <use IMG/showimages/them sp.jpg>
-Package pdftex.def Info: IMG/showimages/them sp.jpg  used on input line 74.
+Package pdftex.def Info: IMG/showimages/them sp.jpg  used on input line 90.
 (pdftex.def)             Requested size: 418.25368pt x 211.08058pt.
-<IMG/showimages/Adminproductupdate.jpg, id=365, 1890.06125pt x 912.40875pt>
+<IMG/showimages/Adminproductupdate.jpg, id=381, 1890.06125pt x 912.40875pt>
 File: IMG/showimages/Adminproductupdate.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminproductupdate.jpg>
-Package pdftex.def Info: IMG/showimages/Adminproductupdate.jpg  used on input line 80.
+Package pdftex.def Info: IMG/showimages/Adminproductupdate.jpg  used on input line 96.
 (pdftex.def)             Requested size: 418.25368pt x 201.90001pt.
-<IMG/showimages/Adminorder.jpg, id=366, 1897.0875pt x 922.44624pt>
+<IMG/showimages/Adminorder.jpg, id=382, 1897.0875pt x 922.44624pt>
 File: IMG/showimages/Adminorder.jpg Graphic file (type jpg)
 <use IMG/showimages/Adminorder.jpg>
-Package pdftex.def Info: IMG/showimages/Adminorder.jpg  used on input line 86.
+Package pdftex.def Info: IMG/showimages/Adminorder.jpg  used on input line 102.
 (pdftex.def)             Requested size: 418.25368pt x 203.37514pt.
-<IMG/showimages/giao dien khach hang.png, id=367, 1903.11pt x 919.435pt>
+<IMG/showimages/giao dien khach hang.png, id=383, 1903.11pt x 919.435pt>
 File: IMG/showimages/giao dien khach hang.png Graphic file (type png)
 <use IMG/showimages/giao dien khach hang.png>
-Package pdftex.def Info: IMG/showimages/giao dien khach hang.png  used on input line 92.
+Package pdftex.def Info: IMG/showimages/giao dien khach hang.png  used on input line 108.
 (pdftex.def)             Requested size: 418.25368pt x 202.06587pt.
-<IMG/showimages/thong tin.jpg, id=368, 1911.14pt x 920.43875pt>
+<IMG/showimages/thong tin.jpg, id=384, 1911.14pt x 920.43875pt>
 File: IMG/showimages/thong tin.jpg Graphic file (type jpg)
 <use IMG/showimages/thong tin.jpg>
-Package pdftex.def Info: IMG/showimages/thong tin.jpg  used on input line 98.
+Package pdftex.def Info: IMG/showimages/thong tin.jpg  used on input line 114.
 (pdftex.def)             Requested size: 418.25368pt x 201.42975pt.
-<IMG/showimages/Adminnews.jpg, id=369, 1896.08376pt x 921.4425pt>
-File: IMG/showimages/Adminnews.jpg Graphic file (type jpg)
-<use IMG/showimages/Adminnews.jpg>
-Package pdftex.def Info: IMG/showimages/Adminnews.jpg  used on input line 104.
-(pdftex.def)             Requested size: 418.25368pt x 203.25226pt.
-<IMG/showimages/Adminnewsupdate.jpg, id=370, 1891.065pt x 918.43124pt>
-File: IMG/showimages/Adminnewsupdate.jpg Graphic file (type jpg)
-<use IMG/showimages/Adminnewsupdate.jpg>
-Package pdftex.def Info: IMG/showimages/Adminnewsupdate.jpg  used on input line 110.
-(pdftex.def)             Requested size: 418.25368pt x 203.13458pt.
-<IMG/showimages/Adminnewsupdate1.jpg, id=371, 1890.06125pt x 919.435pt>
-File: IMG/showimages/Adminnewsupdate1.jpg Graphic file (type jpg)
-<use IMG/showimages/Adminnewsupdate1.jpg>
-Package pdftex.def Info: IMG/showimages/Adminnewsupdate1.jpg  used on input line 116.
-(pdftex.def)             Requested size: 418.25368pt x 203.45479pt.
-<IMG/showimages/about_admin.png, id=372, 3083.52pt x 1734.48pt>
+<IMG/showimages/news-admin.png, id=385, 1442.38875pt x 729.47531pt>
+File: IMG/showimages/news-admin.png Graphic file (type png)
+<use IMG/showimages/news-admin.png>
+Package pdftex.def Info: IMG/showimages/news-admin.png  used on input line 120.
+(pdftex.def)             Requested size: 418.25368pt x 211.52016pt.
+<IMG/showimages/news-admin-edit.png, id=386, 1440.88312pt x 731.73375pt>
+File: IMG/showimages/news-admin-edit.png Graphic file (type png)
+<use IMG/showimages/news-admin-edit.png>
+Package pdftex.def Info: IMG/showimages/news-admin-edit.png  used on input line 126.
+(pdftex.def)             Requested size: 418.25368pt x 212.39833pt.
+<IMG/showimages/news-admin-add.png, id=387, 1443.14156pt x 724.95844pt>
+File: IMG/showimages/news-admin-add.png Graphic file (type png)
+<use IMG/showimages/news-admin-add.png>
+Package pdftex.def Info: IMG/showimages/news-admin-add.png  used on input line 132.
+(pdftex.def)             Requested size: 418.25368pt x 210.09981pt.
+<IMG/showimages/comment-admin.png, id=388, 1442.38875pt x 727.21687pt>
+File: IMG/showimages/comment-admin.png Graphic file (type png)
+<use IMG/showimages/comment-admin.png>
+Package pdftex.def Info: IMG/showimages/comment-admin.png  used on input line 138.
+(pdftex.def)             Requested size: 418.25368pt x 210.8653pt.
+File: IMG/showimages/comment-admin.png Graphic file (type png)
+<use IMG/showimages/comment-admin.png>
+Package pdftex.def Info: IMG/showimages/comment-admin.png  used on input line 144.
+(pdftex.def)             Requested size: 418.25368pt x 210.8653pt.
+<IMG/showimages/about_admin.png, id=389, 3083.52pt x 1734.48pt>
 File: IMG/showimages/about_admin.png Graphic file (type png)
 <use IMG/showimages/about_admin.png>
-Package pdftex.def Info: IMG/showimages/about_admin.png  used on input line 122.
+Package pdftex.def Info: IMG/showimages/about_admin.png  used on input line 150.
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
-<IMG/showimages/qna_admin.png, id=373, 3083.52pt x 1734.48pt>
+<IMG/showimages/qna_admin.png, id=390, 3083.52pt x 1734.48pt>
 File: IMG/showimages/qna_admin.png Graphic file (type png)
 <use IMG/showimages/qna_admin.png>
-Package pdftex.def Info: IMG/showimages/qna_admin.png  used on input line 128.
+Package pdftex.def Info: IMG/showimages/qna_admin.png  used on input line 156.
 (pdftex.def)             Requested size: 418.25368pt x 235.25627pt.
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
+Package pdftex.def Info: hcmut.png  used on input line 194.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [18
+ [20
 
  <./IMG/showimages/Adminproduct.jpg> <./IMG/showimages/them sp.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
+Package pdftex.def Info: hcmut.png  used on input line 194.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [19 <./IMG/showimages/Adminproductupdate.jpg> <./IMG/showimages/Adminorder.jpg>]
+ [21 <./IMG/showimages/Adminproductupdate.jpg> <./IMG/showimages/Adminorder.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
+Package pdftex.def Info: hcmut.png  used on input line 194.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [20 <./IMG/showimages/giao dien khach hang.png> <./IMG/showimages/thong tin.jpg>]
+ [22 <./IMG/showimages/giao dien khach hang.png> <./IMG/showimages/thong tin.jpg>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
+Package pdftex.def Info: hcmut.png  used on input line 194.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [21 <./IMG/showimages/Adminnews.jpg> <./IMG/showimages/Adminnewsupdate.jpg>]
+ [23 <./IMG/showimages/news-admin.png> <./IMG/showimages/news-admin-edit.png>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
+Package pdftex.def Info: hcmut.png  used on input line 194.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [22 <./IMG/showimages/Adminnewsupdate1.jpg> <./IMG/showimages/about_admin.png>]
+ [24 <./IMG/showimages/news-admin-add.png> <./IMG/showimages/comment-admin.png>]
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 191.
+Package pdftex.def Info: hcmut.png  used on input line 194.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [23 <./IMG/showimages/qna_admin.png>]
+ [25 <./IMG/showimages/about_admin.png>]
+File: hcmut.png Graphic file (type png)
+<use hcmut.png>
+Package pdftex.def Info: hcmut.png  used on input line 194.
+(pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
+ [26 <./IMG/showimages/qna_admin.png>]
 \openout2 = `CONTENT/5-CAIDATUNGDUNG.aux'.
 
- (./CONTENT/5-CAIDATUNGDUNG.tex
-<IMG/showimages/git.png, id=418, 3083.52pt x 1734.48pt>
+ (CONTENT/5-CAIDATUNGDUNG.tex
+<IMG/showimages/git.png, id=446, 3083.52pt x 1734.48pt>
 File: IMG/showimages/git.png Graphic file (type png)
 <use IMG/showimages/git.png>
 Package pdftex.def Info: IMG/showimages/git.png  used on input line 39.
@@ -1585,7 +1637,7 @@ File: hcmut.png Graphic file (type png)
 <use hcmut.png>
 Package pdftex.def Info: hcmut.png  used on input line 48.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [24
+ [27
 
 
 
@@ -1597,24 +1649,24 @@ Overfull \hbox (35.30281pt too wide) in paragraph at lines 88--89
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 192.
+Package pdftex.def Info: hcmut.png  used on input line 195.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [25]
+ [28]
 \openout2 = `CONTENT/6-NHIEMVUVAITRO.aux'.
 
- (./CONTENT/6-NHIEMVUVAITRO.tex)
+ (CONTENT/6-NHIEMVUVAITRO.tex)
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 193.
+Package pdftex.def Info: hcmut.png  used on input line 196.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [26
+ [29
 
 
 
 ]
 \openout2 = `CONTENT/7-SOURCECODE.aux'.
 
- (./CONTENT/7-SOURCECODE.tex
+ (CONTENT/7-SOURCECODE.tex
 Overfull \hbox (9.52838pt too wide) in paragraph at lines 6--7
 []\T5/cmr/m/n/10 "5 Phót T¼m Hiºu HTML, CSS, Javascript L  G¼?". Tham kh£o tø \T5/cmr/m/it/10 https://rikkei.edu.vn/html-
  []
@@ -1627,39 +1679,38 @@ Overfull \hbox (16.18pt too wide) in paragraph at lines 9--10
 )
 File: hcmut.png Graphic file (type png)
 <use hcmut.png>
-Package pdftex.def Info: hcmut.png  used on input line 194.
+Package pdftex.def Info: hcmut.png  used on input line 197.
 (pdftex.def)             Requested size: 22.76204pt x 22.75928pt.
- [27
+ [30
 
 
 
 ] 
-enddocument/afterlastpage: lastpage setting LastPage.
-(./main.aux (./CONTENT/1-GIOITHIEUDETAI.aux) (./CONTENT/2-COSOLYTHUYET.aux) (./CONTENT/3-THIETKEUNGDUNG.aux) (./CONTENT/4-GIOITHIEUTRANGWEB.aux) (./CONTENT/5-CAIDATUNGDUNG.aux) (./CONTENT/6-NHIEMVUVAITRO.aux) (./CONTENT/7-SOURCECODE.aux))
+enddocument/afterlastpage (AED): lastpage setting LastPage.
+(main.aux (CONTENT/1-GIOITHIEUDETAI.aux) (CONTENT/2-COSOLYTHUYET.aux) (CONTENT/3-THIETKEUNGDUNG.aux) (CONTENT/4-GIOITHIEUTRANGWEB.aux) (CONTENT/5-CAIDATUNGDUNG.aux) (CONTENT/6-NHIEMVUVAITRO.aux) (CONTENT/7-SOURCECODE.aux))
  ***********
-LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-01-22>
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-11-06>
  ***********
 
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 49021B8070168D9516B84C84BB5D71F0;6970.
+(rerunfilecheck)             Checksum: 34242E7DF4544E1D3C7DB9986908BA09;6952.
  ) 
 Here is how much of TeX's memory you used:
- 32886 strings out of 474222
- 632894 string characters out of 5748732
- 1942975 words of memory out of 5000000
- 54379 multiletter control sequences out of 15000+600000
- 572610 words of font info for 62 fonts, out of 8000000 for 9000
+ 33425 strings out of 467871
+ 652551 string characters out of 5418860
+ 1140081 words of memory out of 5000000
+ 61509 multiletter control sequences out of 15000+600000
+ 642262 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,25n,97p,1594b,618s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt8.pfb>
-Output written on main.pdf (28 pages, 6959788 bytes).
+ 84i,25n,104p,1563b,704s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\ACER\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/ACER/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnbx10.pfb><C:/Users/ACER/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnbx12.pfb><C:/Users/ACER/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnr10.pfb><C:/Users/ACER/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnr9.pfb><C:/Users/ACER/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vnti10.pfb><C:/Users/ACER/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt10.pfb><C:/Users/ACER/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/vnr/vntt8.pfb>
+Output written on main.pdf (31 pages, 10406426 bytes).
 PDF statistics:
- 512 PDF objects out of 1000 (max. 8388607)
- 427 compressed objects within 5 object streams
- 119 named destinations out of 1000 (max. 500000)
- 468 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 537 PDF objects out of 1000 (max. 8388607)
+ 125 named destinations out of 1000 (max. 500000)
+ 483 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -75,65 +75,33 @@ class AdminPromotionController
         $discountPercentage = null;
         $fixedPrice         = null;
 
-        if (mb_strlen($promotionName) > 100) {
-            $jsonError("Promotion name must not exceed 100 characters.");
-        }
-
-        if (mb_strlen($promotionType) > 50) {
-            $jsonError("Promotion type must not exceed 50 characters.");
-        }
-
-        if (!in_array($promotionType, ['discount', 'fixed'], true)) {
-            $jsonError("Invalid promotion type.");
-        }
-
-        $startDateObj = DateTime::createFromFormat('Y-m-d', $startDateRaw);
-        $endDateObj   = DateTime::createFromFormat('Y-m-d', $endDateRaw);
-
-        if ($startDateObj === false) {
-            $jsonError("Invalid start date.");
-        }
-
-        if ($endDateObj === false) {
-            $jsonError("Invalid end date.");
-        }
-
-        if ($endDateObj <= $startDateObj) {
-            $jsonError("End date must be after start date.");
-        }
-
-        $startDate = $startDateObj->format('Y-m-d 00:00:00');
-        $endDate   = $endDateObj->format('Y-m-d 23:59:59');
-
         if ($promotionType === 'discount') {
             $discountPercentage = isset($_POST['discount_percentage'])
                 ? (float)$_POST['discount_percentage']
                 : 0.0;
-
-            if ($discountPercentage <= 0 || $discountPercentage > 100) {
-                $jsonError("Discount percentage must be between 0 and 100.");
-            }
-
-            if ($discountPercentage >= 1000) {
-                $jsonError("Discount percentage must be less than 1000.");
-            }
         } elseif ($promotionType === 'fixed') {
             $fixedPrice = isset($_POST['fixed_price'])
                 ? (float)$_POST['fixed_price']
                 : 0.0;
-
-            if ($fixedPrice <= 0) {
-                $jsonError("Fixed price must be greater than 0.");
-            }
-
-            if ($fixedPrice >= 100000000) {
-                $jsonError("Fixed price must be less than 100,000,000.");
-            }
         }
 
-        if ($promotionName === '' || $promotionType === '') {
-            $jsonError("All fields are required.");
+        $validationError = $this->validatePromotionData(
+            $promotionName,
+            $promotionType,
+            $startDateRaw,
+            $endDateRaw,
+            $discountPercentage,
+            $fixedPrice
+        );
+
+        if ($validationError !== null) {
+            $jsonError($validationError);
         }
+
+        $startDateObj = DateTime::createFromFormat('Y-m-d', $startDateRaw);
+        $endDateObj   = DateTime::createFromFormat('Y-m-d', $endDateRaw);
+        $startDate = $startDateObj->format('Y-m-d 00:00:00');
+        $endDate   = $endDateObj->format('Y-m-d 23:59:59');
 
         try {
             $this->promotionModel->createPromotion(
@@ -211,64 +179,37 @@ class AdminPromotionController
         $discountPercentage = null;
         $fixedPrice         = null;
 
-        if (mb_strlen($promotionName) > 100) {
-            return $this->editRespondError($isAjax, 'Promotion name must not exceed 100 characters.', $promotionId);
-        }
-
-        if (mb_strlen($promotionType) > 50) {
-            return $this->editRespondError($isAjax, 'Promotion type must not exceed 50 characters.', $promotionId);
-        }
-
-        if (!in_array($promotionType, ['discount', 'fixed'], true)) {
-            return $this->editRespondError($isAjax, 'Invalid promotion type.', $promotionId);
-        }
-
-        $startDateObj = DateTime::createFromFormat('Y-m-d', $startDateRaw);
-        $endDateObj   = DateTime::createFromFormat('Y-m-d', $endDateRaw);
-
-        if ($startDateObj === false) {
-            return $this->editRespondError($isAjax, 'Invalid start date.', $promotionId);
-        }
-
-        if ($endDateObj === false) {
-            return $this->editRespondError($isAjax, 'Invalid end date.', $promotionId);
-        }
-        if ($endDateObj <= $startDateObj) {
-            return $this->editRespondError($isAjax, 'End date must be after start date.', $promotionId);
-        }
-
-        $startDate = $startDateObj->format('Y-m-d 00:00:00');
-        $endDate   = $endDateObj->format('Y-m-d 23:59:59');
-
         if ($promotionType === 'discount') {
             $discountPercentage = isset($_POST['discount_percentage'])
                 ? (float) $_POST['discount_percentage']
                 : 0.0;
-
-            if ($discountPercentage <= 0 || $discountPercentage > 100) {
-                return $this->editRespondError($isAjax, 'Discount percentage must be between 0 and 100.', $promotionId);
-            }
-
-            if ($discountPercentage >= 1000) {
-                return $this->editRespondError($isAjax, 'Discount percentage must be less than 1000.', $promotionId);
-            }
         } elseif ($promotionType === 'fixed') {
             $fixedPrice = isset($_POST['fixed_price'])
                 ? (float) $_POST['fixed_price']
                 : 0.0;
-
-            if ($fixedPrice <= 0) {
-                return $this->editRespondError($isAjax, 'Fixed price must be greater than 0.', $promotionId);
-            }
-
-            if ($fixedPrice >= 100000000) {
-                return $this->editRespondError($isAjax, 'Fixed price must be less than 100,000,000.', $promotionId);
-            }
         }
 
-        if ($promotionName === '' || $promotionType === '' || $startDateRaw === '' || $endDateRaw === '') {
+        $validationError = $this->validatePromotionData(
+            $promotionName,
+            $promotionType,
+            $startDateRaw,
+            $endDateRaw,
+            $discountPercentage,
+            $fixedPrice
+        );
+
+        if ($validationError !== null) {
+            return $this->editRespondError($isAjax, $validationError, $promotionId);
+        }
+
+        if ($startDateRaw === '' || $endDateRaw === '') {
             return $this->editRespondError($isAjax, 'All fields are required.', $promotionId);
         }
+
+        $startDateObj = DateTime::createFromFormat('Y-m-d', $startDateRaw);
+        $endDateObj   = DateTime::createFromFormat('Y-m-d', $endDateRaw);
+        $startDate = $startDateObj->format('Y-m-d 00:00:00');
+        $endDate   = $endDateObj->format('Y-m-d 23:59:59');
 
         try {
             $this->promotionModel->updatePromotion(
@@ -301,6 +242,66 @@ class AdminPromotionController
                 500
             );
         }
+    }
+
+    private function validatePromotionData(
+        string $promotionName,
+        string $promotionType,
+        string $startDateRaw,
+        string $endDateRaw,
+        ?float $discountPercentage,
+        ?float $fixedPrice
+    ): ?string {
+        if (mb_strlen($promotionName) > 100) {
+            return "Promotion name must not exceed 100 characters.";
+        }
+
+        if (mb_strlen($promotionType) > 50) {
+            return "Promotion type must not exceed 50 characters.";
+        }
+
+        if (!in_array($promotionType, ['discount', 'fixed'], true)) {
+            return "Invalid promotion type.";
+        }
+
+        $startDateObj = DateTime::createFromFormat('Y-m-d', $startDateRaw);
+        $endDateObj   = DateTime::createFromFormat('Y-m-d', $endDateRaw);
+
+        if ($startDateObj === false) {
+            return "Invalid start date.";
+        }
+
+        if ($endDateObj === false) {
+            return "Invalid end date.";
+        }
+
+        if ($endDateObj <= $startDateObj) {
+            return "End date must be after start date.";
+        }
+
+        if ($promotionType === 'discount') {
+            if ($discountPercentage === null || $discountPercentage <= 0 || $discountPercentage > 100) {
+                return "Discount percentage must be between 0 and 100.";
+            }
+
+            if ($discountPercentage >= 1000) {
+                return "Discount percentage must be less than 1000.";
+            }
+        } elseif ($promotionType === 'fixed') {
+            if ($fixedPrice === null || $fixedPrice <= 0) {
+                return "Fixed price must be greater than 0.";
+            }
+
+            if ($fixedPrice >= 100000000) {
+                return "Fixed price must be less than 100,000,000.";
+            }
+        }
+
+        if ($promotionName === '' || $promotionType === '') {
+            return "All fields are required.";
+        }
+
+        return null;
     }
 
     private function editRespondError(bool $isAjax, string $message, ?int $promotionId = null, int $statusCode = 400)

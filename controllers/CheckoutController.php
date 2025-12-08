@@ -53,6 +53,7 @@ class CheckoutController {
         $prefillAddress = '';
         $prefillCity = '';
         $prefillZip = '';
+        $prefillPhone = '';
         $prefillFromSession = isset($_SESSION['checkout_prefill']) && is_array($_SESSION['checkout_prefill'])
             ? $_SESSION['checkout_prefill']
             : null;
@@ -73,6 +74,7 @@ class CheckoutController {
                 $prefillAddress = $memberProfile['Address'] ?? '';
                 $prefillCity = $memberProfile['City'] ?? '';
                 $prefillZip = $memberProfile['Zip'] ?? ($memberProfile['ZIP'] ?? '');
+                $prefillPhone = $memberProfile['Phone'] ?? ($memberProfile['PhoneNumber'] ?? '');
             }
         }
 
@@ -82,6 +84,7 @@ class CheckoutController {
             $prefillAddress = $prefillFromSession['address'] ?? $prefillAddress;
             $prefillCity = $prefillFromSession['city'] ?? $prefillCity;
             $prefillZip = $prefillFromSession['zip'] ?? $prefillZip;
+            $prefillPhone = $prefillFromSession['phone'] ?? $prefillPhone;
         }
 
         if (isset($_POST['apply_coupon']) && array_key_exists('selected_coupon', $_POST)) {
@@ -92,7 +95,8 @@ class CheckoutController {
                 'email' => trim($_POST['email'] ?? ''),
                 'address' => trim($_POST['address'] ?? ''),
                 'city' => trim($_POST['city'] ?? ''),
-                'zip' => trim($_POST['zip'] ?? '')
+                'zip' => trim($_POST['zip'] ?? ''),
+                'phone' => trim($_POST['phone'] ?? '')
             ];
             if ($couponId > 0) {
                 $coupon = $this->couponModel->getCouponById($couponId);
@@ -137,15 +141,17 @@ class CheckoutController {
             $saveAddress = isset($_POST['address']) ? trim($_POST['address']) : '';
             $saveCity = isset($_POST['city']) ? trim($_POST['city']) : '';
             $saveZip = isset($_POST['zip']) ? trim($_POST['zip']) : '';
+            $savePhone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
 
-            if ($saveName && $saveEmail && $saveAddress && $saveCity && $saveZip) {
+            if ($saveName && $saveEmail && $saveAddress && $saveCity && $saveZip && $savePhone) {
                 $savedAddresses[] = [
                     'id' => uniqid('addr_', true),
                     'name' => $saveName,
                     'email' => $saveEmail,
                     'address' => $saveAddress,
                     'city' => $saveCity,
-                    'zip' => $saveZip
+                    'zip' => $saveZip,
+                    'phone' => $savePhone
                 ];
                 // Giữ tối đa 5 địa chỉ gần nhất
                 $savedAddresses = array_slice($savedAddresses, -5);
@@ -176,11 +182,12 @@ class CheckoutController {
             $address = isset($_POST['address']) ? trim($_POST['address']) : '';
             $city = isset($_POST['city']) ? trim($_POST['city']) : '';
             $zip = isset($_POST['zip']) ? trim($_POST['zip']) : '';
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
             $card_number = isset($_POST['card_number']) ? trim($_POST['card_number']) : '';
             $expiry = isset($_POST['expiry']) ? trim($_POST['expiry']) : '';
             $cvv = isset($_POST['cvv']) ? trim($_POST['cvv']) : '';
 
-            if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip)) {
+            if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip) || empty($phone)) {
                 $error = 'All required fields must be filled.';
             } elseif ($paymentMethod === 'card' && (empty($card_number) || empty($expiry) || empty($cvv))) {
                 $error = 'Card payment is not available yet. Please choose Cash on Delivery.';
@@ -220,10 +227,10 @@ class CheckoutController {
         }
 
         if (file_exists($viewPath)) {
-            $renderView = function ($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $prefillName, $prefillEmail, $prefillAddress, $prefillCity, $prefillZip, $savedAddresses, $addressNotice, $couponNotice) use ($viewPath) {
+            $renderView = function ($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $prefillName, $prefillEmail, $prefillAddress, $prefillCity, $prefillZip, $prefillPhone, $savedAddresses, $addressNotice, $couponNotice) use ($viewPath) {
                 require $viewPath;
             };
-            $renderView($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $prefillName, $prefillEmail, $prefillAddress, $prefillCity, $prefillZip, $savedAddresses, $addressNotice, $couponNotice);
+            $renderView($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $prefillName, $prefillEmail, $prefillAddress, $prefillCity, $prefillZip, $prefillPhone, $savedAddresses, $addressNotice, $couponNotice);
         } else {
             die("View file not found: $viewPath");
         }

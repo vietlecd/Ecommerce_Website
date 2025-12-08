@@ -128,8 +128,8 @@ class ProductsController {
                 $_SESSION['comment_error'] = 'Vui lòng chọn đánh giá từ 1 đến 5 sao.';
             } elseif (empty($content)) {
                 $_SESSION['comment_error'] = 'Vui lòng nhập nội dung comment.';
-            } elseif (mb_strlen($content) > 65535) {
-                $_SESSION['comment_error'] = 'Nội dung comment quá dài (tối đa 65535 ký tự).';
+            } elseif (strlen($content) > 65535) {
+                $_SESSION['comment_error'] = 'Nội dung comment quá dài (tối đa 65535 byte).';
             } else {
                 $memId = isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'member' 
                     ? (int)$_SESSION['user_id'] 
@@ -298,7 +298,7 @@ class ProductsController {
                 ]
             ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         } catch (Exception $e) {
-            error_log("ProductsController - Error processing request: " . $e->getMessage());
+            error_log("ProductsController::api() - Error processing request: " . $e->getMessage());
             http_response_code(500);
             echo json_encode([
                 'success' => false,

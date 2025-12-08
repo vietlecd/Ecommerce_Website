@@ -203,10 +203,6 @@ class AdminPromotionController
             return $this->editRespondError($isAjax, $validationError, $promotionId);
         }
 
-        if ($startDateRaw === '' || $endDateRaw === '') {
-            return $this->editRespondError($isAjax, 'All fields are required.', $promotionId);
-        }
-
         $startDateObj = DateTime::createFromFormat('Y-m-d', $startDateRaw);
         $endDateObj   = DateTime::createFromFormat('Y-m-d', $endDateRaw);
         $startDate = $startDateObj->format('Y-m-d 00:00:00');
@@ -254,6 +250,10 @@ class AdminPromotionController
         ?float $discountPercentage,
         ?float $fixedPrice
     ): ?string {
+        if ($promotionName === '' || $promotionType === '') {
+            return "All fields are required.";
+        }
+
         if (mb_strlen($promotionName) > 100) {
             return "Promotion name must not exceed 100 characters.";
         }
@@ -283,11 +283,7 @@ class AdminPromotionController
 
         if ($promotionType === 'discount') {
             if ($discountPercentage === null || $discountPercentage <= 0 || $discountPercentage > 100) {
-                return "Discount percentage must be between 0 and 100.";
-            }
-
-            if ($discountPercentage >= 1000) {
-                return "Discount percentage must be less than 1000.";
+                return "Discount percentage must be greater than 0 and at most 100.";
             }
         } elseif ($promotionType === 'fixed') {
             if ($fixedPrice === null || $fixedPrice <= 0) {
@@ -297,10 +293,6 @@ class AdminPromotionController
             if ($fixedPrice >= 100000000) {
                 return "Fixed price must be less than 100,000,000.";
             }
-        }
-
-        if ($promotionName === '' || $promotionType === '') {
-            return "All fields are required.";
         }
 
         return null;

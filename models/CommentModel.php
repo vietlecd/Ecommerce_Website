@@ -31,8 +31,8 @@ class CommentModel
 
     public function addComment($shoesId, $memId, $rating, $content, $guestName = null)
     {
-        if ($content !== null && mb_strlen($content) > 65535) {
-            return ['success' => false, 'error' => 'Content exceeds maximum length of 65535 characters.'];
+        if ($content !== null && strlen($content) > 65535) {
+            return ['success' => false, 'error' => 'Content exceeds maximum length of 65535 bytes.'];
         }
 
         if ($guestName !== null && mb_strlen($guestName) > 100) {

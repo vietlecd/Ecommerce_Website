@@ -75,7 +75,7 @@ if (!empty($news['Thumbnail'])) {
 <div class="news-detail-page">
     <section class="news-detail-hero">
         <p class="news-detail-meta">
-            By <?php echo htmlspecialchars($news['CreatedBy'] ?? 'Editorial Team'); ?>
+            By <?php echo htmlspecialchars($news['AdminName'] ?? 'Editorial Team'); ?>
             · <?php echo date('F d, Y', strtotime($news['CreatedAt'])); ?>
         </p>
         <h1><?php echo htmlspecialchars($news['Title']); ?></h1>

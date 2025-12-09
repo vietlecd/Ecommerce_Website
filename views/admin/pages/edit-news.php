@@ -365,6 +365,12 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
                 branding: false,
                 promotion: false,
                 setup: function(editor) {
+                    editor.on('init', function() {
+                        editor.save();
+                        setBaselineFromDOM();
+                        markDirtyIfChanged();
+                    });
+
                     editor.on('change keyup', function() {
                         editor.save();
                         markDirtyIfChanged();
@@ -372,12 +378,10 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
                 }
             });
 
-            <?php if (!empty($toastError)): ?>
-                showToast('danger', <?= json_encode($toastError, JSON_UNESCAPED_UNICODE) ?>, 'Error');
+            <?php if (!empty($toastError)): ?> showToast('danger', <?= json_encode($toastError, JSON_UNESCAPED_UNICODE) ?>, 'Error');
             <?php endif; ?>
 
-            <?php if (!empty($toastSuccess)): ?>
-                showToast('success', <?= json_encode($toastSuccess, JSON_UNESCAPED_UNICODE) ?>, 'Success');
+            <?php if (!empty($toastSuccess)): ?> showToast('success', <?= json_encode($toastSuccess, JSON_UNESCAPED_UNICODE) ?>, 'Success');
             <?php endif; ?>
         });
 
@@ -608,11 +612,6 @@ $authorName = $edit_news['AdminName'] ?? 'Admin';
 
             const modal = new tabler.Modal(document.getElementById('previewModal'));
             modal.show();
-        });
-
-        queueMicrotask(() => {
-            setBaselineFromDOM();
-            markDirtyIfChanged();
         });
     })();
 </script>

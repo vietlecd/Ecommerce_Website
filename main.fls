@@ -611,20 +611,20 @@ INPUT .\IMG\showimages\home.png
 INPUT .\IMG\showimages\home.png
 INPUT .\IMG\showimages\home.png
 INPUT .\IMG\showimages\home.png
-INPUT .\IMG\showimages\repro.png
-INPUT .\IMG\showimages\repro.png
-INPUT .\IMG\showimages\repro.png
-INPUT .\IMG\showimages\repro.png
-INPUT .\IMG\showimages\repro.png
-INPUT .\IMG\showimages\repro.png
-INPUT .\IMG\showimages\repro.png
-INPUT .\IMG\showimages\spkm.jpg
-INPUT .\IMG\showimages\spkm.jpg
-INPUT .\IMG\showimages\spkm.jpg
-INPUT .\IMG\showimages\spkm.jpg
-INPUT .\IMG\showimages\spkm.jpg
-INPUT .\IMG\showimages\spkm.jpg
-INPUT .\IMG\showimages\spkm.jpg
+INPUT .\IMG\showimages\products.png
+INPUT .\IMG\showimages\products.png
+INPUT .\IMG\showimages\products.png
+INPUT .\IMG\showimages\products.png
+INPUT .\IMG\showimages\products.png
+INPUT .\IMG\showimages\products.png
+INPUT .\IMG\showimages\products.png
+INPUT .\IMG\showimages\product-detail.png
+INPUT .\IMG\showimages\product-detail.png
+INPUT .\IMG\showimages\product-detail.png
+INPUT .\IMG\showimages\product-detail.png
+INPUT .\IMG\showimages\product-detail.png
+INPUT .\IMG\showimages\product-detail.png
+INPUT .\IMG\showimages\product-detail.png
 INPUT .\IMG\showimages\news-list-1.png
 INPUT .\IMG\showimages\news-list-1.png
 INPUT .\IMG\showimages\news-list-1.png
@@ -646,34 +646,27 @@ INPUT .\IMG\showimages\news-detail.png
 INPUT .\IMG\showimages\news-detail.png
 INPUT .\IMG\showimages\news-detail.png
 INPUT .\IMG\showimages\news-detail.png
-INPUT .\IMG\showimages\Webcart.jpg
-INPUT .\IMG\showimages\Webcart.jpg
-INPUT .\IMG\showimages\Webcart.jpg
-INPUT .\IMG\showimages\Webcart.jpg
-INPUT .\IMG\showimages\Webcart.jpg
-INPUT .\IMG\showimages\Webcart.jpg
-INPUT .\IMG\showimages\Webcart.jpg
-INPUT .\IMG\showimages\update.jpg
-INPUT .\IMG\showimages\update.jpg
-INPUT .\IMG\showimages\update.jpg
-INPUT .\IMG\showimages\update.jpg
-INPUT .\IMG\showimages\update.jpg
-INPUT .\IMG\showimages\update.jpg
-INPUT .\IMG\showimages\update.jpg
-INPUT .\IMG\showimages\Weblogin.jpg
-INPUT .\IMG\showimages\Weblogin.jpg
-INPUT .\IMG\showimages\Weblogin.jpg
-INPUT .\IMG\showimages\Weblogin.jpg
-INPUT .\IMG\showimages\Weblogin.jpg
-INPUT .\IMG\showimages\Weblogin.jpg
-INPUT .\IMG\showimages\Weblogin.jpg
-INPUT .\IMG\showimages\Webregister.jpg
-INPUT .\IMG\showimages\Webregister.jpg
-INPUT .\IMG\showimages\Webregister.jpg
-INPUT .\IMG\showimages\Webregister.jpg
-INPUT .\IMG\showimages\Webregister.jpg
-INPUT .\IMG\showimages\Webregister.jpg
-INPUT .\IMG\showimages\Webregister.jpg
+INPUT .\IMG\showimages\cart.png
+INPUT .\IMG\showimages\cart.png
+INPUT .\IMG\showimages\cart.png
+INPUT .\IMG\showimages\cart.png
+INPUT .\IMG\showimages\cart.png
+INPUT .\IMG\showimages\cart.png
+INPUT .\IMG\showimages\cart.png
+INPUT .\IMG\showimages\login.png
+INPUT .\IMG\showimages\login.png
+INPUT .\IMG\showimages\login.png
+INPUT .\IMG\showimages\login.png
+INPUT .\IMG\showimages\login.png
+INPUT .\IMG\showimages\login.png
+INPUT .\IMG\showimages\login.png
+INPUT .\IMG\showimages\register.png
+INPUT .\IMG\showimages\register.png
+INPUT .\IMG\showimages\register.png
+INPUT .\IMG\showimages\register.png
+INPUT .\IMG\showimages\register.png
+INPUT .\IMG\showimages\register.png
+INPUT .\IMG\showimages\register.png
 INPUT .\IMG\showimages\about.png
 INPUT .\IMG\showimages\about.png
 INPUT .\IMG\showimages\about.png
@@ -712,52 +705,34 @@ INPUT .\hcmut.png
 INPUT .\hcmut.png
 INPUT .\hcmut.png
 INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\IMG\showimages\Adminproduct.jpg
-INPUT .\IMG\showimages\Adminproduct.jpg
-INPUT .\IMG\showimages\Adminproduct.jpg
-INPUT .\IMG\showimages\Adminproduct.jpg
-INPUT .\IMG\showimages\Adminproduct.jpg
-INPUT .\IMG\showimages\Adminproduct.jpg
-INPUT .\IMG\showimages\Adminproduct.jpg
-INPUT .\IMG\showimages\them sp.jpg
-INPUT .\IMG\showimages\them sp.jpg
-INPUT .\IMG\showimages\them sp.jpg
-INPUT .\IMG\showimages\them sp.jpg
-INPUT .\IMG\showimages\them sp.jpg
-INPUT .\IMG\showimages\them sp.jpg
-INPUT .\IMG\showimages\them sp.jpg
-INPUT .\IMG\showimages\Adminproductupdate.jpg
-INPUT .\IMG\showimages\Adminproductupdate.jpg
-INPUT .\IMG\showimages\Adminproductupdate.jpg
-INPUT .\IMG\showimages\Adminproductupdate.jpg
-INPUT .\IMG\showimages\Adminproductupdate.jpg
-INPUT .\IMG\showimages\Adminproductupdate.jpg
-INPUT .\IMG\showimages\Adminproductupdate.jpg
-INPUT .\IMG\showimages\Adminorder.jpg
-INPUT .\IMG\showimages\Adminorder.jpg
-INPUT .\IMG\showimages\Adminorder.jpg
-INPUT .\IMG\showimages\Adminorder.jpg
-INPUT .\IMG\showimages\Adminorder.jpg
-INPUT .\IMG\showimages\Adminorder.jpg
-INPUT .\IMG\showimages\Adminorder.jpg
-INPUT .\IMG\showimages\giao dien khach hang.png
-INPUT .\IMG\showimages\giao dien khach hang.png
-INPUT .\IMG\showimages\giao dien khach hang.png
-INPUT .\IMG\showimages\giao dien khach hang.png
-INPUT .\IMG\showimages\giao dien khach hang.png
-INPUT .\IMG\showimages\giao dien khach hang.png
-INPUT .\IMG\showimages\giao dien khach hang.png
-INPUT .\IMG\showimages\thong tin.jpg
-INPUT .\IMG\showimages\thong tin.jpg
-INPUT .\IMG\showimages\thong tin.jpg
-INPUT .\IMG\showimages\thong tin.jpg
-INPUT .\IMG\showimages\thong tin.jpg
-INPUT .\IMG\showimages\thong tin.jpg
-INPUT .\IMG\showimages\thong tin.jpg
+INPUT .\IMG\showimages\products-admin.png
+INPUT .\IMG\showimages\products-admin.png
+INPUT .\IMG\showimages\products-admin.png
+INPUT .\IMG\showimages\products-admin.png
+INPUT .\IMG\showimages\products-admin.png
+INPUT .\IMG\showimages\products-admin.png
+INPUT .\IMG\showimages\products-admin.png
+INPUT .\IMG\showimages\products-admin-add.png
+INPUT .\IMG\showimages\products-admin-add.png
+INPUT .\IMG\showimages\products-admin-add.png
+INPUT .\IMG\showimages\products-admin-add.png
+INPUT .\IMG\showimages\products-admin-add.png
+INPUT .\IMG\showimages\products-admin-add.png
+INPUT .\IMG\showimages\products-admin-add.png
+INPUT .\IMG\showimages\products-admin-edit.png
+INPUT .\IMG\showimages\products-admin-edit.png
+INPUT .\IMG\showimages\products-admin-edit.png
+INPUT .\IMG\showimages\products-admin-edit.png
+INPUT .\IMG\showimages\products-admin-edit.png
+INPUT .\IMG\showimages\products-admin-edit.png
+INPUT .\IMG\showimages\products-admin-edit.png
+INPUT .\IMG\showimages\orders-admin.png
+INPUT .\IMG\showimages\orders-admin.png
+INPUT .\IMG\showimages\orders-admin.png
+INPUT .\IMG\showimages\orders-admin.png
+INPUT .\IMG\showimages\orders-admin.png
+INPUT .\IMG\showimages\orders-admin.png
+INPUT .\IMG\showimages\orders-admin.png
 INPUT .\IMG\showimages\news-admin.png
 INPUT .\IMG\showimages\news-admin.png
 INPUT .\IMG\showimages\news-admin.png
@@ -786,10 +761,6 @@ INPUT .\IMG\showimages\comment-admin.png
 INPUT .\IMG\showimages\comment-admin.png
 INPUT .\IMG\showimages\comment-admin.png
 INPUT .\IMG\showimages\comment-admin.png
-INPUT .\IMG\showimages\comment-admin.png
-INPUT .\IMG\showimages\comment-admin.png
-INPUT .\IMG\showimages\comment-admin.png
-INPUT .\IMG\showimages\comment-admin.png
 INPUT .\IMG\showimages\about_admin.png
 INPUT .\IMG\showimages\about_admin.png
 INPUT .\IMG\showimages\about_admin.png
@@ -804,14 +775,6 @@ INPUT .\IMG\showimages\qna_admin.png
 INPUT .\IMG\showimages\qna_admin.png
 INPUT .\IMG\showimages\qna_admin.png
 INPUT .\IMG\showimages\qna_admin.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
-INPUT .\hcmut.png
 INPUT .\hcmut.png
 INPUT .\hcmut.png
 INPUT .\hcmut.png

@@ -1,5 +1,26 @@
 <?php require_once 'views/components/header.php'; ?>
 <?php
+// Helper chuẩn hóa đường dẫn ảnh giống trang products
+$resolveProductImage = function (?string $imageValue): string {
+    $placeholder = '/public/placeholder.jpg';
+
+    if (empty($imageValue)) {
+        return $placeholder;
+    }
+
+    if (filter_var($imageValue, FILTER_VALIDATE_URL)) {
+        return $imageValue;
+    }
+
+    $normalized = ltrim($imageValue, '/');
+
+    if (strpos($normalized, 'assets/') === 0 || strpos($normalized, 'public/') === 0) {
+        return '/' . $normalized;
+    }
+
+    return '/assets/images/shoes/' . $normalized;
+};
+
 $formatCurrency = function ($value) {
     return '$' . number_format($value, 2);
 };
@@ -72,11 +93,9 @@ $productFacts = [
         <div class="product-media-stack">
             <div class="product-detail-img">
                 <?php
-                $imageUrl = !empty($product['image']) && filter_var($product['image'], FILTER_VALIDATE_URL) 
-                    ? htmlspecialchars($product['image']) 
-                    : '/public/placeholder.jpg';
+                $imageUrl = $resolveProductImage($product['image'] ?? null);
                 ?>
-                <img src="<?php echo $imageUrl; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
+                <img src="<?php echo htmlspecialchars($imageUrl); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" loading="lazy">
                 <?php if (!empty($product['promotion'])): ?>
                     <div class="promotion-badge">
                         <?php if (!empty($product['promotion']['discount_percentage'])): ?>
@@ -196,7 +215,7 @@ $productFacts = [
                                         data-size-max="<?php echo (int)$sizeOption['quantity']; ?>"
                                         <?php echo $inStock ? '' : 'disabled'; ?>>
                                     <span>Size <?php echo htmlspecialchars($sizeLabel); ?></span>
-                                    <small><?php echo $inStock ? $sizeOption['quantity'] . ' đôi' : 'Hết hàng'; ?></small>
+                                    <small><?php echo $inStock ? $sizeOption['quantity'] . ' Pairs' : 'Out of stock'; ?></small>
                                 </button>
                             <?php endforeach; ?>
                         </div>
@@ -284,11 +303,9 @@ $productFacts = [
                                 <?php endif; ?>
                                 <div class="product-img">
                                     <?php 
-                                    $relatedImageUrl = !empty($related['image']) && filter_var($related['image'], FILTER_VALIDATE_URL) 
-                                        ? htmlspecialchars($related['image']) 
-                                        : '/public/placeholder.jpg';
+                                    $relatedImageUrl = $resolveProductImage($related['image'] ?? null);
                                     ?>
-                                    <img src="<?php echo $relatedImageUrl; ?>" alt="<?php echo htmlspecialchars($related['name']); ?>" loading="lazy">
+                                    <img src="<?php echo htmlspecialchars($relatedImageUrl); ?>" alt="<?php echo htmlspecialchars($related['name']); ?>" loading="lazy">
                                     <?php if (!empty($related['promotion'])): ?>
                                         <div class="product-badge">
                                             <?php if (!empty($related['promotion']['discount_percentage'])): ?>
@@ -498,7 +515,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const quantityPlus = document.querySelector('.quantity-plus');
     let maxQuantity = quantityInput ? parseInt(quantityInput.getAttribute('max')) || 999 : 999;
 
-    // Tránh gắn sự kiện trùng với script.js
     if (quantityMinus && !quantityMinus.dataset.bound) {
         quantityMinus.dataset.bound = '1';
         quantityMinus.addEventListener('click', function() {
@@ -578,7 +594,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let startX;
         let scrollLeft;
 
-        const scrollAmount = 300;
         const cardWidth = slider.querySelector('.product-card')?.offsetWidth || 280;
         const gap = 24;
 

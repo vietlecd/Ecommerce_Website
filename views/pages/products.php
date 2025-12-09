@@ -1,6 +1,31 @@
 <?php require_once 'views/components/header.php'; ?>
 
 <?php
+// Helper chuẩn hóa đường dẫn ảnh cho cả seed URL và ảnh upload từ admin
+$resolveProductImage = function (?string $imageValue): string {
+    $placeholder = '/public/placeholder.jpg';
+
+    if (empty($imageValue)) {
+        return $placeholder;
+    }
+
+    // Nếu là URL đầy đủ
+    if (filter_var($imageValue, FILTER_VALIDATE_URL)) {
+        return $imageValue;
+    }
+
+    // Chuẩn hóa tên file
+    $normalized = ltrim($imageValue, '/');
+
+    // Nếu đã nằm trong assets/ hoặc public/
+    if (strpos($normalized, 'assets/') === 0 || strpos($normalized, 'public/') === 0) {
+        return '/' . $normalized;
+    }
+
+    // Mặc định: ảnh upload từ admin, lưu trong assets/images/shoes
+    return '/assets/images/shoes/' . $normalized;
+};
+
 $activeCategoryId = isset($_GET['category']) ? trim($_GET['category']) : '';
 $activeCategory = null;
 if (!empty($categories)) {
@@ -198,16 +223,7 @@ $truncateText = function($text, $limit = 120) {
                     <ul class="products-widget-items">
                         <?php foreach ($topSellers as $item): ?>
                             <?php
-                            $thumb = '/public/placeholder.jpg';
-                            if (!empty($item['image'])) {
-                                if (filter_var($item['image'], FILTER_VALIDATE_URL)) {
-                                    $thumb = $item['image'];
-                                } elseif (file_exists($item['image'])) {
-                                    $thumb = '/' . ltrim($item['image'], '/');
-                                } else {
-                                    $thumb = $item['image'];
-                                }
-                            }
+                            $thumb = $resolveProductImage($item['image'] ?? null);
                             $priceDisplay = isset($item['final_price']) ? $item['final_price'] : $item['price'];
                             ?>
                             <li>
@@ -233,16 +249,7 @@ $truncateText = function($text, $limit = 120) {
                     <ul class="products-widget-items">
                         <?php foreach ($topPriced as $item): ?>
                             <?php
-                            $thumb = '/public/placeholder.jpg';
-                            if (!empty($item['image'])) {
-                                if (filter_var($item['image'], FILTER_VALIDATE_URL)) {
-                                    $thumb = $item['image'];
-                                } elseif (file_exists($item['image'])) {
-                                    $thumb = '/' . ltrim($item['image'], '/');
-                                } else {
-                                    $thumb = $item['image'];
-                                }
-                            }
+                            $thumb = $resolveProductImage($item['image'] ?? null);
                             $priceDisplay = isset($item['final_price']) ? $item['final_price'] : $item['price'];
                             ?>
                             <li>
@@ -323,16 +330,7 @@ $truncateText = function($text, $limit = 120) {
                     <div class="slider-panel-grid">
                         <?php foreach ($slide['products'] as $item): ?>
                             <?php
-                            $thumb = '/public/placeholder.jpg';
-                            if (!empty($item['image'])) {
-                                if (filter_var($item['image'], FILTER_VALIDATE_URL)) {
-                                    $thumb = $item['image'];
-                                } elseif (file_exists($item['image'])) {
-                                    $thumb = '/' . ltrim($item['image'], '/');
-                                } else {
-                                    $thumb = $item['image'];
-                                }
-                            }
+                            $thumb = $resolveProductImage($item['image'] ?? null);
                             $finalPrice = isset($item['final_price']) ? (float)$item['final_price'] : (float)$item['price'];
                             $basePrice = isset($item['price']) ? (float)$item['price'] : $finalPrice;
                             $hasSale = $finalPrice < $basePrice;
@@ -428,20 +426,7 @@ $truncateText = function($text, $limit = 120) {
                     <?php endif; ?>
                     <div class="product-img">
                         <?php 
-                        $imageUrl = '/public/placeholder.jpg';
-                        if (!empty($product['image'])) {
-                            $rawImage = trim($product['image']);
-                            if (filter_var($rawImage, FILTER_VALIDATE_URL)) {
-                                $imageUrl = $rawImage;
-                            } else {
-                                $resolvedPath = ltrim($rawImage, '/');
-                                if (file_exists($resolvedPath)) {
-                                    $imageUrl = '/' . $resolvedPath;
-                                } else {
-                                    $imageUrl = $rawImage;
-                                }
-                            }
-                        }
+                        $imageUrl = $resolveProductImage($product['image'] ?? null);
                         $productSnippet = $truncateText($product['description'] ?? '', 120);
                         $productCategory = !empty($product['category']) ? $product['category'] : 'Uncategorized';
                         $productSize = !empty($product['size_summary']) ? $product['size_summary'] : null;

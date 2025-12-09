@@ -5,7 +5,6 @@ class ProductModel
 
     public function __construct()
     {
-        // Use environment variables for Docker or fallback to defaults
         $host = $_ENV['DB_HOST'] ?? 'mysql';
         $dbname = $_ENV['DB_NAME'] ?? 'shoe';
         $username = $_ENV['DB_USER'] ?? 'shoes_user';
@@ -605,5 +604,116 @@ class ProductModel
         }
 
         return $stats;
+    }
+
+    /**
+     * Trừ tồn kho khi place order dựa trên shoe_sizes.
+     *
+     * $cartItems: mỗi phần tử [
+     *   'product_id' => ShoesID,
+     *   'size'       => size đã chọn (float/string),
+     *   'quantity'   => số lượng đặt
+     * ]
+     *
+     * Trả về true nếu trừ tồn thành công, false nếu thiếu hàng hoặc lỗi.
+     */
+    public function decrementStockForCartItems(array $cartItems): bool
+    {
+        if (empty($cartItems)) {
+            return true;
+        }
+
+        // Gom nhóm theo (shoeId, size) để tránh UPDATE nhiều lần
+        $grouped = [];
+        foreach ($cartItems as $item) {
+            if (!isset($item['product_id'], $item['size'], $item['quantity'])) {
+                continue;
+            }
+            $shoeId = (int)$item['product_id'];
+            $size   = (float)number_format((float)$item['size'], 2, '.', '');
+            $qty    = max(1, (int)$item['quantity']);
+
+            $key = $shoeId . '|' . $size;
+            if (!isset($grouped[$key])) {
+                $grouped[$key] = [
+                    'shoe_id' => $shoeId,
+                    'size'    => $size,
+                    'qty'     => 0,
+                ];
+            }
+            $grouped[$key]['qty'] += $qty;
+        }
+
+        if (empty($grouped)) {
+            return true;
+        }
+
+        try {
+            $this->pdo->beginTransaction();
+
+            $affectedShoeIds = [];
+
+            // Kiểm tra và trừ tồn trên shoe_sizes
+            foreach ($grouped as $row) {
+                $shoeId = $row['shoe_id'];
+                $size   = $row['size'];
+                $qty    = $row['qty'];
+
+                // Khóa dòng size tương ứng
+                $selectStmt = $this->pdo->prepare("
+                    SELECT Quantity 
+                    FROM shoe_sizes 
+                    WHERE ShoeID = ? AND Size = ? 
+                    FOR UPDATE
+                ");
+                $selectStmt->execute([$shoeId, $size]);
+                $current = $selectStmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$current) {
+                    throw new RuntimeException("Size $size for shoe $shoeId not found");
+                }
+
+                $currentQty = (int)$current['Quantity'];
+                if ($currentQty < $qty) {
+                    throw new RuntimeException("Not enough stock for shoe $shoeId size $size");
+                }
+
+                $newQty = $currentQty - $qty;
+                $updateSizeStmt = $this->pdo->prepare("
+                    UPDATE shoe_sizes 
+                    SET Quantity = ? 
+                    WHERE ShoeID = ? AND Size = ?
+                ");
+                $updateSizeStmt->execute([$newQty, $shoeId, $size]);
+
+                $affectedShoeIds[$shoeId] = true;
+            }
+
+            // Cập nhật lại tổng Stock cho mỗi ShoesID
+            $sumStmt = $this->pdo->prepare("
+                SELECT COALESCE(SUM(Quantity),0) AS total 
+                FROM shoe_sizes 
+                WHERE ShoeID = ?
+            ");
+            $updateShoeStmt = $this->pdo->prepare("
+                UPDATE shoes 
+                SET Stock = ? 
+                WHERE ShoesID = ?
+            ");
+
+            foreach (array_keys($affectedShoeIds) as $shoeId) {
+                $sumStmt->execute([$shoeId]);
+                $row = $sumStmt->fetch(PDO::FETCH_ASSOC);
+                $totalStock = (int)($row['total'] ?? 0);
+                $updateShoeStmt->execute([$totalStock, $shoeId]);
+            }
+
+            $this->pdo->commit();
+            return true;
+        } catch (Throwable $e) {
+            $this->pdo->rollBack();
+            error_log('Failed to decrement stock for cart: ' . $e->getMessage());
+            return false;
+        }
     }
 }

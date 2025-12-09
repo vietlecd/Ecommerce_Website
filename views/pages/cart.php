@@ -10,14 +10,24 @@ $resolveImagePath = function ($imagePath) {
     if (empty($imagePath)) {
         return $fallback;
     }
+
+    // Nếu là URL tuyệt đối (ảnh ngoài) thì dùng luôn
     if (filter_var($imagePath, FILTER_VALIDATE_URL)) {
         return $imagePath;
     }
-    if (file_exists($imagePath)) {
-        return '/' . ltrim($imagePath, '/');
+
+    // Chuẩn hóa: bỏ dấu /
+    $normalized = ltrim($imagePath, '/');
+
+    // Nếu đã là đường dẫn bắt đầu bằng assets/ hoặc public/ thì chỉ cần thêm /
+    if (strpos($normalized, 'assets/') === 0 || strpos($normalized, 'public/') === 0) {
+        return '/' . $normalized;
     }
-    return $imagePath;
+
+    // Còn lại coi như chỉ là tên file lưu trong DB -> map tới thư mục upload giày
+    return '/assets/images/shoes/' . $normalized;
 };
+
 
 $cartCount = isset($cartItems) ? count($cartItems) : 0;
 $availableCoupons = $availableCoupons ?? [];

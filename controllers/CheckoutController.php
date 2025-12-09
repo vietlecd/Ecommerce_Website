@@ -16,6 +16,7 @@ class CheckoutController {
         $this->productModel = new ProductModel();
         $this->couponModel = new CouponModel();
         $this->memberModel = new MemberModel();
+
         $userKey = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : 'guest';
         $this->addressSessionKey = 'saved_addresses_user_' . $userKey;
     }
@@ -37,9 +38,9 @@ class CheckoutController {
             $subtotal += $lineTotal;
             $totalQuantity += $item['quantity'];
             $cartItems[] = [
-                'id' => $item['id'],
-                'name' => $item['name'],
-                'price' => $item['price'],
+                'id'       => $item['id'],
+                'name'     => $item['name'],
+                'price'    => $item['price'],
                 'quantity' => $item['quantity'],
                 'subtotal' => $lineTotal
             ];
@@ -54,6 +55,7 @@ class CheckoutController {
         $prefillCity = '';
         $prefillZip = '';
         $prefillPhone = '';
+
         $prefillFromSession = isset($_SESSION['checkout_prefill']) && is_array($_SESSION['checkout_prefill'])
             ? $_SESSION['checkout_prefill']
             : null;
@@ -61,47 +63,51 @@ class CheckoutController {
         $savedAddresses = isset($_SESSION[$this->addressSessionKey]) && is_array($_SESSION[$this->addressSessionKey])
             ? $_SESSION[$this->addressSessionKey]
             : [];
+
         $addressNotice = isset($_SESSION['address_notice']) ? $_SESSION['address_notice'] : '';
         unset($_SESSION['address_notice']);
+
         $couponNotice = isset($_SESSION['coupon_notice']) ? $_SESSION['coupon_notice'] : '';
         unset($_SESSION['coupon_notice']);
 
         if (isset($_SESSION['user_id'])) {
             $memberProfile = $this->memberModel->getMemberById((int) $_SESSION['user_id']);
             if ($memberProfile) {
-                $prefillName = $memberProfile['Name'] ?? ($memberProfile['Username'] ?? '');
-                $prefillEmail = $memberProfile['Email'] ?? '';
+                $prefillName    = $memberProfile['Name'] ?? ($memberProfile['Username'] ?? '');
+                $prefillEmail   = $memberProfile['Email'] ?? '';
                 $prefillAddress = $memberProfile['Address'] ?? '';
-                $prefillCity = $memberProfile['City'] ?? '';
-                $prefillZip = $memberProfile['Zip'] ?? ($memberProfile['ZIP'] ?? '');
-                $prefillPhone = $memberProfile['Phone'] ?? ($memberProfile['PhoneNumber'] ?? '');
+                $prefillCity    = $memberProfile['City'] ?? '';
+                $prefillZip     = $memberProfile['Zip'] ?? ($memberProfile['ZIP'] ?? '');
+                $prefillPhone   = $memberProfile['Phone'] ?? ($memberProfile['PhoneNumber'] ?? '');
             }
         }
 
         if ($prefillFromSession) {
-            $prefillName = $prefillFromSession['name'] ?? $prefillName;
-            $prefillEmail = $prefillFromSession['email'] ?? $prefillEmail;
+            $prefillName    = $prefillFromSession['name']    ?? $prefillName;
+            $prefillEmail   = $prefillFromSession['email']   ?? $prefillEmail;
             $prefillAddress = $prefillFromSession['address'] ?? $prefillAddress;
-            $prefillCity = $prefillFromSession['city'] ?? $prefillCity;
-            $prefillZip = $prefillFromSession['zip'] ?? $prefillZip;
-            $prefillPhone = $prefillFromSession['phone'] ?? $prefillPhone;
+            $prefillCity    = $prefillFromSession['city']    ?? $prefillCity;
+            $prefillZip     = $prefillFromSession['zip']     ?? $prefillZip;
+            $prefillPhone   = $prefillFromSession['phone']   ?? $prefillPhone;
         }
 
+        // Áp coupon
         if (isset($_POST['apply_coupon']) && array_key_exists('selected_coupon', $_POST)) {
             $couponId = (int) $_POST['selected_coupon'];
-            // Persist shipping form so it stays after applying coupon
+
             $_SESSION['checkout_prefill'] = [
-                'name' => trim($_POST['name'] ?? ''),
-                'email' => trim($_POST['email'] ?? ''),
+                'name'    => trim($_POST['name']    ?? ''),
+                'email'   => trim($_POST['email']   ?? ''),
                 'address' => trim($_POST['address'] ?? ''),
-                'city' => trim($_POST['city'] ?? ''),
-                'zip' => trim($_POST['zip'] ?? ''),
-                'phone' => trim($_POST['phone'] ?? '')
+                'city'    => trim($_POST['city']    ?? ''),
+                'zip'     => trim($_POST['zip']     ?? ''),
+                'phone'   => trim($_POST['phone']   ?? ''),
             ];
+
             if ($couponId > 0) {
                 $coupon = $this->couponModel->getCouponById($couponId);
                 if ($coupon) {
-                    $_SESSION['cart_coupon'] = $couponId;
+                    $_SESSION['cart_coupon']  = $couponId;
                     $_SESSION['coupon_notice'] = 'Coupon has been applied.';
                 } else {
                     unset($_SESSION['cart_coupon']);
@@ -111,18 +117,19 @@ class CheckoutController {
                 unset($_SESSION['cart_coupon']);
                 $_SESSION['coupon_notice'] = 'Coupon has been removed.';
             }
+
             header('Location: /index.php?controller=checkout&action=index');
             exit;
         }
 
         $discountAmount = 0;
-        $appliedCoupon = null;
+        $appliedCoupon  = null;
 
         if (!empty($_SESSION['cart_coupon'])) {
             $coupon = $this->couponModel->getCouponById((int) $_SESSION['cart_coupon']);
             if ($coupon) {
                 $appliedCoupon = $coupon;
-                $percent = is_numeric($coupon['CodePercent']) ? (float) $coupon['CodePercent'] : 0;
+                $percent = is_numeric($coupon['CodePercent']) ? (float)$coupon['CodePercent'] : 0;
                 if ($percent > 0) {
                     $discountAmount = min($subtotal, $subtotal * ($percent / 100));
                 }
@@ -133,27 +140,29 @@ class CheckoutController {
 
         $availableCoupons = $this->couponModel->getActiveCoupons();
         $total = max(0, $subtotal - $discountAmount + $shipping);
-        $earnedVip = isset($_SESSION['earned_vip']) && is_numeric($_SESSION['earned_vip']) ? (float) $_SESSION['earned_vip'] : 0.00;
+        $earnedVip = isset($_SESSION['earned_vip']) && is_numeric($_SESSION['earned_vip'])
+            ? (float) $_SESSION['earned_vip']
+            : 0.00;
 
+        // Lưu địa chỉ
         if (isset($_POST['save_address'])) {
-            $saveName = isset($_POST['name']) ? trim($_POST['name']) : '';
-            $saveEmail = isset($_POST['email']) ? trim($_POST['email']) : '';
-            $saveAddress = isset($_POST['address']) ? trim($_POST['address']) : '';
-            $saveCity = isset($_POST['city']) ? trim($_POST['city']) : '';
-            $saveZip = isset($_POST['zip']) ? trim($_POST['zip']) : '';
-            $savePhone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+            $saveName    = trim($_POST['name']    ?? '');
+            $saveEmail   = trim($_POST['email']   ?? '');
+            $saveAddress = trim($_POST['address'] ?? '');
+            $saveCity    = trim($_POST['city']    ?? '');
+            $saveZip     = trim($_POST['zip']     ?? '');
+            $savePhone   = trim($_POST['phone']   ?? '');
 
             if ($saveName && $saveEmail && $saveAddress && $saveCity && $saveZip && $savePhone) {
                 $savedAddresses[] = [
-                    'id' => uniqid('addr_', true),
-                    'name' => $saveName,
-                    'email' => $saveEmail,
+                    'id'      => uniqid('addr_', true),
+                    'name'    => $saveName,
+                    'email'   => $saveEmail,
                     'address' => $saveAddress,
-                    'city' => $saveCity,
-                    'zip' => $saveZip,
-                    'phone' => $savePhone
+                    'city'    => $saveCity,
+                    'zip'     => $saveZip,
+                    'phone'   => $savePhone,
                 ];
-                // Keep max 5 latest addresses
                 $savedAddresses = array_slice($savedAddresses, -5);
                 $_SESSION[$this->addressSessionKey] = $savedAddresses;
                 $_SESSION['address_notice'] = 'Address has been saved to your address book.';
@@ -164,6 +173,7 @@ class CheckoutController {
             }
         }
 
+        // Xóa địa chỉ lưu
         if (isset($_POST['delete_address'])) {
             $deleteId = $_POST['delete_address'];
             $savedAddresses = array_values(array_filter($savedAddresses, function ($addr) use ($deleteId) {
@@ -175,51 +185,69 @@ class CheckoutController {
             exit;
         }
 
+        // PLACE ORDER
         if (isset($_POST['place_order'])) {
-            $paymentMethod = isset($_POST['payment_method']) ? $_POST['payment_method'] : 'cod';
-            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-            $address = isset($_POST['address']) ? trim($_POST['address']) : '';
-            $city = isset($_POST['city']) ? trim($_POST['city']) : '';
-            $zip = isset($_POST['zip']) ? trim($_POST['zip']) : '';
-            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-            $card_number = isset($_POST['card_number']) ? trim($_POST['card_number']) : '';
-            $expiry = isset($_POST['expiry']) ? trim($_POST['expiry']) : '';
-            $cvv = isset($_POST['cvv']) ? trim($_POST['cvv']) : '';
+            $paymentMethod = $_POST['payment_method'] ?? 'cod';
+            $name    = trim($_POST['name']    ?? '');
+            $email   = trim($_POST['email']   ?? '');
+            $address = trim($_POST['address'] ?? '');
+            $city    = trim($_POST['city']    ?? '');
+            $zip     = trim($_POST['zip']     ?? '');
+            $phone   = trim($_POST['phone']   ?? '');
+            $card_number = trim($_POST['card_number'] ?? '');
+            $expiry      = trim($_POST['expiry']      ?? '');
+            $cvv         = trim($_POST['cvv']         ?? '');
 
             if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip) || empty($phone)) {
                 $error = 'All required fields must be filled.';
             } elseif ($paymentMethod === 'card' && (empty($card_number) || empty($expiry) || empty($cvv))) {
                 $error = 'Card payment is not available yet. Please choose Cash on Delivery.';
             } else {
-                // Allow guest checkout: if not logged in, use 0 as MemberID
+                // member/guest
                 if (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) && (int)$_SESSION['user_id'] > 0) {
-                    // user đã login, dùng MemberID thật
                     $memberId = (int)$_SESSION['user_id'];
                 } else {
-                    // guest checkout -> để NULL để không vi phạm foreign key
-                    $memberId = null;
+                    $memberId = null; // cho phép guest checkout, MemberID = NULL
                 }
 
-                // Shipping data passed to OrderModel
                 $shippingData = [
                     'name'           => $name,
                     'email'          => $email,
                     'address'        => $address,
                     'city'           => $city,
                     'zip'            => $zip,
-                    // phone hiện chưa được lưu vào DB, nhưng vẫn để đây nếu sau này bạn thêm cột
                     'phone'          => $phone,
                     'payment_method' => $paymentMethod,
                 ];
 
-                // OrderModel::addOrder expects 4 arguments
                 $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity, $shippingData);
 
                 if ($orderId) {
+                    // lưu chi tiết order_shoes
+                    $cartStockItems = [];
+
                     foreach ($_SESSION['cart'] as $item) {
+                        // chèn từng đôi vào order_shoes
                         for ($i = 0; $i < $item['quantity']; $i++) {
                             $this->orderModel->addOrderShoes($orderId, $item['id']);
+                        }
+
+                        // chuẩn bị dữ liệu trừ tồn theo size
+                        if (!empty($item['size'])) {
+                            $cartStockItems[] = [
+                                'product_id' => (int)$item['id'],
+                                'size'       => $item['size'],
+                                'quantity'   => (int)$item['quantity'],
+                            ];
+                        }
+                    }
+
+                    // trừ stock trong shoe_sizes + cập nhật shoes.Stock
+                    if (!empty($cartStockItems)) {
+                        $stockOK = $this->productModel->decrementStockForCartItems($cartStockItems);
+                        if (!$stockOK) {
+                            // nếu cần thì log hoặc show warn, ở đây chỉ báo nhẹ
+                            $error = 'Order placed but stock could not be updated correctly for some items.';
                         }
                     }
 
@@ -235,7 +263,7 @@ class CheckoutController {
         }
 
         $headerPath = dirname(__DIR__) . '/views/components/header.php';
-        $viewPath = dirname(__DIR__) . '/views/pages/checkout.php';
+        $viewPath   = dirname(__DIR__) . '/views/pages/checkout.php';
         $footerPath = dirname(__DIR__) . '/views/components/footer.php';
 
         if (file_exists($headerPath)) {
@@ -245,10 +273,49 @@ class CheckoutController {
         }
 
         if (file_exists($viewPath)) {
-            $renderView = function ($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $prefillName, $prefillEmail, $prefillAddress, $prefillCity, $prefillZip, $prefillPhone, $savedAddresses, $addressNotice, $couponNotice) use ($viewPath) {
+            $renderView = function (
+                $cartItems,
+                $subtotal,
+                $shipping,
+                $discountAmount,
+                $appliedCoupon,
+                $availableCoupons,
+                $total,
+                $error,
+                $success,
+                $prefillName,
+                $prefillEmail,
+                $prefillAddress,
+                $prefillCity,
+                $prefillZip,
+                $prefillPhone,
+                $savedAddresses,
+                $addressNotice,
+                $couponNotice
+            ) use ($viewPath) {
                 require $viewPath;
             };
-            $renderView($cartItems, $subtotal, $shipping, $discountAmount, $appliedCoupon, $availableCoupons, $total, $error, $success, $prefillName, $prefillEmail, $prefillAddress, $prefillCity, $prefillZip, $prefillPhone, $savedAddresses, $addressNotice, $couponNotice);
+
+            $renderView(
+                $cartItems,
+                $subtotal,
+                $shipping,
+                $discountAmount,
+                $appliedCoupon,
+                $availableCoupons,
+                $total,
+                $error,
+                $success,
+                $prefillName,
+                $prefillEmail,
+                $prefillAddress,
+                $prefillCity,
+                $prefillZip,
+                $prefillPhone,
+                $savedAddresses,
+                $addressNotice,
+                $couponNotice
+            );
         } else {
             die("View file not found: $viewPath");
         }

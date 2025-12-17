@@ -1,5 +1,12 @@
 # Use official PHP image with Apache
+# Dockerfile
+
+# Base image PHP
 FROM php:8.2-apache
+
+# Cài Composer (copy từ image composer chính thức)
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 
 # Install dependencies and PHP extensions
 # Workaround for GPG keys issue: update GPG keys and configure apt

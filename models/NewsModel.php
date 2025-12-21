@@ -47,9 +47,9 @@ class NewsModel
             FROM news n
             JOIN admin a ON a.AdminID = n.CreatedBy
             LEFT JOIN news_promotion np ON np.NewsID = n.NewsID
-            LEFT JOIN promotion p ON p.PromotionID = np.PromotionID
+            LEFT JOIN promotions p ON p.promotion_id = np.promotion_id
             WHERE n.NewsID = :id
-            ORDER BY p.StartDate DESC;
+            ORDER BY p.start_date DESC;
         ");
         $stmt->execute([$id]);
 
@@ -275,9 +275,9 @@ class NewsModel
             EXISTS (
                 SELECT 1
                 FROM news_promotion np
-                JOIN promotion p ON p.PromotionID = np.PromotionID
+                JOIN promotions p ON p.promotion_id = np.promotion_id
                 WHERE np.NewsID = n.NewsID
-                  AND p.StartDate > NOW()
+                  AND p.start_date > NOW()
             )
         ";
         } elseif ($status === 'active') {
@@ -285,10 +285,10 @@ class NewsModel
             EXISTS (
                 SELECT 1
                 FROM news_promotion np
-                JOIN promotion p ON p.PromotionID = np.PromotionID
+                JOIN promotions p ON p.promotion_id = np.promotion_id
                 WHERE np.NewsID = n.NewsID
-                  AND p.StartDate <= NOW()
-                  AND p.EndDate   >= NOW()
+                  AND p.start_date <= NOW()
+                  AND p.end_date   >= NOW()
             )
         ";
         } elseif ($status === 'expired') {
@@ -296,9 +296,9 @@ class NewsModel
             EXISTS (
                 SELECT 1
                 FROM news_promotion np
-                JOIN promotion p ON p.PromotionID = np.PromotionID
+                JOIN promotions p ON p.promotion_id = np.promotion_id
                 WHERE np.NewsID = n.NewsID
-                  AND p.EndDate < NOW()
+                  AND p.end_date < NOW()
             )
         ";
         }
@@ -385,9 +385,9 @@ class NewsModel
             EXISTS (
                 SELECT 1
                 FROM news_promotion np
-                JOIN promotion p ON p.PromotionID = np.PromotionID
+                JOIN promotions p ON p.promotion_id = np.promotion_id
                 WHERE np.NewsID = n.NewsID
-                  AND p.StartDate > NOW()
+                  AND p.start_date > NOW()
             )
         ";
         } elseif ($status === 'active') {
@@ -395,10 +395,10 @@ class NewsModel
             EXISTS (
                 SELECT 1
                 FROM news_promotion np
-                JOIN promotion p ON p.PromotionID = np.PromotionID
+                JOIN promotions p ON p.promotion_id = np.promotion_id
                 WHERE np.NewsID = n.NewsID
-                  AND p.StartDate <= NOW()
-                  AND p.EndDate   >= NOW()
+                  AND p.start_date <= NOW()
+                  AND p.end_date   >= NOW()
             )
         ";
         } elseif ($status === 'expired') {
@@ -406,9 +406,9 @@ class NewsModel
             EXISTS (
                 SELECT 1
                 FROM news_promotion np
-                JOIN promotion p ON p.PromotionID = np.PromotionID
+                JOIN promotions p ON p.promotion_id = np.promotion_id
                 WHERE np.NewsID = n.NewsID
-                  AND p.EndDate < NOW()
+                  AND p.end_date < NOW()
             )
         ";
         }

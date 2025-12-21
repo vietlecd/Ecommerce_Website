@@ -16,7 +16,7 @@ class PromotionModel
         ?string $fromDate = null,
         ?string $toDate = null
     ): int {
-        $sql = "SELECT COUNT(*) FROM promotion WHERE 1=1";
+        $sql = "SELECT COUNT(*) FROM promotions WHERE 1=1";
         $params = [];
 
         if ($keyword !== '') {
@@ -44,7 +44,7 @@ class PromotionModel
 
     public function getPromotionById($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM promotion WHERE PromotionID = :id");
+        $stmt = $this->db->prepare("SELECT * FROM promotions WHERE promotion_id = :id");
         $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -57,8 +57,8 @@ class PromotionModel
             SELECT s.*
             FROM shoes s
             INNER JOIN promotion_shoes ps
-                ON s.ShoesID = ps.ShoesID
-            WHERE ps.PromotionID = :promotion_id
+                ON s.ShoesID = ps.shoe_id
+            WHERE ps.promotion_id = :promotion_id
             LIMIT :limit OFFSET :offset
         ";
 
@@ -80,8 +80,8 @@ class PromotionModel
             SELECT COUNT(*)
             FROM shoes s
             INNER JOIN promotion_shoes ps
-                ON s.ShoesID = ps.ShoesID
-            WHERE ps.PromotionID = :promotion_id
+                ON s.ShoesID = ps.shoe_id
+            WHERE ps.promotion_id = :promotion_id
         ");
         $stmt->bindValue(':promotion_id', (int)$promotion_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -97,7 +97,7 @@ class PromotionModel
         ?string $fromDate = null,
         ?string $toDate = null
     ): array {
-        $sql = "SELECT * FROM promotion WHERE 1=1";
+        $sql = "SELECT * FROM promotions WHERE 1=1";
         $params = [];
 
         if ($keyword !== '') {
@@ -144,19 +144,19 @@ class PromotionModel
         $sql = "
         SELECT p.*
         FROM news_promotion np
-        INNER JOIN promotion p ON p.PromotionID = np.PromotionID
+        INNER JOIN promotions p ON p.promotion_id = np.promotion_id
         WHERE np.NewsID = :news_id
     ";
         if ($onlyActive === true) {
             $sql .= "
             AND (
-                (p.StartDate IS NULL OR p.StartDate <= CURDATE())
-                AND (p.EndDate IS NULL OR p.EndDate >= CURDATE())
+                (p.start_date IS NULL OR p.start_date <= CURDATE())
+                AND (p.end_date IS NULL OR p.end_date >= CURDATE())
             )
         ";
         }
 
-        $sql .= " ORDER BY p.StartDate ASC";
+        $sql .= " ORDER BY p.start_date ASC";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':news_id', $newsId, PDO::PARAM_INT);
@@ -224,7 +224,7 @@ class PromotionModel
                       DiscountPercentage = :discount_percentage, 
                       FixedPrice = :fixed_price, 
                       PromotionType = :promotion_type 
-                  WHERE PromotionID = :promotion_id";
+                  WHERE promotion_id = :promotion_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->bindValue(':promotion_name', $name, PDO::PARAM_STR);
@@ -243,12 +243,12 @@ class PromotionModel
         try {
             $this->db->beginTransaction();
 
-            $sql = "DELETE FROM promotion_shoes WHERE PromotionID = :promotion_id";
+            $sql = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':promotion_id', $promotionId, PDO::PARAM_INT);
             $stmt->execute();
 
-            $sql = "DELETE FROM promotion WHERE PromotionID = :promotion_id";
+            $sql = "DELETE FROM promotions WHERE promotion_id = :promotion_id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':promotion_id', $promotionId, PDO::PARAM_INT);
             $stmt->execute();
@@ -266,12 +266,12 @@ class PromotionModel
 
         $query = "
             SELECT p.*
-            FROM promotion p
+            FROM promotions p
             INNER JOIN promotion_shoes ps
-                ON p.PromotionID = ps.PromotionID
-            WHERE ps.ShoesID   = :shoe_id
-              AND p.StartDate <= :start_date
-              AND p.EndDate   >= :end_date
+                ON p.promotion_id = ps.promotion_id
+            WHERE ps.shoe_id   = :shoe_id
+              AND p.start_date <= :start_date
+              AND p.end_date   >= :end_date
             LIMIT 1
         ";
 
@@ -303,9 +303,9 @@ class PromotionModel
     public function getProductsByPromotionId($promotionId): array
     {
         $query = "
-        SELECT ShoesID
+        SELECT shoe_id
         FROM promotion_shoes
-        WHERE PromotionID = :PromotionID
+        WHERE promotion_id = :PromotionID
     ";
         $stmt  = $this->db->prepare($query);
         $stmt->bindValue(':PromotionID', (int)$promotionId, PDO::PARAM_INT);
@@ -319,7 +319,7 @@ class PromotionModel
 
     public function removeAllProductsFromPromotion($promotionId)
     {
-        $query = "DELETE FROM promotion_shoes WHERE PromotionID = :PromotionID";
+        $query = "DELETE FROM promotion_shoes WHERE promotion_id = :PromotionID";
         $stmt  = $this->db->prepare($query);
         $stmt->bindValue(':PromotionID', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
@@ -328,7 +328,7 @@ class PromotionModel
     public function assignProductToPromotion($promotionId, $productId): void
     {
         $query = "
-            INSERT IGNORE INTO promotion_shoes (PromotionID, ShoesID)
+            INSERT IGNORE INTO promotion_shoes (promotion_id, shoe_id)
             VALUES (:PromotionID, :ShoesID)
         ";
 

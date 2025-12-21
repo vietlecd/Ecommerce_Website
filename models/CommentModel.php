@@ -107,7 +107,7 @@ class CommentModel
     {
         $sql = "SELECT COUNT(*) 
                 FROM comment c
-                LEFT JOIN shoes s ON c.ShoesID = s.ShoesID
+                LEFT JOIN shoes s ON c.ShoesID = s.shoe_id
                 WHERE 1=1";
         $params = [];
 
@@ -144,7 +144,7 @@ class CommentModel
                     s.Name,
                     m.Name AS MemberName
                 FROM comment c
-                LEFT JOIN shoes s ON c.ShoesID = s.ShoesID
+                LEFT JOIN shoes s ON c.ShoesID = s.shoe_id
                 LEFT JOIN member m ON c.Mem_ID = m.MemberID
                 WHERE 1=1";
         $params = [];
@@ -202,9 +202,9 @@ class CommentModel
 
     public function getShoesForFilter(): array
     {
-        $sql = "SELECT DISTINCT s.ShoesID, s.Name
+        $sql = "SELECT DISTINCT s.shoe_id, s.Name
                 FROM shoes s
-                INNER JOIN comment c ON c.ShoesID = s.ShoesID
+                INNER JOIN comment c ON c.ShoesID = s.shoe_id
                 ORDER BY s.Name ASC";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

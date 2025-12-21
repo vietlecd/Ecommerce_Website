@@ -157,13 +157,13 @@ class OrderModel
         if ($order) {
             $stmt = $this->pdo->prepare("
                 SELECT
-                    os.ShoesID,
+                    os.shoe_id,
                     s.Name  AS product_name,
                     s.Price,
                     s.Image AS product_image,
                     os.OrderID
                 FROM order_shoes os
-                JOIN shoes s ON os.ShoesID = s.ShoesID
+                JOIN shoes s ON os.shoe_id = s.shoe_id
                 WHERE os.OrderID = ?
             ");
             $stmt->execute([$orderId]);

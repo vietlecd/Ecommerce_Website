@@ -217,22 +217,22 @@ class ProductModel
 
         $query = "
         SELECT
-            p.PromotionID        AS promotion_id,
-            p.PromotionType      AS promotion_type,
-            p.PromotionName      AS promotion_name,
-            p.DiscountPercentage AS discount_percentage,
-            p.FixedPrice         AS fixed_price,
-            p.StartDate          AS start_date,
-            p.EndDate            AS end_date
-        FROM promotion p
+            p.promotion_id        AS promotion_id,
+            p.promotion_type      AS promotion_type,
+            p.promotion_name      AS promotion_name,
+            p.discount_percentage AS discount_percentage,
+            p.fixed_price         AS fixed_price,
+            p.start_date          AS start_date,
+            p.end_date            AS end_date
+        FROM promotions p
         JOIN promotion_shoes ps 
-            ON p.PromotionID = ps.PromotionID 
-        WHERE ps.ShoesID   = :shoe_id 
-          AND p.StartDate <= :start_date 
-          AND p.EndDate   >= :end_date 
+            ON p.promotion_id = ps.promotion_id 
+        WHERE ps.shoe_id   = :shoe_id 
+          AND p.start_date <= :start_date 
+          AND p.end_date   >= :end_date 
         ORDER BY 
-            COALESCE(p.DiscountPercentage, 0) DESC,
-            COALESCE(p.FixedPrice, 999999) ASC 
+            COALESCE(p.discount_percentage, 0) DESC,
+            COALESCE(p.fixed_price, 999999) ASC 
         LIMIT 1
     ";
 

@@ -49,7 +49,7 @@ class CheckoutController {
             ];
         }
 
-        $shipping = 10.00;
+        $shipping = 1.00;
         $availableCoupons = $this->couponModel->getActiveCoupons();
         $memberProfile = null;
         $prefillName = '';
@@ -207,14 +207,9 @@ class CheckoutController {
             $city    = trim($_POST['city']    ?? '');
             $zip     = trim($_POST['zip']     ?? '');
             $phone   = trim($_POST['phone']   ?? '');
-            $card_number = trim($_POST['card_number'] ?? '');
-            $expiry      = trim($_POST['expiry']      ?? '');
-            $cvv         = trim($_POST['cvv']         ?? '');
 
             if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip) || empty($phone)) {
                 $error = 'All required fields must be filled.';
-            } elseif ($paymentMethod === 'card' && (empty($card_number) || empty($expiry) || empty($cvv))) {
-                $error = 'Card payment is not available yet. Please choose Cash on Delivery.';
             } elseif ($paymentMethod === 'payos') {
                 // Handle PayOS payment
                 $this->processPayOSPayment($name, $email, $phone, $address, $city, $zip, $total, $totalQuantity, $cartItems);

@@ -14,7 +14,7 @@ class CartController {
     public function index() {
         $cartItems = [];
         $subtotal = 0;
-        $shipping = 10.00;
+        $shipping = 1.00;
         $discountAmount = 0;
         $appliedCoupon = null;
 

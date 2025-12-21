@@ -113,27 +113,6 @@ $formatCurrency = function ($value) {
                         </label>
                         <p class="form-hint">Thanh toán nhanh qua QR Code với PayOS (Hỗ trợ ví điện tử, ngân hàng)</p>
                     </div>
-                    <div class="checkout-field">
-                        <label class="payment-option">
-                            <input type="radio" name="payment_method" value="card" <?php echo (isset($_POST['payment_method']) && $_POST['payment_method'] === 'card') ? 'checked' : ''; ?> data-payment-toggle>
-                            <span>Credit / Debit card</span>
-                        </label>
-                        <p class="form-hint text-muted">Not implement – will have private sandbox.</p>
-                    </div>
-                    <div class="checkout-field payment-card-fields" data-card-fields>
-                        <label for="card_number">Card Number</label>
-                        <input type="text" id="card_number" name="card_number" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>" placeholder="Not available yet" disabled>
-                    </div>
-                    <div class="checkout-row payment-card-fields" data-card-fields>
-                        <div class="checkout-field">
-                            <label for="expiry">Expiry</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>" disabled>
-                        </div>
-                        <div class="checkout-field">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>" disabled>
-                        </div>
-                    </div>
                 </article>
 
                 <article class="checkout-card checkout-items">

@@ -212,7 +212,7 @@ class OrderModel
             $subtotal += $lineTotal;
         }
 
-        $shipping = 10.00;
+        $shipping = 1.00;
         $total    = (float)$order['Total_price'];
 
         return [
@@ -275,16 +275,17 @@ class OrderModel
         $shippingAddress = $shippingData['address'] ?? null;
         $shippingCity    = $shippingData['city'] ?? null;
         $shippingZip     = $shippingData['zip'] ?? null;
+        $shippingPhone   = $shippingData['phone'] ?? null;
         $paymentMethod   = $shippingData['payment_method'] ?? null;
 
         try {
             $stmt = $this->pdo->prepare("
                 INSERT INTO `order`
                     (MemberID, Total_price, Quantity, Date, Earned_VIP, Status,
-                     ShippingName, ShippingEmail, ShippingAddress, ShippingCity, ShippingZip, PaymentMethod)
+                     ShippingName, ShippingEmail, ShippingAddress, ShippingCity, ShippingZip, ShippingPhone, PaymentMethod)
                 VALUES
                     (?, ?, ?, NOW(), 0, 'Pending',
-                     ?, ?, ?, ?, ?, ?)
+                     ?, ?, ?, ?, ?, ?, ?)
             ");
             $stmt->execute([
                 $memberId,
@@ -295,6 +296,7 @@ class OrderModel
                 $shippingAddress,
                 $shippingCity,
                 $shippingZip,
+                $shippingPhone,
                 $paymentMethod
             ]);
             return $this->pdo->lastInsertId();

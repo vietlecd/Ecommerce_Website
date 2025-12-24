@@ -212,7 +212,7 @@ class OrderModel
             $subtotal += $lineTotal;
         }
 
-        $shipping = 10.00;
+        $shipping = 0.50;
         $total    = (float)$order['Total_price'];
 
         return [

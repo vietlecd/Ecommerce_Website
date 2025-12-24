@@ -14,7 +14,7 @@ class CartController {
     public function index() {
         $cartItems = [];
         $subtotal = 0;
-        $shipping = 10.00;
+        $shipping = 0.50;
         $discountAmount = 0;
         $appliedCoupon = null;
 
@@ -56,6 +56,9 @@ class CartController {
             } else {
                 unset($_SESSION['cart_coupon']);
             }
+        }
+        if ($appliedCoupon && isset($appliedCoupon['CodeTitle']) && strcasecmp($appliedCoupon['CodeTitle'], 'FREESHIP') === 0) {
+            $shipping = 0.00;
         }
 
         $recommendedProducts = $this->promotionModel->getTopSaleProducts(4);

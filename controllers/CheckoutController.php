@@ -49,7 +49,7 @@ class CheckoutController {
             ];
         }
 
-        $shipping = 1.00;
+        $shipping = 0.50;
         $availableCoupons = $this->couponModel->getActiveCoupons();
         $memberProfile = null;
         $prefillName = '';
@@ -152,6 +152,9 @@ class CheckoutController {
         }
 
         $availableCoupons = $this->couponModel->getActiveCoupons();
+        if ($appliedCoupon && isset($appliedCoupon['CodeTitle']) && strcasecmp($appliedCoupon['CodeTitle'], 'FREESHIP') === 0) {
+            $shipping = 0.00;
+        }
         $total = max(0, $subtotal - $discountAmount + $shipping);
         $earnedVip = isset($_SESSION['earned_vip']) && is_numeric($_SESSION['earned_vip'])
             ? (float) $_SESSION['earned_vip']

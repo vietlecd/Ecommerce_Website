@@ -211,7 +211,8 @@ INSERT INTO `discount_codes` (`CodeID`, `CodeTitle`, `CodePercent`, `CodeDescrip
 (1, 'SHOE-LOUNGE-10', 10.00, 'Concierge welcome treat for the ShoeStore lounge', 1, '2026-01-01 23:59:59'),
 (2, 'SNEAKER-STAPLE-15', 15.00, 'Daily sneaker staples curated by ShoeStore stylists', 1, '2025-12-31 23:59:59'),
 (3, 'BOOT-BOUTIQUE-20', 20.00, 'Boot boutique spotlight for seasonal icons', 1, '2025-12-15 23:59:59'),
-(4, 'RUNWAY-RUSH-25', 25.00, 'Runway rush drop for limited-edition pairs', 1, '2025-11-30 23:59:59');
+(4, 'RUNWAY-RUSH-25', 25.00, 'Runway rush drop for limited-edition pairs', 1, '2025-11-30 23:59:59'),
+(5, 'FREESHIP', 0.00, 'Free standard shipping', 1, '2026-12-31 23:59:59');
 
 -- --------------------------------------------------------
 
@@ -726,7 +727,7 @@ ALTER TABLE `contact`
 -- AUTO_INCREMENT for table `discount_codes`
 --
 ALTER TABLE `discount_codes`
-  MODIFY `CodeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `CodeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `member`

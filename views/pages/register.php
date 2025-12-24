@@ -33,6 +33,6 @@
     <button type="submit" class="form-btn">Đăng Ký</button>
 </form>
 
-<p>Đã có tài khoản? <a href="/index.php?controller=auth&action=login">Đăng nhập ngay</a></p>
+<p class="form-footer">Đã có tài khoản? <a href="/index.php?controller=auth&action=login">Đăng nhập ngay</a></p>
 
 <?php require_once 'views/components/footer.php'; ?>

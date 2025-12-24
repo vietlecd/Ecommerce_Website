@@ -157,13 +157,13 @@ class OrderModel
         if ($order) {
             $stmt = $this->pdo->prepare("
                 SELECT
-                    os.ShoesID,
+                    os.shoe_id,
                     s.Name  AS product_name,
                     s.Price,
                     s.Image AS product_image,
                     os.OrderID
                 FROM order_shoes os
-                JOIN shoes s ON os.ShoesID = s.ShoesID
+                JOIN shoes s ON os.shoe_id = s.shoe_id
                 WHERE os.OrderID = ?
             ");
             $stmt->execute([$orderId]);
@@ -275,16 +275,17 @@ class OrderModel
         $shippingAddress = $shippingData['address'] ?? null;
         $shippingCity    = $shippingData['city'] ?? null;
         $shippingZip     = $shippingData['zip'] ?? null;
+        $shippingPhone   = $shippingData['phone'] ?? null;
         $paymentMethod   = $shippingData['payment_method'] ?? null;
 
         try {
             $stmt = $this->pdo->prepare("
                 INSERT INTO `order`
                     (MemberID, Total_price, Quantity, Date, Earned_VIP, Status,
-                     ShippingName, ShippingEmail, ShippingAddress, ShippingCity, ShippingZip, PaymentMethod)
+                     ShippingName, ShippingEmail, ShippingAddress, ShippingCity, ShippingZip, ShippingPhone, PaymentMethod)
                 VALUES
                     (?, ?, ?, NOW(), 0, 'Pending',
-                     ?, ?, ?, ?, ?, ?)
+                     ?, ?, ?, ?, ?, ?, ?)
             ");
             $stmt->execute([
                 $memberId,
@@ -295,6 +296,7 @@ class OrderModel
                 $shippingAddress,
                 $shippingCity,
                 $shippingZip,
+                $shippingPhone,
                 $paymentMethod
             ]);
             return $this->pdo->lastInsertId();

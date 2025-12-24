@@ -32,28 +32,28 @@ $formatCurrency = function ($value) {
                     </div>
                     <div class="checkout-field">
                         <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : htmlspecialchars($prefillName); ?>" required>
+                        <input type="text" id="name" name="name" autocomplete="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : htmlspecialchars($prefillName); ?>" required>
                     </div>
                     <div class="checkout-field">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : htmlspecialchars($prefillEmail); ?>" required>
+                        <input type="email" id="email" name="email" autocomplete="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : htmlspecialchars($prefillEmail); ?>" required>
                     </div>
                     <div class="checkout-field">
                         <label for="phone">Phone</label>
-                        <input type="tel" id="phone" name="phone" value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : htmlspecialchars($prefillPhone); ?>" required pattern="\\+?[0-9\\s\\-]{7,}">
+                        <input type="tel" id="phone" name="phone" autocomplete="tel" value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : htmlspecialchars($prefillPhone); ?>" required pattern="[0-9+\-\s]{7,}">
                     </div>
                     <div class="checkout-field">
                         <label for="address">Address</label>
-                        <input type="text" id="address" name="address" value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : htmlspecialchars($prefillAddress); ?>" required>
+                        <input type="text" id="address" name="address" autocomplete="address-line1" value="<?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : htmlspecialchars($prefillAddress); ?>" required>
                     </div>
                     <div class="checkout-row">
                         <div class="checkout-field">
                             <label for="city">City</label>
-                            <input type="text" id="city" name="city" value="<?php echo isset($_POST['city']) ? htmlspecialchars($_POST['city']) : htmlspecialchars($prefillCity); ?>" required>
+                            <input type="text" id="city" name="city" autocomplete="address-level2" value="<?php echo isset($_POST['city']) ? htmlspecialchars($_POST['city']) : htmlspecialchars($prefillCity); ?>" required>
                         </div>
                         <div class="checkout-field">
                             <label for="zip">ZIP</label>
-                            <input type="text" id="zip" name="zip" value="<?php echo isset($_POST['zip']) ? htmlspecialchars($_POST['zip']) : htmlspecialchars($prefillZip); ?>" required>
+                            <input type="text" id="zip" name="zip" autocomplete="postal-code" value="<?php echo isset($_POST['zip']) ? htmlspecialchars($_POST['zip']) : htmlspecialchars($prefillZip); ?>" required>
                         </div>
                     </div>
                     <?php if (!empty($savedAddresses)): ?>
@@ -108,24 +108,10 @@ $formatCurrency = function ($value) {
                     </div>
                     <div class="checkout-field">
                         <label class="payment-option">
-                            <input type="radio" name="payment_method" value="card" <?php echo (isset($_POST['payment_method']) && $_POST['payment_method'] === 'card') ? 'checked' : ''; ?> data-payment-toggle>
-                            <span>Credit / Debit card</span>
+                            <input type="radio" name="payment_method" value="payos" <?php echo (isset($_POST['payment_method']) && $_POST['payment_method'] === 'payos') ? 'checked' : ''; ?>>
+                            <span>PayOS - Thanh toán QR</span>
                         </label>
-                        <p class="form-hint text-muted">Not implement – will have private sandbox.</p>
-                    </div>
-                    <div class="checkout-field payment-card-fields" data-card-fields>
-                        <label for="card_number">Card Number</label>
-                        <input type="text" id="card_number" name="card_number" value="<?php echo isset($_POST['card_number']) ? htmlspecialchars($_POST['card_number']) : ''; ?>" placeholder="Not available yet" disabled>
-                    </div>
-                    <div class="checkout-row payment-card-fields" data-card-fields>
-                        <div class="checkout-field">
-                            <label for="expiry">Expiry</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" value="<?php echo isset($_POST['expiry']) ? htmlspecialchars($_POST['expiry']) : ''; ?>" disabled>
-                        </div>
-                        <div class="checkout-field">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" value="<?php echo isset($_POST['cvv']) ? htmlspecialchars($_POST['cvv']) : ''; ?>" disabled>
-                        </div>
+                        <p class="form-hint">Thanh toán nhanh qua QR Code với PayOS (Hỗ trợ ví điện tử, ngân hàng)</p>
                     </div>
                 </article>
 

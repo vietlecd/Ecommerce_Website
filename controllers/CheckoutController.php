@@ -3,12 +3,14 @@ require_once __DIR__ . '/../models/OrderModel.php';
 require_once __DIR__ . '/../models/ProductModelv2.php';
 require_once __DIR__ . '/../models/CouponModel.php';
 require_once __DIR__ . '/../models/MemberModel.php';
+require_once __DIR__ . '/../models/PayOSService.php';
 
 class CheckoutController {
     private $orderModel;
     private $productModel;
     private $couponModel;
     private $memberModel;
+    private $payosService;
     private $addressSessionKey;
 
     public function __construct() {
@@ -16,6 +18,7 @@ class CheckoutController {
         $this->productModel = new ProductModel();
         $this->couponModel = new CouponModel();
         $this->memberModel = new MemberModel();
+        $this->payosService = new PayOSService();
 
         $userKey = isset($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : 'guest';
         $this->addressSessionKey = 'saved_addresses_user_' . $userKey;
@@ -69,6 +72,16 @@ class CheckoutController {
 
         $couponNotice = isset($_SESSION['coupon_notice']) ? $_SESSION['coupon_notice'] : '';
         unset($_SESSION['coupon_notice']);
+
+        // Surface checkout error/success messages coming from PayOS redirects
+        if (isset($_SESSION['checkout_error']) && is_string($_SESSION['checkout_error'])) {
+            $error = $_SESSION['checkout_error'];
+            unset($_SESSION['checkout_error']);
+        }
+        if (isset($_SESSION['checkout_success']) && is_string($_SESSION['checkout_success'])) {
+            $success = $_SESSION['checkout_success'];
+            unset($_SESSION['checkout_success']);
+        }
 
         if (isset($_SESSION['user_id'])) {
             $memberProfile = $this->memberModel->getMemberById((int) $_SESSION['user_id']);
@@ -197,14 +210,13 @@ class CheckoutController {
             $city    = trim($_POST['city']    ?? '');
             $zip     = trim($_POST['zip']     ?? '');
             $phone   = trim($_POST['phone']   ?? '');
-            $card_number = trim($_POST['card_number'] ?? '');
-            $expiry      = trim($_POST['expiry']      ?? '');
-            $cvv         = trim($_POST['cvv']         ?? '');
 
             if (empty($name) || empty($email) || empty($address) || empty($city) || empty($zip) || empty($phone)) {
                 $error = 'All required fields must be filled.';
-            } elseif ($paymentMethod === 'card' && (empty($card_number) || empty($expiry) || empty($cvv))) {
-                $error = 'Card payment is not available yet. Please choose Cash on Delivery.';
+            } elseif ($paymentMethod === 'payos') {
+                // Handle PayOS payment
+                $this->processPayOSPayment($name, $email, $phone, $address, $city, $zip, $total, $totalQuantity, $cartItems);
+                exit;
             } else {
                 // member/guest
                 if (isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) && (int)$_SESSION['user_id'] > 0) {
@@ -328,5 +340,227 @@ class CheckoutController {
         } else {
             die("Footer file not found: $footerPath");
         }
+    }
+    
+    /**
+     * Process PayOS payment
+     */
+    private function processPayOSPayment($name, $email, $phone, $address, $city, $zip, $total, $totalQuantity, $cartItems)
+    {
+        // Determine member ID
+        $memberId = isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) && (int)$_SESSION['user_id'] > 0
+            ? (int)$_SESSION['user_id']
+            : null;
+
+        // Create order in database with 'Pending' status
+        $shippingData = [
+            'name'           => $name,
+            'email'          => $email,
+            'address'        => $address,
+            'city'           => $city,
+            'zip'            => $zip,
+            'phone'          => $phone,
+            'payment_method' => 'payos',
+        ];
+
+        $orderId = $this->orderModel->addOrder($memberId, $total, $totalQuantity, $shippingData);
+
+        if (!$orderId) {
+            $_SESSION['checkout_error'] = 'Failed to create order. Please try again.';
+            header('Location: /index.php?controller=checkout&action=index');
+            exit;
+        }
+
+        // Add order items
+        foreach ($_SESSION['cart'] as $item) {
+            for ($i = 0; $i < $item['quantity']; $i++) {
+                $this->orderModel->addOrderShoes($orderId, $item['id']);
+            }
+        }
+
+        // Prepare PayOS payment data
+        $config = require __DIR__ . '/../config/payos.php';
+        // Prefer configured URLs to avoid mismatched host/port issues
+        $returnUrl = $config['return_url'];
+        $cancelUrl = $config['cancel_url'];
+
+        // Convert USD totals to VND integer amounts for PayOS
+        $rate = isset($config['usd_to_vnd']) && is_numeric($config['usd_to_vnd']) ? (int)$config['usd_to_vnd'] : 25000;
+        $amountVnd = max(0, (int) round($total * $rate));
+        
+        $orderCode = (int)$orderId; // Use order ID as order code
+        $items = [];
+        
+        foreach ($cartItems as $item) {
+            $items[] = [
+                'name' => $item['name'],
+                'quantity' => (int)$item['quantity'],
+                // Convert per-item unit price from USD to VND integer
+                'price' => max(0, (int) round($item['price'] * $rate))
+            ];
+        }
+
+        $paymentData = [
+            'orderCode' => $orderCode,
+            'amount' => $amountVnd,
+            'description' => "Thanh toan don hang #{$orderId}",
+            'items' => $items,
+            'returnUrl' => $returnUrl,
+            'cancelUrl' => $cancelUrl,
+        ];
+
+        $result = $this->payosService->createPaymentLink($paymentData);
+
+        if ($result['success']) {
+            // Store order ID in session
+            $_SESSION['payos_order_id'] = $orderId;
+            
+            // Handle nested data structure from PayOS API response
+            $responseData = $result['data'];
+            
+            // PayOS may return {code, desc, data: {...}} or direct {...}
+            if (isset($responseData['data']) && is_array($responseData['data'])) {
+                $paymentData = $responseData['data'];
+            } else {
+                $paymentData = $responseData;
+            }
+            
+            // Redirect to PayOS payment page
+            $checkoutUrl = $paymentData['checkoutUrl'] ?? null;
+            if ($checkoutUrl) {
+                header('Location: ' . $checkoutUrl);
+                exit;
+            } else {
+                $_SESSION['checkout_error'] = 'Không thể tạo link thanh toán. Vui lòng thử lại.';
+                header('Location: /index.php?controller=checkout&action=index');
+                exit;
+            }
+        } else {
+            $err = $result['error'] ?? 'Unknown error';
+            $_SESSION['checkout_error'] = 'Lỗi cổng thanh toán: ' . $err;
+            header('Location: /index.php?controller=checkout&action=index');
+            exit;
+        }
+    }
+    
+    /**
+     * Handle PayOS return callback (success/failed)
+     */
+    public function payos_return()
+    {
+        $orderCode = $_GET['orderCode'] ?? null;
+        $status = $_GET['status'] ?? null;
+        
+        if (!$orderCode) {
+            $_SESSION['checkout_error'] = 'Phản hồi thanh toán không hợp lệ.';
+            header('Location: /index.php?controller=checkout&action=index');
+            exit;
+        }
+        
+        // Verify payment status with PayOS API
+        $result = $this->payosService->getPaymentInfo($orderCode);
+        
+        if ($result['success']) {
+            // Handle nested data structure
+            $responseData = $result['data'];
+            if (isset($responseData['data']) && is_array($responseData['data'])) {
+                $paymentData = $responseData['data'];
+            } else {
+                $paymentData = $responseData;
+            }
+            
+            $paymentStatus = $paymentData['status'] ?? null;
+            
+            if ($paymentStatus === 'PAID' || $status === 'PAID') {
+                // Payment successful - update order and clear cart
+                $orderId = (int)$orderCode;
+                
+                // Update order status to 'Processing'
+                $this->orderModel->updateOrderStatus($orderId, 'Processing');
+                
+                // Process stock decrement
+                if (isset($_SESSION['cart'])) {
+                    $cartStockItems = [];
+                    foreach ($_SESSION['cart'] as $item) {
+                        if (!empty($item['size'])) {
+                            $cartStockItems[] = [
+                                'product_id' => (int)$item['id'],
+                                'size'       => $item['size'],
+                                'quantity'   => (int)$item['quantity'],
+                            ];
+                        }
+                    }
+                    
+                    if (!empty($cartStockItems)) {
+                        $this->productModel->decrementStockForCartItems($cartStockItems);
+                    }
+                }
+                
+                // Clear cart and session
+                unset($_SESSION['cart'], $_SESSION['cart_coupon'], $_SESSION['checkout_prefill'], $_SESSION['payos_order_id']);
+                
+                $_SESSION['checkout_success'] = "Thanh toán thành công! Mã đơn hàng: #{$orderId}";
+                header('Location: /index.php?controller=home&action=index');
+                exit;
+            } else {
+                $_SESSION['checkout_error'] = 'Thanh toán thất bại hoặc bị hủy. Trạng thái: ' . ($paymentStatus ?? 'Unknown');
+                header('Location: /index.php?controller=checkout&action=index');
+                exit;
+            }
+        } else {
+            $error = $result['error'] ?? 'Unknown error';
+            $_SESSION['checkout_error'] = 'Không thể xác minh thanh toán: ' . $error;
+            header('Location: /index.php?controller=checkout&action=index');
+            exit;
+        }
+    }
+    
+    /**
+     * Handle PayOS cancel callback
+     */
+    public function payos_cancel()
+    {
+        $_SESSION['checkout_error'] = 'Bạn đã hủy thanh toán.';
+        header('Location: /index.php?controller=checkout&action=index');
+        exit;
+    }
+    
+    /**
+     * Handle PayOS webhook (payment notifications)
+     * This endpoint receives real-time payment status updates from PayOS
+     */
+    public function payos_webhook()
+    {
+        // Log webhook for debugging
+        $logFile = dirname(__DIR__) . '/logs/payos_webhook.log';
+        $webhookBody = file_get_contents('php://input');
+        $timestamp = date('Y-m-d H:i:s');
+        @file_put_contents($logFile, "[{$timestamp}] Webhook received: {$webhookBody}\n", FILE_APPEND);
+        
+        $webhookData = json_decode($webhookBody, true);
+        $signature = $_SERVER['HTTP_X_PAYOS_SIGNATURE'] ?? '';
+        
+        // Verify webhook signature
+        if (!$this->payosService->verifyWebhookSignature($webhookData, $signature)) {
+            @file_put_contents($logFile, "[{$timestamp}] Invalid signature\n", FILE_APPEND);
+            http_response_code(401);
+            echo json_encode(['error' => 'Invalid signature']);
+            exit;
+        }
+        
+        // Handle nested data structure
+        $data = $webhookData['data'] ?? $webhookData;
+        $orderCode = $data['orderCode'] ?? null;
+        $status = $data['status'] ?? null;
+        
+        if ($orderCode && $status === 'PAID') {
+            $orderId = (int)$orderCode;
+            $updated = $this->orderModel->updateOrderStatus($orderId, 'Processing');
+            @file_put_contents($logFile, "[{$timestamp}] Order #{$orderId} updated to Processing: " . ($updated ? 'Success' : 'Failed') . "\n", FILE_APPEND);
+        }
+        
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+        exit;
     }
 }

@@ -58,24 +58,24 @@ class PromotionalProductModel
 
         $sql = "
             SELECT
-                p.PromotionID        AS promotion_id,
-                p.PromotionName      AS promotion_name,
-                p.PromotionType      AS promotion_type,
-                p.DiscountPercentage AS discount_percentage,
-                p.FixedPrice         AS fixed_price,
-                p.StartDate          AS start_date,
-                p.EndDate            AS end_date
-            FROM promotion p
+                p.promotion_id        AS promotion_id,
+                p.promotion_name      AS promotion_name,
+                p.promotion_type      AS promotion_type,
+                p.discount_percentage AS discount_percentage,
+                p.fixed_price         AS fixed_price,
+                p.start_date          AS start_date,
+                p.end_date            AS end_date
+            FROM promotions p
             INNER JOIN promotion_shoes ps
-                ON p.PromotionID = ps.PromotionID
-            WHERE ps.ShoesID = :shoes_id
-              AND p.StartDate <= :start_date
-              AND p.EndDate   >= :end_date
+                ON p.promotion_id = ps.promotion_id
+            WHERE ps.shoe_id = :shoes_id
+              AND p.start_date <= :start_date
+              AND p.end_date   >= :end_date
             ORDER BY
                 -- ưu tiên có phần trăm giảm
-                (p.DiscountPercentage IS NULL) ASC,
-                p.DiscountPercentage DESC,
-                p.PromotionID ASC
+                (p.discount_percentage IS NULL) ASC,
+                p.discount_percentage DESC,
+                p.promotion_id ASC
             LIMIT 1
         ";
 
@@ -113,25 +113,25 @@ class PromotionalProductModel
     {
         $sql = "
             SELECT
-                p.PromotionID,
-                p.PromotionName,
-                p.PromotionType,
-                p.DiscountPercentage,
-                p.FixedPrice,
-                p.StartDate,
-                p.EndDate
-            FROM promotion p
+                p.promotion_id,
+                p.promotion_name,
+                p.promotion_type,
+                p.discount_percentage,
+                p.fixed_price,
+                p.start_date,
+                p.end_date
+            FROM promotions p
             WHERE 1 = 1
         ";
 
         $params = [];
 
         if (!empty($keyword)) {
-            $sql .= " AND p.PromotionName LIKE :keyword";
+            $sql .= " AND p.promotion_name LIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
-        $sql .= " ORDER BY p.PromotionID " . ($sort === 'DESC' ? 'DESC' : 'ASC');
+        $sql .= " ORDER BY p.promotion_id " . ($sort === 'DESC' ? 'DESC' : 'ASC');
         $sql .= " LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db->prepare($sql);
@@ -146,11 +146,11 @@ class PromotionalProductModel
 
     public function getPromotionsCount($keyword = '')
     {
-        $sql = "SELECT COUNT(*) FROM promotion p WHERE 1 = 1";
+        $sql = "SELECT COUNT(*) FROM promotions p WHERE 1 = 1";
         $params = [];
 
         if (!empty($keyword)) {
-            $sql .= " AND p.PromotionName LIKE :keyword";
+            $sql .= " AND p.promotion_name LIKE :keyword";
             $params[':keyword'] = '%' . $keyword . '%';
         }
 
@@ -166,15 +166,15 @@ class PromotionalProductModel
     {
         $sql = "
             SELECT
-                p.PromotionID,
-                p.PromotionName,
-                p.PromotionType,
-                p.DiscountPercentage,
-                p.FixedPrice,
-                p.StartDate,
-                p.EndDate
-            FROM promotion p
-            WHERE p.PromotionID = :promotion_id
+                p.promotion_id,
+                p.promotion_name,
+                p.promotion_type,
+                p.discount_percentage,
+                p.fixed_price,
+                p.start_date,
+                p.end_date
+            FROM promotions p
+            WHERE p.promotion_id = :promotion_id
             LIMIT 1
         ";
 
@@ -187,7 +187,7 @@ class PromotionalProductModel
 
     public function getProductsByPromotionId($promotionId)
     {
-        $sql = "SELECT ShoesID FROM promotion_shoes WHERE PromotionID = :promotion_id";
+        $sql = "SELECT shoe_id FROM promotion_shoes WHERE promotion_id = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
@@ -197,7 +197,7 @@ class PromotionalProductModel
 
     public function removeAllProductsFromPromotion($promotionId)
     {
-        $sql = "DELETE FROM promotion_shoes WHERE PromotionID = :promotion_id";
+        $sql = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
@@ -206,7 +206,7 @@ class PromotionalProductModel
     public function assignProductToPromotion($promotionId, $productId)
     {
         $sql = "
-            INSERT IGNORE INTO promotion_shoes (PromotionID, ShoesID)
+            INSERT IGNORE INTO promotion_shoes (promotion_id, shoe_id)
             VALUES (:promotion_id, :shoes_id)
         ";
 
@@ -257,7 +257,7 @@ class PromotionalProductModel
                 FixedPrice         = :fixed_price,
                 StartDate          = :start_date,
                 EndDate            = :end_date
-            WHERE PromotionID = :promotion_id
+            WHERE promotion_id = :promotion_id
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -273,17 +273,17 @@ class PromotionalProductModel
 
     public function deletePromotion($promotionId)
     {
-        $sql = "DELETE FROM news_promotion WHERE PromotionID = :promotion_id";
+        $sql = "DELETE FROM news_promotion WHERE promotion_id = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $sql = "DELETE FROM promotion_shoes WHERE PromotionID = :promotion_id";
+        $sql = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $sql = "DELETE FROM promotion WHERE PromotionID = :promotion_id";
+        $sql = "DELETE FROM promotions WHERE promotion_id = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();

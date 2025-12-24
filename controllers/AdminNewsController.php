@@ -27,7 +27,9 @@ class AdminNewsController
         $this->assertAdmin();
 
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $status = isset($_GET['status']) ? trim($_GET['status']) : 'all';
+        $type = isset($_GET['type'])
+            ? trim($_GET['type'])
+            : (isset($_GET['status']) ? trim($_GET['status']) : 'all');
         $limit = isset($_GET['limit']) ? max(1, (int)$_GET['limit']) : 20;
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $offset = ($page - 1) * $limit;
@@ -50,8 +52,13 @@ class AdminNewsController
             $sort = 'newest';
         }
 
-        $news = $this->newsModel->getNewsWithAdmin($search, $limit, $offset, $status, $sort);
-        $totalNews = $this->newsModel->getNewsCount($search, $status);
+        $newsTypes = $this->newsModel->getNewsTypes();
+        if ($type !== 'all' && $type !== '' && !in_array($type, $newsTypes, true)) {
+            $type = 'all';
+        }
+
+        $news = $this->newsModel->getNewsWithAdmin($search, $limit, $offset, $type, $sort);
+        $totalNews = $this->newsModel->getNewsCount($search, $type);
         $totalPages = ceil($totalNews / $limit);
 
         require_once 'views/admin/components/header.php';

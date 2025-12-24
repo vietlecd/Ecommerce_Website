@@ -157,13 +157,13 @@ class OrderModel
         if ($order) {
             $stmt = $this->pdo->prepare("
                 SELECT
-                    os.shoe_id,
+                    os.ShoesID AS ShoesID,
                     s.Name  AS product_name,
                     s.Price,
                     s.Image AS product_image,
                     os.OrderID
                 FROM order_shoes os
-                JOIN shoes s ON os.shoe_id = s.shoe_id
+                JOIN shoes s ON os.ShoesID = s.ShoesID
                 WHERE os.OrderID = ?
             ");
             $stmt->execute([$orderId]);
@@ -212,7 +212,7 @@ class OrderModel
             $subtotal += $lineTotal;
         }
 
-        $shipping = 0.50;
+        $shipping = 0.08;
         $total    = (float)$order['Total_price'];
 
         return [

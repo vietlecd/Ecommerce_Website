@@ -18,6 +18,6 @@
     <button type="submit" class="form-btn">Đăng Nhập</button>
 </form>
 
-<p>Chưa có tài khoản? <a href="/index.php?controller=auth&action=register">Đăng ký ngay</a></p>
+<p class="form-footer">Chưa có tài khoản? <a href="/index.php?controller=auth&action=register">Đăng ký ngay</a></p>
 
 <?php require_once 'views/components/footer.php'; ?>

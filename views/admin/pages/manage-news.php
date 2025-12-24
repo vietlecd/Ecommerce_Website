@@ -20,7 +20,7 @@
 <div class="row align-items-center g-3">
     <div class="col-12 col-lg-6">
         <h1 class=" mb-1">Manage News</h1>
-        <p class="text-muted mb-0 small">Manage articles and visibility status</p>
+        <p class="text-muted mb-0 small">Manage articles and types</p>
     </div>
     <div class="col-12 col-lg-6">
         <div class="d-flex gap-2 justify-content-lg-end">
@@ -69,13 +69,17 @@
             </div>
 
             <div class="col-6 col-md-3 col-lg-2">
-                <label class="form-label fw-semibold small mb-1" for="news_status">Status</label>
-                <select name="status" id="news_status" class="form-select field-narrow">
-                    <?php $stVal = $status ?? 'all'; ?>
-                    <option value="all" <?= $stVal === 'all'     ? 'selected' : ''; ?>>All</option>
-                    <option value="pending" <?= $stVal === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                    <option value="active" <?= $stVal === 'active'  ? 'selected' : ''; ?>>Active</option>
-                    <option value="expired" <?= $stVal === 'expired' ? 'selected' : ''; ?>>Expired</option>
+                <label class="form-label fw-semibold small mb-1" for="news_type_filter">Type</label>
+                <select name="type" id="news_type_filter" class="form-select field-narrow">
+                    <?php $typeVal = $type ?? 'all'; ?>
+                    <option value="all" <?= $typeVal === 'all' ? 'selected' : ''; ?>>All types</option>
+                    <?php foreach (($newsTypes ?? []) as $newsType): ?>
+                        <option
+                            value="<?= htmlspecialchars($newsType, ENT_QUOTES, 'UTF-8') ?>"
+                            <?= $typeVal === $newsType ? 'selected' : ''; ?>>
+                            <?= htmlspecialchars($newsType, ENT_QUOTES, 'UTF-8') ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
@@ -241,7 +245,7 @@
                     $baseUrl = '/index.php?controller=adminNews&action=manage'
                         . '&search=' . urlencode($search ?? '')
                         . '&sort=' . urlencode($sortNews)
-                        . '&status=' . urlencode($status ?? 'all')
+                        . '&type=' . urlencode($type ?? 'all')
                         . '&limit=' . (int)$limit;
 
                     $window     = 3;

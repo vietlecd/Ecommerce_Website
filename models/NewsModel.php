@@ -216,12 +216,28 @@ class NewsModel
         }
     }
 
+    public function getNewsTypes(): array
+    {
+        $stmt = $this->db->prepare("
+            SELECT DISTINCT NewsType
+            FROM news
+            WHERE NewsType IS NOT NULL AND NewsType <> ''
+            ORDER BY NewsType ASC
+        ");
+        $stmt->execute();
+
+        $types = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $types = array_map('trim', $types ?: []);
+        $types = array_filter($types, fn($type) => $type !== '');
+        return array_values($types);
+    }
+
 
     public function getNewsWithAdmin(
         $search = '',
         $limit = 10,
         $offset = 0,
-        $status = 'all',
+        $type = 'all',
         $sort = 'newest'
     ) {
         $query = "
@@ -270,37 +286,9 @@ class NewsModel
             $conditions[] = '(' . implode(' OR ', $searchParts) . ')';
         }
 
-        if ($status === 'pending') {
-            $conditions[] = "
-            EXISTS (
-                SELECT 1
-                FROM news_promotion np
-                JOIN promotions p ON p.promotion_id = np.promotion_id
-                WHERE np.NewsID = n.NewsID
-                  AND p.start_date > NOW()
-            )
-        ";
-        } elseif ($status === 'active') {
-            $conditions[] = "
-            EXISTS (
-                SELECT 1
-                FROM news_promotion np
-                JOIN promotions p ON p.promotion_id = np.promotion_id
-                WHERE np.NewsID = n.NewsID
-                  AND p.start_date <= NOW()
-                  AND p.end_date   >= NOW()
-            )
-        ";
-        } elseif ($status === 'expired') {
-            $conditions[] = "
-            EXISTS (
-                SELECT 1
-                FROM news_promotion np
-                JOIN promotions p ON p.promotion_id = np.promotion_id
-                WHERE np.NewsID = n.NewsID
-                  AND p.end_date < NOW()
-            )
-        ";
+        if ($type !== '' && $type !== 'all') {
+            $conditions[] = 'n.NewsType = :news_type';
+            $params[':news_type'] = $type;
         }
 
         if (!empty($conditions)) {
@@ -361,7 +349,7 @@ class NewsModel
     }
 
 
-    public function getNewsCount($search = '', $status = 'all')
+    public function getNewsCount($search = '', $type = 'all')
     {
         $query = "
         SELECT COUNT(*) 
@@ -380,37 +368,9 @@ class NewsModel
             $params[':search_author'] = "%{$search}%";
         }
 
-        if ($status === 'pending') {
-            $conditions[] = "
-            EXISTS (
-                SELECT 1
-                FROM news_promotion np
-                JOIN promotions p ON p.promotion_id = np.promotion_id
-                WHERE np.NewsID = n.NewsID
-                  AND p.start_date > NOW()
-            )
-        ";
-        } elseif ($status === 'active') {
-            $conditions[] = "
-            EXISTS (
-                SELECT 1
-                FROM news_promotion np
-                JOIN promotions p ON p.promotion_id = np.promotion_id
-                WHERE np.NewsID = n.NewsID
-                  AND p.start_date <= NOW()
-                  AND p.end_date   >= NOW()
-            )
-        ";
-        } elseif ($status === 'expired') {
-            $conditions[] = "
-            EXISTS (
-                SELECT 1
-                FROM news_promotion np
-                JOIN promotions p ON p.promotion_id = np.promotion_id
-                WHERE np.NewsID = n.NewsID
-                  AND p.end_date < NOW()
-            )
-        ";
+        if ($type !== '' && $type !== 'all') {
+            $conditions[] = 'n.NewsType = :news_type';
+            $params[':news_type'] = $type;
         }
 
         if (!empty($conditions)) {
@@ -424,6 +384,9 @@ class NewsModel
             $stmt->bindValue(':search_desc', "%{$search}%", PDO::PARAM_STR);
             $stmt->bindValue(':search_content', "%{$search}%", PDO::PARAM_STR);
             $stmt->bindValue(':search_author', "%{$search}%", PDO::PARAM_STR);
+        }
+        if ($type !== '' && $type !== 'all') {
+            $stmt->bindValue(':news_type', $type, PDO::PARAM_STR);
         }
 
         $stmt->execute();

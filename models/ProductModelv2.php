@@ -2,6 +2,7 @@
 class ProductModel
 {
     private $pdo;
+    private $promotionShoesColumns;
 
     public function __construct()
     {
@@ -214,6 +215,9 @@ class ProductModel
     private function getPromotionForProduct($shoe_id)
     {
         $current_date = date('Y-m-d H:i:s');
+        $columns = $this->getPromotionShoesColumns();
+        $promotionIdColumn = $columns['promotion_id'];
+        $shoeIdColumn = $columns['shoe_id'];
 
         $query = "
         SELECT
@@ -226,8 +230,8 @@ class ProductModel
             p.end_date            AS end_date
         FROM promotions p
         JOIN promotion_shoes ps 
-            ON p.promotion_id = ps.promotion_id 
-        WHERE ps.shoe_id   = :shoe_id 
+            ON p.promotion_id = ps.{$promotionIdColumn} 
+        WHERE ps.{$shoeIdColumn}   = :shoe_id 
           AND p.start_date <= :start_date 
           AND p.end_date   >= :end_date 
         ORDER BY 
@@ -715,5 +719,40 @@ class ProductModel
             error_log('Failed to decrement stock for cart: ' . $e->getMessage());
             return false;
         }
+    }
+
+    private function getPromotionShoesColumns(): array
+    {
+        if ($this->promotionShoesColumns) {
+            return $this->promotionShoesColumns;
+        }
+
+        $columns = [
+            'promotion_id' => 'promotion_id',
+            'shoe_id' => 'shoe_id',
+        ];
+
+        try {
+            $stmt = $this->pdo->query("SHOW COLUMNS FROM promotion_shoes");
+            $fields = array_map(static function ($row) {
+                return $row['Field'] ?? '';
+            }, $stmt->fetchAll(PDO::FETCH_ASSOC));
+
+            if (in_array('promotion_id', $fields, true)) {
+                $columns['promotion_id'] = 'promotion_id';
+            } elseif (in_array('PromotionID', $fields, true)) {
+                $columns['promotion_id'] = 'PromotionID';
+            }
+
+            if (in_array('shoe_id', $fields, true)) {
+                $columns['shoe_id'] = 'shoe_id';
+            } elseif (in_array('ShoesID', $fields, true)) {
+                $columns['shoe_id'] = 'ShoesID';
+            }
+        } catch (PDOException $e) {
+        }
+
+        $this->promotionShoesColumns = $columns;
+        return $columns;
     }
 }

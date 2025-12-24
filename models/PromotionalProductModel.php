@@ -5,6 +5,7 @@ class PromotionalProductModel
 {
     private $productModel;
     private $db;
+    private $promotionShoesColumns;
 
     public function __construct()
     {
@@ -55,6 +56,9 @@ class PromotionalProductModel
     private function getActivePromotionForProduct($productId)
     {
         $now = date('Y-m-d H:i:s');
+        $columns = $this->getPromotionShoesColumns();
+        $promotionIdColumn = $columns['promotion_id'];
+        $shoeIdColumn = $columns['shoe_id'];
 
         $sql = "
             SELECT
@@ -67,8 +71,8 @@ class PromotionalProductModel
                 p.end_date            AS end_date
             FROM promotions p
             INNER JOIN promotion_shoes ps
-                ON p.promotion_id = ps.promotion_id
-            WHERE ps.shoe_id = :shoes_id
+                ON p.promotion_id = ps.{$promotionIdColumn}
+            WHERE ps.{$shoeIdColumn} = :shoes_id
               AND p.start_date <= :start_date
               AND p.end_date   >= :end_date
             ORDER BY
@@ -187,17 +191,22 @@ class PromotionalProductModel
 
     public function getProductsByPromotionId($promotionId)
     {
-        $sql = "SELECT shoe_id FROM promotion_shoes WHERE promotion_id = :promotion_id";
+        $columns = $this->getPromotionShoesColumns();
+        $promotionIdColumn = $columns['promotion_id'];
+        $shoeIdColumn = $columns['shoe_id'];
+        $sql = "SELECT {$shoeIdColumn} AS shoe_id FROM promotion_shoes WHERE {$promotionIdColumn} = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
 
-        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'ShoesID');
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'shoe_id');
     }
 
     public function removeAllProductsFromPromotion($promotionId)
     {
-        $sql = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
+        $columns = $this->getPromotionShoesColumns();
+        $promotionIdColumn = $columns['promotion_id'];
+        $sql = "DELETE FROM promotion_shoes WHERE {$promotionIdColumn} = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
@@ -205,8 +214,11 @@ class PromotionalProductModel
 
     public function assignProductToPromotion($promotionId, $productId)
     {
+        $columns = $this->getPromotionShoesColumns();
+        $promotionIdColumn = $columns['promotion_id'];
+        $shoeIdColumn = $columns['shoe_id'];
         $sql = "
-            INSERT IGNORE INTO promotion_shoes (promotion_id, shoe_id)
+            INSERT IGNORE INTO promotion_shoes ({$promotionIdColumn}, {$shoeIdColumn})
             VALUES (:promotion_id, :shoes_id)
         ";
 
@@ -278,7 +290,9 @@ class PromotionalProductModel
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
 
-        $sql = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
+        $columns = $this->getPromotionShoesColumns();
+        $promotionIdColumn = $columns['promotion_id'];
+        $sql = "DELETE FROM promotion_shoes WHERE {$promotionIdColumn} = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
@@ -287,5 +301,40 @@ class PromotionalProductModel
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+    private function getPromotionShoesColumns(): array
+    {
+        if ($this->promotionShoesColumns) {
+            return $this->promotionShoesColumns;
+        }
+
+        $columns = [
+            'promotion_id' => 'promotion_id',
+            'shoe_id' => 'shoe_id',
+        ];
+
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM promotion_shoes");
+            $fields = array_map(static function ($row) {
+                return $row['Field'] ?? '';
+            }, $stmt->fetchAll(PDO::FETCH_ASSOC));
+
+            if (in_array('promotion_id', $fields, true)) {
+                $columns['promotion_id'] = 'promotion_id';
+            } elseif (in_array('PromotionID', $fields, true)) {
+                $columns['promotion_id'] = 'PromotionID';
+            }
+
+            if (in_array('shoe_id', $fields, true)) {
+                $columns['shoe_id'] = 'shoe_id';
+            } elseif (in_array('ShoesID', $fields, true)) {
+                $columns['shoe_id'] = 'ShoesID';
+            }
+        } catch (PDOException $e) {
+        }
+
+        $this->promotionShoesColumns = $columns;
+        return $columns;
     }
 }

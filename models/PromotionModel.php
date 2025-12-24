@@ -20,17 +20,17 @@ class PromotionModel
         $params = [];
 
         if ($keyword !== '') {
-            $sql .= " AND PromotionName LIKE :kw";
+            $sql .= " AND promotion_name LIKE :kw";
             $params[':kw'] = "%{$keyword}%";
         }
 
         if (!empty($fromDate)) {
-            $sql .= " AND StartDate >= :fromDate";
+            $sql .= " AND start_date >= :fromDate";
             $params[':fromDate'] = $fromDate . ' 00:00:00';
         }
 
         if (!empty($toDate)) {
-            $sql .= " AND EndDate <= :toDate";
+            $sql .= " AND end_date <= :toDate";
             $params[':toDate'] = $toDate . ' 23:59:59';
         }
 
@@ -57,7 +57,7 @@ class PromotionModel
             SELECT s.*
             FROM shoes s
             INNER JOIN promotion_shoes ps
-                ON s.ShoesID = ps.shoe_id
+                ON s.ShoesID = ps.ShoesID
             WHERE ps.promotion_id = :promotion_id
             LIMIT :limit OFFSET :offset
         ";
@@ -80,7 +80,7 @@ class PromotionModel
             SELECT COUNT(*)
             FROM shoes s
             INNER JOIN promotion_shoes ps
-                ON s.ShoesID = ps.shoe_id
+                ON s.ShoesID = ps.ShoesID
             WHERE ps.promotion_id = :promotion_id
         ");
         $stmt->bindValue(':promotion_id', (int)$promotion_id, PDO::PARAM_INT);
@@ -101,22 +101,22 @@ class PromotionModel
         $params = [];
 
         if ($keyword !== '') {
-            $sql .= " AND PromotionName LIKE :kw";
+            $sql .= " AND promotion_name LIKE :kw";
             $params[':kw'] = "%{$keyword}%";
         }
 
         if (!empty($fromDate)) {
-            $sql .= " AND StartDate >= :fromDate";
+            $sql .= " AND start_date >= :fromDate";
             $params[':fromDate'] = $fromDate . ' 00:00:00';
         }
 
         if (!empty($toDate)) {
-            $sql .= " AND EndDate <= :toDate";
+            $sql .= " AND end_date <= :toDate";
             $params[':toDate'] = $toDate . ' 23:59:59';
         }
 
         $sort = strtoupper($sort) === 'DESC' ? 'DESC' : 'ASC';
-        $sql .= " ORDER BY PromotionID {$sort}";
+        $sql .= " ORDER BY promotion_id {$sort}";
 
         $useLimit = $limit !== null;
         if ($useLimit) {
@@ -203,7 +203,7 @@ class PromotionModel
 
     public function createPromotion($name, $startDate, $endDate, $discountPercentage, $fixedPrice, $promotionType)
     {
-        $query = "INSERT INTO promotion (PromotionName, StartDate, EndDate, DiscountPercentage, FixedPrice, PromotionType) 
+        $query = "INSERT INTO promotions (promotion_name, start_date, end_date, discount_percentage, fixed_price, promotion_type) 
                   VALUES (:promotion_name, :start_date, :end_date, :discount_percentage, :fixed_price, :promotion_type)";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':promotion_name', $name, PDO::PARAM_STR);
@@ -217,13 +217,13 @@ class PromotionModel
 
     public function updatePromotion($promotionId, $name, $startDate, $endDate, $discountPercentage, $fixedPrice, $promotionType)
     {
-        $query = "UPDATE promotion 
-                  SET PromotionName = :promotion_name, 
-                      StartDate = :start_date, 
-                      EndDate = :end_date, 
-                      DiscountPercentage = :discount_percentage, 
-                      FixedPrice = :fixed_price, 
-                      PromotionType = :promotion_type 
+        $query = "UPDATE promotions 
+                  SET promotion_name = :promotion_name, 
+                      start_date = :start_date, 
+                      end_date = :end_date, 
+                      discount_percentage = :discount_percentage, 
+                      fixed_price = :fixed_price, 
+                      promotion_type = :promotion_type 
                   WHERE promotion_id = :promotion_id";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
@@ -269,7 +269,7 @@ class PromotionModel
             FROM promotions p
             INNER JOIN promotion_shoes ps
                 ON p.promotion_id = ps.promotion_id
-            WHERE ps.shoe_id   = :shoe_id
+            WHERE ps.ShoesID   = :shoe_id
               AND p.start_date <= :start_date
               AND p.end_date   >= :end_date
             LIMIT 1
@@ -303,12 +303,12 @@ class PromotionModel
     public function getProductsByPromotionId($promotionId): array
     {
         $query = "
-        SELECT shoe_id
+        SELECT ShoesID
         FROM promotion_shoes
-        WHERE promotion_id = :PromotionID
+        WHERE promotion_id = :promotion_id
     ";
         $stmt  = $this->db->prepare($query);
-        $stmt->bindValue(':PromotionID', (int)$promotionId, PDO::PARAM_INT);
+        $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -319,22 +319,22 @@ class PromotionModel
 
     public function removeAllProductsFromPromotion($promotionId)
     {
-        $query = "DELETE FROM promotion_shoes WHERE promotion_id = :PromotionID";
+        $query = "DELETE FROM promotion_shoes WHERE promotion_id = :promotion_id";
         $stmt  = $this->db->prepare($query);
-        $stmt->bindValue(':PromotionID', (int)$promotionId, PDO::PARAM_INT);
+        $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
     }
 
     public function assignProductToPromotion($promotionId, $productId): void
     {
         $query = "
-            INSERT IGNORE INTO promotion_shoes (promotion_id, shoe_id)
-            VALUES (:PromotionID, :ShoesID)
+            INSERT IGNORE INTO promotion_shoes (promotion_id, ShoesID)
+            VALUES (:promotion_id, :shoes_id)
         ";
 
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':PromotionID', (int)$promotionId, PDO::PARAM_INT);
-        $stmt->bindValue(':ShoesID',     (int)$productId,   PDO::PARAM_INT);
+        $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
+        $stmt->bindValue(':shoes_id',     (int)$productId,   PDO::PARAM_INT);
         $stmt->execute();
     }
 

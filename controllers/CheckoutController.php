@@ -49,7 +49,7 @@ class CheckoutController {
             ];
         }
 
-        $shipping = 0.50;
+        $shipping = 0.08;
         $availableCoupons = $this->couponModel->getActiveCoupons();
         $memberProfile = null;
         $prefillName = '';
@@ -424,6 +424,28 @@ class CheckoutController {
             } else {
                 $paymentData = $responseData;
             }
+
+            $responseCode = $responseData['code'] ?? '00';
+            if ($responseCode !== '00') {
+                if ($responseCode === '231') {
+                    $existing = $this->payosService->getPaymentInfo($orderCode);
+                    if ($existing['success']) {
+                        $existingData = $existing['data'];
+                        if (isset($existingData['data']) && is_array($existingData['data'])) {
+                            $existingData = $existingData['data'];
+                        }
+                        $existingUrl = $existingData['checkoutUrl'] ?? null;
+                        if ($existingUrl) {
+                            header('Location: ' . $existingUrl);
+                            exit;
+                        }
+                    }
+                }
+                $desc = $responseData['desc'] ?? 'Khong the tao link thanh toan.';
+                $_SESSION['checkout_error'] = $desc;
+                header('Location: /index.php?controller=checkout&action=index');
+                exit;
+            }
             
             // Redirect to PayOS payment page
             $checkoutUrl = $paymentData['checkoutUrl'] ?? null;
@@ -513,6 +535,12 @@ class CheckoutController {
             header('Location: /index.php?controller=checkout&action=index');
             exit;
         }
+    }
+
+    // Backward-compatible alias when action underscores are stripped by router
+    public function payosreturn()
+    {
+        $this->payos_return();
     }
     
     /**

@@ -401,7 +401,7 @@ $truncateText = function($text, $limit = 120) {
 <?php endif; ?>
 
 <!-- Products Grid -->
-<section class="all-products-section">
+<section class="all-products-section" id="all-products">
     <div class="all-products-header">
         <div>
             <p class="section-subtitle">All Products</p>
@@ -519,6 +519,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const filterPopup = document.getElementById('filter-popup');
     const filterPopupForm = document.getElementById('filter-popup-form');
     const searchForm = document.getElementById('products-search-form');
+    const productSection = document.getElementById('all-products');
+    const params = new URLSearchParams(window.location.search);
+    const hasSearchQuery = ['keyword', 'category', 'min_price', 'max_price', 'min_size', 'max_size', 'sale_only']
+        .some((key) => params.has(key));
+    const shouldScroll = params.get('scroll') === 'all-products' || hasSearchQuery || window.location.hash === '#all-products';
     
     if (filterIconBtn && filterPopup) {
         let hoverTimeout;
@@ -562,6 +567,41 @@ document.addEventListener('DOMContentLoaded', function() {
             const queryString = params.toString();
             window.location.href = baseUrl + (queryString ? '?' + queryString : '');
         });
+    }
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(searchForm);
+            const params = new URLSearchParams();
+
+            for (const [key, value] of formData.entries()) {
+                if (key === 'controller' || key === 'action') {
+                    params.append(key, value);
+                } else if (value && value.toString().trim() !== '') {
+                    params.append(key, value);
+                }
+            }
+
+            params.set('scroll', 'all-products');
+            const baseUrl = '/index.php';
+            const queryString = params.toString();
+            window.location.href = baseUrl + (queryString ? '?' + queryString : '');
+        });
+    }
+
+    if (productSection && shouldScroll) {
+        const scrollToProducts = () => {
+            const top = productSection.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        };
+
+        if (window.location.hash === '#all-products') {
+            window.scrollTo(0, 0);
+            requestAnimationFrame(() => requestAnimationFrame(scrollToProducts));
+        } else {
+            scrollToProducts();
+        }
     }
 });
 

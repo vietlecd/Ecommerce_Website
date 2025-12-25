@@ -324,8 +324,13 @@ class ProductModel
     // Xóa sản phẩm
     public function deleteProduct($id)
     {
-        $stmt = $this->pdo->prepare("DELETE FROM shoes WHERE ShoesID = ?");
-        return $stmt->execute([$id]);
+        try {
+            $stmt = $this->pdo->prepare("DELETE FROM shoes WHERE ShoesID = ?");
+            return $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            error_log('deleteProduct failed: ' . $e->getMessage());
+            return false;
+        }
     }
 
     // Lấy danh sách danh mục

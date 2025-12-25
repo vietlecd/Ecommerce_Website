@@ -196,10 +196,17 @@ class AdminProductController {
         $product = $this->productModel->getProductById($id);
 
         if ($product) {
-            if ($product['image'] && file_exists(__DIR__ . '/../assets/images/shoes/' . $product['image'])) {
-                unlink(__DIR__ . '/../assets/images/shoes/' . $product['image']);
+            $deleted = $this->productModel->deleteProduct($id);
+            if ($deleted) {
+                if ($product['image'] && file_exists(__DIR__ . '/../assets/images/shoes/' . $product['image'])) {
+                    unlink(__DIR__ . '/../assets/images/shoes/' . $product['image']);
+                }
+                $_SESSION['message'] = 'Product deleted successfully.';
+            } else {
+                $_SESSION['error'] = 'Cannot delete product because it is used in orders or other records.';
             }
-            $this->productModel->deleteProduct($id);
+        } else {
+            $_SESSION['error'] = 'Product not found.';
         }
 
         header('Location: /views/admin/index.php?controller=adminProduct&action=products');

@@ -6,6 +6,7 @@ class PromotionalProductModel
     private $productModel;
     private $db;
     private $promotionShoesColumns;
+    private $newsPromotionColumns;
 
     public function __construct()
     {
@@ -285,7 +286,8 @@ class PromotionalProductModel
 
     public function deletePromotion($promotionId)
     {
-        $sql = "DELETE FROM news_promotion WHERE promotion_id = :promotion_id";
+        $newsCols = $this->getNewsPromotionColumns();
+        $sql = "DELETE FROM news_promotion WHERE {$newsCols['promotion_id']} = :promotion_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
@@ -301,6 +303,42 @@ class PromotionalProductModel
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':promotion_id', (int)$promotionId, PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+    private function getNewsPromotionColumns(): array
+    {
+        if ($this->newsPromotionColumns) {
+            return $this->newsPromotionColumns;
+        }
+
+        $columns = [
+            'news_id' => 'NewsID',
+            'promotion_id' => 'PromotionID',
+        ];
+
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM news_promotion");
+            $fields = array_map(static function ($row) {
+                return $row['Field'] ?? '';
+            }, $stmt->fetchAll(PDO::FETCH_ASSOC));
+
+            if (in_array('news_id', $fields, true)) {
+                $columns['news_id'] = 'news_id';
+            } elseif (in_array('NewsID', $fields, true)) {
+                $columns['news_id'] = 'NewsID';
+            }
+
+            if (in_array('promotion_id', $fields, true)) {
+                $columns['promotion_id'] = 'promotion_id';
+            } elseif (in_array('PromotionID', $fields, true)) {
+                $columns['promotion_id'] = 'PromotionID';
+            }
+        } catch (PDOException $e) {
+            // Keep defaults if schema inspection fails.
+        }
+
+        $this->newsPromotionColumns = $columns;
+        return $columns;
     }
 
     private function getPromotionShoesColumns(): array

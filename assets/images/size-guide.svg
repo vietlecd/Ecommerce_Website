@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+  <rect width="900" height="600" fill="#fbf7ef"/>
+  <rect x="30" y="30" width="350" height="540" fill="#f4e3bc" stroke="#d7c08b"/>
+  <rect x="410" y="30" width="460" height="540" fill="#ffffff" stroke="#333333"/>
+
+  <text x="50" y="70" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#1b1b1b">
+    SIZE GUIDE
+  </text>
+  <text x="50" y="105" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#1b1b1b">
+    HUONG DAN CHON SIZE GIAY
+  </text>
+
+  <rect x="50" y="140" width="28" height="28" fill="#ffffff" stroke="#333333"/>
+  <text x="59" y="160" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#1b1b1b">1</text>
+  <text x="90" y="160" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">
+    Dat ca ban chan len mat phang
+  </text>
+  <text x="90" y="180" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">
+    va do chieu dai tu mui den got.
+  </text>
+
+  <rect x="50" y="205" width="28" height="28" fill="#ffffff" stroke="#333333"/>
+  <text x="59" y="225" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#1b1b1b">2</text>
+  <text x="90" y="225" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">
+    Lay ket qua do duoc so sanh theo bang ben.
+  </text>
+  <text x="90" y="245" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">
+    Chon size giay phu hop.
+  </text>
+
+  <text x="50" y="285" font-family="Arial, sans-serif" font-size="12" fill="#1b1b1b">
+    Vi du: do duoc 25 cm -&gt; size 40
+  </text>
+
+  <rect x="50" y="320" width="260" height="120" fill="#ffffff" stroke="#333333"/>
+  <line x1="70" y1="380" x2="260" y2="380" stroke="#333333" stroke-width="2"/>
+  <ellipse cx="150" cy="365" rx="70" ry="25" fill="#f1d7a4" stroke="#333333"/>
+  <line x1="80" y1="395" x2="220" y2="395" stroke="#333333" stroke-width="2"/>
+  <text x="90" y="415" font-family="Arial, sans-serif" font-size="12" fill="#1b1b1b">
+    Do chieu dai ban chan
+  </text>
+
+  <rect x="430" y="60" width="420" height="40" fill="#efe1bf" stroke="#333333"/>
+  <line x1="520" y1="60" x2="520" y2="474" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="100" x2="850" y2="100" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="134" x2="850" y2="134" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="168" x2="850" y2="168" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="202" x2="850" y2="202" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="236" x2="850" y2="236" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="270" x2="850" y2="270" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="304" x2="850" y2="304" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="338" x2="850" y2="338" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="372" x2="850" y2="372" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="406" x2="850" y2="406" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="440" x2="850" y2="440" stroke="#333333" stroke-width="1"/>
+  <line x1="430" y1="474" x2="850" y2="474" stroke="#333333" stroke-width="1"/>
+
+  <text x="455" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#1b1b1b">SIZE</text>
+  <text x="545" y="85" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#1b1b1b">
+    CHIEU DAI BAN CHAN (cm)
+  </text>
+
+  <text x="460" y="124" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">37</text>
+  <text x="545" y="124" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">23.5</text>
+
+  <text x="460" y="158" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">38</text>
+  <text x="545" y="158" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">24</text>
+
+  <text x="460" y="192" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">39</text>
+  <text x="545" y="192" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">24.5</text>
+
+  <text x="460" y="226" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">40</text>
+  <text x="545" y="226" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">25</text>
+
+  <text x="460" y="260" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">41</text>
+  <text x="545" y="260" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">25.5</text>
+
+  <text x="460" y="294" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">42</text>
+  <text x="545" y="294" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">26</text>
+
+  <text x="460" y="328" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">43</text>
+  <text x="545" y="328" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">26.5</text>
+
+  <text x="460" y="362" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">44</text>
+  <text x="545" y="362" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">27</text>
+
+  <text x="460" y="396" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">45</text>
+  <text x="545" y="396" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">27.5</text>
+
+  <text x="460" y="430" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">46</text>
+  <text x="545" y="430" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">28</text>
+
+  <text x="460" y="464" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">47</text>
+  <text x="545" y="464" font-family="Arial, sans-serif" font-size="14" fill="#1b1b1b">28.5</text>
+</svg>

@@ -197,7 +197,10 @@ $productFacts = [
             <form method="post" action="" class="product-add-to-cart">
                 <?php if (!empty($product['sizes'])): ?>
                     <div class="size-picker">
-                        <label class="size-picker-label"><i class="fas fa-ruler"></i> Choose your size:</label>
+                        <div class="size-picker-header">
+                            <label class="size-picker-label"><i class="fas fa-ruler"></i> Choose your size:</label>
+                            <a class="size-guide-link" href="#size-guide-modal"><i class="fas fa-info-circle"></i> How to choose size</a>
+                        </div>
                         <?php if (!empty($productAddError)): ?>
                             <div class="size-picker-error"><?php echo htmlspecialchars($productAddError); ?></div>
                         <?php endif; ?>
@@ -220,6 +223,13 @@ $productFacts = [
                             <?php endforeach; ?>
                         </div>
                         <input type="hidden" name="selected_size" id="selected-size-input">
+                    </div>
+                    <div id="size-guide-modal" class="size-guide-modal" aria-hidden="true">
+                        <a href="#" class="size-guide-modal-backdrop" aria-hidden="true"></a>
+                        <div class="size-guide-modal-content" role="dialog" aria-modal="true" aria-label="Size guide">
+                            <a href="#" class="size-guide-modal-close" aria-label="Close">&times;</a>
+                            <img src="/assets/images/size-giay-tay.png" alt="Huong dan chon size giay">
+                        </div>
                     </div>
                 <?php endif; ?>
                 <div class="quantity-section">
@@ -724,12 +734,83 @@ document.addEventListener('DOMContentLoaded', function() {
     margin: 1.5rem 0;
 }
 
+.size-picker-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+}
+
 .size-picker-label {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+}
+
+.size-guide-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.size-guide-link:hover {
+    text-decoration: underline;
+}
+
+.size-guide-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+}
+
+.size-guide-modal:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.size-guide-modal-backdrop {
+    position: absolute;
+    inset: 0;
+}
+
+.size-guide-modal-content {
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    padding: 16px;
+    border-radius: 10px;
+    max-width: 92vw;
+    max-height: 90vh;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.size-guide-modal-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.size-guide-modal-close {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    text-decoration: none;
+    color: #333;
+    font-size: 24px;
+    line-height: 1;
 }
 
 .size-picker-error {

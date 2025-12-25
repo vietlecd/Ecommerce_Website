@@ -3,6 +3,7 @@
 class PromotionModel
 {
     private $db;
+    private $newsPromotionColumns = null;
 
     public function __construct()
     {
@@ -141,11 +142,12 @@ class PromotionModel
 
     public function getPromotionsByNewsId(int $newsId, ?bool $onlyActive = null): array
     {
+        $npCols = $this->getNewsPromotionColumns();
         $sql = "
         SELECT p.*
         FROM news_promotion np
-        INNER JOIN promotions p ON p.promotion_id = np.promotion_id
-        WHERE np.NewsID = :news_id
+        INNER JOIN promotions p ON p.promotion_id = np.{$npCols['promotion_id']}
+        WHERE np.{$npCols['news_id']} = :news_id
     ";
         if ($onlyActive === true) {
             $sql .= "
@@ -173,13 +175,14 @@ class PromotionModel
         try {
             $this->db->beginTransaction();
 
-            $del = $this->db->prepare("DELETE FROM news_promotion WHERE NewsID = :nid");
+            $npCols = $this->getNewsPromotionColumns();
+            $del = $this->db->prepare("DELETE FROM news_promotion WHERE {$npCols['news_id']} = :nid");
             $del->bindValue(':nid', $newsId, PDO::PARAM_INT);
             $del->execute();
 
             if (!empty($promotionIds)) {
                 $ins = $this->db->prepare("
-                    INSERT INTO news_promotion (NewsID, PromotionID)
+                    INSERT INTO news_promotion ({$npCols['news_id']}, {$npCols['promotion_id']})
                     VALUES (:nid, :pid)
                 ");
 
@@ -197,6 +200,40 @@ class PromotionModel
             error_log('syncNewsPromotions error: ' . $e->getMessage());
             return false;
         }
+    }
+
+    private function getNewsPromotionColumns(): array
+    {
+        if ($this->newsPromotionColumns !== null) {
+            return $this->newsPromotionColumns;
+        }
+
+        $columns = [
+            'news_id' => 'NewsID',
+            'promotion_id' => 'PromotionID',
+        ];
+
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM news_promotion");
+            $fields = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            if (in_array('news_id', $fields, true)) {
+                $columns['news_id'] = 'news_id';
+            } elseif (in_array('NewsID', $fields, true)) {
+                $columns['news_id'] = 'NewsID';
+            }
+
+            if (in_array('promotion_id', $fields, true)) {
+                $columns['promotion_id'] = 'promotion_id';
+            } elseif (in_array('PromotionID', $fields, true)) {
+                $columns['promotion_id'] = 'PromotionID';
+            }
+        } catch (PDOException $e) {
+            // Keep defaults if schema inspection fails.
+        }
+
+        $this->newsPromotionColumns = $columns;
+        return $columns;
     }
 
 

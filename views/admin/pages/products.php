@@ -59,6 +59,20 @@ $resolveProductImage = function (?string $imageValue): string {
         </div>
       </div>
       <div class="card-body border-bottom py-3">
+        <?php if (!empty($_SESSION['message'])): ?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($_SESSION['message']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <?php unset($_SESSION['message']); ?>
+        <?php endif; ?>
+        <?php if (!empty($_SESSION['error'])): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($_SESSION['error']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
         <form class="row g-2 align-items-end" method="get" action="/views/admin/index.php">
           <input type="hidden" name="controller" value="adminProduct">
           <input type="hidden" name="action" value="products">

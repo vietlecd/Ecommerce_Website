@@ -3,6 +3,7 @@
 class NewsModel
 {
     private $db;
+    private $newsPromotionColumns = null;
 
     public function __construct()
     {
@@ -39,6 +40,7 @@ class NewsModel
 
     public function getNewsById($id)
     {
+        $npCols = $this->getNewsPromotionColumns();
         $stmt = $this->db->prepare("
             SELECT 
                 n.*,
@@ -46,8 +48,8 @@ class NewsModel
                 p.*
             FROM news n
             JOIN admin a ON a.AdminID = n.CreatedBy
-            LEFT JOIN news_promotion np ON np.NewsID = n.NewsID
-            LEFT JOIN promotions p ON p.promotion_id = np.promotion_id
+            LEFT JOIN news_promotion np ON np.{$npCols['news_id']} = n.NewsID
+            LEFT JOIN promotions p ON p.promotion_id = np.{$npCols['promotion_id']}
             WHERE n.NewsID = :id
             ORDER BY p.start_date DESC;
         ");
@@ -60,18 +62,35 @@ class NewsModel
         $news['promotions'] = [];
 
         foreach ($rows as $r) {
-            if ($r['PromotionID'] !== null) {
-                $news['promotions'][] = [
-                    'PromotionID'     => (int)$r['PromotionID'],
-                    'PromotionType'   => $r['PromotionType'],
-                    'PromotionName'   => $r['PromotionName'],
-                    'DiscountPercentage' => $r['DiscountPercentage'],
-                    'FixedPrice'      => $r['FixedPrice'],
-                    'StartDate'       => $r['StartDate'],
-                    'EndDate'         => $r['EndDate'],
-                    'Active'           => ($r['StartDate'] <= date('Y-m-d H:i:s')
-                        && date('Y-m-d H:i:s') <= $r['EndDate']),
+            $promotionId = $r['promotion_id'] ?? $r['PromotionID'] ?? null;
+            if ($promotionId !== null) {
+                $startDate = $r['start_date'] ?? $r['StartDate'] ?? null;
+                $endDate = $r['end_date'] ?? $r['EndDate'] ?? null;
+                $active = false;
+                if ($startDate && $endDate) {
+                    $now = date('Y-m-d H:i:s');
+                    $active = ($startDate <= $now && $now <= $endDate);
+                }
+
+                $promo = [
+                    'promotion_id' => (int)$promotionId,
+                    'promotion_type' => $r['promotion_type'] ?? $r['PromotionType'] ?? null,
+                    'promotion_name' => $r['promotion_name'] ?? $r['PromotionName'] ?? null,
+                    'discount_percentage' => $r['discount_percentage'] ?? $r['DiscountPercentage'] ?? null,
+                    'fixed_price' => $r['fixed_price'] ?? $r['FixedPrice'] ?? null,
+                    'start_date' => $startDate,
+                    'end_date' => $endDate,
+                    'Active' => $active,
                 ];
+                $promo['PromotionID'] = $promo['promotion_id'];
+                $promo['PromotionType'] = $promo['promotion_type'];
+                $promo['PromotionName'] = $promo['promotion_name'];
+                $promo['DiscountPercentage'] = $promo['discount_percentage'];
+                $promo['FixedPrice'] = $promo['fixed_price'];
+                $promo['StartDate'] = $promo['start_date'];
+                $promo['EndDate'] = $promo['end_date'];
+
+                $news['promotions'][] = $promo;
             }
         }
 
@@ -214,6 +233,40 @@ class NewsModel
             error_log('deleteNews error: ' . $e->getMessage());
             return false;
         }
+    }
+
+    private function getNewsPromotionColumns(): array
+    {
+        if ($this->newsPromotionColumns !== null) {
+            return $this->newsPromotionColumns;
+        }
+
+        $columns = [
+            'news_id' => 'NewsID',
+            'promotion_id' => 'PromotionID',
+        ];
+
+        try {
+            $stmt = $this->db->query("SHOW COLUMNS FROM news_promotion");
+            $fields = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            if (in_array('news_id', $fields, true)) {
+                $columns['news_id'] = 'news_id';
+            } elseif (in_array('NewsID', $fields, true)) {
+                $columns['news_id'] = 'NewsID';
+            }
+
+            if (in_array('promotion_id', $fields, true)) {
+                $columns['promotion_id'] = 'promotion_id';
+            } elseif (in_array('PromotionID', $fields, true)) {
+                $columns['promotion_id'] = 'PromotionID';
+            }
+        } catch (PDOException $e) {
+            // Keep defaults if schema inspection fails.
+        }
+
+        $this->newsPromotionColumns = $columns;
+        return $columns;
     }
 
     public function getNewsTypes(): array
